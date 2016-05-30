@@ -1,0 +1,12 @@
+{
+  "content": {
+    "dynamic": "strict",
+    "properties": {
+    	"body": {
+        	"type" : "text",
+        	"analyzer" : "english"
+      	}
+    }
+  }
+}
+

@@ -1,0 +1,11 @@
+{
+  "percolator": {
+    "dynamic": "strict",
+    "properties": {
+      "query": {
+        "type": "percolator"
+      }
+    }
+  }
+}
+
