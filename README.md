@@ -39,7 +39,7 @@ How to Contribute
 
 If you want to contribute a track, please ensure that it works against the master version of Elasticsearch (i.e. submit PRs against the master branch). We can then check whether it's feasible to backport the track to earlier Elasticsearch versions.
  
-See all details in the `contributor guidelines <https://github.com/elastic/rally/blob/master/CONTRIBUTING.md>`_.
+See all details in the [contributor guidelines](https://github.com/elastic/rally/blob/master/CONTRIBUTING.md).
  
 License
 -------
