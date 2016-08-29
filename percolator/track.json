@@ -201,6 +201,7 @@
       "schedule": [
         {
           "operation": "index",
+          "warmup-time-period": 120,
           "clients": 8
         },
         {
