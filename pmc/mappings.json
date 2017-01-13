@@ -1,9 +1,6 @@
 {
   "articles": {
     "dynamic": "strict",
-    "_all": {
-      "enabled": false
-    },
     "properties": {
       "name": {
         "type": "keyword"

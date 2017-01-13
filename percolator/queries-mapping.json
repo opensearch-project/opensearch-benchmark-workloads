@@ -1,9 +1,6 @@
 {
   "percolator": {
     "dynamic": "strict",
-    "_all": {
-      "enabled": false
-    },
     "properties": {
       "query": {
         "type": "percolator"

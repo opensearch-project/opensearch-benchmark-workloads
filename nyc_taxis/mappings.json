@@ -80,9 +80,6 @@
         "type": "geo_point"
       }
     },
-    "_all": {
-      "enabled": false
-    },
     "dynamic": "strict"
   }
 }

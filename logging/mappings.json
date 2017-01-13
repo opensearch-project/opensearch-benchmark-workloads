@@ -1,9 +1,6 @@
 {
   "type": {
     "dynamic": "strict",
-    "_all":       { 
-      "enabled": false  
-    },
     "properties": {
       "@timestamp": {
         "format": "epoch_second",
