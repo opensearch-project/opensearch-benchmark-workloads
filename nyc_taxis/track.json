@@ -136,6 +136,26 @@
       ]
     },
     {
+      "name": "append-sorted-no-conflicts-index-only",
+      "description": "Indexes the whole document corpus in an index sorted by pickup_datetime field in descending order (most recent first) and using a setup that will lead to a larger indexing throughput than the default settings and produce a smaller index (higher compression rate). Document ids are unique so all index operations are append only.",
+      "index-settings": {
+        "index.number_of_shards": 1,
+        "index.codec": "best_compression",
+        "index.number_of_replicas": 0,
+        "index.refresh_interval": "30s",
+        "index.translog.flush_threshold_size": "4g",
+        "index.sort.field": "pickup_datetime",
+        "index.sort.order": "desc"
+      },
+      "schedule": [
+        {
+          "operation": "index",
+          "warmup-time-period": 240,
+          "clients": 8
+        }
+      ]
+    },
+    {
       "#COMMENT": "Temporary workaround for more realistic benchmarks with two nodes",
       "name": "append-no-conflicts-index-only-1-replica",
       "description": "Indexes the whole document corpus using Elasticsearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Rally will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only.",
@@ -152,4 +172,3 @@
     }
   ]
 }
-

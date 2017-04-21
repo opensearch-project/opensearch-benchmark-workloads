@@ -344,6 +344,29 @@
           "clients": 1
         }
       ]
+    },
+    {
+      "name": "append-fast-sorted-no-conflicts",
+      "description": "Indexes the whole document corpus in an index sorted by timestamp field in descending order (most recent first) and using a setup that will lead to a larger indexing throughput than the default settings. Document ids are unique so all index operations are append only.",
+      "index-settings": {
+        "index.number_of_replicas": 0,
+        "index.refresh_interval": "30s",
+        "index.number_of_shards": 6,
+        "index.translog.flush_threshold_size": "4g",
+        "index.sort.field": "@timestamp",
+        "index.sort.order": "desc"
+      },
+      "schedule": [
+        {
+          "operation": "index-append",
+          "warmup-time-period": 240,
+          "clients": 8
+        },
+        {
+          "operation": "force-merge",
+          "clients": 1
+        }
+      ]
     }
   ]
 }
