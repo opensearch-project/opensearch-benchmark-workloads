@@ -11,7 +11,6 @@
       },
       "request": {
         "type": "text",
-        "term_vector": "with_positions_offsets",
         "fields": {
           "raw": {
             "ignore_above": 256,
