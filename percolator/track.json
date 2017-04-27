@@ -13,16 +13,12 @@
       "name": "queries",
       "types": [
         {
-          "name": "percolator",
-          "mapping": "queries-mapping.json",
+          "name": "content",
+          "mapping": "mapping.json",
           "documents": "queries-2.json.bz2",
           "document-count": 2000000,
           "compressed-bytes": 105192,
           "uncompressed-bytes": 110039748
-        },
-        {
-          "name": "content",
-          "mapping": "document-mapping.json"
         }
       ]
     }
