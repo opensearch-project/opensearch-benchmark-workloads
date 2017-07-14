@@ -77,7 +77,7 @@
       "body": {
         "query": {
           "constant_score": {
-            "query": {
+            "filter": {
               "percolate": {
                 "field": "query",
                 "document": {
@@ -128,7 +128,7 @@
       "body": {
         "query": {
           "constant_score": {
-            "query": {
+            "filter": {
               "percolate": {
                 "field": "query",
                 "document": {
