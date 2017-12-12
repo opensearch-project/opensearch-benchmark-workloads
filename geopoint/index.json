@@ -1,0 +1,12 @@
+{
+  "mappings": {
+    "type": {
+      "dynamic": "strict",
+      "properties": {
+        "location": {
+          "type": "geo_point"
+        }
+      }
+    }
+  }
+}
