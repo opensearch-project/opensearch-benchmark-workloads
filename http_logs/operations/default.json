@@ -33,7 +33,6 @@
       "name": "default",
       "operation-type": "search",
       "index": "logs-*",
-      "type": "type",
       "body": {
         "query": {
           "match_all": {}
@@ -44,7 +43,6 @@
       "name": "term",
       "operation-type": "search",
       "index": "logs-*",
-      "type": "type",
       "body": {
         "query": {
           "term": {
@@ -59,7 +57,6 @@
       "name": "range",
       "operation-type": "search",
       "index": "logs-*",
-      "type": "type",
       "body": {
         "query": {
           "range": {
@@ -75,7 +72,6 @@
       "name": "hourly_agg",
       "operation-type": "search",
       "index": "logs-*",
-      "type": "type",
       "body": {
         "size": 0,
         "aggs": {
@@ -92,7 +88,6 @@
       "name": "scroll",
       "operation-type": "search",
       "index": "logs-*",
-      "type": "type",
       "pages": 25,
       "results-per-page": 1000,
       "body": {
