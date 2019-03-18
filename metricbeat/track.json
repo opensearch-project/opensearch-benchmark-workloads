@@ -1,0 +1,31 @@
+{% import "rally.helpers" as rally with context %}
+{
+  "version": 2,
+  "description": "Metricbeat data",
+  "indices": [
+    {
+      "name": "metricbeat",
+      "body": "index.json"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "metricbeat",
+      "base-url": "http://benchmarks.elasticsearch.org.s3.amazonaws.com/corpora/metricbeat",
+      "documents": [
+        {
+          "source-file": "documents.json.bz2",
+          "document-count": 1079600,
+          "compressed-bytes":91887122,
+          "uncompressed-bytes":1249705758
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ rally.collect(parts="operations/*.json") }}
+  ],
+  "challenges": [
+    {{ rally.collect(parts="challenges/*.json") }}
+  ]
+}
