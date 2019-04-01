@@ -273,7 +273,7 @@
               "match_all": {}
             },
             "script": {
-              "source": "randomReproducible(Long.toString(doc['_seq_no'].value), 100)"
+              "source": "randomScore(100, '_seq_no')"
             }
           }
         }
