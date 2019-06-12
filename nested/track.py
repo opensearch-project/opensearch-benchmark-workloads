@@ -51,9 +51,11 @@ class SortedTermQueryParamSource(QueryParamSource):
                 ]
             },
             "index": None,
-            "type": None,
-            "cache": self._params.get("cache")
+            "type": None
         }
+        if "cache" in self._params:
+            result["cache"] = self._params["cache"]
+
         return result
 
 
@@ -68,9 +70,11 @@ class TermQueryParamSource(QueryParamSource):
                 }
             },
             "index": None,
-            "type": None,
-            "cache": self._params.get("cache")
+            "type": None
         }
+        if "cache" in self._params:
+            result["cache"] = self._params["cache"]
+
         return result
 
 
@@ -103,9 +107,11 @@ class NestedQueryParamSource(QueryParamSource):
                 }
             },
             "index": None,
-            "type": None,
-            "cache": self._params.get("cache")
+            "type": None
         }
+        if "cache" in self._params:
+            result["cache"] = self._params["cache"]
+
         return result
 
 
@@ -142,9 +148,11 @@ class NestedQueryParamSourceWithInnerHits(QueryParamSource):
                 "size": self._params["size"]
             },
             "index": None,
-            "type": None,
-            "cache": self._params.get("cache")
+            "type": None
         }
+        if "cache" in self._params:
+            result["cache"] = self._params["cache"]
+
         return result
 
 
