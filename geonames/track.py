@@ -34,9 +34,11 @@ class PureTermsQueryParamSource(QueryParamSource):
                     }
                 }
             },
-            "index": None,
-            "cache": self._params.get("cache")
+            "index": None
         }
+        if "cache" in self._params:
+            result["cache"] = self._params["cache"]
+
         return result
 
 
@@ -65,9 +67,11 @@ class FilteredTermsQueryParamSource(QueryParamSource):
                     }
                 }
             },
-            "index": None,
-            "cache": self._params.get("cache")
+            "index": None
         }
+        if "cache" in self._params:
+            result["cache"] = self._params["cache"]
+
         return result
 
 
@@ -96,9 +100,11 @@ class ProhibitedTermsQueryParamSource(QueryParamSource):
                     }
                 }
             },
-            "index": None,
-            "cache": self._params.get("cache")
+            "index": None
         }
+        if "cache" in self._params:
+            result["cache"] = self._params["cache"]
+
         return result
 
 
