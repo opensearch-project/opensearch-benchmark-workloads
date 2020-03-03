@@ -34,13 +34,28 @@
           "clients": 1
         },
         {
-          "operation": "force-merge",
-          "clients": 1
+          "operation": {
+            "operation-type": "force-merge",
+            "request-timeout": 7200
+          }
         },
         {
           "name": "refresh-after-force-merge",
           "operation": "refresh",
           "clients": 1
+        },
+        {
+          "name": "wait-until-merges-finish",
+          "operation": {
+            "operation-type": "index-stats",
+            "index": "_all",
+            "condition": {
+              "path": "_all.total.merges.current",
+              "expected-value": 0
+            },
+            "retry-until-success": true,
+            "include-in-reporting": false
+          }
         },
         {
           "operation": "default",
@@ -98,13 +113,25 @@
             "operation-type": "force-merge",
             "max-num-segments": 1,
             "request-timeout": 7200
-          },
-          "clients": 1
+          }
         },
         {
           "name": "refresh-after-force-merge-1-seg",
           "operation": "refresh",
           "clients": 1
+        },
+        {
+          "name": "wait-until-merges-1-seg-finish",
+          "operation": {
+            "operation-type": "index-stats",
+            "index": "_all",
+            "condition": {
+              "path": "_all.total.merges.current",
+              "expected-value": 0
+            },
+            "retry-until-success": true,
+            "include-in-reporting": false
+          }
         },
         {
           "name": "desc-sort-timestamp-after-force-merge-1-seg",
@@ -159,13 +186,28 @@
           "clients": 1
         },
         {
-          "operation": "force-merge",
-          "clients": 1
+          "operation": {
+            "operation-type": "force-merge",
+            "request-timeout": 7200
+          }
         },
         {
           "name": "refresh-after-force-merge",
           "operation": "refresh",
           "clients": 1
+        },
+        {
+          "name": "wait-until-merges-finish",
+          "operation": {
+            "operation-type": "index-stats",
+            "index": "_all",
+            "condition": {
+              "path": "_all.total.merges.current",
+              "expected-value": 0
+            },
+            "retry-until-success": true,
+            "include-in-reporting": false
+          }
         }
       ]
     },
@@ -207,13 +249,28 @@
           "clients": 1
         },
         {
-          "operation": "force-merge",
-          "clients": 1
+          "operation": {
+            "operation-type": "force-merge",
+            "request-timeout": 7200
+          }
         },
         {
           "name": "refresh-after-force-merge",
           "operation": "refresh",
           "clients": 1
+        },
+        {
+          "name": "wait-until-merges-finish",
+          "operation": {
+            "operation-type": "index-stats",
+            "index": "_all",
+            "condition": {
+              "path": "_all.total.merges.current",
+              "expected-value": 0
+            },
+            "retry-until-success": true,
+            "include-in-reporting": false
+          }
         }
       ]
     },
@@ -255,13 +312,28 @@
           "clients": 1
         },
         {
-          "operation": "force-merge",
-          "clients": 1
+          "operation": {
+            "operation-type": "force-merge",
+            "request-timeout": 7200
+          }
         },
         {
           "name": "refresh-after-force-merge",
           "operation": "refresh",
           "clients": 1
+        },
+        {
+          "name": "wait-until-merges-finish",
+          "operation": {
+            "operation-type": "index-stats",
+            "index": "_all",
+            "condition": {
+              "path": "_all.total.merges.current",
+              "expected-value": 0
+            },
+            "retry-until-success": true,
+            "include-in-reporting": false
+          }
         }
       ]
     },
@@ -303,13 +375,28 @@
           "clients": 1
         },
         {
-          "operation": "force-merge",
-          "clients": 1
+          "operation": {
+            "operation-type": "force-merge",
+            "request-timeout": 7200
+          }
         },
         {
           "name": "refresh-after-force-merge",
           "operation": "refresh",
           "clients": 1
+        },
+        {
+          "name": "wait-until-merges-finish",
+          "operation": {
+            "operation-type": "index-stats",
+            "index": "_all",
+            "condition": {
+              "path": "_all.total.merges.current",
+              "expected-value": 0
+            },
+            "retry-until-success": true,
+            "include-in-reporting": false
+          }
         }
       ]
     },
@@ -348,13 +435,28 @@
           "clients": 1
         },
         {
-          "operation": "force-merge",
-          "clients": 1
+          "operation": {
+            "operation-type": "force-merge",
+            "request-timeout": 7200
+          }
         },
         {
           "name": "refresh-after-force-merge",
           "operation": "refresh",
           "clients": 1
+        },
+        {
+          "name": "wait-until-merges-finish",
+          "operation": {
+            "operation-type": "index-stats",
+            "index": "_all",
+            "condition": {
+              "path": "_all.total.merges.current",
+              "expected-value": 0
+            },
+            "retry-until-success": true,
+            "include-in-reporting": false
+          }
         },
         {
           "name": "reindex",
