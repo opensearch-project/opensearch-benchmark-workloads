@@ -28,7 +28,7 @@
           "operation": "index-append",
           "warmup-time-period": 120,
           "clients": {{bulk_indexing_clients | default(8)}},
-          "ignore-response-error-level": "{{error-level | default('non-fatal')}}"
+          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
         },
         {
           "name": "refresh-after-index",
@@ -173,7 +173,7 @@
           "operation": "index-append",
           "warmup-time-period": 120,
           "clients": {{bulk_indexing_clients | default(8)}},
-          "ignore-response-error-level": "{{error-level | default('non-fatal')}}"
+          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
         },
         {
           "operation": {
@@ -228,7 +228,7 @@
           "operation": "index-append",
           "warmup-time-period": 120,
           "clients": {{bulk_indexing_clients | default(8)}},
-          "ignore-response-error-level": "{{error-level | default('non-fatal')}}"
+          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
         },
         {
           "operation": {
@@ -284,7 +284,7 @@
           "operation": "index-update",
           "warmup-time-period": 45,
           "clients": {{bulk_indexing_clients | default(8)}},
-          "ignore-response-error-level": "{{error-level | default('non-fatal')}}"
+          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
         },
         {
           "operation": {
