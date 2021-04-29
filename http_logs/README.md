@@ -47,6 +47,7 @@ This track allows to overwrite the following parameters with Rally 0.8.0+ using 
 node pipeline to run. Valid options are `'baseline'` (default), `'grok'`  and `'geoip'`. For example: `--challenge=append-index-only-with-ingest-pipeline --track-params="ingest_pipeline:'baseline'" `
 * `runtime_script_grok`: If defined the challenge loads the `unparsed` set of documents, indexing the `@timestamp` and the raw `message` field. All of the other fields are declared as `runtime` fields extracting the value using a script.
 * `runtime_source`: Specifies the way that `runtime_script_grok` loads values to grok. The default is `_source` which loads from `_source`. Other options are `wildcard` which loads from a `wildcard` field and `keyword` which loads from a keyword field.
+* `error-level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
 
 ### License
 
