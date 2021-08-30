@@ -27,7 +27,7 @@
   "operations": [
     {{ rally.collect(parts="operations/*.json") }}
   ],
-  "challenges": [
-    {{ rally.collect(parts="challenges/*.json") }}
+  "test_procedures": [
+    {{ rally.collect(parts="test_procedures/*.json") }}
   ]
 }
