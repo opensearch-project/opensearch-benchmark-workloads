@@ -19,8 +19,8 @@ class RuntimeFieldResolver(loader.TrackProcessor):
     PATTERN = re.compile('.+-from-(.+)-using-(.+)')
 
     def on_after_load_track(self, t):
-        for test_procedures in t.test_proceduress:
-            for task in test_procedures.schedule:
+        for test_procedure in t.test_procedures:
+            for task in test_procedure.schedule:
                 m = self.PATTERN.match(task.name)
                 if m is not None:
                     source = m[1]
