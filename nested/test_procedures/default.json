@@ -1,5 +1,5 @@
     {
-      "name": "nested-search-challenge",
+      "name": "nested-search-test_procedure",
       "description": "Indexes the document corpus for an hour using Elasticsearch default settings. After that randomized nested queries are run.",
       "default": true,
       "schedule": [
