@@ -44,7 +44,7 @@ fi
 # check if the workload actually exists
 if [ ! -d "${HOME}/${REPO_TARGET}/${WORKLOAD}" ]
 then
-    echo "Track ${WORKLOAD} does not exist in ${HOME}/${REPO_TARGET}."
+    echo "Workload ${WORKLOAD} does not exist in ${HOME}/${REPO_TARGET}."
     exit 1
 fi
 

@@ -15,7 +15,7 @@ async def reindex_async(es, params):
     return result["total"], "docs"
 
 
-class RuntimeFieldResolver(loader.TrackProcessor):
+class RuntimeFieldResolver(loader.WorkloadProcessor):
     PATTERN = re.compile('.+-from-(.+)-using-(.+)')
 
     def on_after_load_workload(self, t):
@@ -63,7 +63,7 @@ def register(registry):
     registry.register_workload_processor(RuntimeFieldResolver())
     # TODO change this based on https://github.com/elastic/rally/issues/1257
     try:
-        registry.register_workload_processor(loader.DefaultTrackPreparator())
+        registry.register_workload_processor(loader.DefaultWorkloadPreparator())
     except TypeError as e:
         if e == "__init__() missing 1 required positional argument: 'cfg'":
             pass
