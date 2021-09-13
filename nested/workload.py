@@ -6,7 +6,7 @@ import csv
 class QueryParamSource:
     # We need to stick to the param source API
     # noinspection PyUnusedLocal
-    def __init__(self, track, params, **kwargs):
+    def __init__(self, workload, params, **kwargs):
         self._params = params
         self.infinite = True
         # here we read the queries data file into arrays which we'll then later use randomly.
