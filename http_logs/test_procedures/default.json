@@ -8,7 +8,7 @@
     },
     {
       "name": "runtime-fields",
-      "description": "Indexes the whole document corpus using scripts to extract fields. Set the track param `runtime_fields` to `true`.",
+      "description": "Indexes the whole document corpus using scripts to extract fields. Set the workload param `runtime_fields` to `true`.",
       "schedule": [
         {{ rally.collect(parts="common/default-schedule.json") }}
       ]
