@@ -13,7 +13,7 @@
 {
   "version": 2,
   "description": "HTTP server log data",
-  "#TODO": "Replace index definitions with a template after setting the track version to 2. Explicit index definitions are not necessary anymore.",
+  "#TODO": "Replace index definitions with a template after setting the workload version to 2. Explicit index definitions are not necessary anymore.",
   "indices": [
     {
       "name": "logs-181998",

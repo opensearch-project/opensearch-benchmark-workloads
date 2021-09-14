@@ -23,50 +23,50 @@ readonly CURR_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 # test number of parameters
 if [ $# != 1 ]
 then
-    echo "Usage: $0 TRACK_NAME"
+    echo "Usage: $0 WORKLOAD_NAME"
     exit 1
 fi
 
-readonly TRACK=$1
+readonly WORKLOAD=$1
 
 TARGETS=( )
 
-# clone track descriptions
-readonly REPO_TARGET="${ROOT}/tracks/default"
+# clone workload descriptions
+readonly REPO_TARGET="${ROOT}/workloads/default"
 # add to final tar
 TARGETS[${#TARGETS[*]}]="${REPO_TARGET}"
 
 if [ ! -d "${HOME}/${REPO_TARGET}" ]
 then
-    git clone https://github.com/elastic/rally-tracks.git "${HOME}/${REPO_TARGET}"
+    git clone https://github.com/elastic/rally-workloads.git "${HOME}/${REPO_TARGET}"
 fi
 
-# check if the track actually exists
-if [ ! -d "${HOME}/${REPO_TARGET}/${TRACK}" ]
+# check if the workload actually exists
+if [ ! -d "${HOME}/${REPO_TARGET}/${WORKLOAD}" ]
 then
-    echo "Track ${TRACK} does not exist in ${HOME}/${REPO_TARGET}."
+    echo "Track ${WORKLOAD} does not exist in ${HOME}/${REPO_TARGET}."
     exit 1
 fi
 
 # download data (unless it exists locally)
-readonly FILES=$(cat ${HOME}/${REPO_TARGET}/${TRACK}/files.txt)
+readonly FILES=$(cat ${HOME}/${REPO_TARGET}/${WORKLOAD}/files.txt)
 for f in ${FILES}; do
-    TARGET_ROOT="${ROOT}/data/${TRACK}"
+    TARGET_ROOT="${ROOT}/data/${WORKLOAD}"
     TARGET_PATH="${TARGET_ROOT}/${f}"
     mkdir -p "${HOME}/${TARGET_ROOT}"
     TARGETS[${#TARGETS[*]}]="${TARGET_PATH}"
     if [ ! -f "${HOME}/${TARGET_PATH}" ]
     then
-        curl -o "${HOME}/${TARGET_PATH}" "${URL}/${TRACK}/${f}"
+        curl -o "${HOME}/${TARGET_PATH}" "${URL}/${WORKLOAD}/${f}"
     fi
 done
 
-readonly ARCHIVE="rally-track-data-${TRACK}.tar"
+readonly ARCHIVE="rally-workload-data-${WORKLOAD}.tar"
 # ensure everything is relative to the home directory
 # exclude the archive itself to prevent spurious warnings.
 tar -C ${HOME} --exclude="${ARCHIVE}" -cf "${ARCHIVE}" ${TARGETS[@]}
 
-echo "Created data for ${TRACK} in ${ARCHIVE}. Next steps:"
+echo "Created data for ${WORKLOAD} in ${ARCHIVE}. Next steps:"
 echo ""
 echo "1. Copy it to the user home directory on the target machine(s)."
 echo "2. Extract with tar -xf ${ARCHIVE} (will be extracted to ~/${ROOT})."
