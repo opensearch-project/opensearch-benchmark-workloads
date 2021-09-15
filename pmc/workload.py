@@ -5,6 +5,6 @@ def put_settings(es, params):
 def register(registry):
     # register a fallback for older Rally versions
     try:
-        from esrally.driver.runner import PutSettings
+        from esrally.worker_coordinator.runner import PutSettings
     except ImportError:
         registry.register_runner("put-settings", put_settings)
