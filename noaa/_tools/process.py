@@ -1,6 +1,6 @@
 ####################################################################
 #
-# process the csv file into Elasticsearch json documents
+# process the csv file into OpenSearch json documents
 #
 ####################################################################
 

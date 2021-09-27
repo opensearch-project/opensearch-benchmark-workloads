@@ -1,6 +1,6 @@
     {
       "name": "nested-search-test-procedure",
-      "description": "Indexes the document corpus for an hour using Elasticsearch default settings. After that randomized nested queries are run.",
+      "description": "Indexes the document corpus for an hour using OpenSearch default settings. After that randomized nested queries are run.",
       "default": true,
       "schedule": [
         {
@@ -111,7 +111,7 @@
     },
     {
       "name": "index-only",
-      "description": "Indexes the document corpus for an hour using Elasticsearch default settings.",
+      "description": "Indexes the document corpus for an hour using OpenSearch default settings.",
       "schedule": [
         {
           "operation": "delete-index"
