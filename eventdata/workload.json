@@ -2,7 +2,7 @@
 
 {
   "version": 2,
-  "description": "This benchmark indexes HTTP access logs generated based sample logs from the elastic.co website using the generator available in https://github.com/elastic/rally-eventdata-track",
+  "description": "This benchmark indexes HTTP access logs generated based sample logs from the elastic.co website using a generator",
   "indices": [
     {
       "name": "eventdata",
