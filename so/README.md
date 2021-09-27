@@ -1,25 +1,25 @@
-## StackOverflow track
+## StackOverflow workload
 
 This dataset is derived from a dump of StackOverflow posts downloaded on June 10th 2016 from
 https://ia800500.us.archive.org/22/items/stackexchange/stackoverflow.com-Posts.7z
 
 Each question and answer have formatted into a JSON document with the following fields:
-    
+
 	questionId:	      a unique ID for a question
 	answerId:         a unique ID for an answer
 	acceptedAnswerId: the unique ID of the answer accepted for question
 	title:	          a free-text field with the question title
-	creationDate:	  The date the questions was asked 
+	creationDate:	  The date the questions was asked
 	user:	          The user's unique ID
 	tags:	          An array of tags describing the technologies.
     body:             Field contsaining the text of the question or answer.
     type:             Type of post. Either 'question' or 'answer'
-	
-Fields that do not have values have been left out. The body has had text extracted and been 
+
+Fields that do not have values have been left out. The body has had text extracted and been
 formatted to fit into JSON documents.
 
 Data preparation process:
-* Question and answer entries in the original posts.XML were converted to slimmed-down JSON 
+* Question and answer entries in the original posts.XML were converted to slimmed-down JSON
   documents.
 * No enrichment was performed.
 These scripts are available in the raw_data_prep_script.zip file.
@@ -41,7 +41,7 @@ These scripts are available in the raw_data_prep_script.zip file.
 
 ### Parameters
 
-This track allows to overwrite the following parameters with Rally 0.8.0+ using `--track-params`:
+This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
 
 * `bulk_size` (default: 5000)
 * `bulk_indexing_clients` (default: 4): Number of clients that issue bulk indexing requests.

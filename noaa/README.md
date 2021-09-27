@@ -1,6 +1,6 @@
-## NOAA track
+## NOAA workload
 
-This track is based on a [daily weather measurement from NOAA](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/).
+This workload is based on a [daily weather measurement from NOAA](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/).
 
 To recreate the document corpus:
 
@@ -14,7 +14,7 @@ To recreate the document corpus:
 2. Decompress measurement files. For example: `gunzip 2016.csv.gz`
 3. Sort the files by station. For example: `sort --field-separator=',' --key=1,2 -o 2016-sorted.csv 2016.csv`
 4. Execute a script like `_tools/process.py` to create json documents.
-5. Make sure that the JSON documents are randomly ordered. (The script orders measurements of the same station next to each other). This can be achieved with `shuf documents.json > documents1.json`. 
+5. Make sure that the JSON documents are randomly ordered. (The script orders measurements of the same station next to each other). This can be achieved with `shuf documents.json > documents1.json`.
 6. Compress the documents json file: `bzip2 -9 -c documents1.json > documents.json.bz2`
 
 ### Example Document
@@ -42,7 +42,7 @@ To recreate the document corpus:
 
 ### Parameters
 
-This track allows to overwrite the following parameters with Rally 0.8.0+ using `--track-params`:
+This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
 
 * `bulk_size` (default: 5000)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.

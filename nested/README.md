@@ -1,18 +1,18 @@
-## Nested track
+## Nested workload
 
-This track is based on a [dump of StackOverflow posts](https://ia800500.us.archive.org/22/items/stackexchange/stackoverflow.com-Posts.7z) retrieved as of June 10, 2016.
+This workload is based on a [dump of StackOverflow posts](https://ia800500.us.archive.org/22/items/stackexchange/stackoverflow.com-Posts.7z) retrieved as of June 10, 2016.
 
 Each question and related answers have been assembled into a single JSON doc containing:
 
-* qid: a unique ID for a question 
+* qid: a unique ID for a question
 * title: a free-text field with the question title
-* creationDate:	The date the questions was asked 
+* creationDate:	The date the questions was asked
 * user:	The user's screen name and unique ID combined into a single string
 * tag: An array of tags describing the technologies.
 * answers: An array of objects, one per answer, with the following fields:
     * date: Date of answer
     * user: Answerer's screen name and unique ID combined into a single string
-		
+
 
 Data preparation process:
 
@@ -48,7 +48,7 @@ These scripts are available in the raw_data_prep_scripts.zip file.
 
 ### Parameters
 
-This track allows to overwrite the following parameters with Rally 0.8.0+ using `--track-params`:
+This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
 
 * `bulk_size` (default: 5000)
 * `bulk_indexing_clients` (default: 4): Number of clients that issue bulk indexing requests.

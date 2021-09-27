@@ -7,7 +7,7 @@ set -u
 # fail on pipeline errors, e.g. when grepping
 set -o pipefail
 
-readonly ROOT=".rally/benchmarks"
+readonly ROOT=".benchmark/benchmarks"
 readonly URL="http://benchmarks.elasticsearch.org.s3.amazonaws.com/corpora"
 
 
