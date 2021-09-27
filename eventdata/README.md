@@ -1,7 +1,7 @@
 ## EventData track
 
 This track is based on 20 million Apache access log entries generated based on statistics from sample
-elastic.co access logs using the generator avilable here: https://github.com/elastic/rally-eventdata-track
+elastic.co access logs using a generator.
 
 The size of the data file is around 15GB, which gives an average JSON record size of 822 bytes. Mappings have been optimized and some of the fields added through `geoip` and `user-agent` enrichment has been removed to achieve a more compact format.
 
@@ -51,7 +51,7 @@ This track allows to overwrite the following parameters with Benchmark 0.8.0+ us
 
 This is licensed under the Apache License, version 2 ("ALv2"), quoted below.
 
-Copyright 2015-2018 OpenSearch https://www.elastic.co
+Copyright 2015-2018 OpenSearch https://opensearch.org
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 

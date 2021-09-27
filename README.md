@@ -1,7 +1,7 @@
-rally-tracks
-------------
+OpenSearch-Benchmark-Workloads
+------------------------------
 
-This repository contains the default track specifications for the OpenSearch benchmarking tool [Benchmark](https://github.com/elastic/rally).
+This repository contains the default track specifications for the OpenSearch benchmarking tool [Benchmark](https://opensearch.org).
 
 Tracks are used to describe benchmarks in Benchmark.
 
