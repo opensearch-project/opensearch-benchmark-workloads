@@ -1,6 +1,6 @@
-## Geopoint track
+## Geopoint workload
 
-This track is based on [PlanetOSM](http://wiki.openstreetmap.org/wiki/Planet.osm) data. It contains the same data as the geopoint track but indexes all points as geoshapes.
+This workload is based on [PlanetOSM](http://wiki.openstreetmap.org/wiki/Planet.osm) data. It contains the same data as the geopoint workload but indexes all points as geoshapes.
 
 ### Example Document
 
@@ -12,14 +12,14 @@ This track is based on [PlanetOSM](http://wiki.openstreetmap.org/wiki/Planet.osm
 
 ### Parameters
 
-This track allows to overwrite the following parameters with Rally 0.8.0+ using `--track-params`:
+This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
 
 * `bulk_size` (default: 5000)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
 * `conflict_probability` (default: 25): A number between 0 and 100 that defines the probability of id conflicts. This requires to run the respective test_procedure.
 * `on_conflict` (default: "index"): Whether to use an "index" or an "update" action when simulating an id conflict.
-* `recency` (default: 0): A number between 0 and 1 that defines whether to bias towards more recent ids when simulating conflicts. See the [Rally docs](http://esrally.readthedocs.io/en/latest/track.html#bulk) for the full definition of this parameter. This requires to run the respective test_procedure.
+* `recency` (default: 0): A number between 0 and 1 that defines whether to bias towards more recent ids when simulating conflicts. See the [Benchmark docs](https://github.com/opensearch-project/OpenSearch-Benchmark/blob/main/DEVELOPER_GUIDE.md) for the full definition of this parameter. This requires to run the respective test_procedure.
 * `number_of_replicas` (default: 0)
 * `number_of_shards` (default: 1)
 * `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.

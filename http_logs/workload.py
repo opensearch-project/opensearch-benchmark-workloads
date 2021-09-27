@@ -1,8 +1,8 @@
 from copy import copy
 import re
 
-from esrally import exceptions
-from esrally.workload import loader
+from osbenchmark import exceptions
+from osbenchmark.workload import loader
 
 
 def reindex(es, params):
@@ -15,7 +15,7 @@ async def reindex_async(es, params):
     return result["total"], "docs"
 
 
-class RuntimeFieldResolver(loader.TrackProcessor):
+class RuntimeFieldResolver(loader.WorkloadProcessor):
     PATTERN = re.compile('.+-from-(.+)-using-(.+)')
 
     def on_after_load_workload(self, t):
@@ -29,8 +29,6 @@ class RuntimeFieldResolver(loader.TrackProcessor):
                     task.operation.params = self._replace_field(f"{impl}.from_{source}.", task.operation.params)
 
     def on_prepare_workload(self, workload, data_root_dir):
-        # TODO remove this backwards compatibility hatch after several Rally releases
-        # ref: https://github.com/elastic/rally/pull/1228 and https://github.com/elastic/rally/issues/1166
         class EmptyTrueList(list):
             def __bool__(self):
                 return True
@@ -61,9 +59,8 @@ def register(registry):
     else:
         registry.register_runner("reindex", reindex)
     registry.register_workload_processor(RuntimeFieldResolver())
-    # TODO change this based on https://github.com/elastic/rally/issues/1257
     try:
-        registry.register_workload_processor(loader.DefaultTrackPreparator())
+        registry.register_workload_processor(loader.DefaultWorkloadPreparator())
     except TypeError as e:
         if e == "__init__() missing 1 required positional argument: 'cfg'":
             pass

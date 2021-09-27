@@ -1,6 +1,6 @@
-## Geoshape track
+## Geoshape workload
 
-This track is based on [PlanetOSM](http://wiki.openstreetmap.org/wiki/Planet.osm) data.
+This workload is based on [PlanetOSM](http://wiki.openstreetmap.org/wiki/Planet.osm) data.
 
 ### Example Document
 
@@ -12,7 +12,7 @@ This track is based on [PlanetOSM](http://wiki.openstreetmap.org/wiki/Planet.osm
 
 ### Parameters
 
-This track allows to overwrite the following parameters with Rally 0.8.0+ using `--track-params`:
+This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
 
 * `linestring_bulk_size` (default: 100): The bulk request size for indexing linestrings.
 * `multilinestring_bulk_size` (default: 100): The bulk request size for indexing multilinestrings.

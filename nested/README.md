@@ -48,7 +48,7 @@ These scripts are available in the raw_data_prep_scripts.zip file.
 
 ### Parameters
 
-This  allows to overwrite the following parameters with Rally 0.8.0+ using `---params`:
+This  allows to overwrite the following parameters with Benchmark 0.8.0+ using `---params`:
 
 * `bulk_size` (default: 5000)
 * `bulk_indexing_clients` (default: 4): Number of clients that issue bulk indexing requests.
