@@ -1,6 +1,6 @@
-## NOAA track
+## NOAA workload
 
-This track is based on a [daily weather measurement from NOAA](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/).
+This workload is based on a [daily weather measurement from NOAA](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/).
 
 To recreate the document corpus:
 
@@ -42,7 +42,7 @@ To recreate the document corpus:
 
 ### Parameters
 
-This track allows to overwrite the following parameters with Benchmark 0.8.0+ using `--track-params`:
+This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
 
 * `bulk_size` (default: 5000)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.

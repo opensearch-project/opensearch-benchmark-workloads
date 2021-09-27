@@ -1,6 +1,6 @@
-## Nested track
+## Nested workload
 
-This track is based on a [dump of StackOverflow posts](https://ia800500.us.archive.org/22/items/stackexchange/stackoverflow.com-Posts.7z) retrieved as of June 10, 2016.
+This workload is based on a [dump of StackOverflow posts](https://ia800500.us.archive.org/22/items/stackexchange/stackoverflow.com-Posts.7z) retrieved as of June 10, 2016.
 
 Each question and related answers have been assembled into a single JSON doc containing:
 
@@ -48,7 +48,7 @@ These scripts are available in the raw_data_prep_scripts.zip file.
 
 ### Parameters
 
-This track allows to overwrite the following parameters with Benchmark 0.8.0+ using `--track-params`:
+This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
 
 * `bulk_size` (default: 5000)
 * `bulk_indexing_clients` (default: 4): Number of clients that issue bulk indexing requests.

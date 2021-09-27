@@ -1,4 +1,4 @@
-## Percolator track
+## Percolator workload
 
 The queries.json.bz2 file contains list of ES queries that has been randomly generated from the AOL query dataset published in 2006. Only specific queries have been selected and the rest of the file contains dummy queries. Only the query attribute is copied from the AOL query dataset, the rest of the attributes are not in this file.
 
@@ -18,7 +18,7 @@ The queries.json.bz2 file contains list of ES queries that has been randomly gen
 
 ### Parameters
 
-This track allows to overwrite the following parameters with Benchmark 0.8.0+ using `--track-params`:
+This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
 
 * `bulk_size` (default: 5000)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.

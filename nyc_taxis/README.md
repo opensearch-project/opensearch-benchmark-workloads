@@ -1,6 +1,6 @@
-## NYC taxis track
+## NYC taxis workload
 
-This track contains the rides that have been performed in yellow taxis in New York in 2015. It can be downloaded from http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml.
+This workload contains the rides that have been performed in yellow taxis in New York in 2015. It can be downloaded from http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml.
 
 This has only been tested with the 2015 dump, but this should work with any dump of the yellow taxis, and should be easy to adapt to the green taxis.
 
@@ -55,7 +55,7 @@ bzip2 -k documents.json
 
 ### Parameters
 
-This track allows to overwrite the following parameters using `--track-params`:
+This workload allows to overwrite the following parameters using `--workload-params`:
 
 * `bulk_size` (default: 10000)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
