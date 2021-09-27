@@ -1,11 +1,11 @@
-## EventData track
+## EventData workload
 
-This track is based on 20 million Apache access log entries generated based on statistics from sample 
-elastic.co access logs using the generator avilable here: https://github.com/elastic/rally-eventdata-track
+This workload is based on 20 million Apache access log entries generated based on statistics from sample
+elastic.co access logs using a generator.
 
 The size of the data file is around 15GB, which gives an average JSON record size of 822 bytes. Mappings have been optimized and some of the fields added through `geoip` and `user-agent` enrichment has been removed to achieve a more compact format.
 
-The purpose of this track is to provide an efficient way to benchmark indexing of this data type as the generator built into the rally-eventdata-track can be CPU intensive.
+The purpose of this workload is to provide an efficient way to benchmark indexing of this data type as the generator built into the benchmark-eventdata-workload can be CPU intensive.
 
 ### Example Document
 
@@ -35,14 +35,14 @@ The purpose of this track is to provide an efficient way to benchmark indexing o
 
 ### Parameters
 
-This track allows to overwrite the following parameters with Rally 0.8.0+ using `--track-params`:
+This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
 
 * `bulk_size` (default: 5000)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
 * `number_of_replicas` (default: 0)
 * `number_of_shards` (default: 5)
-* `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index. 
+* `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
 * `cluster_health` (default: "green"): The minimum required cluster health.
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
@@ -51,7 +51,7 @@ This track allows to overwrite the following parameters with Rally 0.8.0+ using 
 
 This is licensed under the Apache License, version 2 ("ALv2"), quoted below.
 
-Copyright 2015-2018 Elasticsearch https://www.elastic.co
+Copyright 2021 OpenSearch https://opensearch.org
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 

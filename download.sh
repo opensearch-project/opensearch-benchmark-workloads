@@ -7,7 +7,7 @@ set -u
 # fail on pipeline errors, e.g. when grepping
 set -o pipefail
 
-readonly ROOT=".rally/benchmarks"
+readonly ROOT=".benchmark/benchmarks"
 readonly URL="http://benchmarks.elasticsearch.org.s3.amazonaws.com/corpora"
 
 
@@ -38,7 +38,7 @@ TARGETS[${#TARGETS[*]}]="${REPO_TARGET}"
 
 if [ ! -d "${HOME}/${REPO_TARGET}" ]
 then
-    git clone https://github.com/elastic/rally-tracks.git "${HOME}/${REPO_TARGET}"
+    git clone https://github.com/opensearch-project/opensearch-benchmark-workloads.git "${HOME}/${REPO_TARGET}"
 fi
 
 # check if the workload actually exists

@@ -1,6 +1,6 @@
-## NYC taxis track
+## NYC taxis workload
 
-This track contains the rides that have been performed in yellow taxis in New York in 2015. It can be downloaded from http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml.
+This workload contains the rides that have been performed in yellow taxis in New York in 2015. It can be downloaded from http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml.
 
 This has only been tested with the 2015 dump, but this should work with any dump of the yellow taxis, and should be easy to adapt to the green taxis.
 
@@ -55,15 +55,15 @@ bzip2 -k documents.json
 
 ### Parameters
 
-This track allows to overwrite the following parameters using `--track-params`:
+This workload allows to overwrite the following parameters using `--workload-params`:
 
 * `bulk_size` (default: 10000)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
 * `conflicts` (default: "random"): Type of id conflicts to simulate. Valid values are: 'sequential' (A document id is replaced with a document id with a sequentially increasing id), 'random' (A document id is replaced with a document id with a random other id).
-* `conflict_probability` (default: 25): A number between 0 and 100 that defines the probability of id conflicts. Only used by the `update` test_procedure. Combining ``conflicts=sequential`` and ``conflict-probability=0`` makes Rally generate index ids by itself, instead of relying on Elasticsearch's `automatic id generation <https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html#_automatic_id_generation>`_.
+* `conflict_probability` (default: 25): A number between 0 and 100 that defines the probability of id conflicts. Only used by the `update` test_procedure. Combining ``conflicts=sequential`` and ``conflict-probability=0`` makes Benchmark generate index ids by itself, instead of relying on OpenSearch's `automatic id generation`.
 * `on_conflict` (default: "index"): Whether to use an "index" or an "update" action when simulating an id conflict. Only used by the `update` test_procedure.
-* `recency` (default: 0): A number between 0 and 1 that defines whether to bias towards more recent ids when simulating conflicts. See the [Rally docs](http://esrally.readthedocs.io/en/latest/track.html#bulk) for the full definition of this parameter. Only used by the `update` test_procedure.
+* `recency` (default: 0): A number between 0 and 1 that defines whether to bias towards more recent ids when simulating conflicts. See the [Benchmark docs](https://github.com/opensearch-project/OpenSearch-Benchmark/blob/main/DEVELOPER_GUIDE.md) for the full definition of this parameter. Only used by the `update` test_procedure.
 * `number_of_replicas` (default: 0)
 * `number_of_shards` (default: 1)
 * `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.

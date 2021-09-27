@@ -302,7 +302,7 @@
       "operation-type": "put-pipeline",
       "id": "http-log-geoip-pipeline",
       "body": {
-        "description": "Enrich the data with the geo-ip filter. Requires --elasticsearch-plugins='ingest-geoip'",
+        "description": "Enrich the data with the geo-ip filter. Requires --opensearch-plugins='ingest-geoip'",
         "processors": [
           {
             "geoip": {

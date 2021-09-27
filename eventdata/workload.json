@@ -2,7 +2,7 @@
 
 {
   "version": 2,
-  "description": "This benchmark indexes HTTP access logs generated based sample logs from the elastic.co website using the generator available in https://github.com/elastic/rally-eventdata-track",
+  "description": "This benchmark indexes HTTP access logs generated based sample logs from the elastic.co website using the generator available in https://github.com/elastic/rally-eventdata-workload",
   "indices": [
     {
       "name": "eventdata",
@@ -12,7 +12,7 @@
   "corpora": [
     {
       "name": "eventdata",
-      "base-url": "https://rally-tracks.elastic.co/eventdata",
+      "base-url": "https://rally-workloads.elastic.co/eventdata",
       "documents": [
         {
           "source-file": "eventdata.json.bz2",
