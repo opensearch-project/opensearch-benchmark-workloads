@@ -1,6 +1,6 @@
-## PMC track
+## PMC workload
 
-This track contains data retrieved from [PMC](https://www.ncbi.nlm.nih.gov/pmc/tools/ftp/).
+This workload contains data retrieved from [PMC](https://www.ncbi.nlm.nih.gov/pmc/tools/ftp/).
 
 Note that we have filtered the data set so only a subset of the articles is included.
 
@@ -24,7 +24,7 @@ Note that the ``body`` content is actually much longer has been shortened here t
 
 ### Parameters
 
-This track allows to overwrite the following parameters with Benchmark 0.8.0+ using `--track-params`:
+This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
 
 * `bulk_size` (default: 500)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
@@ -46,7 +46,3 @@ This track allows to overwrite the following parameters with Benchmark 0.8.0+ us
 All articles that are included are licensed as CC-BY (http://creativecommons.org/licenses/by/2.0/)
 
 This data set is licensed under the same terms. Please refer to http://creativecommons.org/licenses/by/2.0/ for details.
-
-Attribution hint:
-
-You can download a full list of the author information for each included document from http://benchmarks.elasticsearch.org.s3.amazonaws.com/corpora/pmc/attribution.txt.bz2 (size: 52.2MB)

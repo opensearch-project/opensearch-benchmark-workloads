@@ -1,6 +1,6 @@
-## Geopoint track
+## Geopoint workload
 
-This track is based on [PlanetOSM](http://wiki.openstreetmap.org/wiki/Planet.osm) data. It contains the same data as the geopoint track but indexes all points as geoshapes.
+This workload is based on [PlanetOSM](http://wiki.openstreetmap.org/wiki/Planet.osm) data. It contains the same data as the geopoint workload but indexes all points as geoshapes.
 
 ### Example Document
 
@@ -12,7 +12,7 @@ This track is based on [PlanetOSM](http://wiki.openstreetmap.org/wiki/Planet.osm
 
 ### Parameters
 
-This track allows to overwrite the following parameters with Benchmark 0.8.0+ using `--track-params`:
+This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
 
 * `bulk_size` (default: 5000)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
