@@ -225,7 +225,7 @@
       "operation-type": "search",
       "index": "logs-*",
       "body": {
-        "workload_total_hits": false,
+        "track_total_hits": false,
         "query": {
           "match_all": {}
         },
@@ -253,7 +253,7 @@
       "operation-type": "search",
       "index": "logs-*",
       "body": {
-        "workload_total_hits": false,
+        "track_total_hits": false,
         "query": {
           "match_all": {}
         },

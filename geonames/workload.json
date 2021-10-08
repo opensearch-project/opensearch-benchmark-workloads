@@ -12,7 +12,7 @@
   "corpora": [
     {
       "name": "geonames",
-      "base-url": "https://rally-workloads.elastic.co/geonames",
+      "base-url": "https://rally-tracks.elastic.co/geonames",
       "documents": [
         {
           "source-file": "documents-2.json.bz2",

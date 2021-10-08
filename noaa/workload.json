@@ -12,7 +12,7 @@
   "corpora": [
     {
       "name": "noaa",
-      "base-url": "https://rally-workloads.elastic.co/noaa",
+      "base-url": "https://rally-tracks.elastic.co/noaa",
       "documents": [
         {
           "source-file": "documents.json.bz2",
