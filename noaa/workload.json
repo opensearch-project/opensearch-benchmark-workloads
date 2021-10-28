@@ -1,4 +1,4 @@
-{% import "rally.helpers" as rally with context %}
+{% import "benchmark.helpers" as benchmark with context %}
 
 {
   "version": 2,
@@ -25,9 +25,9 @@
     }
   ],
   "operations": [
-    {{ rally.collect(parts="operations/*.json") }}
+    {{ benchmark.collect(parts="operations/*.json") }}
   ],
   "test_procedures": [
-    {{ rally.collect(parts="test_procedures/*.json") }}
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
   ]
 }
