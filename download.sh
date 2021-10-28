@@ -61,7 +61,7 @@ for f in ${FILES}; do
     fi
 done
 
-readonly ARCHIVE="rally-workload-data-${WORKLOAD}.tar"
+readonly ARCHIVE="benchmark-workload-data-${WORKLOAD}.tar"
 # ensure everything is relative to the home directory
 # exclude the archive itself to prevent spurious warnings.
 tar -C ${HOME} --exclude="${ARCHIVE}" -cf "${ARCHIVE}" ${TARGETS[@]}
