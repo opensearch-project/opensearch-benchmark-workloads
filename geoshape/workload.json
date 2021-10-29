@@ -20,7 +20,7 @@
   "corpora": [
     {
       "name": "linestrings",
-      "base-url": "https://rally-tracks.elastic.co/geoshape",
+      "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/geoshape",
       "target-index": "osmlinestrings",
       "documents": [
         {
@@ -33,7 +33,7 @@
     },
     {
       "name": "multilinestrings",
-      "base-url": "https://rally-tracks.elastic.co/geoshape",
+      "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/geoshape",
       "target-index": "osmmultilinestrings",
       "documents": [
         {
@@ -46,7 +46,7 @@
     },
     {
       "name": "polygons",
-      "base-url": "https://rally-tracks.elastic.co/geoshape",
+      "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/geoshape",
       "target-index": "osmpolygons",
       "documents": [
         {
