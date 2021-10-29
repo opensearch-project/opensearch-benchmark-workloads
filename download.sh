@@ -8,7 +8,7 @@ set -u
 set -o pipefail
 
 readonly ROOT=".benchmark/benchmarks"
-readonly URL="http://benchmarks.elasticsearch.org.s3.amazonaws.com/corpora"
+readonly URL="https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora"
 
 
 # see http://stackoverflow.com/a/246128
