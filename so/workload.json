@@ -12,7 +12,7 @@
   "corpora": [
     {
       "name": "so",
-      "base-url": "https://rally-tracks.elastic.co/so",
+      "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/so",
       "documents": [
         {
           "source-file": "posts.json.bz2",
