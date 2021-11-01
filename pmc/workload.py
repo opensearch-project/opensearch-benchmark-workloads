@@ -3,7 +3,6 @@ def put_settings(es, params):
 
 
 def register(registry):
-    # register a fallback for older Benchmark versions
     try:
         from osbenchmark.worker_coordinator.runner import PutSettings
     except ImportError:
