@@ -17,7 +17,7 @@ Backporting changes
 
 With each pull request, maintainers of this repository will be responsible for determining if a change can be backported.
 Backporting a change involves cherry-picking a commit onto the branches which correspond to earlier versions of OpenSearch/Elasticsearch.
-This ensures that workloads work for the latest `main` version of OpenSearch and also for older versions. 
+This ensures that workloads work for the latest `main` version of OpenSearch as well as older versions. 
 
  
 License
