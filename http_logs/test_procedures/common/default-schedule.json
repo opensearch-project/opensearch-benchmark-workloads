@@ -19,22 +19,11 @@
             "retry-until-success": true
           }
         },
-{%- if runtime_script_grok is defined %}
-        {
-          "operation": "create-timestamp-pipeline"
-        },
-        {
-          "operation": "index-append-with-timestamp-pipeline",
-          "warmup-time-period": 240,
-          "clients": {{bulk_indexing_clients | default(8)}}
-        },
-{%- else %}
         {
           "operation": "index-append",
           "warmup-time-period": 240,
           "clients": {{bulk_indexing_clients | default(8)}}
         },
-{%- endif %}
         {
           "name": "refresh-after-index",
           "operation": "refresh"

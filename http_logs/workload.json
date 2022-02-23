@@ -1,15 +1,8 @@
 {% import "benchmark.helpers" as benchmark with context %}
 
+{% set index_body = 'index.json' %}
 
-{%- if runtime_script_grok is defined %}
-  {%- if runtime_source is not defined or runtime_source == "_source" %}
-    {% set index_body = 'index-runtime-grok-source.json' %}
-  {%- else %}
-    {% set index_body = 'index-runtime-grok-doc-values.json' %}
-  {%- endif %}
-{%- else %}
-  {% set index_body = 'index.json' %}
-{%- endif %}
+
 {
   "version": 2,
   "description": "HTTP server log data",
@@ -49,7 +42,7 @@
     }
   ],
   "corpora": [
-      {%- if ingest_pipeline is defined and ingest_pipeline == "grok" or runtime_script_grok is defined %}
+      {%- if ingest_pipeline is defined and ingest_pipeline == "grok" %}
         {
           "name": "http_logs_unparsed",
           "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/http_logs",

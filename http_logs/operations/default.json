@@ -65,9 +65,9 @@
       "body": {
         "query": {
           "term": {
-            "request.raw": {
-              "value": "GET / HTTP/1.0"
-            }
+              "request.raw": {
+                "value": "GET / HTTP/1.0"
+              }
           }
         }
       }
