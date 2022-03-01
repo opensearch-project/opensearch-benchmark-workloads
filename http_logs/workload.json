@@ -1,4 +1,4 @@
-{% import "rally.helpers" as rally with context %}
+{% import "benchmark.helpers" as benchmark with context %}
 
 {
   "version": 2,
@@ -44,13 +44,7 @@
   "corpora": [
       {%- if ingest_pipeline is defined and ingest_pipeline == "grok" %}
         {
-          "name": "http_logs_unparsed",
-<<<<<<< HEAD
-          "base-url": "https://rally-tracks.elastic.co/http_logs",
-          "target-type": "type",
-=======
           "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/http_logs",
->>>>>>> ccd7577... Use a different source for workload datasets (#13)
           "documents": [
           {
             "target-index": "logs-181998",
@@ -163,9 +157,10 @@
     {%- endif %}
   ],
   "operations": [
-    {{ rally.collect(parts="operations/*.json") }}
+    {{ benchmark.collect(parts="operations/*.json") }}
   ],
   "test_procedures": [
-    {{ rally.collect(parts="test_procedures/*.json") }}
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
   ]
 }
+
