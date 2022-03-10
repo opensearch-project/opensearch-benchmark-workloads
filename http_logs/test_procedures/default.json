@@ -3,20 +3,6 @@
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After that a couple of queries are run.",
       "default": true,
       "schedule": [
-        {{ benchmark.collect(parts="common/default-schedule.json") }}
-      ]
-    },
-    {
-      "name": "runtime-fields",
-      "description": "Indexes the whole document corpus using scripts to extract fields. Set the workload param `runtime_fields` to `true`.",
-      "schedule": [
-        {{ benchmark.collect(parts="common/default-schedule.json") }}
-      ]
-    },
-    {
-      "name": "append-no-conflicts-index-only",
-      "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only.",
-      "schedule": [
         {
           "operation": "delete-index"
         },
