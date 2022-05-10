@@ -19,6 +19,13 @@ With each pull request, maintainers of this repository will be responsible for d
 Backporting a change involves cherry-picking a commit onto the branches which correspond to earlier versions of OpenSearch/Elasticsearch.
 This ensures that workloads work for the latest `main` version of OpenSearch as well as older versions. 
 
+Changes should be `git cherry-pick`ed from `main` to the most recent version of OpenSearch and backward from there. 
+Example:
+```
+main → OpenSearch 2 → OpenSearch 1 → Elasticsearch 7 → ... 
+```
+In the case of a merge conflict for a backported change a new pull request should be raised which merges the change.
+
  
 License
 -------
