@@ -29,6 +29,8 @@ This workload allows to overwrite the following parameters with Benchmark 0.8.0+
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
 * `cluster_health` (default: "green"): The minimum required cluster health.
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
+* `target_throughput` (default: default values for each operation): Number of requests per second, `none` for no limit.
+* `search_clients`: Number of clients that issues search requests.
 
 ### License
 
