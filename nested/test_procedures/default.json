@@ -60,52 +60,115 @@
         },
         {
           "operation": "randomized-nested-queries",
-          "clients": 2,
-          "target-throughput": 20,
           "warmup-iterations": 500,
           "iterations": 1000
+          {%- if not target_throughput %}
+          ,"target-throughput": 20
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         },
         {
           "operation": "randomized-term-queries",
-          "clients": 2,
-          "target-throughput": 25,
           "warmup-iterations": 500,
           "iterations": 200
+          {%- if not target_throughput %}
+          ,"target-throughput": 25
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         },
         {
           "operation": "randomized-sorted-term-queries",
-          "clients": 2,
           "warmup-iterations": 500,
-          "target-throughput": 16,
           "iterations": 200
+          {%- if not target_throughput %}
+          ,"target-throughput": 16
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         },
         {
           "operation": "match-all",
-          "clients": 2,
-          "target-throughput": 5,
           "warmup-iterations": 500,
           "iterations": 200
+          {%- if not target_throughput %}
+          ,"target-throughput": 5
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         },
         {
           "operation": "nested-date-histo",
-          "clients": 2,
-          "target-throughput": 1,
           "warmup-iterations": 100,
           "iterations": 200
+          {%- if not target_throughput %}
+          ,"target-throughput": 1
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         },
         {
           "operation": "randomized-nested-queries-with-inner-hits_default",
-          "clients": 2,
-          "target-throughput": 18,
           "warmup-iterations": 500,
           "iterations": 1000
+          {%- if not target_throughput %}
+          ,"target-throughput": 18
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         },
         {
           "operation": "randomized-nested-queries-with-inner-hits_default_big_size",
-          "clients": 2,
-          "target-throughput": 16,
           "warmup-iterations": 500,
           "iterations": 1000
+          {%- if not target_throughput %}
+          ,"target-throughput": 16
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         }
       ]
     },
