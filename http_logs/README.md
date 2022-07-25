@@ -46,6 +46,8 @@ This workload allows to overwrite the following parameters with Benchmark 0.8.0+
 * `ingest_pipeline`: Only applicable for `--test-procedure=append-index-only-with-ingest-pipeline`, selects which ingest
 node pipeline to run. Valid options are `'baseline'` (default), `'grok'`  and `'geoip'`. For example: `--test-procedure=append-index-only-with-ingest-pipeline --workload-params="ingest_pipeline:'baseline'" `
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
+* `target_throughput` (default: default values for each operation): Number of requests per second, `none` for no limit.
+* `search_clients`: Number of clients that issues search requests.
 
 ### License
 
