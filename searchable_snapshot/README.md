@@ -1,61 +1,15 @@
-## NYC taxis workload
+# Searchable Snapshot Workload
 
-This workload contains the rides that have been performed in yellow taxis in New York in 2015. It can be downloaded from http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml.
+Workload for measuring Searchable Snapshot query performance. This workload uses the same corpora as the NYC taxis workload. See [../nyc_taxis/README.md](../nyc_taxis/README.md) for more details on how to generate the dataset and for example records.
 
-This has only been tested with the 2015 dump, but this should work with any dump of the yellow taxis, and should be easy to adapt to the green taxis.
+In contrast with the NYC taxis workload which running query on index with local storage, this workload runs query on index backed by a remote snapshot.
 
-Once downloaded, you can generate the mappings with:
+The remote snapshot stores in Amazon S3, an Amazon S3 bucket for storing the snapshot and an AWS account user credential that has permission to access the bucket is required for the workload,
+to learn more in configuring Amazon S3 bucket as a snapshot repository, see the [OpenSearch docs](https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore#amazon-s3).
 
-```
-python3 _tools/parse.py mappings
-```
+## Parameters
 
-And the json documents  can be generated with:
-
-```
-python3 _tools/parse.py json file_name.csv > documents.json
-```
-
-Finally the json docs can be compressed with:
-
-```
-bzip2 -k documents.json
-```
-
-### Example Document
-
-```json
-{
-  "total_amount": 6.3,
-  "improvement_surcharge": 0.3,
-  "pickup_location": [
-    -73.92259216308594,
-    40.7545280456543
-  ],
-  "pickup_datetime": "2015-01-01 00:34:42",
-  "trip_type": "1",
-  "dropoff_datetime": "2015-01-01 00:38:34",
-  "rate_code_id": "1",
-  "tolls_amount": 0.0,
-  "dropoff_location": [
-    -73.91363525390625,
-    40.76552200317383
-  ],
-  "passenger_count": 1,
-  "fare_amount": 5.0,
-  "extra": 0.5,
-  "trip_distance": 0.88,
-  "tip_amount": 0.0,
-  "store_and_fwd_flag": "N",
-  "payment_type": "2",
-  "mta_tax": 0.5,
-  "vendor_id": "2"
-}
-```
-
-### Parameters
-
-This workload allows to overwrite the following parameters using `--workload-params`:
+#### This workload allows to overwrite the following parameters using `--workload-params`:
 
 * `bulk_size` (default: 10000)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
@@ -66,13 +20,47 @@ This workload allows to overwrite the following parameters using `--workload-par
 * `recency` (default: 0): A number between 0 and 1 that defines whether to bias towards more recent ids when simulating conflicts. See the [Benchmark docs](https://github.com/opensearch-project/OpenSearch-Benchmark/blob/main/DEVELOPER_GUIDE.md) for the full definition of this parameter. Only used by the `update` test_procedure.
 * `number_of_replicas` (default: 0)
 * `number_of_shards` (default: 1)
-* `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
-* `force_merge_max_num_segments` (default: unset): An integer specifying the max amount of segments the force-merge operation should use.
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
 * `cluster_health` (default: "green"): The minimum required cluster health.
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
-* `target_throughput` (default: default values for each operation): Number of requests per second, `none` for no limit.
-* `search_clients`: Number of clients that issues search requests.
+* `snapshot_repository_name` (default: "test-repository"): Name of the snapshot repository.
+* `snapshot_name` (default: "test-snapshot"): Name of the snapshot. 
+  It's recommended to assign a different value for different test executions, because there is no operation defined by opensearch-benchmark to delete a snapshot, and new snapshot won't be created if a snapshot with the same name exists in the repository.
+* `s3_bucket_name` (default: "opensearch-snapshot"): Name of the Amazon S3 bucket that stores the snapshot.
+* `s3_bucket_region` (default: "us-east-1"): The AWS Region where the Amazon S3 bucket exists.
+
+#### The workload requires to provide parameters for `repository-s3` plugin using `--plugin-params`:
+See the [Benchmark docs](https://github.com/opensearch-project/opensearch-benchmark/blob/main/osbenchmark/resources/provision_configs/main/plugins/v1/repository_s3/README.md
+) for detail.
+
+Example:
+```
+{
+  "s3_client_name": "default",
+  "s3_access_key": "your AWS access key",
+  "s3_secret_key": "your AWS secret key"
+}
+ ```
+Save it as `params.json` and provide it to Benchmark with `--opensearch-plugins="repository-s3" --plugin-params="/path/to/params.json"`.
+
+#### The workload requires to provide parameters for the "provision_config_instance" using `--provision-config-instance-params`:
+
+A "provision_config_instance" is a specific configuration of OpenSearch. The parameter is used for setting feature flag in jvm options to enable experimental feature (for OpenSearch 2.4), and set the node role `search`.
+
+Note that built-in instances can be seen from the [Benchmark repository](https://github.com/opensearch-project/opensearch-benchmark/tree/main/osbenchmark/resources/provision_configs/main/provision_config_instances/v1), and the parameter usage can be seen [here](https://github.com/opensearch-project/opensearch-benchmark/blob/main/osbenchmark/resources/provision_configs/main/provision_config_instances/v1/vanilla/README.md) in the same repository.
+
+Example:
+```
+{
+  "additional_cluster_settings": {
+    "node.roles": "ingest, remote_cluster_client, data, cluster_manager, search"
+  },
+  "additional_java_settings": [
+    "-Dopensearch.experimental.feature.searchable_snapshot.enabled=true"
+  ]
+}
+```
+Save it as `params.json` and provide it to Benchmark with `--provision-config-instance-params="/path/to/params.json"`.
 
 ### License
 

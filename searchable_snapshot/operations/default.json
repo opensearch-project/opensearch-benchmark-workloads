@@ -17,11 +17,11 @@
     {
       "name": "create-snapshot-repository",
       "operation-type": "create-snapshot-repository",
-      "repository": "{{ repository_name | default('test-repository') }}",
+      "repository": "{{ snapshot_repository_name | default('test-repository') }}",
       "body": {
         "type": "s3",
         "settings": {
-          "bucket": "{{ s3_bucket_name }}",
+          "bucket": "{{ s3_bucket_name | default('opensearch-snapshot') }}",
           "region": "{{ s3_bucket_region | default('us-east-1') }}"
         }
       }
@@ -29,7 +29,7 @@
     {
       "name": "create-snapshot",
       "operation-type": "create-snapshot",
-      "repository": "{{ repository_name | default('test-repository') }}",
+      "repository": "{{ snapshot_repository_name | default('test-repository') }}",
       "snapshot": "{{ snapshot_name | default('test-snapshot') }}",
       "body": {
         "indices": []
@@ -38,7 +38,7 @@
     {
       "name": "wait-for-snapshot-create",
       "operation-type": "wait-for-snapshot-create",
-      "repository": "{{ repository_name | default('test-repository') }}",
+      "repository": "{{ snapshot_repository_name | default('test-repository') }}",
       "snapshot": "{{ snapshot_name | default('test-snapshot') }}"
     },
     {
