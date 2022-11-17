@@ -50,6 +50,26 @@
           "ignore-response-error-level": "{{ error_level | default('non-fatal') }}"
         },
         {
+          "name": "refresh-after-index",
+          "operation": "refresh"
+        },
+        {
+          "operation": {
+            "operation-type": "force-merge",
+            "request-timeout": 7200
+            {%- if force_merge_max_num_segments is defined %},
+            "max-num-segments": {{ force_merge_max_num_segments | tojson }}
+            {%- endif %}
+          }
+        },
+        {
+          "name": "refresh-after-force-merge",
+          "operation": "refresh"
+        },
+        {
+          "operation": "wait-until-merges-finish"
+        },
+        {
           "operation": "create-snapshot-repository"
         },
         {

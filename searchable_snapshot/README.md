@@ -20,9 +20,13 @@ to learn more in configuring Amazon S3 bucket as a snapshot repository, see the 
 * `recency` (default: 0): A number between 0 and 1 that defines whether to bias towards more recent ids when simulating conflicts. See the [Benchmark docs](https://github.com/opensearch-project/OpenSearch-Benchmark/blob/main/DEVELOPER_GUIDE.md) for the full definition of this parameter. Only used by the `update` test_procedure.
 * `number_of_replicas` (default: 0)
 * `number_of_shards` (default: 1)
+* `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
+* `force_merge_max_num_segments` (default: unset): An integer specifying the max amount of segments the force-merge operation should use.
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
 * `cluster_health` (default: "green"): The minimum required cluster health.
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
+* `target_throughput` (default: default values for each operation): Number of requests per second, `none` for no limit.
+* `search_clients`: Number of clients that issues search requests.
 * `snapshot_repository_name` (default: "test-repository"): Name of the snapshot repository.
 * `snapshot_name` (default: "test-snapshot"): Name of the snapshot. 
   It's recommended to assign a different value for different test executions, because there is no operation defined by opensearch-benchmark to delete a snapshot, and new snapshot won't be created if a snapshot with the same name exists in the repository.
