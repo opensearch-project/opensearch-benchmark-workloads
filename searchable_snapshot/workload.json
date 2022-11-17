@@ -2,7 +2,7 @@
 
 {
   "version": 2,
-  "description": "Searchable Snapshot query performance based on NYC Taxi data",
+  "description": "Measuring performance for Searchable Snapshot feature based on NYC Taxi data",
   "indices": [
     {
       "name": "nyc_taxis",

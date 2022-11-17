@@ -1,6 +1,6 @@
 # Searchable Snapshot Workload
 
-Workload for measuring Searchable Snapshot query performance. This workload uses the same corpora as the NYC taxis workload. See [../nyc_taxis/README.md](../nyc_taxis/README.md) for more details on how to generate the dataset and for example records.
+Workload for measuring performance for Searchable Snapshot feature. This workload uses the same corpora as the NYC taxis workload. See [../nyc_taxis/README.md](../nyc_taxis/README.md) for more details on how to generate the dataset and for example records.
 
 In contrast with the NYC taxis workload which running query on index with local storage, this workload runs query on index backed by a remote snapshot.
 
