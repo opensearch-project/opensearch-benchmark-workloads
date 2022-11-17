@@ -1,3 +1,18 @@
+{% macro set_target_throughput(default) -%}
+{%- if not target_throughput %}
+,"target-throughput": {{ default }}
+{%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+{%- else %}
+,"target-throughput": {{ target_throughput | tojson }}
+{%- endif %}
+{%- endmacro %}
+
+{% macro set_search_clients() -%}
+{%-if search_clients is defined and search_clients %}
+,"clients": {{ search_clients | tojson}}
+{%- endif %}
+{%- endmacro %}
+
     {
       "name": "searchable_snapshot",
       "description": "Indexes the whole document corpus using a setup that will lead to a larger indexing throughput than the default settings and produce a smaller index (higher compression rate). Document ids are unique so all index operations are append only. After that a couple of queries are run.",
@@ -56,71 +71,36 @@
           "operation": "default",
           "warmup-iterations": 50,
           "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 3
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%-if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
-          {%- endif %}
+          {{ set_target_throughput(3) }}
+          {{ set_search_clients() }}
         },
         {
           "operation": "range",
           "warmup-iterations": 50,
           "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 0.7
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%-if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
-          {%- endif %}
+          {{ set_target_throughput(0.7) }}
+          {{ set_search_clients() }}
         },
         {
           "operation": "distance_amount_agg",
           "warmup-iterations": 50,
           "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 2
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%-if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
-          {%- endif %}
+          {{ set_target_throughput(2) }}
+          {{ set_search_clients() }}
         },
         {
           "operation": "autohisto_agg",
           "warmup-iterations": 50,
           "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 1.5
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%-if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
-          {%- endif %}
+          {{ set_target_throughput(1.5) }}
+          {{ set_search_clients() }}
         },
         {
           "operation": "date_histogram_agg",
           "warmup-iterations": 50,
           "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 1.5
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%-if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
-          {%- endif %}
+          {{ set_target_throughput(1.5) }}
+          {{ set_search_clients() }}
         }
       ]
     }
