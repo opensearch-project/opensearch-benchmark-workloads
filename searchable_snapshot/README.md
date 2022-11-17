@@ -9,8 +9,9 @@ to learn more in configuring Amazon S3 bucket as a snapshot repository, see the 
 
 ## Parameters
 
-#### This workload allows to overwrite the following parameters using `--workload-params`:
+#### The workload allows to overwrite the following parameters using `--workload-params`:
 
+Same parameters which exist in NYC taxis workload:
 * `bulk_size` (default: 10000)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
@@ -27,6 +28,8 @@ to learn more in configuring Amazon S3 bucket as a snapshot repository, see the 
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
 * `target_throughput` (default: default values for each operation): Number of requests per second, `none` for no limit.
 * `search_clients`: Number of clients that issues search requests.
+
+Additional parameters in contrast to NYC taxis workload:
 * `snapshot_repository_name` (default: "test-repository"): Name of the snapshot repository.
 * `snapshot_name` (default: "test-snapshot"): Name of the snapshot. 
   It's recommended to assign a different value for different test executions, because there is no operation defined by opensearch-benchmark to delete a snapshot, and new snapshot won't be created if a snapshot with the same name exists in the repository.
