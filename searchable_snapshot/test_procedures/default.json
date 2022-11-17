@@ -9,7 +9,7 @@
 
 {% macro set_search_clients() -%}
 {%-if search_clients is defined and search_clients %}
-,"clients": {{ search_clients | tojson}}
+,"clients": {{ search_clients | tojson }}
 {%- endif %}
 {%- endmacro %}
 
@@ -24,7 +24,7 @@
         {
           "operation": {
             "operation-type": "create-index",
-            "settings": {%- if index_settings is defined %} {{index_settings | tojson}} {%- else %} {
+            "settings": {%- if index_settings is defined %} {{ index_settings | tojson }} {%- else %} {
               "index.codec": "best_compression",
               "index.refresh_interval": "30s",
               "index.translog.flush_threshold_size": "4g"
@@ -37,7 +37,7 @@
             "operation-type": "cluster-health",
             "index": "nyc_taxis",
             "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
+              "wait_for_status": "{{ cluster_health | default('green') }}",
               "wait_for_no_relocating_shards": "true"
             },
             "retry-until-success": true
@@ -46,8 +46,8 @@
         {
           "operation": "index",
           "warmup-time-period": 240,
-          "clients": {{bulk_indexing_clients | default(8)}},
-          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+          "clients": {{ bulk_indexing_clients | default(8) }},
+          "ignore-response-error-level": "{{ error_level | default('non-fatal') }}"
         },
         {
           "operation": "create-snapshot-repository"
