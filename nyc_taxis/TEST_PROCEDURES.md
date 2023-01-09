@@ -8,7 +8,7 @@ In contrast with `append-no-conflicts` which running query on index with local s
 
 The test procedure will create a remote snapshot that stored in Amazon S3, so an Amazon S3 bucket for storing the snapshot and an AWS account user credential that has permission to access the bucket are required to run the test procedure. To learn more about configuring Amazon S3 as a snapshot repository, see the [OpenSearch docs](https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore#amazon-s3).
 
-Searchable Snapshots feature is available in OpenSearch since version 2.4.0, see the [OpenSearch docs](https://opensearch.org/docs/2.4/opensearch/snapshots/searchable_snapshot) to learn more.
+Searchable Snapshots feature is supported by OpenSearch since version 2.4.0, see the [OpenSearch docs](https://opensearch.org/docs/2.4/opensearch/snapshots/searchable_snapshot) to learn more.
 
 ### Parameters
 
@@ -18,8 +18,8 @@ Additional parameters other than those mentioned in [README](README.md) of NYC t
 * `snapshot_repository_name` (default: "test-repository"): Name of the snapshot repository.
 * `snapshot_name` (default: "test-snapshot"): Name of the snapshot. 
   It's recommended to assign a different value for different test executions, because there is no operation defined by opensearch-benchmark to delete a snapshot, and new snapshot won't be created if a snapshot with the same name exists in the repository.
-* `s3_bucket_name` (default: "opensearch-snapshot"): Name of the Amazon S3 bucket that stores the snapshot.
-* `s3_bucket_region` (default: "us-east-1"): The AWS Region where the Amazon S3 bucket exists.
+* `s3_bucket_name`: Name of the Amazon S3 bucket that stores the snapshot. The S3 bucket needs to be prepared manually.
+* `s3_bucket_region`: The AWS Region where the Amazon S3 bucket exists. For example, "us-east-1".
 
 #### The test procedure requires to provide parameters for `repository-s3` plugin using `--plugin-params`:
 See the [Benchmark docs](https://github.com/opensearch-project/opensearch-benchmark/blob/main/osbenchmark/resources/provision_configs/main/plugins/v1/repository_s3/README.md

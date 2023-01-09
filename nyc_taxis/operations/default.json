@@ -32,8 +32,8 @@
       "body": {
         "type": "s3",
         "settings": {
-          "bucket": "{{ s3_bucket_name | default('opensearch-snapshot') }}",
-          "region": "{{ s3_bucket_region | default('us-east-1') }}"
+          "bucket": "{{ s3_bucket_name }}",
+          "region": "{{ s3_bucket_region }}"
         }
       }
     },
