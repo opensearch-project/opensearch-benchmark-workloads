@@ -2,12 +2,13 @@
 
 ## searchable_snapshot 
 
-A test procedure for measuring performance for Searchable Snapshot feature. It runs the same search query as the default test procedure `append-no-conflicts`.
+A test procedure for measuring performance for Searchable Snapshots feature. It runs the same search query as the default test procedure `append-no-conflicts`.
 
 In contrast with `append-no-conflicts` which running query on index with local storage, this test procedure runs query on index backed by a remote snapshot.
 
-The remote snapshot stores in Amazon S3, an Amazon S3 bucket for storing the snapshot and an AWS account user credential that has permission to access the bucket is required for the workload,
-to learn more in configuring Amazon S3 bucket as a snapshot repository, see the [OpenSearch docs](https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore#amazon-s3).
+The test procedure will create a remote snapshot that stored in Amazon S3, so an Amazon S3 bucket for storing the snapshot and an AWS account user credential that has permission to access the bucket are required to run the test procedure. To learn more about configuring Amazon S3 as a snapshot repository, see the [OpenSearch docs](https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore#amazon-s3).
+
+Searchable Snapshots feature is available in OpenSearch since version 2.4.0, see the [OpenSearch docs](https://opensearch.org/docs/2.4/opensearch/snapshots/searchable_snapshot) to learn more.
 
 ### Parameters
 
