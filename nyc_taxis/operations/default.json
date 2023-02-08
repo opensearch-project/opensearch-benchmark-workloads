@@ -43,7 +43,7 @@
       "repository": "{{ snapshot_repository_name | default('test-repository') }}",
       "snapshot": "{{ snapshot_name | default('test-snapshot') }}",
       "body": {
-        "indices": []
+        "indices": ["nyc_taxis"]
       }
     },
     {
@@ -58,7 +58,7 @@
       "repository": "test-repository",
       "snapshot": "{{ snapshot_name | default('test-snapshot') }}",
       "body": {
-        "indices": [],
+        "indices": ["nyc_taxis"],
         "storage_type": "remote_snapshot"
       },
       "wait-for-completion": true,
