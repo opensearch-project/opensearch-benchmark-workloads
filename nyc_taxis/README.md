@@ -75,7 +75,7 @@ This workload allows to overwrite the following parameters using `--workload-par
 * `search_clients`: Number of clients that issues search requests.
 
 ### Test Procedures
-The workload contains different test procedures, see [TEST_PROCEDURES](TEST_PROCEDURES.md) for details.
+The workload contains multiple test procedures, see [TEST_PROCEDURES](TEST_PROCEDURES.md) for details.
 
 ### License
 

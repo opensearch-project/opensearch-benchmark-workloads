@@ -357,7 +357,7 @@
           "operation": "create-snapshot"
         },
         {
-          "operation": "wait-for-snapshot-create"
+          "operation": "wait-for-snapshot-creation"
         },
         {
           "operation": {

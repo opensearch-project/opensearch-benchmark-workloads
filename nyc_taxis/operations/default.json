@@ -47,7 +47,7 @@
       }
     },
     {
-      "name": "wait-for-snapshot-create",
+      "name": "wait-for-snapshot-creation",
       "operation-type": "wait-for-snapshot-create",
       "repository": "{{ snapshot_repository_name | default('test-repository') }}",
       "snapshot": "{{ snapshot_name | default('test-snapshot') }}"
