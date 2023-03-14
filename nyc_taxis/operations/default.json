@@ -38,6 +38,12 @@
       }
     },
     {
+      "name": "delete-snapshot",
+      "operation-type": "delete-snapshot",
+      "repository": "{{ snapshot_repository_name | default('test-repository') }}",
+      "snapshot": "{{ snapshot_name | default('test-snapshot') }}",
+    },
+    {
       "name": "create-snapshot",
       "operation-type": "create-snapshot",
       "repository": "{{ snapshot_repository_name | default('test-repository') }}",

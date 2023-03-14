@@ -354,6 +354,9 @@
           "operation": "create-snapshot-repository"
         },
         {
+          "operation": "delete-snapshot"
+        },
+        {
           "operation": "create-snapshot"
         },
         {
