@@ -74,6 +74,9 @@ This workload allows to overwrite the following parameters using `--workload-par
 * `target_throughput` (default: default values for each operation): Number of requests per second, `none` for no limit.
 * `search_clients`: Number of clients that issues search requests.
 
+### Test Procedures
+The workload contains multiple test procedures, see [TEST_PROCEDURES](TEST_PROCEDURES.md) for details.
+
 ### License
 
 According to the [Open Data Law](https://opendata.cityofnewyork.us/open-data-law/) this data is available as public domain.
