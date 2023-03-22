@@ -7,7 +7,7 @@ A test procedure for measuring performance for the Searchable Snapshots feature.
 In contrast with `append-no-conflicts` which runs queries on an index stored on the cluster itself, this test procedure runs queries on index backed by a remote snapshot.
 
 The test procedure will create a remote snapshot that is stored in Amazon S3, so an Amazon S3 bucket for storing the snapshot and credentials for an AWS account that has permission to access the bucket are required to run the test procedure.
-To learn more about configuring Amazon S3 as a snapshot repository, see the [OpenSearch docs](https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore#amazon-s3).
+To learn more about configuring Amazon S3 as a snapshot repository, see the [OpenSearch docs](https://opensearch.org/docs/2.6/tuning-your-cluster/availability-and-recovery/snapshots/snapshot-restore#amazon-s3).
 
 The Searchable Snapshots feature is supported by OpenSearch since version 2.4.0, see the [OpenSearch docs](https://opensearch.org/docs/2.4/opensearch/snapshots/searchable_snapshot) to learn more.
 
@@ -31,7 +31,7 @@ Example:
 Save it as `params.json` and provide it to Benchmark with `--workload-params="/path/to/params.json"`.
 
 #### The test procedure requires parameters to be provided for the `repository-s3` plugin using `--plugin-params`:
-See the [Benchmark docs](https://github.com/opensearch-project/opensearch-benchmark/blob/main/osbenchmark/resources/provision_configs/main/plugins/v1/repository_s3/README.md
+See the [Benchmark docs](https://github.com/opensearch-project/opensearch-benchmark/blob/0.2.0/osbenchmark/resources/provision_configs/main/plugins/v1/repository_s3/README.md
 ) for details.
 
 Example:
@@ -51,15 +51,15 @@ A "provision_config_instance" is a specific configuration of OpenSearch. The par
 2. Assigning `search` role to the node.
 3. Define the maximum cache size of a `search` node. (required when a node with both `data` and `search` roles)
 
-Note that use of built-in instances can be seen at [Benchmark repository](https://github.com/opensearch-project/opensearch-benchmark/tree/main/osbenchmark/resources/provision_configs/main/provision_config_instances/v1),
-and the parameter usage can be seen [here](https://github.com/opensearch-project/opensearch-benchmark/blob/main/osbenchmark/resources/provision_configs/main/provision_config_instances/v1/vanilla/README.md) in the same repository.
+Note that use of built-in instances can be seen at [Benchmark repository](https://github.com/opensearch-project/opensearch-benchmark/tree/0.2.0/osbenchmark/resources/provision_configs/main/provision_config_instances/v1),
+and the parameter usage can be seen [here](https://github.com/opensearch-project/opensearch-benchmark/blob/0.2.0/osbenchmark/resources/provision_configs/main/provision_config_instances/v1/vanilla/README.md) in the same repository.
 
 Example:
 ```
 {
   "additional_cluster_settings": {
-    "node.roles": "ingest, remote_cluster_client, data, cluster_manager, search",
     "opensearch.experimental.feature.searchable_snapshot.enabled": "true",
+    "node.roles": "ingest, remote_cluster_client, data, cluster_manager, search",
     "node.search.cache.size": "50GB"
   }
 }
