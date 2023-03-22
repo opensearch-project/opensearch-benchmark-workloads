@@ -295,9 +295,8 @@
       ]
     },
     {
-      "name": "searchable_snapshot",
+      "name": "searchable-snapshot",
       "description": "Measuring performance for Searchable Snapshot feature. Based on the default test procedure 'append-no-conflicts'.",
-      "default": true,
       "schedule": [
         {
           "operation": "delete-index"
