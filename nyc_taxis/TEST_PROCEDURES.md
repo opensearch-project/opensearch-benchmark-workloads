@@ -1,6 +1,6 @@
 # Test Procedures
 
-## searchable_snapshot 
+## searchable-snapshot
 
 A test procedure for measuring performance for the Searchable Snapshots feature. It runs the same search queries as the default test procedure `append-no-conflicts`.
 
