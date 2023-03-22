@@ -42,6 +42,7 @@
       "operation-type": "delete-snapshot",
       "repository": "{{ snapshot_repository_name | default('test-repository') }}",
       "snapshot": "{{ snapshot_name | default('test-snapshot') }}",
+      "include-in-reporting": false
     },
     {
       "name": "create-snapshot",
