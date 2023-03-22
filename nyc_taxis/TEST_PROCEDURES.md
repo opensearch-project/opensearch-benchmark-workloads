@@ -49,7 +49,8 @@ Save it as `params.json` and provide it to Benchmark with `--opensearch-plugins=
 A "provision_config_instance" is a specific configuration of OpenSearch. The parameter is used for configuring the following cluster settings:
 1. A feature flag to enable an experimental feature.
 2. Assigning `search` role to the node.
-3. Define the maximum cache size of a `search` node. (required when a node with both `data` and `search` roles)
+3. Define the maximum cache size of a `search` node, which is required when a node with both `data` and `search` roles.
+In the example, the value is set to `30GB` to get the best performance, because the `nyc_taxis` dataset takes up 20+GB disk storage after indexing.
 
 Note that use of built-in instances can be seen at [Benchmark repository](https://github.com/opensearch-project/opensearch-benchmark/tree/0.2.0/osbenchmark/resources/provision_configs/main/provision_config_instances/v1),
 and the parameter usage can be seen [here](https://github.com/opensearch-project/opensearch-benchmark/blob/0.2.0/osbenchmark/resources/provision_configs/main/provision_config_instances/v1/vanilla/README.md) in the same repository.
@@ -60,7 +61,7 @@ Example:
   "additional_cluster_settings": {
     "opensearch.experimental.feature.searchable_snapshot.enabled": "true",
     "node.roles": "ingest, remote_cluster_client, data, cluster_manager, search",
-    "node.search.cache.size": "50GB"
+    "node.search.cache.size": "30GB"
   }
 }
 ```
