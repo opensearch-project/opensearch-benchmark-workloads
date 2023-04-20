@@ -35,7 +35,7 @@ The purpose of this workload is to provide an efficient way to benchmark indexin
 
 ### Parameters
 
-This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
+This workload allows the following parameters to be specified using `--workload-params`:
 
 * `bulk_size` (default: 5000)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
