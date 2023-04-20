@@ -12,7 +12,7 @@ This workload is based on [PlanetOSM](http://wiki.openstreetmap.org/wiki/Planet.
 
 ### Parameters
 
-This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
+This workload allows the following parameters to be specified using `--workload-params`:
 
 * `linestring_bulk_size` (default: 100): The bulk request size for indexing linestrings.
 * `multilinestring_bulk_size` (default: 100): The bulk request size for indexing multilinestrings.
