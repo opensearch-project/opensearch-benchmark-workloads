@@ -24,7 +24,7 @@ Note that the ``body`` content is actually much longer has been shortened here t
 
 ### Parameters
 
-This workload allows to overwrite the following parameters with Benchmark 0.8.0+ using `--workload-params`:
+This workload allows the following parameters to be specified using `--workload-params`:
 
 * `bulk_size` (default: 500)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
