@@ -49,6 +49,22 @@ node pipeline to run. Valid options are `'baseline'` (default), `'grok'`  and `'
 * `target_throughput` (default: default values for each operation): Number of requests per second, `none` for no limit.
 * `search_clients`: Number of clients that issues search requests.
 
+
+### Beta Feature: Increasing the size of the data corpus
+
+This workload provides for a feature to use a generated data corpus in lieu of the provided corpora files (which currently total ~31 GB.)  The generated corpus could, for instance, be 100 GB or more.  For more details on generating such a corpus, run the following command:
+
+```
+  expand-data-corpus.py -h
+```
+
+Once a corpus has been generated, it can be used for a test by supplying the following parameter via `--workoad-params`:
+
+* `generated_corpus:t`: Use the generated data corpus instead of the corpora files packaged with this track
+
+If there are multiple generated corpora files, they are all used concurrently.  Ingestion of the generated and the default corpora are mutually exclusive in any single OSB run.  Once ingested, however, queries packaged with this workload will operate on the entire loaded data set.
+
+
 ### License
 
 Original license text:
