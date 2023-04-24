@@ -8,41 +8,52 @@
   "description": "HTTP server log data",
   "#TODO": "Replace index definitions with a template after setting the workload version to 2. Explicit index definitions are not necessary anymore.",
   "indices": [
-    {
-      "name": "logs-181998",
-      "body": "{{ index_body }}"
-    },
-    {
-      "name": "logs-191998",
-      "body": "{{ index_body }}"
-    },
-    {
-      "name": "logs-201998",
-      "body": "{{ index_body }}"
-    },
-    {
-      "name": "logs-211998",
-      "body": "{{ index_body }}"
-    },
-    {
-      "name": "logs-221998",
-      "body": "{{ index_body }}"
-    },
-    {
-      "name": "logs-231998",
-      "body": "{{ index_body }}"
-    },
-    {
-      "name": "logs-241998",
-      "body": "{{ index_body }}"
-    },
-    {
-      "name": "reindexed-logs",
-      "body": "{{ index_body }}"
-    }
+    {%- if generated_corpus is defined %}
+      {{ benchmark.collect(parts="gen-idx-*.json") }}
+    {%- else %}
+      {
+	"name": "logs-181998",
+	"body": "{{ index_body }}"
+      },
+      {
+	"name": "logs-191998",
+	"body": "{{ index_body }}"
+      },
+      {
+	"name": "logs-201998",
+	"body": "{{ index_body }}"
+      },
+      {
+	"name": "logs-211998",
+	"body": "{{ index_body }}"
+      },
+      {
+	"name": "logs-221998",
+	"body": "{{ index_body }}"
+      },
+      {
+	"name": "logs-231998",
+	"body": "{{ index_body }}"
+      },
+      {
+	"name": "logs-241998",
+	"body": "{{ index_body }}"
+      },
+      {
+	"name": "reindexed-logs",
+	"body": "{{ index_body }}"
+      }
+    {%- endif %}
   ],
   "corpora": [
-      {%- if ingest_pipeline is defined and ingest_pipeline == "grok" %}
+      {%- if generated_corpus is defined %}
+        {
+          "name": "http_logs",
+          "documents": [
+            {{ benchmark.collect(parts="gen-docs-*.json") }}
+          ]
+        }
+      {%- elif ingest_pipeline is defined and ingest_pipeline == "grok" %}
         {
           "name": "http_logs_unparsed",
           "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/http_logs",
