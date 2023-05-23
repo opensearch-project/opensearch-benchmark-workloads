@@ -61,85 +61,55 @@
         {
           "operation": "percolator_with_content_president_bush",
           "warmup-iterations": 100,
-          "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 50
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%- if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
+          "iterations": 100,
+          "target-throughput": {{ target_throughput | default(50) }}
+          {%- if search_clients is defined %}
+          ,"clients": {{ search_clients }}
           {%- endif %}
         },
         {
           "operation": "percolator_with_content_saddam_hussein",
           "warmup-iterations": 100,
-          "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 50
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%- if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
+          "iterations": 100,
+          "target-throughput": {{ target_throughput | default(50) }}
+          {%- if search_clients is defined %}
+          ,"clients": {{ search_clients }}
           {%- endif %}
         },
         {
           "operation": "percolator_with_content_hurricane_katrina",
           "warmup-iterations": 100,
-          "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 50
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%- if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
+          "iterations": 100,
+          "target-throughput": {{ target_throughput | default(50) }}
+          {%- if search_clients is defined %}
+          ,"clients": {{ search_clients }}
           {%- endif %}
         },
         {
           "operation": "percolator_with_content_google",
           "warmup-iterations": 100,
-          "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 27
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%- if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
+          "iterations": 100,
+          "target-throughput": {{ target_throughput | default(27) }}
+          {%- if search_clients is defined %}
+          ,"clients": {{ search_clients }}
           {%- endif %}
         },
         {
           "operation": "percolator_no_score_with_content_google",
           "warmup-iterations": 100,
-          "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 100
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%- if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
+          "iterations": 100,
+          "target-throughput": {{ target_throughput | default(100) }}
+          {%- if search_clients is defined %}
+          ,"clients": {{ search_clients }}
           {%- endif %}
         },
         {
           "operation": "percolator_with_highlighting",
           "warmup-iterations": 100,
-          "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 50
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%- if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
+          "iterations": 100,
+          "target-throughput": {{ target_throughput | default(50) }}
+          {%- if search_clients is defined %}
+          ,"clients": {{ search_clients }}
           {%- endif %}
         },
         {
@@ -152,15 +122,10 @@
         {
           "operation": "percolator_no_score_with_content_ignore_me",
           "warmup-iterations": 100,
-          "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 15
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%- if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
+          "iterations": 100,
+          "target-throughput": {{ target_throughput | default(15) }}
+          {%- if search_clients is defined %}
+          ,"clients": {{ search_clients }}
           {%- endif %}
         }
       ]
