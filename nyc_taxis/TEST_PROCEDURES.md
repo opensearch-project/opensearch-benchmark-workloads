@@ -9,7 +9,8 @@ In contrast with `append-no-conflicts` which runs queries on an index stored on 
 The test procedure will create a remote snapshot that is stored in Amazon S3, so an Amazon S3 bucket for storing the snapshot and credentials for an AWS account that has permission to access the bucket are required to run the test procedure.
 To learn more about configuring Amazon S3 as a snapshot repository, see the [OpenSearch docs](https://opensearch.org/docs/2.6/tuning-your-cluster/availability-and-recovery/snapshots/snapshot-restore#amazon-s3).
 
-The Searchable Snapshots feature is supported by OpenSearch since version 2.4.0, see the [OpenSearch docs](https://opensearch.org/docs/2.4/opensearch/snapshots/searchable_snapshot) to learn more.
+The Searchable Snapshots feature is supported by OpenSearch since version 2.4.0, and reached general availability since version 2.7.0, 
+see the [OpenSearch docs](https://opensearch.org/docs/2.7/opensearch/snapshots/searchable_snapshot) to learn more.
 
 ### Parameters
 
@@ -47,9 +48,8 @@ Save it as `params.json` and provide it to Benchmark with `--opensearch-plugins=
 #### The test procedure requires parameters to be provided for the "provision_config_instance" using `--provision-config-instance-params`:
 
 A "provision_config_instance" is a specific configuration of OpenSearch. The parameter is used for configuring the following cluster settings:
-1. A feature flag to enable an experimental feature.
-2. Assigning `search` role to the node.
-3. Define the maximum cache size of a `search` node, which is required when a node with both `data` and `search` roles.
+1. Assigning `search` role to the node.
+2. Define the maximum cache size of a `search` node, which is required when a node with both `data` and `search` roles.
 In the example, the value is set to `30GB` to get the best performance, because the `nyc_taxis` dataset takes up 20+GB disk storage after indexing.
 
 Note that use of built-in instances can be seen at [Benchmark repository](https://github.com/opensearch-project/opensearch-benchmark/tree/0.2.0/osbenchmark/resources/provision_configs/main/provision_config_instances/v1),
@@ -59,12 +59,14 @@ Example:
 ```
 {
   "additional_cluster_settings": {
-    "opensearch.experimental.feature.searchable_snapshot.enabled": "true",
     "node.roles": "ingest, remote_cluster_client, data, cluster_manager, search",
     "node.search.cache.size": "30GB"
   }
 }
 ```
+For OpenSearch version from 2.4 to 2.6, because searchable snapshots is an experimental feature, 
+an additional cluster setting `"opensearch.experimental.feature.searchable_snapshot.enabled": "true"` is needed to enable the feature.
+
 Save it as `params.json` and provide it to Benchmark with `--provision-config-instance-params="/path/to/params.json"`.
 
 ### Run the test procedure
