@@ -73,6 +73,7 @@ This workload allows to overwrite the following parameters using `--workload-par
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
 * `target_throughput` (default: default values for each operation): Number of requests per second, `none` for no limit.
 * `search_clients`: Number of clients that issues search requests.
+* `trip_distance_type` (default: { "scaling_factor": 100, "type": "scaled_float" }): The `trip_distance` field type mapping
 
 ### Test Procedures
 The workload contains multiple test procedures, see [TEST_PROCEDURES](TEST_PROCEDURES.md) for details.
