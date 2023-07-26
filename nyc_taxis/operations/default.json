@@ -326,4 +326,9 @@
           }
         }
       }
+    },
+    {
+      "name": "range-aggs",
+      "operation-type": "search",
+      "param-source": "random-fare-param-source"
     }
