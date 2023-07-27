@@ -55,7 +55,7 @@ bzip2 -k documents.json
 
 ### Parameters
 
-This workload allows to overwrite the following parameters using `--workload-params`:
+This workload allows [specifying the following parameters](#specifying-workload-parameters) using the `--workload-params` option to OpenSearch Benchmark:
 
 * `bulk_size` (default: 10000)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
@@ -75,7 +75,7 @@ This workload allows to overwrite the following parameters using `--workload-par
 * `search_clients`: Number of clients that issues search requests.
 * `trip_distance_mapping` (default: { "scaling_factor": 100, "type": "scaled_float" }): The `trip_distance` field type mapping
 
-### Example of specifying parameters using `--workload-params`:
+### Specifying Workload Parameters
 
 Example:
 ```json
@@ -86,7 +86,7 @@ Example:
 }
  ```
 
-Save it as `params.json` and provide it to Benchmark with `--workload-params="/path/to/params.json"`.
+Save it as `params.json` and provide it to OpenSearch Benchmark with `--workload-params="/path/to/params.json"`. The overrides for simple parameters could be specified in-place, for example `--workload-params=search_clients:2`.
 
 ### Test Procedures
 The workload contains multiple test procedures, see [TEST_PROCEDURES](TEST_PROCEDURES.md) for details.
