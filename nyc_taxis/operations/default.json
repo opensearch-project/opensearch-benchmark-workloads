@@ -28,7 +28,9 @@
     {
       "name": "default",
       "operation-type": "search",
+      "request-cache": true,
       "body": {
+        "size": 0,
         "query": {
           "match_all": {}
         }
@@ -37,7 +39,9 @@
     {
       "name": "range",
       "operation-type": "search",
+      "request-cache": true,
       "body": {
+        "size": 0,
         "query": {
           "range": {
             "total_amount": {
@@ -51,6 +55,7 @@
     {
       "name": "distance_amount_agg",
       "operation-type": "search",
+      "request-cache": true,
       "body": {
         "size": 0,
         "query": {
@@ -85,6 +90,7 @@
     {
       "name": "autohisto_agg",
       "operation-type": "search",
+      "request-cache": true,
       "body": {
         "size": 0,
         "query": {
@@ -109,6 +115,7 @@
     {
       "name": "date_histogram_agg",
       "operation-type": "search",
+      "request-cache": true,
       "body": {
         "size": 0,
         "query": {
@@ -133,6 +140,7 @@
     {
       "name": "date_histogram_calendar_interval",
       "operation-type": "search",
+      "request-cache": true,
       "body": {
         "size": 0,
         "query": {
@@ -156,6 +164,7 @@
     {
       "name": "date_histogram_calendar_interval_with_tz",
       "operation-type": "search",
+      "request-cache": true,
       "body": {
         "size": 0,
         "query": {
@@ -180,6 +189,7 @@
     {
       "name": "date_histogram_fixed_interval",
       "operation-type": "search",
+      "request-cache": true,
       "body": {
         "size": 0,
         "query": {
@@ -203,6 +213,7 @@
     {
       "name": "date_histogram_fixed_interval_with_tz",
       "operation-type": "search",
+      "request-cache": true,
       "body": {
         "size": 0,
         "query": {
@@ -227,6 +238,7 @@
     {
       "name": "date_histogram_fixed_interval_with_metrics",
       "operation-type": "search",
+      "request-cache": true,
       "body": {
         "size": 0,
         "query": {
@@ -255,6 +267,7 @@
     {
       "name": "auto_date_histogram",
       "operation-type": "search",
+      "request-cache": true,
       "body": {
         "size": 0,
         "query": {
@@ -278,6 +291,7 @@
     {
       "name": "auto_date_histogram_with_tz",
       "operation-type": "search",
+      "request-cache": true,
       "body": {
         "size": 0,
         "query": {
@@ -302,6 +316,7 @@
     {
       "name": "auto_date_histogram_with_metrics",
       "operation-type": "search",
+      "request-cache": true,
       "body": {
         "size": 0,
         "query": {
@@ -328,7 +343,32 @@
       }
     },
     {
-      "name": "range-aggs",
+      "name": "random-passenger-count",
       "operation-type": "search",
-      "param-source": "random-fare-param-source"
+      "param-source": "random-passenger-count-param-source"
+    },
+    {
+    "name": "random-tip-amount",
+    "operation-type": "search",
+    "param-source": "random-tip-amount-param-source"
+    },
+    {
+    "name": "random-fare-amount",
+    "operation-type": "search",
+    "param-source": "random-fare-amount-param-source"
+    },
+    {
+    "name": "random-total-amount",
+    "operation-type": "search",
+    "param-source": "random-total-amount-param-source"
+    },
+    {
+    "name": "random-pickup-datetime",
+    "operation-type": "search",
+    "param-source": "random-pickup-datetime-param-source"
+    },
+    {
+    "name": "random-dropoff-datetime",
+    "operation-type": "search",
+    "param-source": "random-dropoff-datetime-param-source"
     }
