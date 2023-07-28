@@ -4,9 +4,9 @@
   "default": true,
   "schedule": [
     {
-      "operation": "range-aggs",
-      "warmup-iterations": 1,
-      "iterations": 1
+      "operation": "random-fare",
+      "warmup-iterations": 0,
+      "iterations": 2
       {%- if not target_throughput %}
       ,"target-throughput": 1.5
       {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
@@ -16,6 +16,90 @@
       {%-if search_clients is defined and search_clients %}
       ,"clients": {{ search_clients | tojson}}
       {%- endif %}
-    }
+    },
+    {
+      "operation": "random-passenger-count",
+      "warmup-iterations": 0,
+      "iterations": 2
+      {%- if not target_throughput %}
+      ,"target-throughput": 1.5
+      {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+      {%- else %}
+      ,"target-throughput": {{ target_throughput | tojson }}
+      {%- endif %}
+      {%-if search_clients is defined and search_clients %}
+      ,"clients": {{ search_clients | tojson}}
+      {%- endif %}
+    },
+    {
+      "operation": "random-tip-amount",
+      "warmup-iterations": 0,
+      "iterations": 2
+    {%- if not target_throughput %}
+  ,"target-throughput": 1.5
+    {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+    {%- else %}
+  ,"target-throughput": {{ target_throughput | tojson }}
+    {%- endif %}
+    {%-if search_clients is defined and search_clients %}
+  ,"clients": {{ search_clients | tojson}}
+    {%- endif %}
+    },
+    {
+      "operation": "random-fare-amount",
+      "warmup-iterations": 0,
+      "iterations": 2
+    {%- if not target_throughput %}
+  ,"target-throughput": 1.5
+    {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+    {%- else %}
+  ,"target-throughput": {{ target_throughput | tojson }}
+    {%- endif %}
+    {%-if search_clients is defined and search_clients %}
+  ,"clients": {{ search_clients | tojson}}
+    {%- endif %}
+    },
+    {
+      "operation": "random-total-amount",
+      "warmup-iterations": 0,
+      "iterations": 2
+    {%- if not target_throughput %}
+  ,"target-throughput": 1.5
+    {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+    {%- else %}
+  ,"target-throughput": {{ target_throughput | tojson }}
+    {%- endif %}
+    {%-if search_clients is defined and search_clients %}
+  ,"clients": {{ search_clients | tojson}}
+    {%- endif %}
+    },
+    {
+      "operation": "random-pickup-datetime",
+      "warmup-iterations": 0,
+      "iterations": 2
+    {%- if not target_throughput %}
+  ,"target-throughput": 1.5
+    {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+    {%- else %}
+  ,"target-throughput": {{ target_throughput | tojson }}
+    {%- endif %}
+    {%-if search_clients is defined and search_clients %}
+  ,"clients": {{ search_clients | tojson}}
+    {%- endif %}
+  },
+    {
+      "operation": "random-dropoff-datetime",
+      "warmup-iterations": 0,
+      "iterations": 2
+    {%- if not target_throughput %}
+  ,"target-throughput": 1.5
+    {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+    {%- else %}
+  ,"target-throughput": {{ target_throughput | tojson }}
+    {%- endif %}
+    {%-if search_clients is defined and search_clients %}
+  ,"clients": {{ search_clients | tojson}}
+    {%- endif %}
+  }
   ]
 }
