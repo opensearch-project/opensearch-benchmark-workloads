@@ -189,6 +189,33 @@
       }
     },
     {
+      "name": "multi_term_agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "size": 0,
+        "query": {
+          "range": {
+            "@timestamp": {
+              "gte": "1998-05-03T00:00:00Z",
+              "lt": "1998-05-07T00:00:00Z"
+            }
+          }
+        },
+        "aggs": {
+          "mterms": {
+            "multi_terms": {
+              "terms": [
+                {"field": "clientip"},
+                {"field": "status"},
+                {"field": "size"}
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "scroll",
       "operation-type": "search",
       "index": "logs-*",
