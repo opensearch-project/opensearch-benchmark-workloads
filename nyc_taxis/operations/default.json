@@ -371,4 +371,24 @@
     "name": "random-dropoff-datetime",
     "operation-type": "search",
     "param-source": "random-dropoff-datetime-param-source"
+    },
+    {
+    "name": "expensive-1-aggs",
+    "operation-type": "search",
+    "param-source": "expensive-1-aggs-param-source"
+    },
+    {
+    "name": "expensive-2-aggs",
+    "operation-type": "search",
+    "param-source": "expensive-2-aggs-param-source"
+    },
+    {
+    "name": "expensive-3-aggs",
+    "operation-type": "search",
+    "param-source": "expensive-3-aggs-param-source"
+    },
+    {
+    "name": "expensive-4-aggs",
+    "operation-type": "search",
+    "param-source": "expensive-4-aggs-param-source"
     }
