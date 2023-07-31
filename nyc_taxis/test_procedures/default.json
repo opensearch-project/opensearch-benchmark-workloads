@@ -5,8 +5,8 @@
   "schedule": [
     {
       "operation": "expensive-1-aggs",
-      "warmup-iterations": 100,
-      "iterations": 300
+      "warmup-iterations": 10,
+      "iterations": 200
     {%- if not target_throughput %}
   ,"target-throughput": 1.5
     {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
@@ -19,8 +19,8 @@
   },
     {
       "operation": "expensive-2-aggs",
-      "warmup-iterations": 100,
-      "iterations": 300
+      "warmup-iterations": 10,
+      "iterations": 200
     {%- if not target_throughput %}
   ,"target-throughput": 1.5
     {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
@@ -33,8 +33,8 @@
   },
     {
       "operation": "expensive-3-aggs",
-      "warmup-iterations": 100,
-      "iterations": 300
+      "warmup-iterations": 10,
+      "iterations": 200
     {%- if not target_throughput %}
   ,"target-throughput": 1.5
     {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
@@ -47,8 +47,8 @@
   },
     {
       "operation": "expensive-4-aggs",
-      "warmup-iterations": 100,
-      "iterations": 300
+      "warmup-iterations": 10,
+      "iterations": 200
     {%- if not target_throughput %}
   ,"target-throughput": 1.5
     {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
