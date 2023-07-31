@@ -174,8 +174,8 @@ def random_dropoff_datetime(workload, params, **kwargs):
 
 
 def expensive_1(workload, params, **kwargs):
-    start = datetime(2020, 1, 1)
-    end = datetime(2023, 12, 31)
+    start = datetime(2015, 1, 1)
+    end = datetime(2016, 12, 31)
 
     pickup_gte = random_date(start, end)
     pickup_lte = random_date(pickup_gte, end)
@@ -263,8 +263,8 @@ def expensive_1(workload, params, **kwargs):
 
 
 def expensive_2(workload, params, **kwargs):
-    start = datetime(2010, 1, 1)
-    end = datetime(2023, 12, 31)
+    start = datetime(2015, 1, 1)
+    end = datetime(2016, 12, 31)
 
     pickup_gte = random_date(start, end)
     pickup_lte = random_date(pickup_gte, end)
@@ -317,11 +317,14 @@ def expensive_2(workload, params, **kwargs):
 
 
 def expensive_3(workload, params, **kwargs):
-    start = datetime(2010, 1, 1)
-    end = datetime(2023, 12, 31)
+    start = datetime(2015, 1, 1)
+    end = datetime(2016, 12, 31)
 
     pickup_gte = random_date(start, end)
     pickup_lte = random_date(pickup_gte, end)
+
+    pickup_gte_str = pickup_gte.strftime("%Y-%m-%d %H:%M:%S")
+    pickup_lte_str = pickup_lte.strftime("%Y-%m-%d %H:%M:%S")
 
     return {
         "body": {
@@ -329,8 +332,8 @@ def expensive_3(workload, params, **kwargs):
                 "query": {
                     "range": {
                         "pickup_datetime": {
-                            "gte": pickup_gte,
-                            "lte": pickup_lte
+                            "gte": pickup_gte_str,
+                            "lte": pickup_lte_str
                         }
                     }
                 },
@@ -352,11 +355,14 @@ def expensive_3(workload, params, **kwargs):
 
 
 def expensive_4(workload, params, **kwargs):
-    start = datetime(2010, 1, 1)
-    end = datetime(2023, 12, 31)
+    start = datetime(2015, 1, 1)
+    end = datetime(2016, 12, 31)
 
     pickup_gte = random_date(start, end)
     pickup_lte = random_date(pickup_gte, end)
+
+    pickup_gte_str = pickup_gte.strftime("%Y-%m-%d %H:%M:%S")
+    pickup_lte_str = pickup_lte.strftime("%Y-%m-%d %H:%M:%S")
 
     return {
         "body": {
@@ -364,8 +370,8 @@ def expensive_4(workload, params, **kwargs):
                 "query": {
                     "range": {
                         "pickup_datetime": {
-                            "gte": pickup_gte,
-                            "lte": pickup_lte
+                            "gte": pickup_gte_str,
+                            "lte": pickup_lte_str
                         }
                     }
                 },
