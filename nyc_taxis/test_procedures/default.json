@@ -1,82 +1,12 @@
 {
-  "name": "append-no-conflicts",
+  "name": "random-searches",
   "description": "Indexes the whole document corpus using a setup that will lead to a larger indexing throughput than the default settings and produce a smaller index (higher compression rate). Document ids are unique so all index operations are append only. After that a couple of queries are run.",
   "default": true,
   "schedule": [
     {
-      "operation": "random-fare",
-      "warmup-iterations": 0,
-      "iterations": 2
-      {%- if not target_throughput %}
-      ,"target-throughput": 1.5
-      {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-      {%- else %}
-      ,"target-throughput": {{ target_throughput | tojson }}
-      {%- endif %}
-      {%-if search_clients is defined and search_clients %}
-      ,"clients": {{ search_clients | tojson}}
-      {%- endif %}
-    },
-    {
-      "operation": "random-passenger-count",
-      "warmup-iterations": 0,
-      "iterations": 2
-      {%- if not target_throughput %}
-      ,"target-throughput": 1.5
-      {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-      {%- else %}
-      ,"target-throughput": {{ target_throughput | tojson }}
-      {%- endif %}
-      {%-if search_clients is defined and search_clients %}
-      ,"clients": {{ search_clients | tojson}}
-      {%- endif %}
-    },
-    {
-      "operation": "random-tip-amount",
-      "warmup-iterations": 0,
-      "iterations": 2
-    {%- if not target_throughput %}
-  ,"target-throughput": 1.5
-    {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-    {%- else %}
-  ,"target-throughput": {{ target_throughput | tojson }}
-    {%- endif %}
-    {%-if search_clients is defined and search_clients %}
-  ,"clients": {{ search_clients | tojson}}
-    {%- endif %}
-    },
-    {
-      "operation": "random-fare-amount",
-      "warmup-iterations": 0,
-      "iterations": 2
-    {%- if not target_throughput %}
-  ,"target-throughput": 1.5
-    {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-    {%- else %}
-  ,"target-throughput": {{ target_throughput | tojson }}
-    {%- endif %}
-    {%-if search_clients is defined and search_clients %}
-  ,"clients": {{ search_clients | tojson}}
-    {%- endif %}
-    },
-    {
-      "operation": "random-total-amount",
-      "warmup-iterations": 0,
-      "iterations": 2
-    {%- if not target_throughput %}
-  ,"target-throughput": 1.5
-    {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-    {%- else %}
-  ,"target-throughput": {{ target_throughput | tojson }}
-    {%- endif %}
-    {%-if search_clients is defined and search_clients %}
-  ,"clients": {{ search_clients | tojson}}
-    {%- endif %}
-    },
-    {
-      "operation": "random-pickup-datetime",
-      "warmup-iterations": 0,
-      "iterations": 2
+      "operation": "expensive-1-aggs",
+      "warmup-iterations": 100,
+      "iterations": 300
     {%- if not target_throughput %}
   ,"target-throughput": 1.5
     {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
@@ -88,9 +18,37 @@
     {%- endif %}
   },
     {
-      "operation": "random-dropoff-datetime",
-      "warmup-iterations": 0,
-      "iterations": 2
+      "operation": "expensive-2-aggs",
+      "warmup-iterations": 100,
+      "iterations": 300
+    {%- if not target_throughput %}
+  ,"target-throughput": 1.5
+    {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+    {%- else %}
+  ,"target-throughput": {{ target_throughput | tojson }}
+    {%- endif %}
+    {%-if search_clients is defined and search_clients %}
+  ,"clients": {{ search_clients | tojson}}
+    {%- endif %}
+  },
+    {
+      "operation": "expensive-3-aggs",
+      "warmup-iterations": 100,
+      "iterations": 300
+    {%- if not target_throughput %}
+  ,"target-throughput": 1.5
+    {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+    {%- else %}
+  ,"target-throughput": {{ target_throughput | tojson }}
+    {%- endif %}
+    {%-if search_clients is defined and search_clients %}
+  ,"clients": {{ search_clients | tojson}}
+    {%- endif %}
+  },
+    {
+      "operation": "expensive-4-aggs",
+      "warmup-iterations": 100,
+      "iterations": 300
     {%- if not target_throughput %}
   ,"target-throughput": 1.5
     {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
