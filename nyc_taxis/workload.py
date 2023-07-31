@@ -169,7 +169,8 @@ def random_dropoff_datetime(workload, params, **kwargs):
             }
         },
         "index": 'nyc_taxis',
-        "request-cache": True
+        "request-cache": True,
+        "request-timeout": 60
     }
 
 
@@ -258,7 +259,8 @@ def expensive_1(workload, params, **kwargs):
             }
         }
       },
-        "index": 'nyc_taxis'
+        "index": 'nyc_taxis',
+        "request-timeout": 60
     }
 
 
@@ -312,7 +314,8 @@ def expensive_2(workload, params, **kwargs):
                     }
                 }
         },
-        "index": 'nyc_taxis'
+        "index": 'nyc_taxis',
+        "request-timeout": 60
     }
 
 
@@ -350,7 +353,8 @@ def expensive_3(workload, params, **kwargs):
                     }
                 }
         },
-        "index": 'nyc_taxis'
+        "index": 'nyc_taxis',
+        "request-timeout": 60
     }
 
 
@@ -407,7 +411,8 @@ def expensive_4(workload, params, **kwargs):
                     }
                 }
             },
-        "index": 'nyc_taxis'
+        "index": 'nyc_taxis',
+        "request-timeout": 60
     }
 
 
