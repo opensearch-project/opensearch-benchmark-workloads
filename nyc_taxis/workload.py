@@ -194,72 +194,73 @@ def expensive_1(workload, params, **kwargs):
             "query": {
                 "bool": {
                     "filter": [
-                    {
-                        "range": {
-                            "pickup_datetime": {
-                                "gte": pickup_gte_str,
-                                "lte": pickup_lte_str
+                        {
+                            "range": {
+                                "pickup_datetime": {
+                                    "gte": '2015-01-01 00:00:00',
+                                    "lte": '2015-01-03 00:00:00'
+                                }
+                            }
+                        },
+                        {
+                            "range": {
+                                "dropoff_datetime": {
+                                    "gte": '2015-01-01 00:00:00',
+                                    "lte": '2015-01-03 00:00:00'
+                                }
                             }
                         }
+                    ],
+                    "must_not": [
+                        {
+                            "term": {
+                                "vendor_id": "Vendor XYZ"
+                            }
+                        }
+                    ]
+                }
+            },
+            "aggs": {
+                "avg_surcharge": {
+                    "avg": {
+                        "field": "surcharge"
+                    }
+                },
+                "sum_total_amount": {
+                    "sum": {
+                        "field": "total_amount"
+                    }
+                },
+                "vendor_id_terms": {
+                    "terms": {
+                        "field": "vendor_id",
+                        "size": 100
                     },
-                    {
-                        "range": {
-                            "dropoff_datetime": {
-                                "gte": dropoff_gte_str,
-                                "lte": dropoff_lte_str
+                    "aggs": {
+                        "avg_tip_per_vendor": {
+                            "avg": {
+                                "field": "tip_amount"
                             }
                         }
                     }
-                ],
-                "must_not": [
-                    {
-                        "term": {
-                            "vendor_id": "Vendor XYZ"
+                },
+                "pickup_location_grid": {
+                    "geohash_grid": {
+                        "field": "pickup_location",
+                        "precision": 5
+                    },
+                    "aggs": {
+                        "avg_tip_per_location": {
+                            "avg": {
+                                "field": "tip_amount"
+                            }
                         }
                     }
-                ]
+                }
             }
         },
-        "aggs": {
-            "avg_surcharge": {
-                "avg": {
-                    "field": "surcharge"
-                }
-            },
-            "sum_total_amount": {
-                "sum": {
-                    "field": "total_amount"
-                }
-            },
-            "vendor_id_terms": {
-                "terms": {
-                    "field": "vendor_id",
-                    "size": 100
-                },
-                "aggs": {
-                    "avg_tip_per_vendor": {
-                        "avg": {
-                            "field": "tip_amount"
-                        }
-                    }
-                }
-            },
-            "pickup_location_grid": {
-                "geohash_grid": {
-                    "field": "pickup_location",
-                    "precision": 5
-                },
-                "aggs": {
-                    "avg_tip_per_location": {
-                        "avg": {
-                            "field": "tip_amount"
-                        }
-                    }
-                }
-            }
-        }
-      },
         "index": 'nyc_taxis',
+        "request-cache": True,
         "request-timeout": 60
     }
 
