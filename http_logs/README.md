@@ -64,6 +64,7 @@ Once a corpus has been generated, it can be used for a test by supplying the fol
 
 If there are multiple generated corpora files, they are all used concurrently.  Ingestion of the generated and the default corpora are mutually exclusive in any single OSB run.  Once ingested, however, queries packaged with this workload will operate on the entire loaded data set.
 
+To see how this feature changes http_logs workload, visit the `~/.benchmark/benchmarks/workloads/default/http_logs/` directory and the `~/.benchmark/data/http_logs` directory. 
 
 ### License
 
