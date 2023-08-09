@@ -231,6 +231,9 @@ def main():
         print("File saved to ", save_path)
 
     # Plot the daily averages and p99 latencies in 1 graph
+    print("All Average response times: ", daily_averages)
+    print("All p99 response times: ", daily_p99_latencies)
+    
     plt.figure(figsize=(10, 6))
     plt.plot(range(1, int(args.days) + 1), daily_averages, 'r-', label='Average Response Time')
     plt.plot(range(1, int(args.days) + 1), daily_p99_latencies, 'b-', label='p99 Latency')
