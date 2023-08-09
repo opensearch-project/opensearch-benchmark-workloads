@@ -158,7 +158,7 @@ def main():
     daily_p99_latencies = []
 
     # Execute the query multiple times and measure the response time
-    for day in range(1, args.days):
+    for day in range(1, int(args.days)):
         print(f"Starting iterations for range : 1 to {day}")
         response_times = []
         for x in range(1, num_queries + 1):
