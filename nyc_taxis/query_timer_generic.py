@@ -172,12 +172,12 @@ def main():
                 hit_count = new_hits
                 isHit = True
             else:
+                miss_took_times.append(response_time)
                 print(f"Miss. Took time: {response_time}")
                 isHit = False
 
             # Append a tuple with response time and hit/miss status
             response_times.append((response_time, isHit))
-            miss_took_times.append(response_time)
             print(f"Response {x} received.")
 
         # Separate response times and hit/miss indicators for plotting
@@ -232,10 +232,18 @@ def main():
         print("Average response time: ", average_response_time)
         print("File saved to ", save_path)
 
-    # Plot the daily averages and p99 latencies in 1 graph
-    print("All Miss took times: ", miss_took_times)
-    print("All Average response times: ", daily_averages)
-    print("All p99 response times: ", daily_p99_latencies)
+    # print items in tabular
+    print("All Average response times: ")
+    for avg_time in enumerate(daily_averages, start=1):
+        print(f"{avg_time}")
+
+    print("All Miss took times: ")
+    for miss_took_time in enumerate(miss_took_times, start=1):
+        print(f"{miss_took_time}")
+        
+    print("All p99 response times:")
+    for daily_p99_latency in enumerate(daily_p99_latencies, start=1):
+        print(f"{daily_p99_latency}")
 
     plt.figure(figsize=(10, 6))
     plt.plot(range(1, int(args.days) + 1), daily_averages, 'r-', label='Average Response Time')
