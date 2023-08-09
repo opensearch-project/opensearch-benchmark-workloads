@@ -67,7 +67,7 @@ Example:
 For OpenSearch version from 2.4 to 2.6, because searchable snapshots is an experimental feature, 
 an additional cluster setting `"opensearch.experimental.feature.searchable_snapshot.enabled": "true"` is needed to enable the feature.
 
-Save it as `params.json` and provide it to Benchmark with `--provision-config-instance-params="/path/to/params.json"`.
+Save it as `params.json` and provide it to OpenSearch Benchmark with `--provision-config-instance-params="/path/to/params.json"`.
 
 ### Run the test procedure
 The test procedure can be run with parameter `--test-procedure searchable-snapshot`.
