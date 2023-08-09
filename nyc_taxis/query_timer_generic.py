@@ -187,8 +187,8 @@ def main():
         # Calculate the average response time. Add [1:] to response_times_only in line 186 and 188 if calculating for hits,
         # to ignore first miss. 186 is / num_queries for misses, num_queries - 1 for hits.
         response_times_only = [response[0] for response in response_times]
-        average_response_time = sum(response_times_only[1:]) / (num_queries - 1)
-        p99_latency = np.percentile(response_times_only[1:], 99)
+        average_response_time = sum(response_times_only) / (num_queries)
+        p99_latency = np.percentile(response_times_only, 99)
 
         # collating the data
         daily_averages.append(average_response_time)
