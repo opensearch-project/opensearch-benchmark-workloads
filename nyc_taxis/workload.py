@@ -175,19 +175,6 @@ def random_dropoff_datetime(workload, params, **kwargs):
 
 
 def expensive_1(workload, params, **kwargs):
-    start = datetime(2015, 1, 1)
-    end = datetime(2016, 12, 31)
-
-    pickup_gte = random_date(start, end)
-    pickup_lte = random_date(pickup_gte, end)
-    dropoff_gte = random_date(start, end)
-    dropoff_lte = random_date(dropoff_gte, end)
-
-    pickup_gte_str = pickup_gte.strftime("%Y-%m-%d %H:%M:%S")
-    pickup_lte_str = pickup_lte.strftime("%Y-%m-%d %H:%M:%S")
-    dropoff_gte_str = dropoff_gte.strftime("%Y-%m-%d %H:%M:%S")
-    dropoff_lte_str = dropoff_lte.strftime("%Y-%m-%d %H:%M:%S")
-
     return {
         "body": {
             "size": 0,

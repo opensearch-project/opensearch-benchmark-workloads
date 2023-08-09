@@ -5,7 +5,7 @@
   "schedule": [
     {
       "operation": "expensive-1-aggs",
-      "warmup-iterations": 1,
+      "warmup-iterations": 0,
       "iterations": 1
     {%- if not target_throughput %}
   ,"target-throughput": 1.5
