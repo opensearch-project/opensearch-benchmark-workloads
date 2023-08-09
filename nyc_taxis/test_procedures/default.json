@@ -4,7 +4,7 @@
   "default": true,
   "schedule": [
     {
-      "operation": "expensive-2-aggs",
+      "operation": "expensive-3-aggs",
       "warmup-iterations": 10,
       "iterations": 200
     {%- if not target_throughput %}
