@@ -64,6 +64,7 @@ Once a corpus has been generated, it can be used for a test by supplying the fol
 
 If there are multiple generated corpora files, they are all used concurrently.  Ingestion of the generated and the default corpora are mutually exclusive in any single OSB run.  Once ingested, however, queries packaged with this workload will operate on the entire loaded data set.
 
+Keep in mind when running `expand-data-corpus.py`, the feature by default influences the `~/.benchmark/benchmarks/workloads/default/http_logs` and `~/.benchmark/benchmarks/data/` directories. To choose a different workload repository other than `default`, supply a different workload repository with `-r` parameter. 
 
 ### License
 
