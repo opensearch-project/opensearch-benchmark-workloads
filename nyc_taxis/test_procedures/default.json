@@ -5,8 +5,8 @@
   "schedule": [
     {
       "operation": "expensive-1-aggs",
-      "warmup-iterations": 0,
-      "iterations": 1
+      "warmup-iterations": 10,
+      "iterations": 200
     {%- if not target_throughput %}
   ,"target-throughput": 1.5
     {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
