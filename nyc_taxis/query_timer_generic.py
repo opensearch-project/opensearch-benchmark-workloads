@@ -232,8 +232,8 @@ def main():
 
     # Plot the daily averages and p99 latencies in 1 graph
     plt.figure(figsize=(10, 6))
-    plt.plot(range(1, 32), daily_averages, 'r-', label='Average Response Time')
-    plt.plot(range(1, 32), daily_p99_latencies, 'b-', label='p99 Latency')
+    plt.plot(range(1, int(args.days)), daily_averages, 'r-', label='Average Response Time')
+    plt.plot(range(1, int(args.days)), daily_p99_latencies, 'b-', label='p99 Latency')
     plt.xlabel('Day of the Month')
     plt.ylabel('Time (milliseconds)')
     plt.title('OpenSearch Query Response Time and p99 Latency for the Month')
