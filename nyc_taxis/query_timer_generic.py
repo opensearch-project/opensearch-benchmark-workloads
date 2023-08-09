@@ -151,13 +151,16 @@ def main():
 
     # Number of times to execute the query and measure the response time
     num_queries = 50
+    save_path = '/home/ec2-user/opensearch-benchmark-workloads/nyc_taxis'  # change this to image save path
+
+    daily_averages = []
+    daily_p99_latencies = []
 
     # Execute the query multiple times and measure the response time
     for day in range(1, 32):
         response_times = []
         for x in range(1, num_queries + 1):
             response_time = send_query_and_measure_time(day, hit_count, args.endpoint, args.username, args.password)
-            # new_hits = get_request_cache_stats(args.endpoint, args.username, args.password)['nodes']['AdFlYDT8Q_GdaU04lXyB5A']['indices']['request_cache']['hit_count']
             new_hits = next(iter(get_request_cache_stats(args.endpoint, args.username, args.password)['nodes'].values()))[
                 'indices']['request_cache']['hit_count']
 
@@ -180,8 +183,11 @@ def main():
         # to ignore first miss. 186 is / num_queries for misses, num_queries - 1 for hits.
         response_times_only = [response[0] for response in response_times]
         average_response_time = sum(response_times_only[1:]) / (num_queries - 1)
-
         p99_latency = np.percentile(response_times_only[1:], 99)
+
+        # collating the data
+        daily_averages.append(average_response_time)
+        daily_p99_latencies.append(p99_latency)
 
         # Plot the response times on a graph
         plt.scatter(range(1, num_queries + 1), response_times_only, c=hit_miss_colors, label='Response Times')
@@ -213,7 +219,6 @@ def main():
         plt.tight_layout()  # Ensure labels and annotations fit within the figure
         
         # Save the figure to the specified folder
-        save_path = '/home/ec2-user/opensearch-benchmark-workloads/nyc_taxis' # change this to image save path
         save_filename = 'PoC_time_50hits_plot_until_jan' + str(day) + '.png'  # You can change the filename if needed
         save_full_path = f'{save_path}/{save_filename}'
         figure = plt.gcf()
@@ -223,6 +228,21 @@ def main():
         print("Average response time: ", average_response_time)
         print("File saved to ", save_path)
 
+    # Plot the daily averages and p99 latencies in 1 graph
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(1, 32), daily_averages, 'r-', label='Average Response Time')
+    plt.plot(range(1, 32), daily_p99_latencies, 'b-', label='p99 Latency')
+    plt.xlabel('Day of the Month')
+    plt.ylabel('Time (milliseconds)')
+    plt.title('OpenSearch Query Response Time and p99 Latency for the Month')
+    plt.legend()
+
+    # Save the cumulative figure
+    save_full_path_cumulative = f'{save_path}/cumulative_plot.png'
+    plt.savefig(save_full_path_cumulative)
+    plt.close()
+
+    print("Cumulative file saved to ", save_path)
 
 if __name__ == '__main__':
     main()
