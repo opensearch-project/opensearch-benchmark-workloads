@@ -157,8 +157,10 @@ def main():
         response_times = []
         for x in range(1, num_queries + 1):
             response_time = send_query_and_measure_time(day, hit_count, args.endpoint, args.username, args.password)
-            new_hits = get_request_cache_stats(args.endpoint, args.username, args.password)['nodes']['AdFlYDT8Q_GdaU04lXyB5A']['indices']['request_cache']['hit_count']
-            
+            # new_hits = get_request_cache_stats(args.endpoint, args.username, args.password)['nodes']['AdFlYDT8Q_GdaU04lXyB5A']['indices']['request_cache']['hit_count']
+            new_hits = next(iter(get_request_cache_stats(args.endpoint, args.username, args.password)['nodes'].values()))[
+                'indices']['request_cache']['hit_count']
+
             if new_hits > hit_count:
                 print(f"Hit. Took time: {response_time}")
                 hit_count = new_hits
