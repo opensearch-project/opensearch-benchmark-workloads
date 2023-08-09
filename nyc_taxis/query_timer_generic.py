@@ -135,6 +135,7 @@ def main():
     parser.add_argument('endpoint', help='OpenSearch domain endpoint (https://example.com)')
     parser.add_argument('username', help='Username for authentication')
     parser.add_argument('password', help='Password for authentication')
+    parser.add_argument('days',     help='Number of days the range to keep increasing to')
     args = parser.parse_args()
 
     url = f"{args.endpoint}/nyc_taxis/_cache/clear"
@@ -157,7 +158,8 @@ def main():
     daily_p99_latencies = []
 
     # Execute the query multiple times and measure the response time
-    for day in range(1, 32):
+    for day in range(1, args.days):
+        print(f"Starting iterations for range : 1 to {day}")
         response_times = []
         for x in range(1, num_queries + 1):
             response_time = send_query_and_measure_time(day, hit_count, args.endpoint, args.username, args.password)
