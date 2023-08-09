@@ -95,12 +95,12 @@ def expensive_1(day, cache, **kwargs):
 
 
 # Function to send the query and measure the response time
-def send_query_and_measure_time(day, hit_count, endpoint, username, password):
+def send_query_and_measure_time(day, hit_count, endpoint, username, password, cache):
 
     # start_time = time.time()
 
     # Assuming you have the 'expensive_1' function declared in the same file
-    query = expensive_1(day, True)
+    query = expensive_1(day, cache)
 
     # Connect to the OpenSearch domain using the provided endpoint and credentials
     os = OpenSearch(
@@ -111,7 +111,7 @@ def send_query_and_measure_time(day, hit_count, endpoint, username, password):
     )
 
     # Send the query to the OpenSearch domain
-    response = os.search(index=query['index'], body=query['body'], request_timeout=60, request_cache=True)
+    response = os.search(index=query['index'], body=query['body'], request_timeout=60, request_cache=cache)
     took_time = response['took']
 
     # end_time = time.time()
@@ -132,10 +132,11 @@ def get_request_cache_stats(endpoint, username, password):
 
 def main():
     parser = argparse.ArgumentParser(description='OpenSearch Query Response Time Plotter')
-    parser.add_argument('endpoint', help='OpenSearch domain endpoint (https://example.com)')
-    parser.add_argument('username', help='Username for authentication')
-    parser.add_argument('password', help='Password for authentication')
-    parser.add_argument('days',     help='Number of days the range to keep increasing to')
+    parser.add_argument('--endpoint', help='OpenSearch domain endpoint (https://example.com)')
+    parser.add_argument('--username', help='Username for authentication')
+    parser.add_argument('--password', help='Password for authentication')
+    parser.add_argument('--days',     help='Number of days the range to keep increasing to')
+    parser.add_argument('--cache',    help='true for cache enabled and false otherwise', default='false')
     args = parser.parse_args()
 
     url = f"{args.endpoint}/nyc_taxis/_cache/clear"
@@ -163,7 +164,7 @@ def main():
         print(f"Starting iterations for range : 1 to {day}")
         response_times = []
         for x in range(1, num_queries + 1):
-            response_time = send_query_and_measure_time(day, hit_count, args.endpoint, args.username, args.password)
+            response_time = send_query_and_measure_time(day, hit_count, args.endpoint, args.username, args.password, args.cache)
             new_hits = next(iter(get_request_cache_stats(args.endpoint, args.username, args.password)['nodes'].values()))[
                 'indices']['request_cache']['hit_count']
 
@@ -240,7 +241,7 @@ def main():
     print("All Miss took times: ")
     for miss_took_time in enumerate(miss_took_times, start=1):
         print(f"{miss_took_time}")
-        
+
     print("All p99 response times:")
     for daily_p99_latency in enumerate(daily_p99_latencies, start=1):
         print(f"{daily_p99_latency}")
