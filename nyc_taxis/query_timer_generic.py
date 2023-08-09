@@ -154,6 +154,7 @@ def main():
     num_queries = 50
     save_path = '/home/ec2-user/opensearch-benchmark-workloads/nyc_taxis'  # change this to image save path
 
+    miss_took_times = []
     daily_averages = []
     daily_p99_latencies = []
 
@@ -176,6 +177,7 @@ def main():
 
             # Append a tuple with response time and hit/miss status
             response_times.append((response_time, isHit))
+            miss_took_times.append(response_time)
             print(f"Response {x} received.")
 
         # Separate response times and hit/miss indicators for plotting
@@ -231,9 +233,10 @@ def main():
         print("File saved to ", save_path)
 
     # Plot the daily averages and p99 latencies in 1 graph
+    print("All Miss took times: ", miss_took_times)
     print("All Average response times: ", daily_averages)
     print("All p99 response times: ", daily_p99_latencies)
-    
+
     plt.figure(figsize=(10, 6))
     plt.plot(range(1, int(args.days) + 1), daily_averages, 'r-', label='Average Response Time')
     plt.plot(range(1, int(args.days) + 1), daily_p99_latencies, 'b-', label='p99 Latency')
