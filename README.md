@@ -10,7 +10,7 @@ How to Contribute
 
 If you want to contribute a workload, please ensure that it works against the main version of OpenSearch (i.e. submit PRs against the `main` branch). We can then check whether it's feasible to backport the track to earlier OpenSearch/Elasticsearch versions.
 
-After making changes to a workload, it's recommended for developers to run a simple test with that workload in `test-mode` to determine if there are any breaking changes. 
+After making changes to a workload, it's recommended for developers to run a. simple test with that workload in `test-mode` to determine if there are any breaking changes. 
  
 See all details in the [contributor guidelines](https://github.com/opensearch-project/opensearch-benchmark/blob/main/CONTRIBUTING.md).
 
