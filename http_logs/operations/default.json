@@ -228,6 +228,32 @@
       }
     },
     {
+      "name": "desc_sort_size",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "query": {
+          "match_all": {}
+        },
+        "sort" : [
+          {"size" : "desc"}
+        ]
+      }
+    },
+    {
+      "name": "asc_sort_size",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "query": {
+          "match_all": {}
+        },
+        "sort" : [
+          {"size" : "asc"}
+        ]
+      }
+    },
+    {
       "name": "desc_sort_timestamp",
       "operation-type": "search",
       "index": "logs-*",
