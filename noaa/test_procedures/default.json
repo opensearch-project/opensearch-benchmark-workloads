@@ -166,9 +166,7 @@
           {%- else %}
           ,"target-throughput": {{ target_throughput | tojson }}
           {%- endif %}
-          {%- if not search_clients %}
-          ,"clients": 1
-          {%- elif search_clients is defined and search_clients %}
+          {%- if search_clients is defined and search_clients %}
           ,"clients": {{ search_clients | tojson}}
           {%- endif %}
         }
