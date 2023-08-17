@@ -129,21 +129,7 @@
         },
         {
           "operation": "hourly_agg",
-          "warmup-iterations": 50,
-          "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 0.2
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%-if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
-          {%- endif %}
-        },
-        {
-          "operation": "multi_term_agg",
-          "warmup-iterations": 50,
+          "warmup-iterations": 100,
           "iterations": 100
           {%- if not target_throughput %}
           ,"target-throughput": 0.2
@@ -463,7 +449,7 @@
         },
         {
           "operation": "hourly_agg",
-          "warmup-iterations": 50,
+          "warmup-iterations": 100,
           "iterations": 100
           {%- if not target_throughput %}
           ,"target-throughput": 0.2
@@ -481,34 +467,6 @@
           "iterations": 200,
           "#COMMENT": "Throughput is considered per request. So we issue one scroll request per second which will retrieve 25 pages",
           "target-throughput": 1
-        },
-        {
-          "operation": "desc_sort_size",
-          "warmup-iterations": 200,
-          "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 0.5
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%-if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
-          {%- endif %}
-        },
-        {
-          "operation": "asc_sort_size",
-          "warmup-iterations": 200,
-          "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 0.5
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%-if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
-          {%- endif %}
         },
         {
           "operation": "desc_sort_timestamp",
