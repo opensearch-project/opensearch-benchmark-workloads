@@ -1,0 +1,26 @@
+name: Sync Branches
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync-branches:
+    runs-on: ubuntu-latest
+    name: Syncing branches
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Opening pull request
+        id: pull
+        uses: tretuna/sync-branches@1.4.0
+        with:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          FROM_BRANCH: "main"
+          TO_BRANCH: "2"
+	  PULL_REQUEST_TITLE: "Sync from branch {FROM_BRANCH} to branch {TO_BRANCH}"
+	  PULL_REQUEST_BODY: "Migrating change from branch {FROM_BRANCH} to branch {TO_BRANCH}"
