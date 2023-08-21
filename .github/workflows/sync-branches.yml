@@ -22,5 +22,5 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           FROM_BRANCH: "main"
           TO_BRANCH: "2"
-	  PULL_REQUEST_TITLE: "Sync from branch {FROM_BRANCH} to branch {TO_BRANCH}"
-	  PULL_REQUEST_BODY: "Migrating change from branch {FROM_BRANCH} to branch {TO_BRANCH}"
+          PULL_REQUEST_TITLE: "Sync from branch {FROM_BRANCH} to branch {TO_BRANCH}"
+          PULL_REQUEST_BODY: "Migrating change from branch {FROM_BRANCH} to branch {TO_BRANCH}"
