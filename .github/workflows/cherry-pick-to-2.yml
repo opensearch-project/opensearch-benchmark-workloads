@@ -1,0 +1,29 @@
+name: Auto-create PR on branch "2"
+on:
+  pull_request:
+    branches:
+      - main
+    types: ["closed"]
+
+jobs:
+  cherry_pick_2:
+    runs-on: ubuntu-latest
+    name: Cherry pick into branch "2"
+    if: ${{ github.event.pull_request.merged == true }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Cherry pick into branch "2"
+        uses: carloscastrojumo/github-cherry-pick-action@v1.0.1
+        with:
+          branch: 2
+          labels: |
+            cherry-pick
+          reviewers: |
+            gkamat, IanHoang
+          title: '[cherry-pick] {old_title}'
+          body: 'Cherry picking #{old_pull_request_id} onto this branch'
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
