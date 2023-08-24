@@ -6,24 +6,17 @@ on:
     types: ["closed"]
 
 jobs:
-  cherry_pick_2:
+  release_pull_request:
     runs-on: ubuntu-latest
-    name: Cherry pick into branch "2"
+    name: release_pull_request
     if: ${{ github.event.pull_request.merged == true }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Cherry pick into branch "2"
-        uses: carloscastrojumo/github-cherry-pick-action@v1.0.1
-        with:
-          branch: 2
-          labels: |
-            cherry-pick
-          reviewers: |
-            gkamat, IanHoang
-          title: '[cherry-pick] {old_title}'
-          body: 'Cherry picking #{old_pull_request_id} onto this branch'
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: checkout
+      uses: actions/checkout@v1
+    - name: Create PR to branch
+      uses: gorillio/github-action-cherry-pick@master
+      with:
+        pr_branch: '2'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DRY_RUN: false
