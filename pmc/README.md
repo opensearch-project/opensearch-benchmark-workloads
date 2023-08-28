@@ -30,9 +30,10 @@ This workload allows the following parameters to be specified using `--workload-
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
 * `conflicts` (default: "random"): Type of id conflicts to simulate. Valid values are: 'sequential' (A document id is replaced with a document id with a sequentially increasing id), 'random' (A document id is replaced with a document id with a random other id).
-* `conflict_probability` (default: 25): A number between 0 and 100 that defines the probability of id conflicts. This requires to run the respective test_procedure. Combining ``conflicts=sequential`` and ``conflict-probability=0`` makes Benchmark generate index ids by itself, instead of relying on OpenSearch's `automatic id generation`.
+* `conflict_probability` (default: 25): A number between 0 and 100 that defines the probability of id conflicts. This requires to run the respective test-procedure. Combining ``conflicts=sequential`` and ``conflict-probability=0`` makes OpenSearch Benchmark generate index ids by itself, instead of relying on OpenSearch's `automatic id generation.
 * `on_conflict` (default: "index"): Whether to use an "index" or an "update" action when simulating an id conflict.
-* `recency` (default: 0): A number between 0 and 1 that defines whether to bias towards more recent ids when simulating conflicts. See the [Benchmark docs](https://github.com/opensearch-project/OpenSearch-Benchmark/blob/main/DEVELOPER_GUIDE.md) for the full definition of this parameter. This requires to run the respective test_procedure.
+* `recency` (default: 0): A number between 0 and 1 that defines whether to bias towards more recent ids when simulating conflicts. See the [OpenSearch Benchmark docs](https://opensearch.org/docs/latest/benchmark/index/) for the full definition of this parameter. This requires to run the respective test-procedure.
+* `max_num_segments`: The number of segments to target when doing a force merge (default: -1)
 * `number_of_replicas` (default: 0)
 * `number_of_shards` (default: 5)
 * `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
@@ -40,8 +41,8 @@ This workload allows the following parameters to be specified using `--workload-
 * `default_search_timeout` (default: -1)
 * `cluster_health` (default: "green"): The minimum required cluster health.
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
-* `target_throughput` (default: default values for each operation): Number of requests per second, `none` for no limit.
-* `search_clients`: Number of clients that issues search requests.
+* `target_throughput` (default: default values for each operation): Number of requests per second.
+* `search_clients`: Number of clients that issue search requests.
 
 ### License
 
