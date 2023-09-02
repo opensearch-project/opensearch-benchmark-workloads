@@ -23,14 +23,15 @@ This workload allows the following parameters to be specified using `--workload-
 * `bulk_size` (default: 5000)
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
+* `max_num_segments`: The number of segments to target when doing a force merge (default: -1)
 * `number_of_replicas` (default: 0)
 * `number_of_shards` (default: 5)
 * `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
 * `cluster_health` (default: "green"): The minimum required cluster health.
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
-* `target_throughput` (default: default values for each operation): Number of requests per second, `none` for no limit.
-* `search_clients`: Number of clients that issues search requests.
+* `target_throughput` (default: default values for each operation): Number of requests per second.
+* `search_clients`: Number of clients that issue search requests.
 
 ### License
 
