@@ -40,6 +40,7 @@ This workload allows the following parameters to be specified using `--workload-
 * `conflict_probability` (default: 25): A number between 0 and 100 that defines the probability of id conflicts. This requires to run the respective test_procedure. Combining ``conflicts=sequential`` and ``conflict-probability=0`` makes Benchmark generate index ids by itself, instead of relying on OpenSearch's `automatic id generation`.
 * `number_of_replicas` (default: 0)
 * `number_of_shards` (default: 5)
+* `query_cache_enabled` (default: false)
 * `requests_cache_enabled` (default: false)
 * `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
