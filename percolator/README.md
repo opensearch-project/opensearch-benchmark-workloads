@@ -28,7 +28,6 @@ This workload allows the following parameters to be specified using `--workload-
 * `number_of_shards` (default: 5)
 * `query_cache_enabled` (default: false)
 * `requests_cache_enabled` (default: false)
-* 
 * `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
 * `cluster_health` (default: "green"): The minimum required cluster health.
