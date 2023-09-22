@@ -12,7 +12,7 @@
   "corpora": [
     {
       "name": "pmc",
-      "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/pmc",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/pmc",
       "documents": [
         {
           "source-file": "documents.json.bz2",

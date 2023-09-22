@@ -12,7 +12,7 @@
   "corpora": [
     {
       "name": "so",
-      "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/so",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/so",
       "documents": [
         {
           "source-file": "posts.json.bz2",
