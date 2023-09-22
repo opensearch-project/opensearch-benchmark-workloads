@@ -49,6 +49,8 @@ This workload allows the following parameters to be specified using `--workload-
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
 * `number_of_replicas` (default: 0)
 * `number_of_shards` (default: 1)
+* `query_cache_enabled` (default: false)
+* `requests_cache_enabled` (default: false)
 * `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
 * `cluster_health` (default: "green"): The minimum required cluster health.
