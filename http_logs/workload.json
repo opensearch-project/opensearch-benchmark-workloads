@@ -56,7 +56,7 @@
       {%- elif ingest_pipeline is defined and ingest_pipeline == "grok" %}
         {
           "name": "http_logs_unparsed",
-          "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/http_logs",
+          "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/http_logs",
           "documents": [
           {
             "target-index": "logs-181998",
@@ -112,7 +112,7 @@
     {%- else %}
       {
         "name": "http_logs",
-        "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/http_logs",
+        "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/http_logs",
         "documents": [
           {
             "target-index": "logs-181998",
