@@ -2,7 +2,7 @@
 {
   "version": 2,
   "description": "POIs from Geonames",
-  "data-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/geonames",
+  "data-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/geonames",
   "indices": [
     {
       "name": "geonames",
@@ -12,7 +12,7 @@
   "corpora": [
     {
       "name": "geonames",
-      "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/geonames",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/geonames",
       "documents": [
         {
           "source-file": "documents-2.json.bz2",
