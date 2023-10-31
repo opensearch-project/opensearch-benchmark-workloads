@@ -301,4 +301,118 @@
           }
         }
       ]
+    },
+    {
+      "name": "append-and-prefix",
+      "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and OpenSearch Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After that a couple of queries are run.",
+      "default": false,
+      "schedule": [
+        {
+          "operation": {
+            "operation-type": "put-settings",
+            "body": {
+              "transient": {
+                  "search.default_search_timeout": "{{default_search_timeout | default(-1)}}"
+              }
+            }
+          }
+        },
+        {
+          "operation": "delete-index"
+        },
+        {
+          "operation": {
+            "operation-type": "create-index",
+            "settings": {{index_settings | default({}) | tojson}}
+          }
+        },
+        {
+          "name": "check-cluster-health",
+          "operation": {
+            "operation-type": "cluster-health",
+            "index": "pmc",
+            "request-params": {
+              "wait_for_status": "{{cluster_health | default('green')}}",
+              "wait_for_no_relocating_shards": "true"
+            },
+            "retry-until-success": true
+          }
+        },
+        {
+          "operation": "index-append",
+          "warmup-time-period": 240,
+          "clients": {{bulk_indexing_clients | default(8)}},
+          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+        },
+        {
+          "name": "refresh-after-index",
+          "operation": "refresh"
+        },
+        {
+          "operation": {
+            "operation-type": "force-merge",
+            "max-num-segments": {{ max_num_segments | default(-1) }},
+            "request-timeout": 7200
+          }
+        },
+        {
+          "name": "refresh-after-force-merge",
+          "operation": "refresh"
+        },
+        {
+          "name": "wait-until-merges-finish",
+          "operation": {
+            "operation-type": "index-stats",
+            "index": "_all",
+            "condition": {
+              "path": "_all.total.merges.current",
+              "expected-value": 0
+            },
+            "retry-until-success": true,
+            "include-in-reporting": false
+          }
+        },
+        {
+          "operation": "prefix_index",
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": {{ target_throughput | default(20) | tojson }},
+          "clients": {{ search_clients | default(1) }}
+        },
+        {
+          "operation": "prefix_docvalues",
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": {{ target_throughput | default(20) | tojson }},
+          "clients": {{ search_clients | default(1) }}
+        },
+        {
+          "operation": "prefix_indexordocvalues",
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": {{ target_throughput | default(20) | tojson }},
+          "clients": {{ search_clients | default(1) }}
+        },
+        {
+          "operation": "nested_prefix_index",
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": {{ target_throughput | default(20) | tojson }},
+          "clients": {{ search_clients | default(1) }}
+        },
+        {
+          "operation": "nested_prefix_docvalues",
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": {{ target_throughput | default(20) | tojson }},
+          "clients": {{ search_clients | default(1) }}
+        },
+        {
+          "operation": "nested_prefix_indexordocvalues",
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": {{ target_throughput | default(20) | tojson }},
+          "clients": {{ search_clients | default(1) }}
+        }
+      ]
     }

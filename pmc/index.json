@@ -11,7 +11,20 @@
     "dynamic": "strict",
     "properties": {
       "name": {
-        "type": "keyword"
+        "type": "keyword",
+        "index": true,
+        "doc_values": false,
+        "copy_to": ["name_docvalues", "name_indexordocvalues"]
+      },
+      "name_docvalues": {
+        "type": "keyword",
+        "index": false,
+        "doc_values": true
+      },
+      "name_indexordocvalues": {
+        "type": "keyword",
+        "index": true,
+        "doc_values": true
       },
       "journal": {
         "type": "text"

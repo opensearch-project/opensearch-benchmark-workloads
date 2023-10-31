@@ -52,6 +52,117 @@
       }
     },
     {
+      "name": "prefix_index",
+      "operation-type": "search",
+      "#COMMENT": "Large responses cause overhead on the client when decompressing the response. Disable to avoid the overhead",
+      "response-compression-enabled": false,
+      "body": {
+        "query": {
+          "prefix" : {
+            "name": "a*"
+          }
+        }
+      }
+    },
+    {
+      "name": "prefix_docvalues",
+      "operation-type": "search",
+      "#COMMENT": "Large responses cause overhead on the client when decompressing the response. Disable to avoid the overhead",
+      "response-compression-enabled": false,
+      "body": {
+        "query": {
+          "prefix" : {
+            "name_docvalues": "a*"
+          }
+        }
+      }
+    },
+    {
+      "name": "prefix_indexordocvalues",
+      "operation-type": "search",
+      "#COMMENT": "Large responses cause overhead on the client when decompressing the response. Disable to avoid the overhead",
+      "response-compression-enabled": false,
+      "body": {
+        "query": {
+          "prefix" : {
+            "name_indexordocvalues": "a*"
+          }
+        }
+      }
+    },
+    {
+      "name": "nested_prefix_index",
+      "operation-type": "search",
+      "#COMMENT": "Large responses cause overhead on the client when decompressing the response. Disable to avoid the overhead",
+      "response-compression-enabled": false,
+      "body": {
+        "query": {
+          "bool": {
+            "filter": [
+              {
+                "term": {
+                  "body": "patella"
+                }
+              },
+              {
+                "prefix" : {
+                  "name": "a*"
+                }
+              }
+            ]
+        }
+      }
+      }
+    },
+    {
+      "name": "nested_prefix_docvalues",
+      "operation-type": "search",
+      "#COMMENT": "Large responses cause overhead on the client when decompressing the response. Disable to avoid the overhead",
+      "response-compression-enabled": false,
+      "body": {
+        "query": {
+          "bool": {
+            "filter": [
+              {
+                "term": {
+                  "body": "patella"
+                }
+              },
+              {
+                "prefix" : {
+                  "name_docvalues": "a*"
+                }
+              }
+            ]
+        }
+      }
+      }
+    },
+    {
+      "name": "nested_prefix_indexordocvalues",
+      "operation-type": "search",
+      "#COMMENT": "Large responses cause overhead on the client when decompressing the response. Disable to avoid the overhead",
+      "response-compression-enabled": false,
+      "body": {
+        "query": {
+          "bool": {
+            "filter": [
+              {
+                "term": {
+                  "body": "patella"
+                }
+              },
+              {
+                "prefix" : {
+                  "name_indexordocvalues": "a*"
+                }
+              }
+            ]
+        }
+      }
+      }
+    },
+    {
       "name": "articles_monthly_agg_uncached",
       "operation-type": "search",
       "#COMMENT": "Large responses cause overhead on the client when decompressing the response. Disable to avoid the overhead",
