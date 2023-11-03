@@ -40,8 +40,7 @@
         "type": "scaled_float"
       },
       "tip_amount": {
-        "scaling_factor": 100,
-        "type": "scaled_float"
+        "type": "half_float"
       },
       "payment_type": {
         "type": "keyword"
