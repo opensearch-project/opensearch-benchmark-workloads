@@ -125,7 +125,7 @@
         },
         {
           "operation": "desc_sort_tip_amount",
-          "warmup-iterations": 10,
+          "warmup-iterations": 50,
           "iterations": 100
           {%- if not target_throughput %}
           ,"target-throughput": 0.5
@@ -139,7 +139,7 @@
         },
         {
           "operation": "asc_sort_tip_amount",
-          "warmup-iterations": 10,
+          "warmup-iterations": 50,
           "iterations": 100
           {%- if not target_throughput %}
           ,"target-throughput": 0.5
