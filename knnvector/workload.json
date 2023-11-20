@@ -1,0 +1,17 @@
+{% import "benchmark.helpers" as benchmark with context %}
+{
+    "version": 2,
+    "description": "Benchmark for knn_vector field type",
+    "indices": [
+        {
+            "name": "{{ target_index_name }}",
+            "body": "{{ target_index_body }}"
+        }
+    ],
+    "operations": [
+      {{ benchmark.collect(parts="operations/*.json") }}
+    ],
+      "test_procedures": [
+        {{ benchmark.collect(parts="test_procedures/*.json") }}
+      ]
+}
