@@ -61,7 +61,7 @@
   "operations": [
     {{ benchmark.collect(parts="operations/*.json") }}
   ],
-  "test_procedures": [
-    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  "scenarios": [
+    {{ benchmark.collect(parts="scenarios/*.json") }}
   ]
 }
