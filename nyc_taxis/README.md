@@ -61,9 +61,9 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
 * `conflicts` (default: "random"): Type of id conflicts to simulate. Valid values are: 'sequential' (A document id is replaced with a document id with a sequentially increasing id), 'random' (A document id is replaced with a document id with a random other id).
-* `conflict_probability` (default: 25): A number between 0 and 100 that defines the probability of id conflicts. Only used by the `update` test_procedure. Combining ``conflicts=sequential`` and ``conflict-probability=0`` makes Benchmark generate index ids by itself, instead of relying on OpenSearch's `automatic id generation`.
-* `on_conflict` (default: "index"): Whether to use an "index" or an "update" action when simulating an id conflict. Only used by the `update` test_procedure.
-* `recency` (default: 0): A number between 0 and 1 that defines whether to bias towards more recent ids when simulating conflicts. See the [Benchmark docs](https://github.com/opensearch-project/OpenSearch-Benchmark/blob/main/DEVELOPER_GUIDE.md) for the full definition of this parameter. Only used by the `update` test_procedure.
+* `conflict_probability` (default: 25): A number between 0 and 100 that defines the probability of id conflicts. Only used by the `update` SCENARIO. Combining ``conflicts=sequential`` and ``conflict-probability=0`` makes Benchmark generate index ids by itself, instead of relying on OpenSearch's `automatic id generation`.
+* `on_conflict` (default: "index"): Whether to use an "index" or an "update" action when simulating an id conflict. Only used by the `update` SCENARIO.
+* `recency` (default: 0): A number between 0 and 1 that defines whether to bias towards more recent ids when simulating conflicts. See the [Benchmark docs](https://github.com/opensearch-project/OpenSearch-Benchmark/blob/main/DEVELOPER_GUIDE.md) for the full definition of this parameter. Only used by the `update` SCENARIO.
 * `number_of_replicas` (default: 0)
 * `number_of_shards` (default: 1)
 * `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
@@ -88,8 +88,8 @@ Example:
 
 Save it as `params.json` and provide it to OpenSearch Benchmark with `--workload-params="/path/to/params.json"`. The overrides for simple parameters could be specified in-place, for example `--workload-params=search_clients:2`.
 
-### Test Procedures
-The workload contains multiple test procedures, see [TEST_PROCEDURES](TEST_PROCEDURES.md) for details.
+### Scenarios
+The workload contains multiple scenarios, see [SCENARIOS](SCENARIOS.md) for details.
 
 ### License
 
