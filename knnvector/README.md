@@ -8,6 +8,37 @@ This workload currently supports datasets  with either HDF5 format or Big-ann.
 You can download datasets from [here](http://corpus-texmex.irisa.fr/) to benchmark the quality of approximate k-NN algorithm from
 OpenSearch.
 
+### Running a benchmark
+
+Before running a benchmark, make sure you have the endpoint of your cluster and
+  the machine you are running the benchmarks from, can access it. 
+ Additionally, ensure that all data has been pulled to the client.
+
+Currently, we support one test procedures for the k-NN workload: 
+no-train-test that does not have steps to train a model included in the 
+schedule. This test procedures will index a data set 
+of vectors into an OpenSearch index and then run a set of queries against them. 
+
+To run test procedure, open up 
+[params/no-train-params.json](params/no-train-params.json) and 
+fill out the mandatory parameters.
+Once the parameters are set, set the URL and PORT of your cluster and run the 
+command to run the test procedure. 
+
+```
+export URL=
+export PORT=
+export PARAMS_FILE=
+export PROCEDURE="no-train-test"
+
+opensearch-benchmark execute_test \ 
+    --target-hosts $URL:$PORT \ 
+    --workload-path ./workload.json \ 
+    --workload-params ${PARAMS_FILE} \
+    --test-procedure=${PROCEDURE} \
+    --pipeline benchmark-only
+```
+
 ## Current Procedures
 
 ### No Train Test
