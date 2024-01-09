@@ -1,4 +1,4 @@
-# KNN Vector Workload
+# Vector Search Workload
 
 This workload is to benchmark performance of indexing and search of Vector Engine of Opensearch.
 
@@ -14,28 +14,26 @@ Before running a benchmark, make sure you have the endpoint of your cluster and
   the machine you are running the benchmarks from, can access it. 
  Additionally, ensure that all data has been pulled to the client.
 
-Currently, we support one test procedures for the k-NN workload: 
+Currently, we support one test procedures for the vector search workload: 
 no-train-test that does not have steps to train a model included in the 
 schedule. This test procedures will index a data set 
 of vectors into an OpenSearch index and then run a set of queries against them. 
 
-To run test procedure, open up 
-[params/no-train-params.json](params/no-train-params.json) and 
-fill out the mandatory parameters.
-Once the parameters are set, set the URL and PORT of your cluster and run the 
-command to run the test procedure. 
+Due to the number of parameters this workload offers, it's recommended to create a parameters file and feed that
+into the command line. Users are welcome to use the example param files,
+`faiss-sift-128-l2.json`or `nmslib-sift-128-l2.json` in `/params`, as references.
+
+To run the workload, invoke the following command with the params file.
 
 ```
 export URL=
 export PORT=
 export PARAMS_FILE=
-export PROCEDURE="no-train-test"
 
-opensearch-benchmark execute_test \ 
-    --target-hosts $URL:$PORT \ 
-    --workload-path ./workload.json \ 
+opensearch-benchmark execute-test \
+    --target-hosts $URL:$PORT \
+    --workload vectorsearch \
     --workload-params ${PARAMS_FILE} \
-    --test-procedure=${PROCEDURE} \
     --pipeline benchmark-only
 ```
 
@@ -43,7 +41,10 @@ opensearch-benchmark execute_test \
 
 ### No Train Test
 
-The No Train Test procedure is used to test `knn_vector` indices that do not  use an algorithm that requires training.
+The No Train Test procedure is used to test vector search indices which requires no training.
+You can define the underlying configuration of the vector search algorithm like specific engine, space type, etc... as
+method definition . Check [vector search method definitions]([https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#method-definitions)
+for more details.
 
 #### Parameters
 
