@@ -21,7 +21,7 @@ of vectors into an OpenSearch index and then run a set of queries against them.
 
 Due to the number of parameters this workload offers, it's recommended to create a parameters file and feed that
 into the command line. Users are welcome to use the example param files,
-`faiss-sift-128-l2.json`or `nmslib-sift-128-l2.json` in `/params`, as references.
+`faiss-sift-128-l2.json`, `nmslib-sift-128-l2.json`, or `lucene-sift-128-l2.json` in `/params`, as references.
 
 To run the workload, invoke the following command with the params file.
 
