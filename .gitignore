@@ -101,3 +101,7 @@ target/
 
 # pyenv
 .python-version
+
+# generated standard values for modified_nyc_taxis
+modified_nyc_taxis/standard_values/*
+!modified_nyc_taxis/standard_values/.gitkeep

@@ -1,0 +1,204 @@
+    {
+      "name": "cacheable-queries",
+      "description": "Indexes the whole document corpus using a setup that will lead to a larger indexing throughput than the default settings and produce a smaller index (higher compression rate). Document ids are unique so all index operations are append only. After that a couple of queries are run.",
+      "default": true,
+      "schedule": [
+        {
+          "operation": "delete-index"
+        },
+        {
+          "operation": {
+            "operation-type": "create-index",
+            "settings": {%- if index_settings is defined %} {{index_settings | tojson}} {%- else %} {
+              "index.codec": "best_compression",
+              "index.refresh_interval": "30s",
+              "index.translog.flush_threshold_size": "4g",
+              "index.queries.cache.enabled": "true"
+            }{%- endif %}
+          }
+        },
+        {
+          "name": "check-cluster-health",
+          "operation": {
+            "operation-type": "cluster-health",
+            "index": "nyc_taxis",
+            "request-params": {
+              "wait_for_status": "{{cluster_health | default('green')}}",
+              "wait_for_no_relocating_shards": "true"
+            },
+            "retry-until-success": true
+          }
+        },
+        {
+          "operation": "index",
+          "warmup-time-period": 240,
+          "clients": {{bulk_indexing_clients | default(8)}},
+          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+        },
+        {
+          "name": "refresh-after-index",
+          "operation": "refresh"
+        },
+        {
+          "operation": {
+            "operation-type": "force-merge",
+            "request-timeout": 7200{%- if force_merge_max_num_segments is defined %},
+            "max-num-segments": {{ force_merge_max_num_segments | tojson }}
+            {%- endif %}
+          }
+        },
+        {
+          "name": "refresh-after-force-merge",
+          "operation": "refresh"
+        },
+        {
+          "operation": "wait-until-merges-finish"
+        },
+        {
+          "parallel": { 
+            "tasks": [ 
+              {
+                "name":"cheap-passenger-count",
+                "operation":"cheap-passenger-count", 
+                "settings": {
+                  "index.requests.cache.enable":true
+                },
+                "warmup-iterations": 12, 
+                "iterations": 120,
+                "target-throughput": 6
+              },
+              {
+                "name":"cheap-tip-amount",
+                "operation":"cheap-tip-amount",
+                "settings": {
+                  "index.requests.cache.enable":true
+                }, 
+                "warmup-iterations": 12, 
+                "iterations": 120,
+                "target-throughput": 6
+              },
+              {
+                "name":"cheap-fare-amount", 
+                "operation":"cheap-fare-amount",
+                "settings": {
+                  "index.requests.cache.enable":true
+                }, 
+                "warmup-iterations": 12, 
+                "iterations": 120,
+                "target-throughput": 6
+              },
+              {
+                "name":"cheap-total-amount", 
+                "operation":"cheap-total-amount",
+                "settings": {
+                  "index.requests.cache.enable":true
+                }, 
+                "warmup-iterations": 12, 
+                "iterations": 120,
+                "target-throughput": 6
+              },
+              {
+                "name":"cheap-pickup", 
+                "operation":"cheap-pickup",
+                "settings": {
+                  "index.requests.cache.enable":true
+                }, 
+                "warmup-iterations": 12, 
+                "iterations": 120,
+                "target-throughput": 6
+              },
+              {
+                "name":"cheap-dropoff", 
+                "operation":"cheap-dropoff",
+                "settings": {
+                  "index.requests.cache.enable":true
+                }, 
+                "warmup-iterations": 12, 
+                "iterations": 120,
+                "target-throughput": 6
+              },
+              {
+                "name":"expensive-autohisto-agg", 
+                "operation":"expensive-autohisto-agg",
+                "settings": {
+                  "index.requests.cache.enable":true
+                }, 
+                "warmup-iterations": 3, 
+                "iterations": 3,
+                "target-throughput": 1.5
+              },
+              {
+                "name":"expensive-date-histogram-agg", 
+                "operation":"expensive-date-histogram-agg",
+                "settings": {
+                  "index.requests.cache.enable":true
+                }, 
+                "warmup-iterations": 3, 
+                "iterations": 30,
+                "target-throughput": 1.5
+              },
+              {
+                "name":"expensive-date-histogram-calendar-interval", 
+                "operation":"expensive-date-histogram-calendar-interval",
+                "settings": {
+                  "index.requests.cache.enable":true
+                }, 
+                "warmup-iterations": 3, 
+                "iterations": 30,
+                "target-throughput": 1.5
+              },
+              {
+                "name":"expensive-date-histogram-calendar-interval-with-tz", 
+                "operation":"expensive-date-histogram-calendar-interval-with-tz",
+                "settings": {
+                  "index.requests.cache.enable":true
+                }, 
+                "warmup-iterations": 3, 
+                "iterations": 30,
+                "target-throughput": 1.5
+              },
+              {
+                "name":"expensive-date-histogram-fixed-interval", 
+                "operation":"expensive-date-histogram-fixed-interval",
+                "settings": {
+                  "index.requests.cache.enable":true
+                }, 
+                "warmup-iterations": 3, 
+                "iterations": 30,
+                "target-throughput": 1.5
+              },
+              {
+                "name":"expensive-date-histogram-fixed-interval-with-tz", 
+                "operation":"expensive-date-histogram-fixed-interval-with-tz",
+                "settings": {
+                  "index.requests.cache.enable":true
+                }, 
+                "warmup-iterations": 3, 
+                "iterations": 30,
+                "target-throughput": 1.5
+              },
+              {
+                "name":"expensive-auto-date-histogram", 
+                "operation":"expensive-auto-date-histogram",
+                "settings": {
+                  "index.requests.cache.enable":true
+                }, 
+                "warmup-iterations": 3, 
+                "iterations": 30,
+                "target-throughput": 1.5
+              },
+              {
+                "name":"expensive-auto-date-histogram-with-tz", 
+                "operation":"expensive-auto-date-histogram-with-tz",
+                "settings": {
+                  "index.requests.cache.enable":true
+                }, 
+                "warmup-iterations": 3, 
+                "iterations": 30,
+                "target-throughput": 1.5
+              }
+            ]
+          }
+        }
+      ]
+    }
