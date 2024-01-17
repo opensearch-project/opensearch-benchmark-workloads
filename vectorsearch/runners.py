@@ -35,8 +35,8 @@ class WarmupIndicesRunner(Runner):
         response = await opensearch.transport.perform_request(method, warmup_url)
         if response is None or response['_shards'] is None:
             return result
-        if response['_shards']['failed'] == 0:
-            result['success'] = True
+        status = response['_shards']['failed'] == 0
+        result['success'] = status
         return result
 
     def __repr__(self, *args, **kwargs):

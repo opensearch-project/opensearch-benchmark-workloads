@@ -1,40 +1,40 @@
 # Vector Search Workload
 
-This workload is to benchmark performance of indexing and search of Vector Engine of Opensearch.
+This workload is to benchmark performance of indexing and search of Vector Engine of OpenSearch.
 
 ## Datasets
 
-This workload currently supports datasets  with either HDF5 format or Big-ann.
+This workload currently supports datasets  with either HDF5 format or Big-ANN.
 You can download datasets from [here](http://corpus-texmex.irisa.fr/) to benchmark the quality of approximate k-NN algorithm from
 OpenSearch.
 
 ### Running a benchmark
 
-Before running a benchmark, make sure you have the endpoint of your cluster and
-  the machine you are running the benchmarks from, can access it. 
- Additionally, ensure that all data has been pulled to the client.
+Before running a benchmark, ensure that the load generation host is able to access your cluster endpoint and that the 
+appropriate dataset is available on the host.
 
-Currently, we support one test procedures for the vector search workload: 
-no-train-test that does not have steps to train a model included in the 
-schedule. This test procedures will index a data set 
-of vectors into an OpenSearch index and then run a set of queries against them. 
+Currently, we support only one test procedure for the vector search workload. This is named no-train-test and does not include the steps required to train the model being used.
+This test procedures will index a data set of vectors into an OpenSearch cluster and then run a set of queries against the generated index. 
 
-Due to the number of parameters this workload offers, it's recommended to create a parameters file and feed that
-into the command line. Users are welcome to use the example param files,
-`faiss-sift-128-l2.json`, `nmslib-sift-128-l2.json`, or `lucene-sift-128-l2.json` in `/params`, as references.
+Due to the number of parameters this workload offers, it's recommended to create a parameter file that specifies the desired workload 
+parameters instead of listing them all on the OSB command line. Users are welcome to use the example param files,
+`faiss-sift-128-l2.json`, `nmslib-sift-128-l2.json`, or `lucene-sift-128-l2.json` in `/params`, as references. Here, we named
+the parameter file using a format `<Vector Engine Type>-<Dataset Name>-<No of Dimension>-<Space Type>.json`
 
 To run the workload, invoke the following command with the params file.
 
 ```
-export URL=
-export PORT=
+# OpenSearch Cluster End point url with hostname and port
+export ENDPOINT=  
+# Absolute file path of Workload param file
 export PARAMS_FILE=
 
 opensearch-benchmark execute-test \
-    --target-hosts $URL:$PORT \
+    --target-hosts $ENDPOINT \
     --workload vectorsearch \
     --workload-params ${PARAMS_FILE} \
-    --pipeline benchmark-only
+    --pipeline benchmark-only \
+    --kill-running-processes
 ```
 
 ## Current Procedures
@@ -76,9 +76,11 @@ This workload allows the following parameters to be specified using `--workload-
 
 
 
-#### Metrics
+#### Sample Output
 
-The result metrics of this procedure will look like: 
+The output of a sample test run is provided below. Metrics are captured in the result's data store as usual, and this can be configured to be 
+either in-memory, or an external OpenSearch cluster.
+
 ```
 ------------------------------------------------------
     _______             __   _____
@@ -169,7 +171,7 @@ The result metrics of this procedure will look like:
 
 ### Custom Runners
 
-Custom runners are defined in [runners.py](runners.py).
+Currently, there is only one custom runner defined in [runners.py](runners.py).
 
 | Syntax             | Description                                         | Parameters                                                                                                   |
 |--------------------|-----------------------------------------------------|:-------------------------------------------------------------------------------------------------------------|

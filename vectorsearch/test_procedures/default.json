@@ -1,6 +1,6 @@
 {
     "name": "no-train-test",
-    "description": "Index vector search that do not use an algorithm that requires training.",
+    "description": "Index vector search which does not use an algorithm that requires training.",
     "default": true,
     "schedule": [
         {
@@ -30,7 +30,7 @@
                 "num_vectors": {{ target_index_num_vectors | default(-1) }},
                 "id-field-name": "{{ id_field_name }}"
             },
-            "clients": {{ target_index_bulk_index_clients | default(1)}}
+            "clients": {{ target_index_bulk_indexing_clients | default(1)}}
         },
         {
             "name" : "refresh-target-index",
