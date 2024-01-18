@@ -55,145 +55,135 @@
           "operation": "wait-until-merges-finish"
         },
         {
-          "parallel": { 
-            "tasks": [ 
-              {
-                "name":"cheap-passenger-count",
-                "operation":"cheap-passenger-count", 
-                "settings": {
-                  "index.requests.cache.enable":true
-                },
-                "warmup-iterations": 1200, 
-                "iterations": 40000,
-                "target-throughput": 6
-              },
+          "parallel": {
+            "tasks": [
               {
                 "name":"cheap-tip-amount",
                 "operation":"cheap-tip-amount",
                 "settings": {
                   "index.requests.cache.enable":true
-                }, 
-                "warmup-iterations": 1200, 
+                },
+                "warmup-iterations": 1200,
                 "iterations": 40000,
                 "target-throughput": 6
               },
               {
-                "name":"cheap-fare-amount", 
+                "name":"cheap-fare-amount",
                 "operation":"cheap-fare-amount",
                 "settings": {
                   "index.requests.cache.enable":true
-                }, 
-                "warmup-iterations": 1200, 
+                },
+                "warmup-iterations": 1200,
                 "iterations": 40000,
                 "target-throughput": 6
               },
               {
-                "name":"cheap-total-amount", 
+                "name":"cheap-total-amount",
                 "operation":"cheap-total-amount",
                 "settings": {
                   "index.requests.cache.enable":true
-                }, 
-                "warmup-iterations": 1200, 
+                },
+                "warmup-iterations": 1200,
                 "iterations": 40000,
                 "target-throughput": 6
               },
               {
-                "name":"cheap-pickup", 
+                "name":"cheap-pickup",
                 "operation":"cheap-pickup",
                 "settings": {
                   "index.requests.cache.enable":true
-                }, 
-                "warmup-iterations": 1200, 
+                },
+                "warmup-iterations": 1200,
                 "iterations": 40000,
                 "target-throughput": 6
               },
               {
-                "name":"cheap-dropoff", 
+                "name":"cheap-dropoff",
                 "operation":"cheap-dropoff",
                 "settings": {
                   "index.requests.cache.enable":true
-                }, 
-                "warmup-iterations": 1200, 
+                },
+                "warmup-iterations": 1200,
                 "iterations": 40000,
                 "target-throughput": 6
               },
               {
-                "name":"expensive-autohisto-agg", 
+                "name":"expensive-autohisto-agg",
                 "operation":"expensive-autohisto-agg",
                 "settings": {
                   "index.requests.cache.enable":true
-                }, 
-                "warmup-iterations": 300, 
+                },
+                "warmup-iterations": 300,
                 "iterations": 10000,
                 "target-throughput": 1.5
               },
               {
-                "name":"expensive-date-histogram-agg", 
+                "name":"expensive-date-histogram-agg",
                 "operation":"expensive-date-histogram-agg",
                 "settings": {
                   "index.requests.cache.enable":true
-                }, 
-                "warmup-iterations": 300, 
+                },
+                "warmup-iterations": 300,
                 "iterations": 10000,
                 "target-throughput": 1.5
               },
               {
-                "name":"expensive-date-histogram-calendar-interval", 
+                "name":"expensive-date-histogram-calendar-interval",
                 "operation":"expensive-date-histogram-calendar-interval",
                 "settings": {
                   "index.requests.cache.enable":true
-                }, 
-                "warmup-iterations": 300, 
+                },
+                "warmup-iterations": 300,
                 "iterations": 10000,
                 "target-throughput": 1.5
               },
               {
-                "name":"expensive-date-histogram-calendar-interval-with-tz", 
+                "name":"expensive-date-histogram-calendar-interval-with-tz",
                 "operation":"expensive-date-histogram-calendar-interval-with-tz",
                 "settings": {
                   "index.requests.cache.enable":true
-                }, 
-                "warmup-iterations": 300, 
+                },
+                "warmup-iterations": 300,
                 "iterations": 10000,
                 "target-throughput": 1.5
               },
               {
-                "name":"expensive-date-histogram-fixed-interval", 
+                "name":"expensive-date-histogram-fixed-interval",
                 "operation":"expensive-date-histogram-fixed-interval",
                 "settings": {
                   "index.requests.cache.enable":true
-                }, 
-                "warmup-iterations": 300, 
+                },
+                "warmup-iterations": 300,
                 "iterations": 10000,
                 "target-throughput": 1.5
               },
               {
-                "name":"expensive-date-histogram-fixed-interval-with-tz", 
+                "name":"expensive-date-histogram-fixed-interval-with-tz",
                 "operation":"expensive-date-histogram-fixed-interval-with-tz",
                 "settings": {
                   "index.requests.cache.enable":true
-                }, 
-                "warmup-iterations": 300, 
+                },
+                "warmup-iterations": 300,
                 "iterations": 10000,
                 "target-throughput": 1.5
               },
               {
-                "name":"expensive-auto-date-histogram", 
+                "name":"expensive-auto-date-histogram",
                 "operation":"expensive-auto-date-histogram",
                 "settings": {
                   "index.requests.cache.enable":true
-                }, 
-                "warmup-iterations": 300, 
+                },
+                "warmup-iterations": 300,
                 "iterations": 10000,
                 "target-throughput": 1.5
               },
               {
-                "name":"expensive-auto-date-histogram-with-tz", 
+                "name":"expensive-auto-date-histogram-with-tz",
                 "operation":"expensive-auto-date-histogram-with-tz",
                 "settings": {
                   "index.requests.cache.enable":true
-                }, 
-                "warmup-iterations": 300, 
+                },
+                "warmup-iterations": 300,
                 "iterations": 10000,
                 "target-throughput": 1.5
               }
