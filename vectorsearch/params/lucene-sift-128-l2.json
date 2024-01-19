@@ -1,0 +1,23 @@
+{
+    "target_index_name": "target_index",
+    "target_field_name": "target_field",
+    "target_index_body": "indices/lucene-index.json",
+    "target_index_primary_shards": 1,
+    "target_index_dimension": 128,
+    "target_index_space_type": "l2",
+    
+    "target_index_bulk_size": 100,
+    "target_index_bulk_index_data_set_format": "hdf5",
+    "target_index_bulk_index_data_set_path": "/tmp/sift-128-euclidean.hdf5",
+    "target_index_bulk_indexing_clients": 10,
+    
+    "target_index_max_num_segments": 10,
+    "target_index_force_merge_timeout": 45.0,
+    "hnsw_ef_search": 100,
+    "hnsw_ef_construction": 100,
+    "query_k": 100,
+
+    "query_data_set_format": "hdf5",
+    "query_data_set_path":"/tmp/sift-128-euclidean.hdf5",
+    "query_count": 100
+  }
