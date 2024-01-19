@@ -1,0 +1,21 @@
+{
+    "name": "warmup-indices",
+    "operation-type": "warmup-knn-indices",
+    "index": "{{ target_index_name | default('target_index') }}",
+    "include-in-results_publishing": false
+},
+{
+    "name": "force-merge",
+    "operation-type": "force-merge",
+    "request-timeout": {{ target_index_force_merge_timeout | default(7200) }},
+    "index": "{{ target_index_name | default('target_index') }}",
+    "mode": "polling",
+    "max-num-segments": {{ target_index_max_num_segments | default(1) }},
+    "include-in-results_publishing": false
+},
+{
+    "name": "refresh-target-index",
+    "operation-type": "refresh",
+    "retries": 100,
+    "index": "{{ target_index_name | default('target_index') }}"
+}
