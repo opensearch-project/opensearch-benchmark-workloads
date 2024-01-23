@@ -1,0 +1,195 @@
+{
+  "settings": {
+    "index.number_of_shards": 1,
+    "index.number_of_replicas": 1,
+    "index.requests.cache.enable": false
+  },
+  "mappings": {
+    "_data_stream_timestamp": {
+      "enabled": true
+    },
+    "dynamic_templates": [
+      {
+        "match_ip": {
+          "match": "ip",
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "ip"
+          }
+        }
+      },
+      {
+        "match_message": {
+          "match": "message",
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "match_only_text"
+          }
+        }
+      },
+      {
+        "strings_as_keyword": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "ignore_above": 1024,
+            "type": "keyword"
+          }
+        }
+      }
+    ],
+    "date_detection": false,
+    "properties": {
+      "@timestamp": {
+        "type": "date"
+      },
+      "agent": {
+        "properties": {
+          "ephemeral_id": {
+            "type": "keyword",
+            "ignore_above": 1024
+          },
+          "id": {
+            "type": "keyword",
+            "ignore_above": 1024
+          },
+          "name": {
+            "type": "keyword",
+            "ignore_above": 1024
+          },
+          "type": {
+            "type": "keyword",
+            "ignore_above": 1024
+          },
+          "version": {
+            "type": "keyword",
+            "ignore_above": 1024
+          }
+        }
+      },
+      "aws": {
+        "properties": {
+          "cloudwatch": {
+            "properties": {
+              "ingestion_time": {
+                "type": "keyword",
+                "ignore_above": 1024
+              },
+              "log_group": {
+                "type": "keyword",
+                "ignore_above": 1024
+              },
+              "log_stream": {
+                "type": "keyword",
+                "ignore_above": 1024
+              }
+            }
+          }
+        }
+      },
+      "cloud": {
+        "properties": {
+          "region": {
+            "type": "keyword",
+            "ignore_above": 1024
+          }
+        }
+      },
+      "data_stream": {
+        "properties": {
+          "dataset": {
+            "type": "constant_keyword",
+            "value": "benchmarks"
+          },
+          "namespace": {
+            "type": "constant_keyword",
+            "value": "day1"
+          },
+          "type": {
+            "type": "constant_keyword",
+            "value": "logs"
+          }
+        }
+      },
+      "ecs": {
+        "properties": {
+          "version": {
+            "type": "keyword",
+            "ignore_above": 1024
+          }
+        }
+      },
+      "event": {
+        "properties": {
+          "dataset": {
+            "type": "keyword",
+            "ignore_above": 1024
+          },
+          "id": {
+            "type": "keyword",
+            "ignore_above": 1024
+          },
+          "ingested": {
+            "type": "keyword",
+            "ignore_above": 1024
+          }
+        }
+      },
+      "host": {
+        "type": "object"
+      },
+      "input": {
+        "properties": {
+          "type": {
+            "type": "keyword",
+            "ignore_above": 1024
+          }
+        }
+      },
+      "log": {
+        "properties": {
+          "file": {
+            "properties": {
+              "path": {
+                "type": "keyword",
+                "ignore_above": 1024
+              }
+            }
+          }
+        }
+      },
+      "message": {
+        "type": "match_only_text"
+      },
+      "meta": {
+        "properties": {
+          "file": {
+            "type": "keyword",
+            "ignore_above": 1024
+          }
+        }
+      },
+      "metrics": {
+        "properties": {
+          "size": {
+            "type": "long"
+          },
+          "tmin": {
+            "type": "long"
+          }
+        }
+      },
+      "process": {
+        "properties": {
+          "name": {
+            "type": "keyword",
+            "ignore_above": 1024
+          }
+        }
+      },
+      "tags": {
+        "type": "keyword",
+        "ignore_above": 1024
+      }
+    }
+  }
+}
