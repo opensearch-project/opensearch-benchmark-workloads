@@ -1,0 +1,11 @@
+{
+  "size": 0,
+  "aggs": {
+    "country": {
+      "terms": {
+        "field": "aws.cloudwatch.log_stream",
+        "size": 100
+      }
+    }
+  }
+}
