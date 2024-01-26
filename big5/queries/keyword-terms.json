@@ -1,0 +1,11 @@
+{
+  "size": 0,
+  "aggs": {
+    "station": {
+      "terms": {
+        "field": "aws.cloudwatch.log_stream",
+        "size": 500
+      }
+    }
+  }
+}

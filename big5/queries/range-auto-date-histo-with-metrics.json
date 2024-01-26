@@ -1,0 +1,59 @@
+{
+  "size": 0,
+  "aggs": {
+    "tmax": {
+      "range": {
+        "field": "metrics.size",
+        "ranges": [
+          {
+            "to": -10
+          },
+          {
+            "from": -10,
+            "to": 10
+          },
+          {
+            "from": 10,
+            "to": 100
+          },
+          {
+            "from": 100,
+            "to": 1000
+          },
+          {
+            "from": 1000,
+            "to": 2000
+          },
+          {
+            "from": 2000
+          }
+        ]
+      },
+      "aggs": {
+        "date": {
+          "auto_date_histogram": {
+            "field": "@timestamp",
+            "buckets": 20
+          },
+          "aggs": {
+            "tmin": {
+              "min": {
+                "field": "metrics.tmin"
+              }
+            },
+            "tavg": {
+              "avg": {
+                "field": "metrics.size"
+              }
+            },
+            "tmax": {
+              "max": {
+                "field": "metrics.size"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
