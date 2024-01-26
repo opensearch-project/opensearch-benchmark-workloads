@@ -1,0 +1,9 @@
+{
+  "query": {
+    "term": {
+      "log.file.path": {
+        "value": "/var/log/messages/fuschiashoulder"
+      }
+    }
+  }
+}

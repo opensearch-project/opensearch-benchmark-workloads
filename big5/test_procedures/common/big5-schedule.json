@@ -1,0 +1,278 @@
+{
+  "operation": "delete-index"
+},
+{
+  "operation": {
+    "operation-type": "create-index",
+    "settings": {{index_settings | default({}) | tojson}}
+  }
+},
+{
+  "name": "check-cluster-health",
+  "operation": {
+    "operation-type": "cluster-health",
+    "index": "big5",
+    "request-params": {
+      "wait_for_status": "{{cluster_health | default('green')}}",
+      "wait_for_no_relocating_shards": "true"
+    },
+    "retry-until-success": true
+  }
+},
+{
+  "operation": "index-append",
+  "warmup-time-period": 240,
+  "clients": {{bulk_indexing_clients | default(8)}},
+  "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+},
+{
+  "name": "refresh-after-index",
+  "operation": "refresh"
+},
+{
+  "operation": {
+    "operation-type": "force-merge",
+    "max-num-segments": {{ max_num_segments | default(-1) }},
+    "request-timeout": 7200
+  }
+},
+{
+  "name": "refresh-after-force-merge",
+  "operation": "refresh"
+},
+{
+  "name": "wait-until-merges-finish",
+  "operation": {
+    "operation-type": "index-stats",
+    "index": "_all",
+    "condition": {
+      "path": "_all.total.merges.current",
+      "expected-value": 0
+    },
+    "retry-until-success": true,
+    "include-in-reporting": false
+  }
+},
+{
+  "operation": "default",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "desc_sort_timestamp",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "asc_sort_timestamp",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "desc_sort_with_after_timestamp",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "asc_sort_with_after_timestamp",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "desc_sort_timestamp_can_match_shortcut",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "desc_sort_timestamp_no_can_match_shortcut",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "asc_sort_timestamp_can_match_shortcut",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "asc_sort_timestamp_no_can_match_shortcut",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "name": "term",
+  "operation": "term",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "multi_terms-keyword",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "keyword-terms",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "keyword-terms-low-cardinality",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "composite-terms",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "composite_terms-keyword",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "composite-date_histogram-daily",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "range",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "range-numeric",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "keyword-in-range",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "date_histogram_hourly_agg",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "date_histogram_minute_agg",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "scroll",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "query-string-on-message",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "query-string-on-message-filtered",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "query-string-on-message-filtered-sorted-num",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "sort_keyword_can_match_shortcut",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "sort_keyword_no_can_match_shortcut",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "sort_numeric_desc",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "sort_numeric_asc",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "sort_numeric_desc_with_match",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "sort_numeric_asc_with_match",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "range_field_conjunction_big_range_big_term_query",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "range_field_disjunction_big_range_small_term_query",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "range_field_conjunction_small_range_small_term_query",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "range_field_conjunction_small_range_big_term_query",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "range-auto-date-histo",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+},
+{
+  "operation": "range-auto-date-histo-with-metrics",
+  "warmup-iterations": 200,
+  "iterations": 100,
+  "target-throughput": 2
+}
