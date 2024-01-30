@@ -17,8 +17,8 @@
         {
           "source-url": "{{ document_url | safe }}",
           "source-file": "{{ document_file | default('documents.json') }}",
-          "document-count": {{ document_count }},
-          "uncompressed-bytes": {{ document_uncompressed_size_in_bytes }},
+          "document-count": {{ document_count | default(2000) }},
+          "uncompressed-bytes": {{ document_uncompressed_size_in_bytes | default(2000) }},
           "compressed-bytes": {{ document_compressed_size_in_bytes | default(1) }}
         }
       ]
