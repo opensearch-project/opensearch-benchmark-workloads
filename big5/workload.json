@@ -15,9 +15,11 @@
       "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/big5",
       "documents": [
         {
-          "source-file": "documents.json",
-          "document-count": 69223950,
-          "uncompressed-bytes": 64048001338
+          "source-url": "{{ document_url | safe }}",
+          "source-file": "{{ document_file | default('documents.json') }}",
+          "document-count": {{ document_count }},
+          "uncompressed-bytes": {{ document_uncompressed_size_in_bytes }},
+          "compressed-bytes": {{ document_compressed_size_in_bytes | default(1) }}
         }
       ]
     }
