@@ -1,0 +1,31 @@
+{% set index_body = 'index.json' %}
+
+{
+  "version": 2,
+  "description": "Random HTTP server log data",
+  "indices": [
+    {
+      "name": "{{index_name | default('big5')}}",
+      "body": "{{ index_body }}"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "big5",
+      "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/big5",
+      "documents": [
+        {
+          "source-file": "documents.json",
+          "document-count": 69223950,
+          "uncompressed-bytes": 64048001338
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ benchmark.collect(parts="operations/*.json") }}
+  ],
+  "test_procedures": [
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  ]
+}
