@@ -69,10 +69,10 @@ This workload allows the following parameters to be specified using `--workload-
 | hnsw_ef_construction                    | HNSW ef construction parameter                                           |
 | hnsw_m                                  | HNSW m parameter                                                         |
 | query_k                                 | The number of neighbors to return for the search                         |
-| query_clients                           | Number of clients to use for running queries                             |
 | query_data_set_format                   | Format of vector data set for queries                                    |
 | query_data_set_path                     | Path to vector data set for queries                                      |
 | query_count                             | Number of queries for search operation                                   |
+| search_clients                          | Number of clients to use for running queries                             |
 
 
 
