@@ -56,7 +56,8 @@
                 "data_set_path" : "{{ query_data_set_path | default('/tmp/vector-dataset.hdf5') }}",
                 "num_vectors" : {{ query_count | default(-1) }},
                 "id-field-name": "{{ id_field_name }}"
-            }
+            },
+            "clients": {{ search_clients | default(1)}}
         }
     ]
 }
