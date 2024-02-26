@@ -12,14 +12,14 @@
   "corpora": [
     {
       "name": "big5",
-      "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/big5",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/big5",
       "documents": [
         {
           "source-url": "{{ document_url | safe }}",
-          "source-file": "{{ document_file | default('documents.json') }}",
-          "document-count": {{ document_count | default(2000) }},
-          "uncompressed-bytes": {{ document_uncompressed_size_in_bytes | default(2000) }},
-          "compressed-bytes": {{ document_compressed_size_in_bytes | default(1) }}
+          "source-file": "{{ document_file | default('documents.json.bz2') }}",
+          "document-count": {{ document_count | default(69223950) }},
+          "compressed-bytes": {{ document_compressed_size_in_bytes | default(3494648233) }},
+          "uncompressed-bytes": {{ document_uncompressed_size_in_bytes | default(64048001338) }}
         }
       ]
     }
