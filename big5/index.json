@@ -1,10 +1,12 @@
 {
     "settings": {
+	  "index.number_of_shards": {{number_of_shards | default(1)}},
+	  "index.number_of_replicas": {{number_of_replicas | default(1)}},
+	  "index.queries.cache.enabled": {{query_cache_enabled | default(false) | tojson}},
+  	  "index.requests.cache.enable": {{requests_cache_enabled | default(false) | tojson}},
 	  "index.codec": "best_compression",
-	  "index.number_of_shards": "1",
 	  "index.translog.sync_interval": "30s",
-	  "index.translog.durability": "async",
-	  "index.number_of_replicas": "1"
+	  "index.translog.durability": "async"
       },
       "mappings": {
 	  "properties": {
