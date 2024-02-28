@@ -62,6 +62,7 @@ This workload allows the following parameters to be specified using `--workload-
 | target_index_bulk_size                  | Target index bulk size                                                   |
 | target_index_bulk_index_data_set_format | Format of vector data set                                                |
 | target_index_bulk_index_data_set_path   | Path to vector data set                                                  |
+| target_index_bulk_index_data_set_corpus | Corpus name to vector data set                                                  |
 | target_index_bulk_index_clients         | Clients to be used for bulk ingestion (must be divisor of data set size) |
 | target_index_max_num_segments           | Number of segments to merge target index down to before beginning search |
 | target_index_force_merge_timeout        | Timeout for of force merge requests in seconds                           |
@@ -72,6 +73,7 @@ This workload allows the following parameters to be specified using `--workload-
 | query_data_set_format                   | Format of vector data set for queries                                    |
 | query_data_set_path                     | Path to vector data set for queries                                      |
 | query_count                             | Number of queries for search operation                                   |
+| query_body                              | Json properties that will be merged with search body                     |
 | search_clients                          | Number of clients to use for running queries                             |
 
 
