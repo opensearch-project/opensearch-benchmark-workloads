@@ -57,7 +57,8 @@
                 "neighbors_data_set_path" : "{{ neighbors_data_set_path | default('/tmp/vector-dataset.hdf5') }}",
                 "neighbors_data_set_format" : "{{ neighbors_data_set_format | default('hdf5') }}",
                 "num_vectors" : {{ query_count | default(-1) }},
-                "id-field-name": "{{ id_field_name }}"
+                "id-field-name": "{{ id_field_name }}",
+                "body": {{ query_body | default ({}) | tojson }}    
             },
             "clients": {{ search_clients | default(1)}}
         }
