@@ -15,7 +15,12 @@
     "target_index_force_merge_timeout": 45.0,
     "hnsw_ef_search": 100,
     "hnsw_ef_construction": 100,
+
     "query_k": 100,
+    "query_body": {
+         "docvalue_fields" : ["_id"],
+         "stored_fields" : "_none_"
+    },
 
     "query_data_set_format": "hdf5",
     "query_data_set_path":"/tmp/sift-128-euclidean.hdf5",
