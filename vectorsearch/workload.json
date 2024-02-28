@@ -8,6 +8,52 @@
             "body": "{{ target_index_body }}"
         }
     ],
+    "corpora": [
+    {
+      "name": "cohere",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "documents": [
+        {
+          "source-file": "documents-1k.hdf5.bz2",
+          "source-format": "hdf5",
+          "document-count": 1000,
+        }
+      ]
+    },
+    {
+      "name": "cohere-100k",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "documents": [
+        {
+          "source-file": "documents-100k.hdf5.bz2",
+          "source-format": "hdf5",
+          "document-count": 100000,
+        }
+      ]
+    },
+    {
+      "name": "cohere-1m",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "documents": [
+        {
+          "source-file": "documents-1m.hdf5.bz2",
+          "source-format": "hdf5",
+          "document-count": 1000000,
+        }
+      ]
+    },
+    {
+      "name": "cohere-10m",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "documents": [
+        {
+          "source-file": "documents-10m.hdf5.bz2",
+          "source-format": "hdf5",
+          "document-count": 10000000,
+        }
+      ]
+    }
+  ],
     "operations": [
       {{ benchmark.collect(parts="operations/*.json") }}
     ],
