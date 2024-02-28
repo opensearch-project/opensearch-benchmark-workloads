@@ -16,7 +16,7 @@
         {
           "source-file": "documents-1k.hdf5.bz2",
           "source-format": "hdf5",
-          "document-count": 1000,
+          "document-count": 1000
         }
       ]
     },
@@ -27,7 +27,7 @@
         {
           "source-file": "documents-100k.hdf5.bz2",
           "source-format": "hdf5",
-          "document-count": 100000,
+          "document-count": 100000
         }
       ]
     },
@@ -38,7 +38,7 @@
         {
           "source-file": "documents-1m.hdf5.bz2",
           "source-format": "hdf5",
-          "document-count": 1000000,
+          "document-count": 1000000
         }
       ]
     },
@@ -49,7 +49,7 @@
         {
           "source-file": "documents-10m.hdf5.bz2",
           "source-format": "hdf5",
-          "document-count": 10000000,
+          "document-count": 10000000
         }
       ]
     }
