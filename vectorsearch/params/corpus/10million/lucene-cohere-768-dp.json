@@ -2,13 +2,13 @@
     "target_index_name": "target_index",
     "target_field_name": "target_field",
     "target_index_body": "indices/lucene-index.json",
-    "target_index_primary_shards": 3,
+    "target_index_primary_shards": 18,
     "target_index_dimension": 768,
     "target_index_space_type": "innerproduct",
     
     "target_index_bulk_size": 100,
     "target_index_bulk_index_data_set_format": "hdf5",
-    "target_index_bulk_index_data_set_corpus": "cohere",
+    "target_index_bulk_index_data_set_corpus": "cohere-10m",
     "target_index_bulk_indexing_clients": 10,
     
     "target_index_max_num_segments": 10,
@@ -23,6 +23,6 @@
     },
 
     "query_data_set_format": "hdf5",
-    "query_data_set_corpus": "cohere",
-    "query_count": 1000
+    "query_data_set_corpus": "cohere-10m",
+    "query_count": 10000
   }
