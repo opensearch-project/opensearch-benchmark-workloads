@@ -33,12 +33,16 @@
             "clients": {{ target_index_bulk_indexing_clients | default(1)}}
         },
         {
-            "name" : "refresh-target-index",
+            "name" : "refresh-target-index-before-force-merge",
             "operation" : "refresh-target-index"
         },
         {
             "name" : "force-merge-segments",
             "operation" : "force-merge"
+        },
+        {
+            "name" : "refresh-target-index-after-force-merge",
+            "operation" : "refresh-target-index"
         },
         {
             "name" : "warmup-indices",
