@@ -2,7 +2,7 @@
 
 This repository contains the "Big5" workload for benchmarking OpenSearch using OpenSearch Benchmark. The "Big5" workload focuses on five essential areas in OpenSearch performance and querying: Text Querying, Sorting, Date Histogram, Range Queries, and Terms Aggregation.
 
-This workload is derived from the [Elasticsearch vs. OpenSearch comparison benchmark](https://github.com/elastic/elasticsearch-opensearch-benchmark) published by Elastic.  It has been modified to conform to OpenSearch Benchmark terminology and comply with OpenSearch features; changes are in the JSON files within the workload.
+This workload is derived from the Elasticsearch vs. OpenSearch comparison benchmark.  It has been modified to conform to OpenSearch Benchmark terminology and comply with OpenSearch features.
 
 
 ### The "Big 5" Areas
@@ -36,7 +36,6 @@ Before using this repository, ensure you have the following installed:
 
 - [OpenSearch](https://opensearch.org) (v2.11 or later)
 - [OpenSearch Benchmark](https://opensearch.org/docs/latest/benchmark) (v1.2 or later)
-- An existing datastream with data generated using the open-source tool [Elastic Integration Corpus Generator Tool](https://github.com/elastic/elastic-integration-corpus-generator-tool). The data should follow the expected document structure mentioned below.
 
 
 ### Parameters
