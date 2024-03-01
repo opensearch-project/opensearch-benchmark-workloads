@@ -1,12 +1,10 @@
-{% set index_body = 'index.json' %}
-
 {
   "version": 2,
-  "description": "Random HTTP server log data",
+  "description": "Big5 workload based on synthetically generated data corpus",
   "indices": [
     {
-      "name": "{{index_name | default('big5')}}",
-      "body": "{{ index_body }}"
+      "name": "{{ index_name | default('big5') }}",
+      "body": "{{ index_body | default('index.json') }}"
     }
   ],
   "corpora": [
