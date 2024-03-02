@@ -1,0 +1,14 @@
+{
+  "name": "big5",
+  "default": true,
+  "schedule": [
+    {{ benchmark.collect(parts="common/big5-schedule.json") }}
+  ]
+},
+{
+  "name": "test",
+  "default": false,
+  "schedule": [
+    {{ benchmark.collect(parts="common/test-schedule.json") }}
+  ]
+}
