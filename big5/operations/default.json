@@ -7,7 +7,7 @@
     {
       "name": "default",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
           "match_all": {}
@@ -17,7 +17,7 @@
     {
       "name": "term",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "request-timeout": 7200,
       "body": {
         "query": {
@@ -32,7 +32,7 @@
     {
       "name": "range",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
           "range": {
@@ -47,7 +47,7 @@
     {
       "name": "range-numeric",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
           "range": {
@@ -62,7 +62,7 @@
     {
       "name": "keyword-in-range",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
           "bool": {
@@ -88,7 +88,7 @@
     {
       "name": "date_histogram_hourly_agg",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "size": 0,
         "aggs": {
@@ -104,7 +104,7 @@
     {
       "name": "date_histogram_minute_agg",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "size": 0,
         "query": {
@@ -128,7 +128,7 @@
     {
       "name": "scroll",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "pages": 25,
       "results-per-page": 1000,
       "body": {
@@ -140,7 +140,7 @@
     {
       "name": "desc_sort_timestamp",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
           "match_all": {}
@@ -153,7 +153,7 @@
     {
       "name": "desc_sort_with_after_timestamp",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "track_total_hits": false,
         "query": {
@@ -168,7 +168,7 @@
     {
       "name": "asc_sort_timestamp",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
           "match_all": {}
@@ -181,7 +181,7 @@
     {
       "name": "asc_sort_with_after_timestamp",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "track_total_hits": false,
         "query": {
@@ -196,7 +196,7 @@
     {
       "name": "desc_sort_timestamp_can_match_shortcut",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "track_total_hits": false,
         "query": {
@@ -212,7 +212,7 @@
     {
       "name": "desc_sort_timestamp_no_can_match_shortcut",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "request-params" : {
           "pre_filter_shard_size" : 100000
       },
@@ -231,7 +231,7 @@
     {
       "name": "asc_sort_timestamp_can_match_shortcut",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "track_total_hits": false,
         "query": {
@@ -247,7 +247,7 @@
     {
       "name": "asc_sort_timestamp_no_can_match_shortcut",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "request-params" : {
           "pre_filter_shard_size" : 100000
       },
@@ -266,7 +266,7 @@
     {
       "name": "sort_keyword_can_match_shortcut",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "track_total_hits": false,
         "query": {
@@ -282,7 +282,7 @@
     {
       "name": "sort_keyword_no_can_match_shortcut",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "request-params" : {
           "pre_filter_shard_size" : 100000
       },
@@ -301,7 +301,7 @@
     {
       "name": "sort_numeric_desc",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "track_total_hits": false,
         "query": {
@@ -317,7 +317,7 @@
     {
       "name": "sort_numeric_asc",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "track_total_hits": false,
         "query": {
@@ -333,7 +333,7 @@
     {
       "name": "sort_numeric_desc_with_match",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "track_total_hits": false,
         "query": {
@@ -351,7 +351,7 @@
     {
       "name": "sort_numeric_asc_with_match",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "track_total_hits": false,
         "query": {
@@ -370,7 +370,7 @@
       "name": "terms-significant-1",
       "operation-type": "search",
       "request-timeout": 7200,
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": 
         {
           "track_total_hits": false,
@@ -404,7 +404,7 @@
       "name": "terms-significant-2",
       "operation-type": "search",
       "request-timeout": 7200,
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "track_total_hits": false,
         "size": 0,
@@ -436,7 +436,7 @@
     {
       "name": "range_field_conjunction_big_range_big_term_query",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
           "bool": {
@@ -462,7 +462,7 @@
     {
       "name": "range_field_disjunction_big_range_small_term_query",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
           "bool": {
@@ -488,7 +488,7 @@
     {
       "name": "range_field_conjunction_small_range_small_term_query",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
           "bool": {
@@ -514,7 +514,7 @@
     {
       "name": "range_field_conjunction_small_range_big_term_query",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
           "bool": {
@@ -535,7 +535,7 @@
     {
       "name": "range-auto-date-histo",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "size": 0,
         "aggs": {
@@ -582,7 +582,7 @@
     {
       "name": "range-auto-date-histo-with-metrics",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "request-timeout": 7200,
       "body": {
         "size": 0,
@@ -639,7 +639,7 @@
     {
       "name": "multi_terms-keyword",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "request-timeout": 7200,
       "body":{
         "size": 0,
@@ -670,7 +670,7 @@
     {
       "name": "composite-terms",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "size": 0,
         "query": {
@@ -696,7 +696,7 @@
     {
       "name": "composite_terms-keyword",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "size": 0,
         "query": {
@@ -723,7 +723,7 @@
     {
       "name": "composite-date_histogram-daily",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "size": 0,
         "query": {
@@ -748,7 +748,7 @@
     {
       "name": "keyword-terms",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "size": 0,
         "aggs": {
@@ -764,7 +764,7 @@
     {
       "name": "keyword-terms-low-cardinality",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "size": 0,
         "aggs": {
@@ -780,7 +780,7 @@
     {
       "name": "query-string-on-message",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
           "query_string": {
@@ -792,7 +792,7 @@
     {
       "name": "query-string-on-message-filtered",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
           "bool": {
@@ -818,7 +818,7 @@
     {
       "name": "query-string-on-message-filtered-sorted-num",
       "operation-type": "search",
-      "index": "logs-benchmark-*",
+      "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
           "bool": {

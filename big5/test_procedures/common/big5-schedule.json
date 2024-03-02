@@ -11,7 +11,7 @@
   "name": "check-cluster-health",
   "operation": {
     "operation-type": "cluster-health",
-    "index": "big5",
+    "index": "{{index_name | default('big5')}}",
     "request-params": {
       "wait_for_status": "{{cluster_health | default('green')}}",
       "wait_for_no_relocating_shards": "true"
@@ -32,8 +32,9 @@
 {
   "operation": {
     "operation-type": "force-merge",
-    "max-num-segments": {{ max_num_segments | default(-1) }},
-    "request-timeout": 7200
+    "request-timeout": 7200{%- if force_merge_max_num_segments is defined %},
+    "max-num-segments": {{ max_num_segments | tojson }}
+    {%- endif %}
   }
 },
 {
@@ -57,222 +58,259 @@
   "operation": "default",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "desc_sort_timestamp",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "asc_sort_timestamp",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "desc_sort_with_after_timestamp",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "asc_sort_with_after_timestamp",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "desc_sort_timestamp_can_match_shortcut",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "desc_sort_timestamp_no_can_match_shortcut",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "asc_sort_timestamp_can_match_shortcut",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "asc_sort_timestamp_no_can_match_shortcut",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "name": "term",
   "operation": "term",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "multi_terms-keyword",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "keyword-terms",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "keyword-terms-low-cardinality",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "composite-terms",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "composite_terms-keyword",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "composite-date_histogram-daily",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "range",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "range-numeric",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "keyword-in-range",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "date_histogram_hourly_agg",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "date_histogram_minute_agg",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "scroll",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "query-string-on-message",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "query-string-on-message-filtered",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "query-string-on-message-filtered-sorted-num",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "sort_keyword_can_match_shortcut",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "sort_keyword_no_can_match_shortcut",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "sort_numeric_desc",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "sort_numeric_asc",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "sort_numeric_desc_with_match",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "sort_numeric_asc_with_match",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "range_field_conjunction_big_range_big_term_query",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "range_field_disjunction_big_range_small_term_query",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "range_field_conjunction_small_range_small_term_query",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "range_field_conjunction_small_range_big_term_query",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "range-auto-date-histo",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 },
 {
   "operation": "range-auto-date-histo-with-metrics",
   "warmup-iterations": 200,
   "iterations": 100,
-  "target-throughput": 2
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
 }
