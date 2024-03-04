@@ -6,18 +6,49 @@
     "index.requests.cache.enable": {{requests_cache_enabled | default(false) | tojson}},
     "index.codec": "best_compression",
     "index.translog.sync_interval": "30s",
-    "index.translog.durability": "async",
-    "index.query.default_field": [ "message" ]
+    "index.translog.durability": "async"
   },
   "mappings": {
+    "_data_stream_timestamp": {
+      "enabled": true
+    },
+    "dynamic_templates": [
+      {
+        "match_ip": {
+          "match": "ip",
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "ip"
+          }
+        }
+      },
+      {
+        "match_message": {
+          "match": "message",
+          "match_mapping_type": "string",
+          "mapping": {
+            "type": "match_only_text"
+          }
+        }
+      },
+      {
+        "strings_as_keyword": {
+          "match_mapping_type": "string",
+          "mapping": {
+            "ignore_above": 1024,
+            "type": "keyword"
+          }
+        }
+      }
+    ],
+    "date_detection": false,
     "properties": {
       "@timestamp": {
         "type": "date"
       },
       "agent": {
-        "type": "object",
         "properties": {
-          "name": {
+          "ephemeral_id": {
             "type": "keyword",
             "ignore_above": 1024
           },
@@ -25,7 +56,7 @@
             "type": "keyword",
             "ignore_above": 1024
           },
-          "ephemeral_id": {
+          "name": {
             "type": "keyword",
             "ignore_above": 1024
           },
@@ -40,16 +71,14 @@
         }
       },
       "aws": {
-        "type": "object",
         "properties": {
           "cloudwatch": {
-            "type": "object",
             "properties": {
-              "log_group": {
+              "ingestion_time": {
                 "type": "keyword",
                 "ignore_above": 1024
               },
-              "ingestion_time": {
+              "log_group": {
                 "type": "keyword",
                 "ignore_above": 1024
               },
@@ -62,7 +91,6 @@
         }
       },
       "cloud": {
-        "type": "object",
         "properties": {
           "region": {
             "type": "keyword",
@@ -70,8 +98,23 @@
           }
         }
       },
+      "data_stream": {
+        "properties": {
+          "dataset": {
+            "type": "constant_keyword",
+            "value": "benchmarks"
+          },
+          "namespace": {
+            "type": "constant_keyword",
+            "value": "day1"
+          },
+          "type": {
+            "type": "constant_keyword",
+            "value": "logs"
+          }
+        }
+      },
       "ecs": {
-        "type": "object",
         "properties": {
           "version": {
             "type": "keyword",
@@ -80,16 +123,16 @@
         }
       },
       "event": {
-        "type": "object",
         "properties": {
-          "ingested": {
-            "type": "date"
+          "dataset": {
+            "type": "keyword",
+            "ignore_above": 1024
           },
           "id": {
             "type": "keyword",
             "ignore_above": 1024
           },
-          "dataset": {
+          "ingested": {
             "type": "keyword",
             "ignore_above": 1024
           }
@@ -99,7 +142,6 @@
         "type": "object"
       },
       "input": {
-        "type": "object",
         "properties": {
           "type": {
             "type": "keyword",
@@ -108,10 +150,8 @@
         }
       },
       "log": {
-        "type": "object",
         "properties": {
           "file": {
-            "type": "object",
             "properties": {
               "path": {
                 "type": "keyword",
@@ -122,10 +162,9 @@
         }
       },
       "message": {
-        "type": "text"
+        "type": "match_only_text"
       },
       "meta": {
-        "type": "object",
         "properties": {
           "file": {
             "type": "keyword",
@@ -134,12 +173,8 @@
         }
       },
       "metrics": {
-        "type": "object",
         "properties": {
           "size": {
-            "type": "long"
-          },
-          "tmax": {
             "type": "long"
           },
           "tmin": {
@@ -148,7 +183,6 @@
         }
       },
       "process": {
-        "type": "object",
         "properties": {
           "name": {
             "type": "keyword",
