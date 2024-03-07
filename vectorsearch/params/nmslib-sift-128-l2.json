@@ -11,8 +11,8 @@
     "target_index_bulk_index_data_set_path": "/tmp/sift-128-euclidean-train.hdf5",
     "target_index_bulk_indexing_clients": 10,
     
-    "target_index_max_num_segments": 10,
-    "target_index_force_merge_timeout": 45.0,
+    "target_index_max_num_segments": 1,
+    "target_index_force_merge_timeout": 300,
     "hnsw_ef_search": 100,
     "hnsw_ef_construction": 100,
 
