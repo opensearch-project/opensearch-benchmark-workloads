@@ -1,0 +1,12 @@
+{
+    "name" : "refresh-target-index-before-force-merge",
+    "operation" : "refresh-target-index"
+},
+{
+    "name" : "force-merge-segments",
+    "operation" : "force-merge"
+},
+{
+    "name" : "refresh-target-index-after-force-merge",
+    "operation" : "refresh-target-index"
+}
