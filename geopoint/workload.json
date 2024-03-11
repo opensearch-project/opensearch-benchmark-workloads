@@ -1,0 +1,33 @@
+{% import "benchmark.helpers" as benchmark with context %}
+
+{
+  "version": 2,
+  "description": "Point coordinates from PlanetOSM",
+  "indices": [
+    {
+      "name": "osmgeopoints",
+      "body": "index.json"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "geopoint",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/geopoint",
+      "documents": [
+        {
+          "source-file": "documents.json.bz2",
+          "document-count": 60844404,
+          "compressed-bytes": 505542241,
+          "uncompressed-bytes": 2448564579
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ benchmark.collect(parts="operations/*.json") }}
+  ],
+  "test_procedures": [
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  ]
+}
+

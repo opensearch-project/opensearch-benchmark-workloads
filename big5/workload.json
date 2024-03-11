@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "description": "Big5 workload based on synthetically generated data corpus",
+  "indices": [
+    {
+      "name": "{{ index_name | default('big5') }}",
+      "body": "{{ index_body | default('index.json') }}"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "big5",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/big5",
+      "documents": [
+        {
+          "source-url": "{{ document_url | safe }}",
+          "source-file": "{{ document_file | default('documents.json.bz2') }}",
+          "document-count": {{ document_count | default(69223950) }},
+          "compressed-bytes": {{ document_compressed_size_in_bytes | default(3494648233) }},
+          "uncompressed-bytes": {{ document_uncompressed_size_in_bytes | default(64048001338) }}
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ benchmark.collect(parts="operations/*.json") }}
+  ],
+  "test_procedures": [
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  ]
+}

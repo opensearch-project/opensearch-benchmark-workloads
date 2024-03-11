@@ -1,0 +1,156 @@
+    {
+      "name": "append-no-conflicts",
+      "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After that a couple of queries are run.",
+      "default": true,
+      "schedule": [
+        {
+          "operation": "delete-index"
+        },
+        {
+          "operation": {
+            "operation-type": "create-index",
+            "settings": {{index_settings | default({}) | tojson}}
+          }
+        },
+        {
+          "name": "check-cluster-health",
+          "operation": {
+            "operation-type": "cluster-health",
+            "index": "osm*",
+            "request-params": {
+              "wait_for_status": "{{cluster_health | default('green')}}",
+              "wait_for_no_relocating_shards": "true"
+            },
+            "retry-until-success": true
+          }
+        },
+        {
+          "operation": "index-append-linestrings",
+          "warmup-time-period": 120,
+          "clients": {{bulk_indexing_clients | default(8)}},
+          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+        },
+        {
+          "name": "refresh-after-linestrings-index",
+          "operation": "refresh",
+          "index": "osmlinestrings"
+        },
+        {
+          "name": "force-merge-linestrings",
+          "operation": {
+            "operation-type": "force-merge",
+            "index": "osmlinestrings",
+            "request-timeout": 7200
+          }
+        },
+        {
+          "name": "wait-until-linestrings-merges-finish",
+          "operation": {
+            "operation-type": "index-stats",
+            "index": "_all",
+            "condition": {
+              "path": "_all.total.merges.current",
+              "expected-value": 0
+            },
+            "retry-until-success": true,
+            "include-in-reporting": false
+          }
+        },
+        {
+          "operation": "index-append-multilinestrings",
+          "warmup-time-period": 120,
+          "clients": {{bulk_indexing_clients | default(8)}},
+          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+        },
+        {
+          "name": "refresh-after-multilinestrings-index",
+          "operation": "refresh",
+          "index": "osmmultilinestrings"
+        },
+        {
+          "name": "force-merge-multilinestrings",
+          "operation": {
+            "operation-type": "force-merge",
+            "index": "osmmultilinestrings",
+            "request-timeout": 7200
+          }
+        },
+        {
+          "name": "wait-until-multilinestrings-merges-finish",
+          "operation": {
+            "operation-type": "index-stats",
+            "index": "_all",
+            "condition": {
+              "path": "_all.total.merges.current",
+              "expected-value": 0
+            },
+            "retry-until-success": true,
+            "include-in-reporting": false
+          }
+        },
+        {
+          "operation": "index-append-polygons",
+          "warmup-time-period": 120,
+          "clients": {{bulk_indexing_clients | default(8)}},
+          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+        },
+        {
+          "name": "refresh-after-polygons-index",
+          "operation": "refresh",
+          "index": "osmpolygons"
+        },
+        {
+          "name": "force-merge-polygons",
+          "operation": {
+            "operation-type": "force-merge",
+            "index": "osmpolygons",
+            "request-timeout": 7200
+          }
+        },
+        {
+          "name": "refresh-after-all-indices",
+          "operation": "refresh"
+        },
+        {
+          "name": "wait-until-polygon-merges-finish",
+          "operation": {
+            "operation-type": "index-stats",
+            "index": "_all",
+            "condition": {
+              "path": "_all.total.merges.current",
+              "expected-value": 0
+            },
+            "retry-until-success": true,
+            "include-in-reporting": false
+          }
+        },
+        {
+          "operation": "polygon",
+          "warmup-iterations": 200,
+          "iterations": 100
+          {%- if not target_throughput %}
+          ,"target-throughput": 0.3
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
+        },
+        {
+          "operation": "bbox",
+          "warmup-iterations": 200,
+          "iterations": 100
+          {%- if not target_throughput %}
+          ,"target-throughput": 0.25
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
+        }
+      ]
+    }

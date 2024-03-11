@@ -1,0 +1,33 @@
+{% import "benchmark.helpers" as benchmark with context %}
+
+{
+  "version": 2,
+  "description": "Percolator benchmark based on AOL queries",
+  "indices": [
+    {
+      "name": "queries",
+      "body": "index.json"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "percolator",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/percolator",
+      "documents": [
+        {
+          "source-file": "queries-2.json.bz2",
+          "document-count": 2000000,
+          "compressed-bytes": 124009,
+          "uncompressed-bytes": 110039748
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ benchmark.collect(parts="operations/*.json") }}
+  ],
+  "test_procedures": [
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  ]
+}
+
