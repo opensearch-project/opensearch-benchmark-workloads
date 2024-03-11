@@ -1,0 +1,6 @@
+{
+  "base-url": "https://vesa-oswl.s3.us-west-2.amazonaws.com",
+  "source-file": "queries.json.bz2",
+  "compressed-bytes": 322353,
+  "uncompressed-bytes": 1078227
+}
