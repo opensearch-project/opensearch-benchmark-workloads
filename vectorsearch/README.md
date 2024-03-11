@@ -13,7 +13,7 @@ OpenSearch.
 Before running a benchmark, ensure that the load generation host is able to access your cluster endpoint and that the 
 appropriate dataset is available on the host.
 
-Currently, we support only one test procedure for the vector search workload. This is named no-train-test and does not include the steps required to train the model being used.
+Currently, we support 4 test procedures for the vector search workload. The default procedure is named no-train-test and does not include the steps required to train the model being used.
 This test procedures will index a data set of vectors into an OpenSearch cluster and then run a set of queries against the generated index. 
 
 Due to the number of parameters this workload offers, it's recommended to create a parameter file that specifies the desired workload 
@@ -45,6 +45,22 @@ The No Train Test procedure is used to test vector search indices which requires
 You can define the underlying configuration of the vector search algorithm like specific engine, space type, etc... as
 method definition . Check [vector search method definitions]([https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#method-definitions)
 for more details.
+
+### No Train Test Index Only
+This procedure is used to index only vector search index which requires no training. This will be useful if
+you are interested in benchmarking only indexing operation.
+
+## Force Merge Index
+This procedure is used to optimize vector search indices by performing force merge on an index, up to given maximum segments.
+For a large dataset, force merge is a costly operation. Hence, it is better to have separate procedure to trigger
+force merge occasionally based on user's requirement.
+
+## Search
+This procedure is used to benchmark previously indexed vector search index. This will be useful if you want
+to benchmark large vector search index without indexing everytime since load time is substantial for a large dataset.
+This also contains warmup operation to avoid cold start problem during vector search.
+
+
 
 #### Parameters
 
