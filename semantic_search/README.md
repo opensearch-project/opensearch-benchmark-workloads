@@ -1,6 +1,38 @@
-## Vector search embedding workload
+## Semantic Search workload
 
 This workload uses OpenSearch pretrained model and ml-common-plugin to embed vectors. It is based on the neural search tutorial https://opensearch.org/docs/latest/search-plugins/neural-search-tutorial/ 
+
+### Dataset
+
+Trec-Covid is a dataset collection of documents about COVID-19 information.
+- Trec-Covid website: https://ir.nist.gov/covidSubmit/index.html
+- Dataset: https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/trec-covid.zip
+
+### Example document and query
+```json
+{
+  "_id": "2b73a28n",
+  "title": "Role of endothelin-1 in lung disease",
+  "text": "Endothelin-1 (ET-1) is a 21 amino acid peptide with diverse biological activity that has been implicated in numerous diseases.....",
+  "metadata": {
+    "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC59574/",
+    "pubmed_id": "11686871"
+  }
+}
+```
+```json
+{
+  "query": {
+    "neural": {
+      "passage_embedding": {
+        "query_text": "what types of rapid testing for Covid-19 have been developed?",
+        "model_id": "LSmIG44BlTi78mODPYgy",
+        "k": 10
+      }
+    }
+  }
+}
+```
 
 ### Workload tasks:
 
@@ -21,42 +53,11 @@ This workload uses OpenSearch pretrained model and ml-common-plugin to embed vec
 - default
 - semantic-search
 
-### Example document and query
-```json
-{
-  "text":" The Manhattan Project and its atomic bomb helped bring an end to World War II. Its legacy of peaceful uses of atomic energy continues to have an impact on history and science."
-}
-```
-```json
-{
-  "query": {
-    "neural": {
-      "passage_embedding": {
-        "query_text": "What is the origin of the last name Rose?",
-        "model_id": "LSmIG44BlTi78mODPYgy",
-        "k": 10
-      }
-    }
-  }
-}
-```
-
-### Dataset
-
-Documents: https://msmarco.blob.core.windows.net/msmarcoranking/collection.tar.gz  
-Queries: https://msmarco.blob.core.windows.net/msmarcoranking/queries.tar.gz
-
-### License
-
-The MS MARCO datasets are intended for non-commercial research purposes only to promote advancement in the field of artificial intelligence and related areas, and is made available free of charge without extending any license or other intellectual property rights.  
-The MS MARCO datasets are intended for non-commercial research purposes only to promote advancement in the field of artificial intelligence and related areas, and is made available free of charge without extending any license or other intellectual property rights. The dataset is provided “as is” without warranty and usage of the data has risks since we may not own the underlying rights in the documents. We are not be liable for any damages related to use of the dataset. Feedback is voluntarily given and can be used as we see fit. Upon violation of any of these terms, your rights to use the dataset will end automatically.  
-https://microsoft.github.io/msmarco/
-
 ### Parameters
 
 This workload allows [specifying the following parameters](#specifying-workload-parameters) using the `--workload-params` option to OpenSearch Benchmark:
 
-* `bulk_size` (default: 1000)
+* `bulk_size` (default: 100)
 * `bulk_indexing_clients` (default: 1): Number of clients that issue bulk indexing requests.
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
 * `number_of_replicas` (default: 0)
@@ -92,7 +93,7 @@ Example:
     "index.number_of_replicas": 0
   },
   "bulk_indexing_clients": 2,
-  "ingest_percentage": 0.5,
+  "ingest_percentage": 20,
   "search_clients": 10,
   "target_throughput": "none",
   "iterations": 100,
@@ -103,3 +104,15 @@ Example:
  ```
 
 Save it as `params.json` and provide it to OpenSearch Benchmark with `--workload-params="/path/to/params.json"`. The overrides for simple parameters could be specified in-place, for example `--workload-params=search_clients:2`.
+
+### License
+
+We use the same license for the data as the original data.
+```
+               Apache License
+           Version 2.0, January 2004
+         http://www.apache.org/licenses/
+```
+Covid-trec [1] is part of the COVID-19 Open Research dataset [2], which is licensed under Apache 2.0.  
+[1] https://arxiv.org/pdf/2005.04474v1.pdf  
+[2] https://github.com/allenai/cord19/ 

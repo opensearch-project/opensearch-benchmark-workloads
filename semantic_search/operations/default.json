@@ -1,4 +1,9 @@
     {
+      "name": "delete-ingest-pipeline",
+      "operation-type": "delete-pipeline",
+      "id": "nlp-ingest-pipeline"
+    },
+    {
       "name": "create-ingest-pipeline",
       "operation-type": "put-pipeline",
       "param-source": "create-ingest-pipeline",
@@ -20,7 +25,7 @@
     {
       "name": "index-append",
       "operation-type": "bulk",
-      "bulk-size": {{bulk_size | default(1000)}},
+      "bulk-size": {{bulk_size | default(100)}},
       "ingest-percentage": {{ingest_percentage | default(100)}}
     },
     {
@@ -46,7 +51,7 @@
     {
       "name": "semantic-search",
       "operation-type": "search",
-      "variable_queries": {{variable_queries | default(0)}},
+      "variable-queries": {{variable_queries | default(0)}},
       "param-source": "semantic-search-source",
       "body": {
         "_source": {
@@ -57,7 +62,7 @@
         "query": {
           "neural": {
             "passage_embedding": {
-              "query_text": "What is the origin of the last name Rose?",
+              "query_text": "what types of rapid testing for Covid-19 have been developed?",
               "model_id": "",
               "k": {{k | default(10)}}
             }
