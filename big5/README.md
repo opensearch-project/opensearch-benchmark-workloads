@@ -50,9 +50,11 @@ This workload allows the following parameters to be specified using `--workload-
 * `document_file`: If specifying an alternate data corpus, the file name of the corpus.
 * `document_uncompressed_size_in_bytes`: If specifying an alternate data corpus, the uncompressed size of the corpus.
 * `document_url`:  If specifying an alternate data corpus, the full path to the corpus file (optional).
+* `distribution_version` (default 2.11):  Used to specify the target cluster's version so as to select the appropriate mappings for that version.  This is distinct from the command line option.
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
 * `index_body` (default: "index.json"): The name of the file containing the index settings and mappings.
 * `index_name` (default: "big5"): The name of the index the workload should create and use for its operations.
+* `index_merge_policy` (default: "log_byte_size"): The merge policy for the underlying Lucene segments, either "log_byte_size" or "tiered".
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
 * `max_num_segments` (default: unset): An integer specifying the max amount of segments the force-merge operation should use.
@@ -61,7 +63,9 @@ This workload allows the following parameters to be specified using `--workload-
 * `query_cache_enabled` (default: false): Whether the query cache should be enabled.
 * `requests_cache_enabled` (default: false): Whether the requests cache should be enabled.
 * `search_clients`: (default: 1): Number of clients that issue search requests.
-* `target_throughput` (default: 2): default throughput for each operation in requests per second, `none` for no limit.
+* `test_iterations` (default: 200): Number of test iterations per query that will have their latency and throughput measured.
+* `target_throughput` (default: 2): Target throughput for each query operation in requests per second, use "" for no limit.
+* `warmup_iterations` (default: 100): Number of warmup query iterations prior to actual measurements commencing.
 
 
 ### Data Document Structure
