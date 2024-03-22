@@ -10,7 +10,7 @@
     "index.number_of_replicas": {{number_of_replicas | default(1)}},
     "index.queries.cache.enabled": {{query_cache_enabled | default(false) | tojson}},
     "index.requests.cache.enable": {{requests_cache_enabled | default(false) | tojson}},
-    {% if distribution_version is not defined or distribution_version < 6.0 %}
+    {% if ( (distribution_version is not defined) or (distribution_version > 2.11 and distribution_version < 6.0) ) %}
       "index.merge.policy": "{{index_merge_policy | default('log_byte_size') }}",
     {% endif %}
     "index.codec": "best_compression",
