@@ -59,6 +59,17 @@
       }
     },
     {
+      "name": "default-size",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "size": {{default_size | default(1000)}},
+        "query": {
+          "match_all": {}
+        }
+      }
+    },
+    {
       "name": "term",
       "operation-type": "search",
       "index": "logs-*",
