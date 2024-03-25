@@ -13,6 +13,11 @@
     "mappings": {
       "dynamic": "strict",
       "properties": {
+        {% if id_field_name is defined and id_field_name != "_id" %}
+          "{{id_field_name}}": {
+            "type": "keyword"
+          },
+        {%- endif %}
         "target_field": {
           "type": "knn_vector",
           "dimension": {{ target_index_dimension }},
