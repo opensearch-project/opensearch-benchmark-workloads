@@ -1,0 +1,32 @@
+{% import "benchmark.helpers" as benchmark with context %}
+
+{
+  "version": 2,
+  "description": "MS MARCO is a collection of datasets focused on deep learning in search",
+  "indices": [
+    {
+      "name": "msmarco",
+      "body": "index.json"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "msmarco",
+      "base-url": "https://vesa-oswl.s3.us-west-2.amazonaws.com",
+      "documents": [
+        {
+          "source-file": "documents.json.bz2",
+          "document-count": 8841325,
+          "compressed-bytes": 992998188,
+          "uncompressed-bytes": 3203032612
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ benchmark.collect(parts="operations/*.json") }}
+  ],
+  "test_procedures": [
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  ]
+}
