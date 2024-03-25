@@ -2,7 +2,8 @@
     "target_index_name": "target_index",
     "target_field_name": "target_field",
     "target_index_body": "indices/faiss-index.json",
-    "target_index_primary_shards": 18,
+    "target_index_primary_shards": 6,
+    "target_index_replica_shards": 1,
     "target_index_dimension": 768,
     "target_index_space_type": "innerproduct",
     
@@ -11,9 +12,9 @@
     "target_index_bulk_index_data_set_corpus": "cohere-10m",
     "target_index_bulk_indexing_clients": 10,
     
-    "target_index_max_num_segments": 10,
-    "hnsw_ef_search": 100,
-    "hnsw_ef_construction": 100,
+    "target_index_max_num_segments": 1,
+    "hnsw_ef_search": 256,
+    "hnsw_ef_construction": 256,
 
     "query_k": 100,
     "query_body": {
