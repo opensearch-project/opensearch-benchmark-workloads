@@ -50,15 +50,20 @@ for more details.
 This procedure is used to index only vector search index which requires no training. This will be useful if
 you are interested in benchmarking only indexing operation.
 
-## Force Merge Index
+### Force Merge Index
 This procedure is used to optimize vector search indices by performing force merge on an index, up to given maximum segments.
 For a large dataset, force merge is a costly operation. Hence, it is better to have separate procedure to trigger
 force merge occasionally based on user's requirement.
 
-## Search
+### Search
 This procedure is used to benchmark previously indexed vector search index. This will be useful if you want
 to benchmark large vector search index without indexing everytime since load time is substantial for a large dataset.
 This also contains warmup operation to avoid cold start problem during vector search.
+
+### No Train Test AOSS
+
+This is similar to no train test, except, targeted for Amazon OpenSearch Serverless Vector Search Collection. This procedure
+does not contain operations like refresh and warm up since they are not supported by Vector Search Collection.
 
 
 
@@ -84,6 +89,7 @@ This workload allows the following parameters to be specified using `--workload-
 | target_index_force_merge_timeout        | Timeout for of force merge requests in seconds                           |
 | hnsw_ef_search                          | HNSW ef search parameter                                                 |
 | hnsw_ef_construction                    | HNSW ef construction parameter                                           |
+| id_field_name                           | Name of field that will be used to identify documents in an index        |
 | hnsw_m                                  | HNSW m parameter                                                         |
 | query_k                                 | The number of neighbors to return for the search                         |
 | query_data_set_format                   | Format of vector data set for queries                                    |
