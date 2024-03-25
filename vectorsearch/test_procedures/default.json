@@ -31,4 +31,13 @@
     "schedule": [
        {{ benchmark.collect(parts="common/force-merge-schedule.json") }}
     ]
+},
+{
+    "name": "no-train-test-aoss",
+    "description": "Index vector search which does not use an algorithm that requires training.",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="aoss/index-only-schedule.json") }},
+       {{ benchmark.collect(parts="aoss/search-only-schedule.json") }}
+    ]
 }
