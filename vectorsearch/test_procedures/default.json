@@ -3,71 +3,50 @@
     "description": "Index vector search which does not use an algorithm that requires training.",
     "default": true,
     "schedule": [
-        {
-            "operation": {
-                "name": "delete-target-index",
-                "operation-type": "delete-index",
-                "only-if-exists": true,
-                "index": "{{ target_index_name | default('target_index') }}"
-            }
-        },
-        {
-            "operation": {
-                "name": "create-target-index",
-                "operation-type": "create-index",
-                "index": "{{ target_index_name | default('target_index') }}"
-            }
-        },
-        {
-            "operation": {
-                "name": "custom-vector-bulk",
-                "operation-type": "bulk-vector-data-set",
-                "index": "{{ target_index_name | default('target_index') }}",
-                "field": "{{ target_field_name | default('target_field') }}",
-                "bulk_size": {{ target_index_bulk_size | default(500)}},
-                "data_set_format": "{{ target_index_bulk_index_data_set_format | default('hdf5') }}",
-                "data_set_path": "{{ target_index_bulk_index_data_set_path  }}",
-                "data_set_corpus": "{{ target_index_bulk_index_data_set_corpus  }}",
-                "num_vectors": {{ target_index_num_vectors | default(-1) }},
-                "id-field-name": "{{ id_field_name }}"
-            },
-            "clients": {{ target_index_bulk_indexing_clients | default(1)}}
-        },
-        {
-            "name" : "refresh-target-index-before-force-merge",
-            "operation" : "refresh-target-index"
-        },
-        {
-            "name" : "force-merge-segments",
-            "operation" : "force-merge"
-        },
-        {
-            "name" : "refresh-target-index-after-force-merge",
-            "operation" : "refresh-target-index"
-        },
-        {
-            "name" : "warmup-indices",
-            "operation" : "warmup-indices",
-            "index": "{{ target_index_name | default('target_index') }}"
-        },
-        {
-            "operation": {
-                "name": "prod-queries",
-                "operation-type": "vector-search",
-                "index": "{{ target_index_name | default('target_index') }}",
-                "k": {{ query_k  | default(100) }},
-                "field" : "{{ target_field_name | default('target_field') }}",
-                "data_set_format" : "{{ query_data_set_format | default('hdf5') }}",
-                "data_set_path" : "{{ query_data_set_path }}",
-                "data_set_corpus" : "{{ query_data_set_corpus }}",
-                "neighbors_data_set_path" : "{{ neighbors_data_set_path }}",
-                "neighbors_data_set_corpus" : "{{ neighbors_data_set_corpus }}",
-                "neighbors_data_set_format" : "{{ neighbors_data_set_format | default('hdf5') }}",
-                "num_vectors" : {{ query_count | default(-1) }},
-                "id-field-name": "{{ id_field_name }}",
-                "body": {{ query_body | default ({}) | tojson }}    
-            },
-            "clients": {{ search_clients | default(1)}}
-        }
+       {{ benchmark.collect(parts="common/index-only-schedule.json") }},
+       {{ benchmark.collect(parts="common/force-merge-schedule.json") }},
+       {{ benchmark.collect(parts="common/search-only-schedule.json") }}
+    ]
+},
+{
+    "name": "no-train-test-index-only",
+    "description": "Perform only indexing operation for vector search",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="common/index-only-schedule.json") }}
+    ]
+},
+{
+    "name": "no-train-test-index-with-merge",
+    "description": "Perform only indexing operation for vector search",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="common/index-only-schedule.json") }},
+       {{ benchmark.collect(parts="common/force-merge-schedule.json") }}
+    ]
+},
+{
+    "name": "search-only",
+    "default": false,
+    "description": "Perform only vector search on previously indexed cluster.",
+    "schedule": [
+       {{ benchmark.collect(parts="common/search-only-schedule.json") }}
+    ]
+},
+{
+    "name": "force-merge-index",
+    "default": false,
+    "description": "Force merge vector search index to improve search performance",
+    "schedule": [
+       {{ benchmark.collect(parts="common/force-merge-schedule.json") }}
+    ]
+},
+{
+    "name": "no-train-test-aoss",
+    "description": "Index vector search which does not use an algorithm that requires training.",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="aoss/index-only-schedule.json") }},
+       {{ benchmark.collect(parts="aoss/search-only-schedule.json") }}
     ]
 }
