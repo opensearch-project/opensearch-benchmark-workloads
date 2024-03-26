@@ -8,9 +8,6 @@
         {%- if target_index_replica_shards is defined and target_index_replica_shards %}
         ,"number_of_replicas": {{ target_index_replica_shards }}
         {%- endif %}
-        {%- if hnsw_ef_search is defined and hnsw_ef_search %}
-        ,"knn.algo_param.ef_search": {{ hnsw_ef_search }}
-        {%- endif %}
       }
     },
     "mappings": {
@@ -24,15 +21,21 @@
             "space_type": "{{ target_index_space_type }}",
             "engine": "faiss",
             "parameters": {
-            {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
-            "ef_construction": {{ hnsw_ef_construction }}
-            {%- endif %}
-            {%- if hnsw_m is defined and hnsw_m %}
-            {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
-            ,
-            {%- endif %}
-            "m": {{ hnsw_m }}
-            {%- endif %}
+              {%- if hnsw_ef_search is defined and hnsw_ef_search %}
+                "ef_search": {{ hnsw_ef_search }}
+              {%- endif %}
+              {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
+              {%- if hnsw_ef_search is defined and hnsw_ef_search %}
+                ,
+              {%- endif %}
+                "ef_construction": {{ hnsw_ef_construction }}
+              {%- endif %}
+              {%- if hnsw_m is defined and hnsw_m %}
+              {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
+                ,
+              {%- endif %}
+                "m": {{ hnsw_m }}
+              {%- endif %}
             }
           }
         }
