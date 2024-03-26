@@ -44,6 +44,8 @@ This workload allows the following parameters to be specified using `--workload-
 * `recency` (default: 0): A number between 0 and 1 that defines whether to bias towards more recent ids when simulating conflicts. See the [Benchmark docs](https://github.com/opensearch-project/OpenSearch-Benchmark/blob/main/DEVELOPER_GUIDE.md) for the full definition of this parameter. This requires to run the respective test_procedure.
 * `number_of_replicas` (default: 0)
 * `number_of_shards` (default: 5)
+* `query_cache_enabled` (default: false)
+* `requests_cache_enabled` (default: false)
 * `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
 * `cluster_health` (default: "green"): The minimum required cluster health.

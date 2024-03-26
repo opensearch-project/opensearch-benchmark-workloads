@@ -36,6 +36,8 @@ This workload allows the following parameters to be specified using `--workload-
 * `max_num_segments`: The number of segments to target when doing a force merge (default: -1)
 * `number_of_replicas` (default: 0)
 * `number_of_shards` (default: 5)
+* `query_cache_enabled` (default: false)
+* `requests_cache_enabled` (default: false)
 * `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
 * `default_search_timeout` (default: -1)
