@@ -50,7 +50,7 @@ This workload allows the following parameters to be specified using `--workload-
 * `document_file`: If specifying an alternate data corpus, the file name of the corpus.
 * `document_uncompressed_size_in_bytes`: If specifying an alternate data corpus, the uncompressed size of the corpus.
 * `document_url`:  If specifying an alternate data corpus, the full path to the corpus file (optional).
-* `distribution_version` (default 2.11):  Used to specify the target cluster's version so as to select the appropriate mappings for that version.  This is distinct from the command line option.
+* `distribution_version` (default 2.11.0):  Used to specify the target cluster's version so as to select the appropriate mappings for that version.  This is distinct from the command line option and should be in the 3-part dotted semantic version format.
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
 * `index_body` (default: "index.json"): The name of the file containing the index settings and mappings.
 * `index_name` (default: "big5"): The name of the index the workload should create and use for its operations.
