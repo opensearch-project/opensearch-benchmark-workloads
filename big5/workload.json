@@ -1,3 +1,8 @@
+
+{% if distribution_version is not defined %}
+  {% set distribution_version = "2.11.0" %}
+{% endif %}
+
 {
   "version": 2,
   "description": "Big5 workload based on synthetically generated data corpus",
