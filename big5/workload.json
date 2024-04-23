@@ -28,6 +28,20 @@
 	    "compressed-bytes": 6023614688,
 	    "uncompressed-bytes": 107321418111
 	  }
+        {% elif corpus_size == 1000 %}
+          {
+            "source-file": "documents-1000.json.bz2",
+            "document-count": 1020000000,
+            "compressed-bytes": 53220934846,
+            "uncompressed-bytes": 943679382267
+          }
+        {% elif corpus_size == 1000-full %}
+          {
+            "source-file": "documents-1000-full.json.bz2",
+            "document-count": 1160800000,
+            "compressed-bytes": 60567183163,
+            "uncompressed-bytes": 1073936121222
+          }
 	{% elif corpus_size == 60 %}
 	  {
 	    "source-file": "documents-60.json.bz2",
