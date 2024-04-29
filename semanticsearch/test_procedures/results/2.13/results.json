@@ -1,0 +1,159 @@
+no concurrentsearch, for blog. 2.13 with for loop instead of stream.forEach. No (no map thing, no no TopDocsCollector thing)
+
+(py39) gaievski@3c22fb3bf031 opensearch-benchmark-workloads % opensearch-benchmark execute-test --workload-path="/Users/gaievski/dev/opensearch/opensearch-benchmark-workloads/noaa/workload.json" --test-procedure=hybrid-query-test --pipeline=benchmark-only --target-host=http://opense-clust-oI1aC1Gm3TfQ-bbed3659f9b45df4.elb.us-east-1.amazonaws.com:80 --kill-running-processes --workload-params="number_of_shards:6,max_num_segments:8"
+
+   ____                  _____                      __       ____                  __                         __
+  / __ \____  ___  ____ / ___/___  ____ ___________/ /_     / __ )___  ____  _____/ /_  ____ ___  ____ ______/ /__
+ / / / / __ \/ _ \/ __ \\__ \/ _ \/ __ `/ ___/ ___/ __ \   / __  / _ \/ __ \/ ___/ __ \/ __ `__ \/ __ `/ ___/ //_/
+/ /_/ / /_/ /  __/ / / /__/ /  __/ /_/ / /  / /__/ / / /  / /_/ /  __/ / / / /__/ / / / / / / / / /_/ / /  / ,<
+\____/ .___/\___/_/ /_/____/\___/\__,_/_/   \___/_/ /_/  /_____/\___/_/ /_/\___/_/ /_/_/ /_/ /_/\__,_/_/  /_/|_|
+    /_/
+
+[INFO] Executing test with workload [workload], test_procedure [hybrid-query-test] and provision_config_instance ['external'] with version [2.13.0].
+
+[WARNING] merges_total_time is 499027 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] merges_total_throttled_time is 319343 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] indexing_total_time is 1092760 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] refresh_total_time is 77969 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] flush_total_time is 21501 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+Running set-concurent-segment-search-setting                                   [100% done]
+Running hybrid-query-only-range                                                [100% done]
+Running bool-only-range                                                        [100% done]
+Running hybrid-query-only-range-large-subset                                   [100% done]
+Running bool-only-range-large-subset                                           [100% done]
+Running hybrid-query-only-term-range-date                                      [100% done]
+Running bool-only-term-range-date                                              [100% done]
+
+------------------------------------------------------
+    _______             __   _____
+   / ____(_)___  ____ _/ /  / ___/_________  ________
+  / /_  / / __ \/ __ `/ /   \__ \/ ___/ __ \/ ___/ _ \
+ / __/ / / / / / /_/ / /   ___/ / /__/ /_/ / /  /  __/
+/_/   /_/_/ /_/\__,_/_/   /____/\___/\____/_/   \___/
+------------------------------------------------------
+
+|                                                         Metric |                                 Task |       Value |   Unit |
+|---------------------------------------------------------------:|-------------------------------------:|------------:|-------:|
+|                     Cumulative indexing time of primary shards |                                      |     18.2127 |    min |
+|             Min cumulative indexing time across primary shards |                                      |      0.0002 |    min |
+|          Median cumulative indexing time across primary shards |                                      |     3.02088 |    min |
+|             Max cumulative indexing time across primary shards |                                      |     3.09137 |    min |
+|            Cumulative indexing throttle time of primary shards |                                      |           0 |    min |
+|    Min cumulative indexing throttle time across primary shards |                                      |           0 |    min |
+| Median cumulative indexing throttle time across primary shards |                                      |           0 |    min |
+|    Max cumulative indexing throttle time across primary shards |                                      |           0 |    min |
+|                        Cumulative merge time of primary shards |                                      |     8.31712 |    min |
+|                       Cumulative merge count of primary shards |                                      |          82 |        |
+|                Min cumulative merge time across primary shards |                                      |           0 |    min |
+|             Median cumulative merge time across primary shards |                                      |     1.39218 |    min |
+|                Max cumulative merge time across primary shards |                                      |      1.4904 |    min |
+|               Cumulative merge throttle time of primary shards |                                      |     5.32238 |    min |
+|       Min cumulative merge throttle time across primary shards |                                      |           0 |    min |
+|    Median cumulative merge throttle time across primary shards |                                      |    0.873517 |    min |
+|       Max cumulative merge throttle time across primary shards |                                      |    0.981333 |    min |
+|                      Cumulative refresh time of primary shards |                                      |     1.29948 |    min |
+|                     Cumulative refresh count of primary shards |                                      |         274 |        |
+|              Min cumulative refresh time across primary shards |                                      | 0.000466667 |    min |
+|           Median cumulative refresh time across primary shards |                                      |    0.202217 |    min |
+|              Max cumulative refresh time across primary shards |                                      |    0.250833 |    min |
+|                        Cumulative flush time of primary shards |                                      |    0.358367 |    min |
+|                       Cumulative flush count of primary shards |                                      |          25 |        |
+|                Min cumulative flush time across primary shards |                                      | 0.000166667 |    min |
+|             Median cumulative flush time across primary shards |                                      |   0.0573833 |    min |
+|                Max cumulative flush time across primary shards |                                      |   0.0694833 |    min |
+|                                        Total Young Gen GC time |                                      |       3.784 |      s |
+|                                       Total Young Gen GC count |                                      |        1961 |        |
+|                                          Total Old Gen GC time |                                      |           0 |      s |
+|                                         Total Old Gen GC count |                                      |           0 |        |
+|                                                     Store size |                                      |     6.25965 |     GB |
+|                                                  Translog size |                                      | 4.09782e-07 |     GB |
+|                                         Heap used for segments |                                      |           0 |     MB |
+|                                       Heap used for doc values |                                      |           0 |     MB |
+|                                            Heap used for terms |                                      |           0 |     MB |
+|                                            Heap used for norms |                                      |           0 |     MB |
+|                                           Heap used for points |                                      |           0 |     MB |
+|                                    Heap used for stored fields |                                      |           0 |     MB |
+|                                                  Segment count |                                      |          49 |        |
+|                                                 Min Throughput |              hybrid-query-only-range |        5.77 |  ops/s |
+|                                                Mean Throughput |              hybrid-query-only-range |        5.89 |  ops/s |
+|                                              Median Throughput |              hybrid-query-only-range |        5.91 |  ops/s |
+|                                                 Max Throughput |              hybrid-query-only-range |        5.94 |  ops/s |
+|                                        50th percentile latency |              hybrid-query-only-range |     94.3247 |     ms |
+|                                        90th percentile latency |              hybrid-query-only-range |     111.024 |     ms |
+|                                        99th percentile latency |              hybrid-query-only-range |     128.154 |     ms |
+|                                       100th percentile latency |              hybrid-query-only-range |     167.322 |     ms |
+|                                   50th percentile service time |              hybrid-query-only-range |     93.2598 |     ms |
+|                                   90th percentile service time |              hybrid-query-only-range |     110.019 |     ms |
+|                                   99th percentile service time |              hybrid-query-only-range |       126.7 |     ms |
+|                                  100th percentile service time |              hybrid-query-only-range |     126.947 |     ms |
+|                                                     error rate |              hybrid-query-only-range |           0 |      % |
+|                                                 Min Throughput |                      bool-only-range |        5.98 |  ops/s |
+|                                                Mean Throughput |                      bool-only-range |        5.99 |  ops/s |
+|                                              Median Throughput |                      bool-only-range |        5.99 |  ops/s |
+|                                                 Max Throughput |                      bool-only-range |           6 |  ops/s |
+|                                        50th percentile latency |                      bool-only-range |     94.6379 |     ms |
+|                                        90th percentile latency |                      bool-only-range |     97.0205 |     ms |
+|                                        99th percentile latency |                      bool-only-range |     113.442 |     ms |
+|                                       100th percentile latency |                      bool-only-range |     146.356 |     ms |
+|                                   50th percentile service time |                      bool-only-range |     93.2042 |     ms |
+|                                   90th percentile service time |                      bool-only-range |     96.0851 |     ms |
+|                                   99th percentile service time |                      bool-only-range |     112.472 |     ms |
+|                                  100th percentile service time |                      bool-only-range |     145.663 |     ms |
+|                                                     error rate |                      bool-only-range |           0 |      % |
+|                                                 Min Throughput | hybrid-query-only-range-large-subset |        1.15 |  ops/s |
+|                                                Mean Throughput | hybrid-query-only-range-large-subset |        1.15 |  ops/s |
+|                                              Median Throughput | hybrid-query-only-range-large-subset |        1.15 |  ops/s |
+|                                                 Max Throughput | hybrid-query-only-range-large-subset |        1.16 |  ops/s |
+|                                        50th percentile latency | hybrid-query-only-range-large-subset |     52893.5 |     ms |
+|                                        90th percentile latency | hybrid-query-only-range-large-subset |     80325.8 |     ms |
+|                                        99th percentile latency | hybrid-query-only-range-large-subset |     86396.3 |     ms |
+|                                       100th percentile latency | hybrid-query-only-range-large-subset |     87093.2 |     ms |
+|                                   50th percentile service time | hybrid-query-only-range-large-subset |     854.443 |     ms |
+|                                   90th percentile service time | hybrid-query-only-range-large-subset |     896.338 |     ms |
+|                                   99th percentile service time | hybrid-query-only-range-large-subset |     920.479 |     ms |
+|                                  100th percentile service time | hybrid-query-only-range-large-subset |     929.376 |     ms |
+|                                                     error rate | hybrid-query-only-range-large-subset |           0 |      % |
+|                                                 Min Throughput |         bool-only-range-large-subset |        5.94 |  ops/s |
+|                                                Mean Throughput |         bool-only-range-large-subset |        5.97 |  ops/s |
+|                                              Median Throughput |         bool-only-range-large-subset |        5.98 |  ops/s |
+|                                                 Max Throughput |         bool-only-range-large-subset |        5.99 |  ops/s |
+|                                        50th percentile latency |         bool-only-range-large-subset |     102.291 |     ms |
+|                                        90th percentile latency |         bool-only-range-large-subset |     123.289 |     ms |
+|                                        99th percentile latency |         bool-only-range-large-subset |     230.841 |     ms |
+|                                       100th percentile latency |         bool-only-range-large-subset |     252.459 |     ms |
+|                                   50th percentile service time |         bool-only-range-large-subset |     100.504 |     ms |
+|                                   90th percentile service time |         bool-only-range-large-subset |     118.425 |     ms |
+|                                   99th percentile service time |         bool-only-range-large-subset |     188.169 |     ms |
+|                                  100th percentile service time |         bool-only-range-large-subset |     212.975 |     ms |
+|                                                     error rate |         bool-only-range-large-subset |           0 |      % |
+|                                                 Min Throughput |    hybrid-query-only-term-range-date |        0.71 |  ops/s |
+|                                                Mean Throughput |    hybrid-query-only-term-range-date |        0.72 |  ops/s |
+|                                              Median Throughput |    hybrid-query-only-term-range-date |        0.72 |  ops/s |
+|                                                 Max Throughput |    hybrid-query-only-term-range-date |        0.72 |  ops/s |
+|                                        50th percentile latency |    hybrid-query-only-term-range-date |     92717.8 |     ms |
+|                                        90th percentile latency |    hybrid-query-only-term-range-date |      140856 |     ms |
+|                                        99th percentile latency |    hybrid-query-only-term-range-date |      151729 |     ms |
+|                                       100th percentile latency |    hybrid-query-only-term-range-date |      152918 |     ms |
+|                                   50th percentile service time |    hybrid-query-only-term-range-date |     1386.46 |     ms |
+|                                   90th percentile service time |    hybrid-query-only-term-range-date |     1419.47 |     ms |
+|                                   99th percentile service time |    hybrid-query-only-term-range-date |     1471.84 |     ms |
+|                                  100th percentile service time |    hybrid-query-only-term-range-date |     1477.68 |     ms |
+|                                                     error rate |    hybrid-query-only-term-range-date |           0 |      % |
+|                                                 Min Throughput |            bool-only-term-range-date |        5.84 |  ops/s |
+|                                                Mean Throughput |            bool-only-term-range-date |        5.92 |  ops/s |
+|                                              Median Throughput |            bool-only-term-range-date |        5.93 |  ops/s |
+|                                                 Max Throughput |            bool-only-term-range-date |        5.96 |  ops/s |
+|                                        50th percentile latency |            bool-only-term-range-date |     106.059 |     ms |
+|                                        90th percentile latency |            bool-only-term-range-date |      123.23 |     ms |
+|                                        99th percentile latency |            bool-only-term-range-date |     139.698 |     ms |
+|                                       100th percentile latency |            bool-only-term-range-date |     147.975 |     ms |
+|                                   50th percentile service time |            bool-only-term-range-date |     104.653 |     ms |
+|                                   90th percentile service time |            bool-only-term-range-date |     121.735 |     ms |
+|                                   99th percentile service time |            bool-only-term-range-date |     132.081 |     ms |
+|                                  100th percentile service time |            bool-only-term-range-date |     139.069 |     ms |
+|                                                     error rate |            bool-only-term-range-date |           0 |      % |
+
+
+---------------------------------
+[INFO] SUCCESS (took 404 seconds)
+---------------------------------
