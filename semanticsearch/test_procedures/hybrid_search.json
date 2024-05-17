@@ -17,6 +17,7 @@
         {{ benchmark.collect(parts="semantic-search-common/check-status-add-resources-no-index.json") }},
         {{ benchmark.collect(parts="semantic-search-common/multiple-subqueries-search.json") }},
         {{ benchmark.collect(parts="semantic-search-common/single-subquery-small-set-search.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/single-subquery-medium-set-search.json") }},
         {{ benchmark.collect(parts="semantic-search-common/single-subquery-large-set-search.json") }}
       ]
     },
@@ -37,6 +38,7 @@
         {{ benchmark.collect(parts="semantic-search-common/check-status-add-resources-no-index.json") }},
         {{ benchmark.collect(parts="semantic-search-common/multiple-subqueries-search.json") }},
         {{ benchmark.collect(parts="semantic-search-common/single-subquery-small-set-search.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/single-subquery-medium-set-search.json") }},
         {{ benchmark.collect(parts="semantic-search-common/single-subquery-large-set-search.json") }}
       ]
     },

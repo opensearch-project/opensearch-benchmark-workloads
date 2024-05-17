@@ -977,6 +977,51 @@
       }
     },
     {
+      "name": "bool-only-range-medium-subset",
+      "operation-type": "search",
+      "body": {
+        "size": 100,
+        "query": {
+          "bool": {
+              "should": [
+                  {
+                      "range": {
+                        "TRANGE": {
+                          "gte": -90,
+                          "lte": -7
+                        }
+                      }
+                  }
+              ]
+          }
+        }
+      }
+    },
+    {
+      "name": "hybrid-query-only-range-medium-subset",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                      "TRANGE": {
+                        "gte": -90,
+                        "lte": -7
+                      }
+                    }
+                }
+            ]
+          }
+        }
+      }
+    },    
+    {
       "name": "bool-only-range-large-subset",
       "operation-type": "search",
       "body": {
