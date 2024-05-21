@@ -1,196 +1,98 @@
       {
         "operation": "hybrid-query-only-term-range-date",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       },
       {
         "operation": "bool-only-term-range-date",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       },        
       {
         "operation": "aggs-query-min-avg-sum",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       },
       {
         "operation": "aggs-query-min-avg-sum-bool",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       },
       {
         "operation": "aggs-query-min-avg-sum-hybrid",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       },        
       {
         "operation": "aggs-query-term-min",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       },
       {
         "operation": "aggs-query-term-min-bool",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       },
       {
         "operation": "aggs-query-term-min-hybrid",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       },
       {
         "operation": "aggs-query-date-histo-geohash-grid",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       },
       {
         "operation": "aggs-query-date-histo-geohash-grid-bool",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       },
       {
         "operation": "aggs-query-date-histo-geohash-grid-hybrid",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       },
       {
         "operation": "aggs-query-range-numeric-significant-terms",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       },
       {
         "operation": "aggs-query-range-numeric-significant-terms-bool",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       },
       {
         "operation": "aggs-query-range-numeric-significant-terms-hybrid",
-        "warmup-iterations": 25,
-        "iterations": 100
-        {%- if not target_throughput %}
-        ,"target-throughput": 6
-        {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-        {%- else %}
-        ,"target-throughput": {{ target_throughput | tojson }}
-        {%- endif %}
-        {%- if search_clients is defined and search_clients %}
-        ,"clients": {{ search_clients | tojson}}
-        {%- endif %}
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
       }
