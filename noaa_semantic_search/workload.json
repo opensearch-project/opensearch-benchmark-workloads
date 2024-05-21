@@ -1,8 +1,8 @@
 {% import "benchmark.helpers" as benchmark with context %}
 
 {
-  "version": 2,
-  "description": "Global daily weather measurements from NOAA",
+  "version": 1,
+  "description": "Benchmark performance of semantic search queries based on dataset of global daily weather measurements from NOAA",
   "indices": [
     {
       "name": "weather-data-2016",
