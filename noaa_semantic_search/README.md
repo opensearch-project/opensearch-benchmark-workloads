@@ -6,21 +6,6 @@ This workload is to benchmark performance of search of Semantic Search queries o
 
 This workload is based on a [daily weather measurement from NOAA](ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/).
 
-To recreate the document corpus:
-
-1. Download the following files:
-    * ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/2014.csv.gz
-    * ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/2015.csv.gz
-    * ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/by_year/2016.csv.gz
-    * ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd-stations.txt
-    * ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd-countries.txt
-    * ftp://ftp.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd-states.txt
-2. Decompress measurement files. For example: `gunzip 2016.csv.gz`
-3. Sort the files by station. For example: `sort --field-separator=',' --key=1,2 -o 2016-sorted.csv 2016.csv`
-4. Execute a script like `_tools/process.py` to create json documents.
-5. Make sure that the JSON documents are randomly ordered. (The script orders measurements of the same station next to each other). This can be achieved with `shuf documents.json > documents1.json`.
-6. Compress the documents json file: `bzip2 -9 -c documents1.json > documents.json.bz2`
-
 ### Example Document
 
 ```json
@@ -66,7 +51,7 @@ appropriate dataset is available on the host.
 
 Currently, we support 5 test procedures for the semantic search workload. The default procedure is `hybrid-query-aggs-light` and does create an index, ingest data and run a base set of search queries.
 
-To run the default workload, invoke the following command. In that example we set number some extra parameters directly as part of the command.
+To run the default workload, invoke the following command. In that example we set some extra parameters directly as part of the command.
 
 ```
 # OpenSearch Cluster End point url with hostname and port
@@ -92,7 +77,7 @@ export PARAMS_FILE=
 
 opensearch-benchmark execute-test \
     --target-hosts $ENDPOINT \
-    --workload semanticsearch \
+    --workload noaa_semantic_search \
     --workload-params ${PARAMS_FILE} \
     --test-procedure=hybrid-query-aggs-full \
     --pipeline benchmark-only \
