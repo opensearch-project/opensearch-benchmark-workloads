@@ -1,15 +1,66 @@
+
+{% if distribution_version is not defined %}
+  {% set distribution_version = "2.11.0" %}
+{% endif %}
+
+{% if distribution_version.split('.') | map('int') | list  >= "2.12.0".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %}
+  {% set match_only_text = "match_only_text" %}
+{% else %}
+  {% set match_only_text = "text" %}
+{% endif %}
+
 {
   "settings": {
     "index.number_of_shards": {{number_of_shards | default(1)}},
     "index.number_of_replicas": {{number_of_replicas | default(1)}},
     "index.queries.cache.enabled": {{query_cache_enabled | default(false) | tojson}},
     "index.requests.cache.enable": {{requests_cache_enabled | default(false) | tojson}},
+    {% if distribution_version.split('.') | map('int') | list  >= "2.11.0".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %}
+      "index.merge.policy": "{{index_merge_policy | default('log_byte_size') }}",
+    {% endif %}
     "index.codec": "best_compression",
     "index.translog.sync_interval": "30s",
     "index.translog.durability": "async",
-    "index.query.default_field": [ "message" ]
+    "index.query.default_field": [
+      "message"
+    ]
   },
   "mappings": {
+    "_data_stream_timestamp": {
+      "enabled": true
+    },
+    {% if distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %}
+      "dynamic_templates": [
+	{
+	  "match_ip": {
+	    "match": "ip",
+	    "match_mapping_type": "string",
+	    "mapping": {
+	      "type": "ip"
+	    }
+	  }
+	},
+	{
+	  "match_message": {
+	    "match": "message",
+	    "match_mapping_type": "string",
+	    "mapping": {
+	      "type": "{{ match_only_text }}"
+	    }
+	  }
+	},
+	{
+	  "strings_as_keyword": {
+	    "match_mapping_type": "string",
+	    "mapping": {
+	      "ignore_above": 1024,
+	      "type": "keyword"
+	    }
+	  }
+	}
+      ],
+    {% endif %}
+    "date_detection": false,
     "properties": {
       "@timestamp": {
         "type": "date"
@@ -17,7 +68,7 @@
       "agent": {
         "type": "object",
         "properties": {
-          "name": {
+          "ephemeral_id": {
             "type": "keyword",
             "ignore_above": 1024
           },
@@ -25,7 +76,7 @@
             "type": "keyword",
             "ignore_above": 1024
           },
-          "ephemeral_id": {
+          "name": {
             "type": "keyword",
             "ignore_above": 1024
           },
@@ -45,11 +96,11 @@
           "cloudwatch": {
             "type": "object",
             "properties": {
-              "log_group": {
+              "ingestion_time": {
                 "type": "keyword",
                 "ignore_above": 1024
               },
-              "ingestion_time": {
+              "log_group": {
                 "type": "keyword",
                 "ignore_above": 1024
               },
@@ -70,6 +121,34 @@
           }
         }
       },
+      "data_stream": {
+        "properties": {
+          "dataset": {
+	    {% if constant_keyword_available is defined  %}
+	      "type": "constant_keyword",
+	      "value": "benchmarks"
+	    {% else %}
+	      "type": "keyword"
+	    {% endif %}
+          },
+          "namespace": {
+	    {% if constant_keyword_available is defined  %}
+	      "type": "constant_keyword",
+	      "value": "day1"
+	    {% else %}
+	      "type": "keyword"
+	    {% endif %}
+          },
+          "type": {
+	    {% if constant_keyword_available is defined  %}
+	      "type": "constant_keyword",
+	      "value": "logs"
+	    {% else %}
+	      "type": "keyword"
+	    {% endif %}
+          }
+        }
+      },
       "ecs": {
         "type": "object",
         "properties": {
@@ -82,16 +161,16 @@
       "event": {
         "type": "object",
         "properties": {
-          "ingested": {
-            "type": "date"
+          "dataset": {
+            "type": "keyword",
+            "ignore_above": 1024
           },
           "id": {
             "type": "keyword",
             "ignore_above": 1024
           },
-          "dataset": {
-            "type": "keyword",
-            "ignore_above": 1024
+          "ingested": {
+            "type": "date"
           }
         }
       },
@@ -122,7 +201,7 @@
         }
       },
       "message": {
-        "type": "text"
+        "type": "{{ match_only_text }}"
       },
       "meta": {
         "type": "object",
@@ -137,9 +216,6 @@
         "type": "object",
         "properties": {
           "size": {
-            "type": "long"
-          },
-          "tmax": {
             "type": "long"
           },
           "tmin": {

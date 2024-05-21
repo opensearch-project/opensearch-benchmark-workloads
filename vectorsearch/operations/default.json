@@ -2,7 +2,7 @@
     "name": "warmup-indices",
     "operation-type": "warmup-knn-indices",
     "index": "{{ target_index_name | default('target_index') }}",
-    "include-in-results_publishing": false
+    "include-in-results_publishing": true
 },
 {
     "name": "force-merge",
@@ -11,7 +11,7 @@
     "index": "{{ target_index_name | default('target_index') }}",
     "mode": "polling",
     "max-num-segments": {{ target_index_max_num_segments | default(1) }},
-    "include-in-results_publishing": false
+    "include-in-results_publishing": true
 },
 {
     "name": "refresh-target-index",

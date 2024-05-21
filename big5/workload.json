@@ -1,3 +1,8 @@
+
+{% if distribution_version is not defined %}
+  {% set distribution_version = "2.11.0" %}
+{% endif %}
+
 {
   "version": 2,
   "description": "Big5 workload based on synthetically generated data corpus",
@@ -12,13 +17,47 @@
       "name": "big5",
       "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/big5",
       "documents": [
-        {
-          "source-url": "{{ document_url | safe }}",
-          "source-file": "{{ document_file | default('documents.json.bz2') }}",
-          "document-count": {{ document_count | default(69223950) }},
-          "compressed-bytes": {{ document_compressed_size_in_bytes | default(3494648233) }},
-          "uncompressed-bytes": {{ document_uncompressed_size_in_bytes | default(64048001338) }}
-        }
+	{% if not corpus_size %}
+	  {% set corpus_size = 100 %}
+	{% endif %}
+
+	{% if corpus_size == 100 %}
+	  {
+	    "source-file": "documents-100.json.bz2",
+	    "document-count": 116000000,
+	    "compressed-bytes": 6023614688,
+	    "uncompressed-bytes": 107321418111
+	  }
+        {% elif corpus_size == 1000 %}
+          {
+            "source-file": "documents-1000.json.bz2",
+            "document-count": 1020000000,
+            "compressed-bytes": 53220934846,
+            "uncompressed-bytes": 943679382267
+          }
+        {% elif corpus_size == 1000-full %}
+          {
+            "source-file": "documents-1000-full.json.bz2",
+            "document-count": 1160800000,
+            "compressed-bytes": 60567183163,
+            "uncompressed-bytes": 1073936121222
+          }
+	{% elif corpus_size == 60 %}
+	  {
+	    "source-file": "documents-60.json.bz2",
+	    "document-count": 69223950,
+	    "compressed-bytes": 3494648233,
+	    "uncompressed-bytes": 64048001338
+	  }
+	{% else %}
+          {
+	    "source-url": "{{ document_url | safe }}",
+	    "source-file": "{{ document_file }}",
+	    "document-count": {{ document_count }},
+	    "compressed-bytes": {{ document_compressed_size_in_bytes }},
+	    "uncompressed-bytes": {{ document_uncompressed_size_in_bytes }}
+	  }
+	{% endif %}
       ]
     }
   ],
