@@ -1,5 +1,5 @@
     {
-      "name": "test-run-all-tasks",
+      "name": "index-merge-search",
       "description": "Indexes the corpus with vector embedding and then runs queries with vector embedding.",
       "default": true,
       "schedule": [
@@ -53,7 +53,7 @@
             "operation-type": "create-index",
             "settings": {%- if index_settings is defined %} {{index_settings | tojson}} {%- else %} {
               "index.refresh_interval": "5s",
-              "index.translog.flush_threshold_size": "512mb"
+              "index.translog.flush_threshold_size": "1g"
             }{%- endif %}
           }
         },
@@ -96,31 +96,17 @@
         },
         {
           "operation": "default",
-          "warmup-iterations": {{warmup_iterations | default(500)}},
-          "iterations": {{iterations | default(500)}}
-          {%- if not target_throughput %}
-          ,"target-throughput": 100
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%-if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
-          {%- endif %}
+          "warmup-iterations": {{warmup_iterations | default(500) | tojson}},
+          "iterations": {{iterations | default(500) | tojson }},
+          "target-throughput": {{ target_throughput | default(100) | tojson}},
+          "clients": {{ search_clients | default(1) }}
         },
         {
           "operation": "semantic-search",
-          "warmup-iterations": {{warmup_iterations | default(100)}},
-          "iterations": {{iterations | default(100)}}
-          {%- if not target_throughput %}
-          ,"target-throughput": 10
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%-if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
-          {%- endif %}
+          "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+          "iterations": {{iterations | default(100) | tojson }},
+          "target-throughput": {{ target_throughput | default(10) | tojson}},
+          "clients": {{ search_clients | default(1)}}
         }
       ]
     }
