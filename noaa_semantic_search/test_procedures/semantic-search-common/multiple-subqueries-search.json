@@ -1,0 +1,98 @@
+      {
+        "operation": "hybrid-query-only-term-range-date",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "bool-only-term-range-date",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },        
+      {
+        "operation": "aggs-query-min-avg-sum",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "aggs-query-min-avg-sum-bool",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "aggs-query-min-avg-sum-hybrid",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },        
+      {
+        "operation": "aggs-query-term-min",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "aggs-query-term-min-bool",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "aggs-query-term-min-hybrid",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "aggs-query-date-histo-geohash-grid",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "aggs-query-date-histo-geohash-grid-bool",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "aggs-query-date-histo-geohash-grid-hybrid",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "aggs-query-range-numeric-significant-terms",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "aggs-query-range-numeric-significant-terms-bool",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "aggs-query-range-numeric-significant-terms-hybrid",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      }
