@@ -1,0 +1,32 @@
+{% import "benchmark.helpers" as benchmark with context %}
+
+{
+  "version": 2,
+  "description": "Benchmark performance of semantic search queries based on dataset of global daily weather measurements from NOAA",
+  "indices": [
+    {
+      "name": "weather-data-2016",
+      "body": "index.json"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "noaa",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/noaa",
+      "documents": [
+        {
+          "source-file": "documents.json.bz2",
+          "document-count": 33659481, 
+          "compressed-bytes": 995480468,
+          "uncompressed-bytes": 9684262698
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ benchmark.collect(parts="operations/*.json") }}
+  ],
+  "test_procedures": [
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  ]
+}
