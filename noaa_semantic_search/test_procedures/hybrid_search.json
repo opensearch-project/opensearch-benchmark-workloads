@@ -1,0 +1,52 @@
+    {
+      "name": "hybrid-query-aggs-light",
+      "description": "Indexes the whole document corpus using OpenSearch default settings. After that several query groups are run.",
+      "default": true,
+      "schedule": [
+        {{ benchmark.collect(parts="semantic-search-common/create-index-ingest-docs.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/check-status-add-resources-no-index.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/single-subquery-small-set-search.json") }}
+      ]
+    },
+    {
+      "name": "hybrid-query-aggs-full",
+      "description": "Indexes the whole document corpus using OpenSearch default settings. After that several query groups are run.",
+      "default": false,
+      "schedule": [
+        {{ benchmark.collect(parts="semantic-search-common/create-index-ingest-docs.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/check-status-add-resources-no-index.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/multiple-subqueries-search.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/single-subquery-small-set-search.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/single-subquery-medium-set-search.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/single-subquery-large-set-search.json") }}
+      ]
+    },
+    {
+      "name": "create-and-index",
+      "description": "Create indexes and ingest the whole document corpus.",
+      "default": false,
+      "schedule": [
+        {{ benchmark.collect(parts="semantic-search-common/create-index-ingest-docs.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/check-status-add-resources-no-index.json") }}
+      ]
+    },
+    {
+      "name": "hybrid-query-aggs-no-index",
+      "description": "Run search queries for aggreagtions and hybrid queries without creating an index and ingesting the document.",
+      "default": false,
+      "schedule": [
+        {{ benchmark.collect(parts="semantic-search-common/check-status-add-resources-no-index.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/multiple-subqueries-search.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/single-subquery-small-set-search.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/single-subquery-medium-set-search.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/single-subquery-large-set-search.json") }}
+      ]
+    },
+    {
+      "name": "search-profiling",
+      "description": "Run search queries to get profilling data.",
+      "default": false,
+      "schedule": [
+        {{ benchmark.collect(parts="semantic-search-common/profiler-workflow.json") }}
+      ]
+    }
