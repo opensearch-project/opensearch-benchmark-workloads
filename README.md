@@ -14,6 +14,7 @@ After making changes to a workload, it's recommended for developers to run a sim
  
 See all details in the [contributor guidelines](https://github.com/opensearch-project/opensearch-benchmark/blob/main/CONTRIBUTING.md).
 
+**Following are the steps to consider when contributing.**
 ### Create a README.md
 
 - The purpose of the workload. When creating a description for the workload, consider its specific use and how the that use case differs from others in the repository.
@@ -52,6 +53,7 @@ After testing the workload, create a pull request (PR) from your fork to the ope
 
 Once the PR is approved, you must share the data corpora of your dataset. The OpenSearch Benchmark team can then add the dataset to a shared S3 bucket. If your data corpora is stored in an S3 bucket, you can use [AWS DataSync](https://docs.aws.amazon.com/datasync/latest/userguide/create-s3-location.html) to share the data corpora. Otherwise, you must inform the maintainers of where the data corpora resides.
 
+For more details, see this [guide](https://opensearch.org/docs/latest/benchmark/user-guide/contributing-workloads/)
 
 Backporting changes
 -------------------
