@@ -778,6 +778,36 @@
       }
     },
     {
+      "name": "cardinality-agg-low",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "aggs": {
+          "region": {
+            "cardinality": {
+              "field": "cloud.region"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "cardinality-agg-high",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "aggs": {
+          "agent": {
+            "cardinality": {
+              "field": "agent.name"
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "query-string-on-message",
       "operation-type": "search",
       "index": "{{index_name | default('big5')}}",
