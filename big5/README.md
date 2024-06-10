@@ -65,7 +65,7 @@ This workload allows the following parameters to be specified using `--workload-
 * `requests_cache_enabled` (default: false): Whether the requests cache should be enabled.
 * `search_clients`: (default: 1): Number of clients that issue search requests.
 * `test_iterations` (default: 200): Number of test iterations per query that will have their latency and throughput measured.
-* `target_throughput` (default: 2): Target throughput for each query operation in requests per second, use "" for no limit.
+* `target_throughput` (default: 2): Target throughput for each query operation in requests per second, use 0 or "" for no throughput throttling.
 * `warmup_iterations` (default: 100): Number of warmup query iterations prior to actual measurements commencing.
 
 
