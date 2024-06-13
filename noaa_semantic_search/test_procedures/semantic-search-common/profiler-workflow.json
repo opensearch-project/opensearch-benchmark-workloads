@@ -10,34 +10,6 @@
   }
 },
 {
-  "operation": "hybrid-query-only-range",
-  "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
-  "iterations": {{ test_iterations | default(100) | tojson }},
-  "target-throughput": {{ target_throughput | default(2) | tojson }},
-  "clients": {{ search_clients | default(1) }}
-},
-{
-  "operation": "bool-only-range",
-  "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
-  "iterations": {{ test_iterations | default(100) | tojson }},
-  "target-throughput": {{ target_throughput | default(2) | tojson }},
-  "clients": {{ search_clients | default(1) }}
-},       
-{
-  "operation": "aggs-query-term-min-bool-one-subquery",
-  "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
-  "iterations": {{ test_iterations | default(100) | tojson }},
-  "target-throughput": {{ target_throughput | default(2) | tojson }},
-  "clients": {{ search_clients | default(1) }}
-},
-{
-  "operation": "aggs-query-term-min-hybrid-one-subquery",
-  "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
-  "iterations": {{ test_iterations | default(100) | tojson }},
-  "target-throughput": {{ target_throughput | default(2) | tojson }},
-  "clients": {{ search_clients | default(1) }}
-},
-{
   "operation": "hybrid-query-only-range-medium-subset",
   "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
   "iterations": {{ test_iterations | default(100) | tojson }},
@@ -45,35 +17,7 @@
   "clients": {{ search_clients | default(1) }}
 },
 {
-  "operation": "bool-only-range-medium-subset",
-  "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
-  "iterations": {{ test_iterations | default(100) | tojson }},
-  "target-throughput": {{ target_throughput | default(2) | tojson }},
-  "clients": {{ search_clients | default(1) }}
-},
-{
-  "operation": "hybrid-query-only-range-large-subset",
-  "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
-  "iterations": {{ test_iterations | default(100) | tojson }},
-  "target-throughput": {{ target_throughput | default(2) | tojson }},
-  "clients": {{ search_clients | default(1) }}
-},
-{
-  "operation": "bool-only-range-large-subset",
-  "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
-  "iterations": {{ test_iterations | default(100) | tojson }},
-  "target-throughput": {{ target_throughput | default(2) | tojson }},
-  "clients": {{ search_clients | default(1) }}
-},
-{
   "operation": "hybrid-query-only-term-range-date",
-  "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
-  "iterations": {{ test_iterations | default(100) | tojson }},
-  "target-throughput": {{ target_throughput | default(2) | tojson }},
-  "clients": {{ search_clients | default(1) }}
-},
-{
-  "operation": "bool-only-term-range-date",
   "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
   "iterations": {{ test_iterations | default(100) | tojson }},
   "target-throughput": {{ target_throughput | default(2) | tojson }},
