@@ -67,13 +67,13 @@ opensearch-benchmark execute-test \
     --kill-running-processes
 ```
 
-Below is another example of command. In this example we refer to a workload by its name, use file for workflow params and choose a non-default test procedure.
+Below is another example of command. In this example we refer to a workload by its name, use file for workflow params and choose a non-default test procedure. Keep workload parameters in file is helping to keep command for workload short and decreases chance of errors. Users are welcome to use one of example parameter files from `params` folder
 
 ```
 # OpenSearch Cluster End point url with hostname and port
 export ENDPOINT=  
 # Absolute file path of Workload param file
-export PARAMS_FILE=
+export PARAMS_FILE=./noaa_semantic_search/params/one_replica_with_concurrent_segment_search.json
 
 opensearch-benchmark execute-test \
     --target-hosts $ENDPOINT \
