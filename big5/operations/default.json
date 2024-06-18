@@ -679,7 +679,6 @@
       "name": "range-agg-2",
       "operation-type": "search",
       "index": "{{index_name | default('big5')}}",
-      "request-timeout": 7200,
       "body": {
         "size": 0,
         "aggs": {
