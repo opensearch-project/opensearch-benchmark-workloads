@@ -1,22 +1,21 @@
 import h5py
 import numpy as np
-import os
 import sys
-from datetime import datetime
+import logging
 
 
-def calculate_distances(test_query, train_docs, engine_type, distance_metric='l2_squared'):
+def calculate_distances(test_queries, train_docs, engine_type, distance_metric='l2_squared'):
     if distance_metric == 'l2_squared':
-        distances = np.sum((train_docs - test_query) ** 2, axis=1)
+        distances = np.sum((train_docs - test_queries) ** 2, axis=1)
     elif distance_metric == 'cosine':
-        norm_test = np.linalg.norm(test_query)
+        norm_test = np.linalg.norm(test_queries)
         norms_train = np.linalg.norm(train_docs, axis=1)
-        distances = 1 - (np.dot(train_docs, test_query) / (norms_train * norm_test))
+        distances = 1 - (np.dot(train_docs, test_queries) / (norms_train * norm_test))
     elif distance_metric == 'inner_product':
         if engine_type == 'faiss':
-            distances = -np.dot(train_docs, test_query)
+            distances = -np.dot(train_docs, test_queries)
         elif engine_type == 'lucene':
-            distances = np.dot(train_docs, test_query)
+            distances = np.dot(train_docs, test_queries)
     else:
         raise ValueError("Unsupported distance metric")
     return distances
@@ -34,9 +33,9 @@ def calculate_scores(test_queries, train_docs, distance_metric='l2_squared'):
         elif engine_type == 'lucene':
             scores = np.where(distances > 0, distances + 1, 1 / (1 - distances))
         else:
-            raise ValueError("Unsupported engine type for inner_product")
+            raise ValueError(f"Unsupported engine type for inner_product: {engine_type}")
     else:
-        raise ValueError("Unsupported distance metric")
+        raise ValueError(f"Unsupported distance metric: {distance_metric}")
     return scores
 
 
@@ -56,14 +55,14 @@ def add_threshold_dataset(input_file_path, output_file_path, threshold_type, thr
         for i, test_query in enumerate(test_queries):
             if threshold_type == 'max_distance':
                 distances = calculate_distances(test_query, train_docs, engine_type, distance_metric)
-                print(f"Query target {i} distances calculated.")
-                print(f"distances: {distances}")
+                logging.info(f"Query target {i} distances calculated.")
+                logging.info(f"distances: {distances}")
                 within_threshold_ids = np.where(distances <= threshold_value)[0]
                 sorted_ids = within_threshold_ids[np.argsort(distances[within_threshold_ids])][:max_length]
             else:
                 scores = calculate_scores(test_query, train_docs, distance_metric)
-                print(f"Query target {i} scores calculated.")
-                print(f"scores: {scores}")
+                logging.info(f"Query target {i} scores calculated.")
+                logging.info(f"scores: {scores}")
                 within_threshold_ids = np.where(scores >= threshold_value)[0]
                 sorted_ids = within_threshold_ids[np.argsort(scores[within_threshold_ids])][:max_length]
 
@@ -72,12 +71,12 @@ def add_threshold_dataset(input_file_path, output_file_path, threshold_type, thr
         dataset_name = f"{threshold_type}_neighbors"
         output_hdf5.create_dataset(dataset_name, data=padded_data)
 
-        print(f"Dataset '{dataset_name}' added successfully to {output_file_path}.")
+        logging.info(f"Dataset '{dataset_name}' added successfully to {output_file_path}.")
 
 
 if __name__ == "__main__":
     if len(sys.argv) != 7:
-        print("Usage: python add_radial_threshold.py <threshold_type> <threshold_value> <space_type> <engine_type> "
+        logging.info("Usage: python add_radial_threshold.py <threshold_type> <threshold_value> <space_type> <engine_type> "
               "<input_hdf5_file> <output_hdf5_file>")
     else:
         threshold_type = sys.argv[1]
