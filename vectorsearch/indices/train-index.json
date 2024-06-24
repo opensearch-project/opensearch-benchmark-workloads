@@ -1,10 +1,8 @@
 {
     "settings": {
       "index": {
-        {%- if train_index_primary_shards is defined and train_index_primary_shards %}
         "number_of_shards": {{ train_index_primary_shards }}
-        {%- endif %}
-        {%- if train_index_replica_shards is defined %}
+        {%- if target_index_replica_shards is defined %}
         ,"number_of_replicas": {{ train_index_replica_shards }}
         {%- endif %}
       }

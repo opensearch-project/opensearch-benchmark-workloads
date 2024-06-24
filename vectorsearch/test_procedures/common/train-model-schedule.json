@@ -2,8 +2,7 @@
     "operation": {
         "operation-type": "delete-knn-model",
         "name": "delete-model",
-        "model_id": "{{ train_model_id }}",
-        "ignore-if-model-does-not-exist": true
+        "model_id": "{{ train_model_id }}"
     }
 },
 {

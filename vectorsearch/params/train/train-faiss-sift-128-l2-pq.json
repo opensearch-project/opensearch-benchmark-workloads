@@ -9,6 +9,7 @@
     "target_index_bulk_index_data_set_format": "hdf5",
     "target_index_bulk_index_data_set_path": "/tmp/sift-128-euclidean.hdf5",
     "target_index_bulk_indexing_clients": 10,
+    "target_index_num_vectors": 1000,
     
     "train_index_name": "train_index",
     "train_field_name": "train_field",
