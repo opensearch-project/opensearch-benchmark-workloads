@@ -18,4 +18,14 @@
     "operation-type": "refresh",
     "retries": 100,
     "index": "{{ target_index_name | default('target_index') }}"
+},
+{
+    "name": "refresh-train-index",
+    "operation-type": "refresh",
+    "retries": 100,
+    "index": "{{ train_index_name | default('train_index') }}"
+},
+{
+    "name": "delete-model",
+    "operation-type": "delete-knn-model"   
 }
