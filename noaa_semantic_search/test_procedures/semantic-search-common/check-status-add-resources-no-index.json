@@ -1,0 +1,55 @@
+  {
+    "name": "check-cluster-health",
+    "operation": {
+      "operation-type": "cluster-health",
+      "index": "weather-data-2016",
+      "request-params": {
+        "wait_for_status": "{{cluster_health | default('green')}}",
+        "wait_for_no_relocating_shards": "true"
+      },
+      "retry-until-success": true
+    }
+  },
+  {
+    "name": "set-concurent-segment-search-setting",
+    "operation": {
+      "operation-type": "put-settings",
+      "body": {
+        "transient": {
+            "search.concurrent_segment_search.enabled": "{{concurrent_segment_search_enabled | default('false')}}"
+        }
+      }
+    }
+  },
+  {
+    "name": "refresh-after-index",
+    "operation": "refresh"
+  },
+  {
+    "operation": {
+      "operation-type": "force-merge",
+      "request-timeout": 7200{%- if max_num_segments is defined %},
+      "max-num-segments": {{max_num_segments}}
+       {%- endif %}
+    }
+  },
+  {
+    "name": "refresh-after-force-merge",
+    "operation": "refresh"
+  },
+  {
+    "name": "wait-until-merges-finish",
+    "operation": {
+      "operation-type": "index-stats",
+      "index": "_all",
+      "condition": {
+        "path": "_all.total.merges.current",
+        "expected-value": 0
+      },
+      "retry-until-success": true,
+      "include-in-reporting": false
+    }
+  },
+  {
+    "operation": "create-normalization-processor-no-weights-search-pipeline"
+  }

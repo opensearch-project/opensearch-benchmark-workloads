@@ -45,7 +45,7 @@ This workload allows the following parameters to be specified using `--workload-
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
 * `bulk_size` (default: 5000): The number of documents in each bulk during indexing.
 * `cluster_health` (default: "green"): The minimum required cluster health.
-* `corpus_size` (default: "100"): The size of the data corpus to use in GiB.  The currently provided sizes are 100, 1000 and 60.  Note that there are [certain considerations when using the 1 TB data corpus](#considerations-when-using-the-1-tb-data-corpus).
+* `corpus_size` (default: "100"): The size of the data corpus to use in GiB.  The currently provided sizes are 100, 1000 and 60.  Note that there are [certain considerations when using the 1000 GiB (1 TiB) data corpus](#considerations-when-using-the-1-tb-data-corpus).
 * `document_compressed_size_in_bytes`: If specifying an alternate data corpus, the compressed size of the corpus.
 * `document_count`: If specifying an alternate data corpus, the number of documents in that corpus.
 * `document_file`: If specifying an alternate data corpus, the file name of the corpus.
@@ -65,7 +65,7 @@ This workload allows the following parameters to be specified using `--workload-
 * `requests_cache_enabled` (default: false): Whether the requests cache should be enabled.
 * `search_clients`: (default: 1): Number of clients that issue search requests.
 * `test_iterations` (default: 200): Number of test iterations per query that will have their latency and throughput measured.
-* `target_throughput` (default: 2): Target throughput for each query operation in requests per second, use "" for no limit.
+* `target_throughput` (default: 2): Target throughput for each query operation in requests per second, use 0 or "" for no throughput throttling.
 * `warmup_iterations` (default: 100): Number of warmup query iterations prior to actual measurements commencing.
 
 
@@ -184,6 +184,7 @@ Running range-auto-date-histo-with-metrics                                     [
 
 *Caveat*: This corpus is being made available as a feature that is currently being alpha tested.  Some points to note when carrying out performance runs using this corpus:
 
+  * Due to CloudFront download size limits, the uncompressed size of the 1 TB corpus is actually 0.95 TB (~0.9 TiB).  This [issue has been noted](https://github.com/opensearch-project/opensearch-benchmark/issues/543) and will be resolved in due course.
   * Use a load generation host with sufficient disk space to hold the corpus.
   * Ensure the target cluster has adequate storage and at least 3 data nodes.
   * Specify an appropriate shard count and number of replicas so that shards are evenly distributed and appropriately sized.

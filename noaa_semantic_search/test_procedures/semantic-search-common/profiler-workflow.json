@@ -1,0 +1,25 @@
+{
+  "name": "set-concurent-segment-search-setting",
+  "operation": {
+    "operation-type": "put-settings",
+    "body": {
+      "transient": {
+          "search.concurrent_segment_search.enabled": "{{concurrent_segment_search_enabled | default('false')}}"
+      }
+    }
+  }
+},
+{
+  "operation": "hybrid-query-only-range-medium-subset",
+  "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "hybrid-query-only-term-range-date",
+  "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+}

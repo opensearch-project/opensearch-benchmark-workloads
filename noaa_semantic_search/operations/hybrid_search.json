@@ -1,0 +1,879 @@
+    {
+      "name": "create-normalization-processor-no-weights-search-pipeline",
+      "operation-type": "create-search-pipeline",
+      "id": "nlp-min-max-arithmetic-search-pipeline",
+      "body": {
+        "description": "Post processor for hybrid search with min_max normalization and arithmetic_mean combination",
+        "phase_results_processors": [
+          {
+              "normalization-processor": {
+                  "normalization": {
+                      "technique": "min_max"
+                  },
+                  "combination": {
+                      "technique": "arithmetic_mean"
+                  }
+              }
+          }
+        ]
+      }
+    },
+    {
+      "name": "bool-only-term-range-date",
+      "operation-type": "search",
+      "body": {
+        "size": 100,
+        "query": {
+          "bool": {
+              "should": [
+                  {
+                      "term": {
+                          "station.country_code": "JA"
+                      }
+                  },
+                  {
+                      "range": {
+                          "TRANGE": {
+                              "gte": 0,
+                              "lte": 30
+                          }
+                      }
+                  },
+                  {
+                    "range": {
+                        "date": {
+                            "gte": "2016-06-04",
+                            "format":"yyyy-MM-dd"
+                        }
+                    }
+                  }
+              ]
+          }
+        }
+      }
+    },
+    {
+      "name": "hybrid-query-only-term-range-date",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "term": {
+                        "station.country_code": "JA"
+                    }
+                },
+                {
+                    "range": {
+                        "TRANGE": {
+                            "gte": 0,
+                            "lte": 30
+                        }
+                    }
+                },
+                {
+                  "range": {
+                      "date": {
+                          "gte": "2016-06-04",
+                          "format":"yyyy-MM-dd"
+                      }
+                  }
+                }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-term-min-hybrid",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "term": {
+                        "station.country_code": "JA"
+                    }
+                },
+                {
+                    "range": {
+                        "TRANGE": {
+                            "gte": 0,
+                            "lte": 30
+                        }
+                    }
+                },
+                {
+                  "range": {
+                      "date": {
+                          "gte": "2016-06-04",
+                          "format":"yyyy-MM-dd"
+                      }
+                  }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "station": {
+            "terms": {
+              "field": "station.id",
+              "size": 500
+            },
+            "aggs": {
+              "tmin": {
+                "min": {
+                  "field": "TMIN"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-date-histo-geohash-grid-hybrid",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "term": {
+                        "station.country_code": "JA"
+                    }
+                },
+                {
+                    "range": {
+                        "TRANGE": {
+                            "gte": 0,
+                            "lte": 30
+                        }
+                    }
+                },
+                {
+                  "range": {
+                      "date": {
+                          "gte": "2016-06-04",
+                          "format":"yyyy-MM-dd"
+                      }
+                  }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "date": {
+            "date_histogram": {
+              "field": "date",
+              "calendar_interval": "1M"
+            },
+            "aggs": {
+              "location": {
+                "geohash_grid": {
+                  "field": "station.location",
+                  "precision": 2
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-range-numeric-significant-terms-hybrid",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "term": {
+                        "station.country_code": "JA"
+                    }
+                },
+                {
+                    "range": {
+                        "TRANGE": {
+                            "gte": 0,
+                            "lte": 30
+                        }
+                    }
+                },
+                {
+                  "range": {
+                      "date": {
+                          "gte": "2016-06-04",
+                          "format":"yyyy-MM-dd"
+                      }
+                  }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "tmax": {
+            "range": {
+              "field": "TMAX",
+              "ranges": [
+                {"to":   -10},
+                {"from": -10, "to":  0},
+                {"from":   0, "to": 10},
+                {"from":  10, "to": 20},
+                {"from":  20, "to": 30},
+                {"from":  30}
+              ]
+            },
+            "aggs": {
+              "date": {
+                "significant_terms": {
+                  "field": "date"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-min-avg-sum-hybrid",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "term": {
+                        "station.country_code": "JA"
+                    }
+                },
+                {
+                    "range": {
+                        "TRANGE": {
+                            "gte": 0,
+                            "lte": 30
+                        }
+                    }
+                },
+                {
+                  "range": {
+                      "date": {
+                          "gte": "2016-06-04",
+                          "format":"yyyy-MM-dd"
+                      }
+                  }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "max_temp": {
+              "max": {
+                  "field": "TMAX"
+              }
+          },
+          "avg_temp": {
+              "avg": {
+                  "field": "TAVG"
+              }
+          },
+          "sum_temp": {
+              "sum": {
+                  "field": "THIC"
+              }
+          }
+        }
+      }
+    },
+    {
+      "name": "hybrid-query-only-range",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                        "TRANGE": {
+                          "gte": -100,
+                          "lte": -50
+                        }
+                    }
+                }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-term-min-hybrid-one-subquery",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                        "TRANGE": {
+                          "gte": -100,
+                          "lte": -50
+                        }
+                    }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "station": {
+            "terms": {
+              "field": "station.id",
+              "size": 500
+            },
+            "aggs": {
+              "tmin": {
+                "min": {
+                  "field": "TMIN"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-date-histo-geohash-grid-hybrid-one-subquery",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                        "TRANGE": {
+                          "gte": -100,
+                          "lte": -50
+                        }
+                    }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "date": {
+            "date_histogram": {
+              "field": "date",
+              "calendar_interval": "1M"
+            },
+            "aggs": {
+              "location": {
+                "geohash_grid": {
+                  "field": "station.location",
+                  "precision": 2
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-range-numeric-significant-terms-hybrid-one-subquery",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                        "TRANGE": {
+                          "gte": -100,
+                          "lte": -50
+                        }
+                    }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "tmax": {
+            "range": {
+              "field": "TMAX",
+              "ranges": [
+                {"to":   -10},
+                {"from": -10, "to":  0},
+                {"from":   0, "to": 10},
+                {"from":  10, "to": 20},
+                {"from":  20, "to": 30},
+                {"from":  30}
+              ]
+            },
+            "aggs": {
+              "date": {
+                "significant_terms": {
+                  "field": "date"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-min-avg-sum-hybrid-one-subquery",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                        "TRANGE": {
+                          "gte": -100,
+                          "lte": -50
+                        }
+                    }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "max_temp": {
+              "max": {
+                  "field": "TMAX"
+              }
+          },
+          "avg_temp": {
+              "avg": {
+                  "field": "TAVG"
+              }
+          },
+          "sum_temp": {
+              "sum": {
+                  "field": "THIC"
+              }
+          }
+        }
+      }
+    },
+    {
+      "name": "hybrid-query-only-range-medium-subset",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                      "TRANGE": {
+                        "gte": -90,
+                        "lte": -7
+                      }
+                    }
+                }
+            ]
+          }
+        }
+      }
+    },    
+    {
+      "name": "aggs-query-term-min-hybrid-one-subquery-medium-subset",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                  "range": {
+                    "TRANGE": {
+                      "gte": -90,
+                      "lte": -7
+                    }
+                  }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "station": {
+            "terms": {
+              "field": "station.id",
+              "size": 500
+            },
+            "aggs": {
+              "tmin": {
+                "min": {
+                  "field": "TMIN"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-date-histo-geohash-grid-hybrid-one-subquery-medium-subset",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                  "range": {
+                    "TRANGE": {
+                      "gte": -90,
+                      "lte": -7
+                    }
+                  }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "date": {
+            "date_histogram": {
+              "field": "date",
+              "calendar_interval": "1M"
+            },
+            "aggs": {
+              "location": {
+                "geohash_grid": {
+                  "field": "station.location",
+                  "precision": 2
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-range-numeric-significant-terms-hybrid-one-subquery-medium-subset",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                  "range": {
+                    "TRANGE": {
+                      "gte": -90,
+                      "lte": -7
+                    }
+                  }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "tmax": {
+            "range": {
+              "field": "TMAX",
+              "ranges": [
+                {"to":   -10},
+                {"from": -10, "to":  0},
+                {"from":   0, "to": 10},
+                {"from":  10, "to": 20},
+                {"from":  20, "to": 30},
+                {"from":  30}
+              ]
+            },
+            "aggs": {
+              "date": {
+                "significant_terms": {
+                  "field": "date"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-min-avg-sum-hybrid-one-subquery-medium-subset",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                  "range": {
+                    "TRANGE": {
+                      "gte": -90,
+                      "lte": -7
+                    }
+                  }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "max_temp": {
+              "max": {
+                  "field": "TMAX"
+              }
+          },
+          "avg_temp": {
+              "avg": {
+                  "field": "TAVG"
+              }
+          },
+          "sum_temp": {
+              "sum": {
+                  "field": "THIC"
+              }
+          }
+        }
+      }
+    },
+    {
+      "name": "hybrid-query-only-range-large-subset",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                      "TRANGE": {
+                        "gte": 1,
+                        "lte": 35
+                      }
+                    }
+                }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-term-min-hybrid-one-subquery-large-subset",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                      "TRANGE": {
+                        "gte": 1,
+                        "lte": 35
+                      }
+                    }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "station": {
+            "terms": {
+              "field": "station.id",
+              "size": 500
+            },
+            "aggs": {
+              "tmin": {
+                "min": {
+                  "field": "TMIN"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-date-histo-geohash-grid-hybrid-one-subquery-large-subset",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                      "TRANGE": {
+                        "gte": 1,
+                        "lte": 35
+                      }
+                    }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "date": {
+            "date_histogram": {
+              "field": "date",
+              "calendar_interval": "1M"
+            },
+            "aggs": {
+              "location": {
+                "geohash_grid": {
+                  "field": "station.location",
+                  "precision": 2
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-range-numeric-significant-terms-hybrid-one-subquery-large-subset",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                      "TRANGE": {
+                        "gte": 1,
+                        "lte": 35
+                      }
+                    }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "tmax": {
+            "range": {
+              "field": "TMAX",
+              "ranges": [
+                {"to":   -10},
+                {"from": -10, "to":  0},
+                {"from":   0, "to": 10},
+                {"from":  10, "to": 20},
+                {"from":  20, "to": 30},
+                {"from":  30}
+              ]
+            },
+            "aggs": {
+              "date": {
+                "significant_terms": {
+                  "field": "date"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "aggs-query-min-avg-sum-hybrid-one-subquery-large-subset",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                        "TRANGE": {
+                          "gte": 1,
+                          "lte": 35
+                        }
+                    }
+                }
+            ]
+          }
+        },
+        "aggs": {
+          "max_temp": {
+              "max": {
+                  "field": "TMAX"
+              }
+          },
+          "avg_temp": {
+              "avg": {
+                  "field": "TAVG"
+              }
+          },
+          "sum_temp": {
+              "sum": {
+                  "field": "THIC"
+              }
+          }
+        }
+      }
+    }

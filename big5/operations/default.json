@@ -637,6 +637,76 @@
       }
     },
     {
+      "name": "range-agg-1",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "aggs": {
+          "tmax": {
+            "range": {
+              "field": "metrics.size",
+              "ranges": [
+                {
+                  "to": -10
+                },
+                {
+                  "from": -10,
+                  "to": 10
+                },
+                {
+                  "from": 10,
+                  "to": 100
+                },
+                {
+                  "from": 100,
+                  "to": 1000
+                },
+                {
+                  "from": 1000,
+                  "to": 2000
+                },
+                {
+                  "from": 2000
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "range-agg-2",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "aggs": {
+          "tmax": {
+            "range": {
+              "field": "metrics.size",
+              "ranges": [
+                {
+                  "to": 100
+                },
+                {
+                  "from": 100,
+                  "to": 1000
+                },
+                {
+                  "from": 1000,
+                  "to": 2000
+                },
+                {
+                  "from": 2000
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "multi_terms-keyword",
       "operation-type": "search",
       "index": "{{index_name | default('big5')}}",
@@ -772,6 +842,36 @@
             "terms": {
               "field": "aws.cloudwatch.log_stream",
               "size": 50
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "cardinality-agg-low",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "aggs": {
+          "region": {
+            "cardinality": {
+              "field": "cloud.region"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "cardinality-agg-high",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "aggs": {
+          "agent": {
+            "cardinality": {
+              "field": "agent.name"
             }
           }
         }

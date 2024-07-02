@@ -35,7 +35,7 @@
             "compressed-bytes": 53220934846,
             "uncompressed-bytes": 943679382267
           }
-        {% elif corpus_size == 1000-full %}
+        {% elif corpus_size == "1000-full" %}
           {
             "source-file": "documents-1000-full.json.bz2",
             "document-count": 1160800000,

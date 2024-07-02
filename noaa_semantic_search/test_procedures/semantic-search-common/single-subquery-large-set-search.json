@@ -1,0 +1,35 @@
+      {
+        "operation": "hybrid-query-only-range-large-subset",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "aggs-query-min-avg-sum-hybrid-one-subquery-large-subset",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },        
+      {
+        "operation": "aggs-query-term-min-hybrid-one-subquery-large-subset",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "aggs-query-date-histo-geohash-grid-hybrid-one-subquery-large-subset",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      },
+      {
+        "operation": "aggs-query-range-numeric-significant-terms-hybrid-one-subquery-large-subset",
+        "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
+        "iterations": {{ test_iterations | default(100) | tojson }},
+        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "clients": {{ search_clients | default(1) }}
+      }      
