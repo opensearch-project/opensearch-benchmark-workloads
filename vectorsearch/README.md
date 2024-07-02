@@ -97,6 +97,9 @@ This workload allows the following parameters to be specified using `--workload-
 | query_count                             | Number of queries for search operation                                   |
 | query_body                              | Json properties that will be merged with search body                     |
 | search_clients                          | Number of clients to use for running queries                             |
+| repetitions                             | Number of repetitions until the data set is exhausted                    |
+| target_throughput                       | Target throughput for each query operation in requests per second (default 10) |
+| time_period                             | The period of time dedicated for the benchmark execution (in seconds)    |
 
 
 
