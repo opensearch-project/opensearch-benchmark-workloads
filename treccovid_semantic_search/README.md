@@ -87,7 +87,7 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `k` (default: 10) Number of nearest neighbors are returned.
 * `warmup_iterations` Number of Warmup iteration of each search client executes.
 * `iterations`  Number of test iterations of each search client executes.
-* `variable_queries` (default: 0) Number of variable queries will be used for the semantic search task, 0 means fixed query and max value is 20,000.
+* `num_variable_queries` (default: 0) Number of variable queries will be used for the semantic search task, 0 means fixed query and max value is 50.
 
 ### Specifying Workload Parameters
 

@@ -1,7 +1,11 @@
 {
   "settings": {
-    "index.number_of_shards": {{number_of_shards | default(1)}},
-    "index.number_of_replicas": {{number_of_replicas | default(0)}},
+    {%-if number_of_shards is defined %}
+    "index.number_of_shards": {{number_of_shards}},
+    {%- endif %}
+    {%-if number_of_replicas is defined %}
+    "index.number_of_replicas": {{number_of_replicas}},
+    {%- endif %}
     "index.queries.cache.enabled": {{query_cache_enabled | default(false) | tojson}},
     "index.requests.cache.enable": {{requests_cache_enabled | default(false) | tojson}},
     "index.knn": true,
@@ -16,7 +20,9 @@
         "type": "knn_vector",
         "dimension": {{dimensions | default(768)}},
         "method": {
-          "engine": "{{engine | default('lucene')}}",
+          {%-if engine is defined %}
+          "engine": "{{engine}}",
+          {%- endif %}
           "space_type": "{{space_type | default('l2')}}",
           "name": "{{method | default('hnsw')}}",
           "parameters": {}

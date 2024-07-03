@@ -51,7 +51,7 @@
     {
       "name": "semantic-search",
       "operation-type": "search",
-      "variable-queries": {{variable_queries | default(0)}},
+      "num-variable-queries": {{num_variable_queries | default(0)}},
       "param-source": "semantic-search-source",
       "body": {
         "_source": {
