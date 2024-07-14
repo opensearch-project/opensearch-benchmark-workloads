@@ -1,0 +1,6 @@
+{
+  "base-url": "https://github.com/martin-gaievski/neural-search/releases/download/trec_covid_queries_knn",
+  "source-file": "queries.json.zip",
+  "compressed-bytes" : 193612,
+  "uncompressed-bytes": 519763
+}

@@ -1,0 +1,30 @@
+{% import "benchmark.helpers" as benchmark with context %}
+
+{
+  "version": 2,
+  "description": "Benchmark performance of semantic search queries based on dataset of global daily weather measurements from NOAA",
+  "indices": [
+    {
+      "name": "trec-covid",
+      "body": "index.json"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "trec-covid",
+      "base-url": "https://github.com/martin-gaievski/neural-search/releases/download/trec_covid_dataset_1M_v1",
+      "documents": [
+        {
+          "source-file": "documents.json.zip",
+          "document-count": 1027950
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ benchmark.collect(parts="operations/*.json") }}
+  ],
+  "test_procedures": [
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  ]
+}
