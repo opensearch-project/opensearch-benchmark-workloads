@@ -52,7 +52,7 @@ def total_amount_source():
     return random_money_values(111.98)
 
 def date_source():
-    return random_dates(datetime.datetime(2015, 1, 1), datetime.datetime(2015, 1, 15))
+    return random_dates(datetime.datetime(2015, 1, 1), datetime.datetime(2015, 6, 15))
 
 def trip_distance_source():
     gte = random.randint(0, 10)
