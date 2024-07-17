@@ -14,7 +14,7 @@
                 },
                 "warmup-iterations": 1200,
                 "iterations": 320000,
-                "target-throughput": 6
+                "target-throughput": 100
               },
               {
                 "name":"cheap-fare-amount",
@@ -24,7 +24,7 @@
                 },
                 "warmup-iterations": 1200,
                 "iterations": 320000,
-                "target-throughput": 6
+                "target-throughput": 100
               },
               {
                 "name":"cheap-total-amount",
@@ -34,7 +34,7 @@
                 },
                 "warmup-iterations": 1200,
                 "iterations": 320000,
-                "target-throughput": 6
+                "target-throughput": 100
               },
               {
                 "name":"cheap-pickup",
@@ -44,7 +44,7 @@
                 },
                 "warmup-iterations": 1200,
                 "iterations": 320000,
-                "target-throughput": 6
+                "target-throughput": 100
               },
               {
                 "name":"cheap-dropoff",
@@ -54,7 +54,7 @@
                 },
                 "warmup-iterations": 1200,
                 "iterations": 320000,
-                "target-throughput": 6
+                "target-throughput": 100
               },
               {
                 "name":"autohisto-agg",
@@ -64,7 +64,7 @@
                 },
                 "warmup-iterations": 300,
                 "iterations": 80000,
-                "target-throughput": 1.5
+                "target-throughput": 100
               },
               {
                 "name":"date-histogram-agg",
@@ -74,7 +74,7 @@
                 },
                 "warmup-iterations": 300,
                 "iterations": 80000,
-                "target-throughput": 1.5
+                "target-throughput": 100
               },
               {
                 "name":"date-histogram-calendar-interval",
@@ -84,7 +84,7 @@
                 },
                 "warmup-iterations": 300,
                 "iterations": 80000,
-                "target-throughput": 1.5
+                "target-throughput": 100
               },
               {
                 "name":"date-histogram-calendar-interval-with-tz",
@@ -94,7 +94,7 @@
                 },
                 "warmup-iterations": 300,
                 "iterations": 80000,
-                "target-throughput": 1.5
+                "target-throughput": 100
               },
               {
                 "name":"date-histogram-fixed-interval",
@@ -104,7 +104,7 @@
                 },
                 "warmup-iterations": 300,
                 "iterations": 80000,
-                "target-throughput": 1.5
+                "target-throughput": 100
               },
               {
                 "name":"date-histogram-fixed-interval-with-tz",
@@ -114,7 +114,7 @@
                 },
                 "warmup-iterations": 300,
                 "iterations": 80000,
-                "target-throughput": 1.5
+                "target-throughput": 100
               },
               {
                 "name":"auto-date-histogram",
@@ -124,7 +124,7 @@
                 },
                 "warmup-iterations": 300,
                 "iterations": 80000,
-                "target-throughput": 1.5
+                "target-throughput": 100
               },
               {
                 "name":"auto-date-histogram-with-tz",
@@ -134,7 +134,7 @@
                 },
                 "warmup-iterations": 300,
                 "iterations": 80000,
-                "target-throughput": 1.5
+                "target-throughput": 100
               }
             ]
           }
