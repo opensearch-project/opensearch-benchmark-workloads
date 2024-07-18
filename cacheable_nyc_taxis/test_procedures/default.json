@@ -12,8 +12,6 @@
                 "settings": {
                   "index.requests.cache.enable":true
                 },
-                // "warmup-iterations": 1200,
-                // "iterations": 5000,
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
@@ -24,8 +22,6 @@
                 "settings": {
                   "index.requests.cache.enable":true
                 },
-                // "warmup-iterations": 1200,
-                // "iterations": 5000,
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
@@ -36,8 +32,6 @@
                 "settings": {
                   "index.requests.cache.enable":true
                 },
-                // "warmup-iterations": 1200,
-                // "iterations": 5000,
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
@@ -48,8 +42,6 @@
                 "settings": {
                   "index.requests.cache.enable":true
                 },
-                // "warmup-iterations": 1200,
-                // "iterations": 5000,
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
@@ -60,8 +52,6 @@
                 "settings": {
                   "index.requests.cache.enable":true
                 },
-                // "warmup-iterations": 1200,
-                // "iterations": 5000,
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
@@ -72,8 +62,6 @@
                 "settings": {
                   "index.requests.cache.enable":true
                 },
-                // "warmup-iterations": 300,
-                // "iterations": 20000,
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
@@ -84,8 +72,6 @@
                 "settings": {
                   "index.requests.cache.enable":true
                 },
-                // "warmup-iterations": 300,
-                // "iterations": 20000,
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
@@ -96,8 +82,6 @@
                 "settings": {
                   "index.requests.cache.enable":true
                 },
-                // "warmup-iterations": 300,
-                // "iterations": 20000,
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
@@ -108,8 +92,6 @@
                 "settings": {
                   "index.requests.cache.enable":true
                 },
-                // "warmup-iterations": 300,
-                // "iterations": 20000,
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
@@ -132,8 +114,6 @@
                 "settings": {
                   "index.requests.cache.enable":true
                 },
-                // "warmup-iterations": 300,
-                // "iterations": 20000,
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
@@ -144,8 +124,6 @@
                 "settings": {
                   "index.requests.cache.enable":true
                 },
-                // "warmup-iterations": 300,
-                // "iterations": 20000,
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
@@ -156,8 +134,6 @@
                 "settings": {
                   "index.requests.cache.enable":true
                 },
-                // "warmup-iterations": 300,
-                // "iterations": 20000,
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
