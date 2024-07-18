@@ -11,7 +11,9 @@
       "properties": {
         "{{ train_field_name }}": {
           "type": "knn_vector",
-          "dimension": {{ target_index_dimension }}
+          {%- if target_index_dimension is defined and target_index_dimension %}
+            "dimension": {{ target_index_dimension }}
+          {%- endif %}
         }
       }
     }
