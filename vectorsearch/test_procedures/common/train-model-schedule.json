@@ -13,9 +13,7 @@
             "training_index": "{{ train_index_name | default('train_index') }}",
             "training_field": "{{ train_field_name | default('train_field') }}",
             "search_size": "{{ train_search_size | default(10000) }}", 
-            {%- if target_index_dimension is defined and target_index_dimension %}
-                "dimension": {{ target_index_dimension }},
-            {%- endif %}
+            "dimension": {{ target_index_dimension | default(-1) }},
             {%- if train_max_vector_count is defined and train_max_vector_count %}
                 "max_training_vector_count": "{{ train_max_vector_count }}", 
             {%- endif %}
