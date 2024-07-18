@@ -135,6 +135,45 @@
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
+              },
+              {
+                "size": 0,
+                "query": {
+                  "range": {
+                    "pickup_datetime": {
+                      "gte": "2020-01-01 00:00:00",
+                      "lte": "2023-12-31 23:59:59"
+                    }
+                  }
+                },
+                "aggs": {
+                  "vendor_id_terms": {
+                    "terms": {
+                      "field": "vendor_id",
+                      "size": 100
+                    },
+                    "aggs": {
+                      "avg_total_amount": {
+                        "avg": {
+                          "field": "total_amount"
+                        }
+                      },
+                      "vendor_name_terms": {
+                        "terms": {
+                          "field": "vendor_name.keyword",
+                          "size": 100
+                        },
+                        "aggs": {
+                          "avg_tip_per_vendor_name": {
+                            "avg": {
+                              "field": "tip_amount"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             ]
           }
