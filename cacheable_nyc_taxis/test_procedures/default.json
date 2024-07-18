@@ -102,8 +102,6 @@
                 "settings": {
                   "index.requests.cache.enable":true
                 },
-                // "warmup-iterations": 300,
-                // "iterations": 20000,
                 "warmup-iterations": 0,
                 "iterations": 1,
                 "target-throughput": 100
