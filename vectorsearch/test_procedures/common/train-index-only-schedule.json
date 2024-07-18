@@ -1,0 +1,34 @@
+{
+    "operation": {
+        "name": "delete-train-index",
+        "operation-type": "delete-index",
+        "only-if-exists": true,
+        "index": "{{ train_index_name | default('train_index') }}"
+    }
+},
+{
+    "operation": {
+        "name": "create-train-index",
+        "operation-type": "create-index",
+        "index": "{{ train_index_name | default('train_index') }}"
+    }
+},
+{
+    "operation": {
+        "name": "custom-vector-bulk-train",
+        "operation-type": "bulk-vector-data-set",
+        "index": "{{ train_index_name | default('train_index') }}",
+        "field": "{{ train_field_name | default('train_field') }}",
+        "bulk_size": {{ train_index_bulk_size | default(500)}},
+        "data_set_format": "{{ train_index_bulk_index_data_set_format | default('hdf5') }}",
+        "data_set_path": "{{ train_index_bulk_index_data_set_path  }}",
+        "data_set_corpus": "{{ train_index_bulk_index_data_set_corpus  }}",
+        "num_vectors": {{ train_index_num_vectors | default(-1) }},
+        "id-field-name": "_id"
+    },
+    "clients": {{ train_index_bulk_indexing_clients | default(1)}}
+},
+{
+    "name" : "refresh-train-index",
+    "operation" : "refresh-train-index"
+}
