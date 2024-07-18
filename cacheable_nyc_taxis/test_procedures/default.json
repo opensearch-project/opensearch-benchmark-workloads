@@ -137,36 +137,134 @@
                 "target-throughput": 100
               },
               {
-                "size": 0,
-                "query": {
-                  "range": {
-                    "pickup_datetime": {
-                      "gte": "2020-01-01 00:00:00",
-                      "lte": "2023-12-31 23:59:59"
+                "name": "query-1",
+                "operation-type": "search",
+                "body": {
+                  "size": 0,
+                  "query": {
+                    "range": {
+                      "pickup_datetime": {
+                        "gte": "2020-01-01 00:00:00",
+                        "lte": "2023-12-31 23:59:59"
+                      }
+                    }
+                  },
+                  "aggs": {
+                    "vendor_id_terms": {
+                      "terms": {
+                        "field": "vendor_id",
+                        "size": 100
+                      },
+                      "aggs": {
+                        "avg_total_amount": {
+                          "avg": {
+                            "field": "total_amount"
+                          }
+                        },
+                        "vendor_name_terms": {
+                          "terms": {
+                            "field": "vendor_name.keyword",
+                            "size": 100
+                          },
+                          "aggs": {
+                            "avg_tip_per_vendor_name": {
+                              "avg": {
+                                "field": "tip_amount"
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
-                },
-                "aggs": {
-                  "vendor_id_terms": {
-                    "terms": {
-                      "field": "vendor_id",
-                      "size": 100
+                }
+              },
+              {
+                "name": "query-2",
+                "operation-type": "search",
+                "body": {
+                  "size": 0,
+                  "query": {
+                    "range": {
+                      "pickup_datetime": {
+                        "gte": "2010-01-01 00:00:00",
+                        "lte": "2030-12-31 23:59:59"
+                      }
+                    }
+                  },
+                  "aggs": {
+                    "sum_total_amount": {
+                      "sum": {
+                        "field": "total_amount"
+                      }
                     },
-                    "aggs": {
-                      "avg_total_amount": {
-                        "avg": {
-                          "field": "total_amount"
-                        }
+                    "sum_tip_amount": {
+                      "sum": {
+                        "field": "tip_amount"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "query-3",
+                "operation-type": "search",
+                "body": {
+                  "size": 0,
+                  "query": {
+                    "wildcard": {
+                      "vendor_id": {
+                        "value": "*xyz*"
+                      }
+                    }
+                  },
+                  "aggs": {
+                    "avg_total_amount": {
+                      "avg": {
+                        "field": "total_amount"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "query-4",
+                "operation-type": "search",
+                "body": {
+                  "size": 0,
+                  "query": {
+                    "range": {
+                      "pickup_datetime": {
+                        "gte": "2020-01-01 00:00:00",
+                        "lte": "2023-12-31 23:59:59"
+                      }
+                    }
+                  },
+                  "aggs": {
+                    "vendor_id_terms": {
+                      "terms": {
+                        "field": "vendor_id",
+                        "size": 100
                       },
-                      "vendor_name_terms": {
-                        "terms": {
-                          "field": "vendor_name.keyword",
-                          "size": 100
-                        },
-                        "aggs": {
-                          "avg_tip_per_vendor_name": {
-                            "avg": {
-                              "field": "tip_amount"
+                      "aggs": {
+                        "trip_type_terms": {
+                          "terms": {
+                            "field": "trip_type",
+                            "size": 100
+                          },
+                          "aggs": {
+                            "payment_type_terms": {
+                              "terms": {
+                                "field": "payment_type",
+                                "size": 100
+                              },
+                              "aggs": {
+                                "avg_fare_amount": {
+                                  "avg": {
+                                    "field": "fare_amount"
+                                  }
+                                }
+                              }
                             }
                           }
                         }
