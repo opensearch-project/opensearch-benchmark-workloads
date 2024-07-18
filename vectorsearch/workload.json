@@ -4,11 +4,11 @@
     "description": "Benchmark vector search engine performance for different engine types like faiss, lucene and nmslib",
     "indices": [
         {
-            "name": "{{ target_index_name }}",
+            "name": "{{ target_index_name | default('target-index') }}",
             "body": "{{ target_index_body }}"
         },
         {
-            "name": "{{ train_index_name }}",
+            "name": "{{ train_index_name | default('train-index') }}",
             "body": "{{ train_index_body }}"
         }
     ],
