@@ -71,37 +71,37 @@ does not contain operations like refresh and warm up since they are not supporte
 
 This workload allows the following parameters to be specified using `--workload-params`:
 
-| Name                                    | Description                                                              |
-|-----------------------------------------|--------------------------------------------------------------------------|
-| target_index_name                       | Name of index to add vectors to                                          |
-| target_field_name                       | Name of field to add vectors to                                          |
-| target_index_body                       | Path to target index definition                                          |
-| target_index_primary_shards             | Target index primary shards                                              |
-| target_index_replica_shards             | Target index replica shards                                              |
-| target_index_dimension                  | Dimension of target index                                                |
-| target_index_space_type                 | Target index space type                                                  |
-| target_index_bulk_size                  | Target index bulk size                                                   |
-| target_index_bulk_index_data_set_format | Format of vector data set                                                |
-| target_index_bulk_index_data_set_path   | Path to vector data set                                                  |
-| target_index_bulk_index_data_set_corpus | Corpus name to vector data set                                           |
-| target_index_bulk_index_clients         | Clients to be used for bulk ingestion (must be divisor of data set size) |
-| target_index_max_num_segments           | Number of segments to merge target index down to before beginning search |
-| target_index_force_merge_timeout        | Timeout for of force merge requests in seconds                           |
-| hnsw_ef_search                          | HNSW ef search parameter                                                 |
-| hnsw_ef_construction                    | HNSW ef construction parameter                                           |
-| id_field_name                           | Name of field that will be used to identify documents in an index        |
-| hnsw_m                                  | HNSW m parameter                                                         |
-| query_k                                 | The number of neighbors to return for the search                         |
-| query_max_distance                      | The maximum distance to be returned for the vector search                |
-| query_min_score                         | The minimum score to be returned for the vector search                   |
-| query_data_set_format                   | Format of vector data set for queries                                    |
-| query_data_set_path                     | Path to vector data set for queries                                      |
-| query_count                             | Number of queries for search operation                                   |
-| query_body                              | Json properties that will be merged with search body                     |
-| search_clients                          | Number of clients to use for running queries                             |
-| repetitions                             | Number of repetitions until the data set is exhausted (default 1)                    |
-| target_throughput                       | Target throughput for each query operation in requests per second (default 10) |
-| time_period                             | The period of time dedicated for the benchmark execution in seconds (default 900)    |
+| Name                                    | Description                                                                                                                 |
+|-----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| target_index_name                       | Name of index to add vectors to                                                                                             |
+| target_field_name                       | Name of field to add vectors to                                                                                             |
+| target_index_body                       | Path to target index definition                                                                                             |
+| target_index_primary_shards             | Target index primary shards                                                                                                 |
+| target_index_replica_shards             | Target index replica shards                                                                                                 |
+| target_index_dimension                  | Dimension of target index                                                                                                   |
+| target_index_space_type                 | Target index space type                                                                                                     |
+| target_index_bulk_size                  | Target index bulk size                                                                                                      |
+| target_index_bulk_index_data_set_format | Format of vector data set                                                                                                   |
+| target_index_bulk_index_data_set_path   | Path to vector data set                                                                                                     |
+| target_index_bulk_index_data_set_corpus | Corpus name to vector data set                                                                                              |
+| target_index_bulk_index_clients         | Clients to be used for bulk ingestion (must be divisor of data set size)                                                    |
+| target_index_max_num_segments           | Number of segments to merge target index down to before beginning search                                                    |
+| target_index_force_merge_timeout        | Timeout for of force merge requests in seconds                                                                              |
+| hnsw_ef_search                          | HNSW ef search parameter                                                                                                    | 
+| hnsw_ef_construction                    | HNSW ef construction parameter                                                                                              |
+| id_field_name                           | Name of field that will be used to identify documents in an index                                                           |
+| hnsw_m                                  | HNSW m parameter                                                                                                            |
+| query_k                                 | The number of neighbors to return for the search (only one of query_k, query_max_distance, query_min_score can be provided) |
+| query_max_distance                      | The maximum distance to be returned for the vector search (only one of query_k, query_max_distance, query_min_score can be provided) |
+| query_min_score                         | The minimum score to be returned for the vector search (only one of query_k, query_max_distance, query_min_score can be provided)    |
+| query_data_set_format                   | Format of vector data set for queries                                                                                       |
+| query_data_set_path                     | Path to vector data set for queries                                                                                         |
+| query_count                             | Number of queries for search operation                                                                                      |
+| query_body                              | Json properties that will be merged with search body                                                                        |
+| search_clients                          | Number of clients to use for running queries                                                                                |
+| repetitions                             | Number of repetitions until the data set is exhausted (default 1)                                                           |
+| target_throughput                       | Target throughput for each query operation in requests per second (default 10)                                              |
+| time_period                             | The period of time dedicated for the benchmark execution in seconds (default 900)                                           |
 
 
 
