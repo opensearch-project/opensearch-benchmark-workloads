@@ -13,7 +13,7 @@
       "properties": {
         "{{ train_field_name }}": {
           "type": "knn_vector",
-          "dimension": {{ target_index_dimension }}
+          "dimension": {{ target_index_dimension | default(-1) }}
         }
       }
     }
