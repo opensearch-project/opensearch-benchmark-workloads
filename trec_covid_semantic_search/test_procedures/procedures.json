@@ -11,7 +11,7 @@
               "persistent": {
                 "plugins": {
                   "ml_commons": {
-                    "only_run_on_ml_node": "false",
+                    "only_run_on_ml_node": "{{only_run_on_ml_node | default('false')}}",
                     "native_memory_threshold": "100",
                     "allow_registering_model_via_local_file": "true",
                     "allow_registering_model_via_url": "true"
@@ -27,24 +27,7 @@
         {
           "operation": "delete-ingest-pipeline"
         },
-        {
-          "operation": {
-            "operation-type": "delete-ml-model",
-            "model-name": "{{ model_name | default('huggingface/sentence-transformers/all-mpnet-base-v2')}}"
-          }
-        },
-        {
-          "operation": {
-            "operation-type": "register-ml-model",
-            "model-name": "{{ model_name | default('huggingface/sentence-transformers/all-mpnet-base-v2')}}",
-            "model-version": "{{ model_version | default('1.0.1') }}",
-            "model-format": "{{ model_format | default('TORCH_SCRIPT') }}",
-            "model-config-file": "{{ model_config_file | default('') }}"
-          }
-        },
-        {
-          "operation": "deploy-ml-model"
-        },
+        {{ benchmark.collect(parts="common/redeploy_local_model.json") }},
         {
           "operation": "create-ingest-pipeline"
         },
@@ -111,7 +94,11 @@
           "iterations": {{iterations | default(500) | tojson }},
           "target-throughput": {{ target_throughput | default(100) | tojson}},
           "clients": {{ search_clients | default(1) }}
-        }
+        },
+        {
+          "operation": "create-normalization-processor-no-weights-search-pipeline"
+        },
+        {{ benchmark.collect(parts="common/semantic-search-queries.json") }}
     ]
 },
 {
@@ -119,50 +106,10 @@
   "description": "Run semantic search work.",
   "default": false,
   "schedule": [
-    {
-      "operation": {
-        "operation-type": "delete-ml-model",
-        "model-name": "{{ model_name | default('huggingface/sentence-transformers/all-mpnet-base-v2')}}"
-      }
-    },
-    {
-      "operation": {
-        "operation-type": "register-ml-model",
-        "model-name": "{{ model_name | default('huggingface/sentence-transformers/all-mpnet-base-v2')}}",
-        "model-version": "{{ model_version | default('1.0.1') }}",
-        "model-format": "{{ model_format | default('TORCH_SCRIPT') }}",
-        "model-config-file": "{{ model_config_file | default('') }}"
-      }
-    },
-    {
-      "operation": "deploy-ml-model"
-    },
+    {{ benchmark.collect(parts="common/redeploy_local_model.json") }},
     {
       "operation": "create-normalization-processor-no-weights-search-pipeline"
     },
-    {
-      "operation": "semantic-search-neural",
-      "warmup-iterations": {{warmup_iterations | default(50) | tojson}},
-      "iterations": {{iterations | default(100) | tojson }},
-      "clients": {{ search_clients | default(1)}}
-    },
-    {
-      "operation": "semantic-search-hybrid-bm25-and-knn-search",
-      "warmup-iterations": {{warmup_iterations | default(50) | tojson}},
-      "iterations": {{iterations | default(100) | tojson }},
-      "clients": {{ search_clients | default(1)}}
-    },
-    {
-      "operation": "semantic-search-hybrid-bm25-and-neural-search",
-      "warmup-iterations": {{warmup_iterations | default(50) | tojson}},
-      "iterations": {{iterations | default(100) | tojson }},
-      "clients": {{ search_clients | default(1)}}
-    },
-    {
-      "operation": "semantic-search-hybrid-bm25-range-and-neural-search",
-      "warmup-iterations": {{warmup_iterations | default(50) | tojson}},
-      "iterations": {{iterations | default(100) | tojson }},
-      "clients": {{ search_clients | default(1)}}
-    }
+    {{ benchmark.collect(parts="common/semantic-search-queries.json") }}
   ]
 }
