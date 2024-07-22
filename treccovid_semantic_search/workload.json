@@ -12,7 +12,7 @@
   "corpora": [
     {
       "name": "treccovid",
-      "base-url": "https://vesa-oswl.s3.us-west-2.amazonaws.com/treccovid",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/treccovid",
       "documents": [
         {
           "source-file": "documents.json.bz2",

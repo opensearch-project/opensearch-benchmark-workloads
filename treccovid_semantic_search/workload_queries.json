@@ -1,5 +1,5 @@
 {
-  "base-url": "https://vesa-oswl.s3.us-west-2.amazonaws.com/treccovid",
+  "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/treccovid",
   "source-file": "queries.json.bz2",
   "compressed-bytes": 4310,
   "uncompressed-bytes": 16552
