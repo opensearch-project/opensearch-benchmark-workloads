@@ -1,0 +1,75 @@
+{
+    "operation": {
+        "operation-type": "delete-knn-model",
+        "name": "delete-model",
+        "model_id": "{{ train_model_id }}",
+        "ignore-if-model-does-not-exist": true
+    }
+},
+{
+    "operation": {
+        "name": "train-knn-model",
+        "operation-type": "train-knn-model",
+        "body": {
+            "training_index": "{{ train_index_name | default('train_index') }}",
+            "training_field": "{{ train_field_name | default('train_field') }}",
+            "search_size": "{{ train_search_size | default(10000) }}", 
+            "dimension": {{ target_index_dimension | default(-1) }},
+            {%- if train_max_vector_count is defined and train_max_vector_count %}
+                "max_training_vector_count": "{{ train_max_vector_count }}", 
+            {%- endif %}
+            "method": {
+                "name": "{{ train_method_name | default('ivf') }}", 
+                "engine": "{{ train_method_engine | default('faiss') }}",
+                "space_type": "{{ target_index_space_type | default('l2') }}", 
+                "parameters": {
+                        {%- if faiss_nlist is defined and faiss_nlist %}
+                        "nlist": {{ faiss_nlist }}
+                        {%- endif %}
+
+                        {%- if faiss_nprobes is defined and faiss_nprobes %}
+                            {%- if faiss_nlist is defined and faiss_nlist %}
+                            ,
+                            {%- endif %}
+                        "nprobes": {{ faiss_nprobes}} 
+                        {%- endif %}
+
+                        {%- if encoder is defined and encoder %}
+                            {%- if faiss_nprobes is defined and faiss_nprobes %} 
+                            ,
+                            {%- endif %}
+                        "encoder": {
+                            "name": "{{ encoder }}",
+                            "parameters": {
+                                {%- if faiss_encoder_code_size is defined and faiss_encoder_code_size %}
+                                    "code_size": {{ faiss_encoder_code_size }}
+                                {%- endif %}
+                                
+                                {%- if faiss_encoder_m is defined and faiss_encoder_m %}
+                                    {%- if faiss_encoder_code_size is defined and faiss_encoder_code_size %}
+                                        ,
+                                    {%- endif %}
+                                    "m": {{ faiss_encoder_m }}
+                                {%- endif %}
+
+                                {%- if faiss_encoder_type is defined and faiss_encoder_type %}
+                                    "type": "{{ faiss_encoder_type }}"
+                                {%- endif %}
+
+                                {%- if faiss_encoder_clip is defined and faiss_encoder_clip %}
+                                    {%- if faiss_encoder_type is defined and faiss_encoder_type %}
+                                        ,
+                                    {%- endif %}
+                                    "clip": "{{ faiss_encoder_clip }}"
+                                {%- endif %}
+                            }
+                        }
+                        {%- endif %}
+                }
+            }
+        },
+        "model_id": "{{ train_model_id | default('train_model') }}",
+        "retries": {{ train_operation_retries | default(1000) }}, 
+        "poll_period": {{ train_operation_poll_period | default(0.5) }}
+    }
+}

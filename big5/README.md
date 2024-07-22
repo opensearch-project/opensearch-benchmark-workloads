@@ -182,14 +182,16 @@ Running range-auto-date-histo-with-metrics                                     [
 
 ### Considerations when Using the 1 TB Data Corpus
 
-*Caveat*: This corpus is being made available as a feature that is currently being alpha tested.  Some points to note when carrying out performance runs using this corpus:
+*Caveat*: This corpus is being made available as a feature that is currently in beta test.  Some points to note when carrying out performance runs using this corpus:
 
   * Due to CloudFront download size limits, the uncompressed size of the 1 TB corpus is actually 0.95 TB (~0.9 TiB).  This [issue has been noted](https://github.com/opensearch-project/opensearch-benchmark/issues/543) and will be resolved in due course.
+  * Use an external data store to record metrics.  Using the in-memory store will likely result in the system running out of memory and becoming unresponsive, resulting in inaccurate performance numbers.
   * Use a load generation host with sufficient disk space to hold the corpus.
   * Ensure the target cluster has adequate storage and at least 3 data nodes.
   * Specify an appropriate shard count and number of replicas so that shards are evenly distributed and appropriately sized.
   * Running the workload requires an instance type with at least 8 cores and 32 GB memory.
   * Install the `pbzip2` decompressor to speed up decompression of the corpus.
+  * Set the client timeout to a sufficiently large value, since some queries take a long time to complete.
   * Allow sufficient time for the workload to run.  _Approximate_ times for the various steps involved, using an 8-core loadgen host:
     - 15 minutes to download the corpus
     - 4 hours to decompress the corpus (assuming `pbzip2` is available) and pre-process it

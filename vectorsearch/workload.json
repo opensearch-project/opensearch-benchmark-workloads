@@ -4,25 +4,32 @@
     "description": "Benchmark vector search engine performance for different engine types like faiss, lucene and nmslib",
     "indices": [
         {
-            "name": "{{ target_index_name }}",
+            "name": "{{ target_index_name | default('target_index') }}",
             "body": "{{ target_index_body }}"
+        },
+        {
+            "name": "{{ train_index_name | default('train_index') }}",
+            "body": "{{ train_index_body }}"
         }
     ],
     "corpora": [
     {
       "name": "cohere",
       "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "target-index": "{{ target_index_name }}",
       "documents": [
         {
           "source-file": "documents-1k.hdf5.bz2",
           "source-format": "hdf5",
           "document-count": 1000
+          
         }
       ]
     },
     {
       "name": "cohere-100k",
       "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "target-index": "{{ target_index_name }}",
       "documents": [
         {
           "source-file": "documents-100k.hdf5.bz2",
@@ -34,6 +41,7 @@
     {
       "name": "cohere-1m",
       "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "target-index": "{{ target_index_name }}",
       "documents": [
         {
           "source-file": "documents-1m.hdf5.bz2",
@@ -45,6 +53,7 @@
     {
       "name": "cohere-10m",
       "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "target-index": "{{ target_index_name }}",
       "documents": [
         {
           "source-file": "documents-10m.hdf5.bz2",
