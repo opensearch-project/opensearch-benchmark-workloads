@@ -1,0 +1,32 @@
+{% import "benchmark.helpers" as benchmark with context %}
+
+{
+  "version": 2,
+    "description": "Trec-Covid is a dataset collection of documents about COVID-19 information.",
+  "indices": [
+    {
+      "name": "treccovid",
+      "body": "index.json"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "treccovid",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/treccovid",
+      "documents": [
+        {
+          "source-file": "documents.json.bz2",
+          "document-count": 129192,
+          "compressed-bytes": 51187469,
+          "uncompressed-bytes": 211980208
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ benchmark.collect(parts="operations/*.json") }}
+  ],
+  "test_procedures": [
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  ]
+}
