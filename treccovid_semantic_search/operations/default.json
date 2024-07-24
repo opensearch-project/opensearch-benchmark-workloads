@@ -1,0 +1,72 @@
+    {
+      "name": "delete-ingest-pipeline",
+      "operation-type": "delete-pipeline",
+      "id": "nlp-ingest-pipeline"
+    },
+    {
+      "name": "create-ingest-pipeline",
+      "operation-type": "put-pipeline",
+      "param-source": "create-ingest-pipeline",
+      "id": "nlp-ingest-pipeline",  
+      "body": {
+        "description": "An NLP ingest pipeline",
+        "processors": [
+          {
+            "text_embedding": {
+              "model_id": "",
+              "field_map": {
+                "text": "passage_embedding"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "index-append",
+      "operation-type": "bulk",
+      "bulk-size": {{bulk_size | default(100)}},
+      "ingest-percentage": {{ingest_percentage | default(100)}}
+    },
+    {
+      "name": "wait-until-merges-finish",
+      "operation-type": "index-stats",
+      "index": "_all",
+      "condition": {
+        "path": "_all.total.merges.current",
+        "expected-value": 0
+      },
+      "retry-until-success": true,
+      "include-in-reporting": false
+    },
+    {
+      "name": "default",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_all": {}
+        }
+      }
+    },
+    {
+      "name": "semantic-search",
+      "operation-type": "search",
+      "num-variable-queries": {{num_variable_queries | default(0)}},
+      "param-source": "semantic-search-source",
+      "body": {
+        "_source": {
+          "excludes": [
+            "passage_embedding"
+          ]
+        },
+        "query": {
+          "neural": {
+            "passage_embedding": {
+              "query_text": "what types of rapid testing for Covid-19 have been developed?",
+              "model_id": "",
+              "k": {{k | default(10)}}
+            }
+          }
+        }
+      }
+    }
