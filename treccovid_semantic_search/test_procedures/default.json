@@ -1,0 +1,112 @@
+    {
+      "name": "index-merge-search",
+      "description": "Indexes the corpus with vector embedding and then runs queries with vector embedding.",
+      "default": true,
+      "schedule": [
+        {
+          "name": "cluster-settings",
+          "operation": {
+            "operation-type": "put-settings",
+            "body": {
+              "persistent": {
+                "plugins": {
+                  "ml_commons": {
+                    "only_run_on_ml_node": "false",
+                    "native_memory_threshold": "99",
+                    "allow_registering_model_via_local_file": "true",
+                    "allow_registering_model_via_url": "true"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "operation": "delete-index"
+        },
+        {
+          "operation": "delete-ingest-pipeline"
+        },
+        {
+          "operation": {
+            "operation-type": "delete-ml-model",
+            "model-name": "{{ model_name | default('huggingface/sentence-transformers/all-mpnet-base-v2')}}"
+          }
+        },
+        {
+          "operation": {
+            "operation-type": "register-ml-model",
+            "model-name": "{{ model_name | default('huggingface/sentence-transformers/all-mpnet-base-v2')}}",
+            "model-version": "{{ model_version | default('1.0.1') }}",
+            "model-format": "{{ model_format | default('TORCH_SCRIPT') }}",
+            "model-config-file": "{{ model_config_file | default('') }}"
+          }
+        },
+        {
+          "operation": "deploy-ml-model"
+        },
+        {
+          "operation": "create-ingest-pipeline"
+        },
+        {
+          "operation": {
+            "operation-type": "create-index",
+            "settings": {%- if index_settings is defined %} {{index_settings | tojson}} {%- else %} {
+              "index.refresh_interval": "5s",
+              "index.translog.flush_threshold_size": "1g"
+            }{%- endif %}
+          }
+        },
+        {
+          "name": "check-cluster-health",
+          "operation": {
+            "operation-type": "cluster-health",
+            "index": "treccovid",
+            "request-params": {
+              "wait_for_status": "{{cluster_health | default('green')}}",
+              "wait_for_no_relocating_shards": "true"
+            },
+            "retry-until-success": true
+          }
+        },
+        {
+          "operation": "index-append",
+          "warmup-time-period": 60,
+          "clients": {{bulk_indexing_clients | default(1)}},
+          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+        },
+        {
+          "name": "refresh-after-index",
+          "operation": "refresh"
+        },
+        {
+          "operation": {
+            "operation-type": "force-merge",
+            "request-timeout": 7200{%- if force_merge_max_num_segments is defined %},
+            "max-num-segments": {{ force_merge_max_num_segments | tojson }}
+            {%- endif %}
+          }
+        },
+        {
+          "name": "refresh-after-force-merge",
+          "operation": "refresh"
+        },
+        {
+          "operation": "wait-until-merges-finish"
+        },
+        {
+          "operation": "default",
+          "warmup-iterations": {{warmup_iterations | default(500) | tojson}},
+          "iterations": {{iterations | default(500) | tojson }},
+          "target-throughput": {{ target_throughput | default(100) | tojson}},
+          "clients": {{ search_clients | default(1) }}
+        },
+        {
+          "operation": "semantic-search",
+          "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+          "iterations": {{iterations | default(100) | tojson }},
+          "target-throughput": {{ target_throughput | default(10) | tojson}},
+          "clients": {{ search_clients | default(1)}}
+        }
+      ]
+    }
