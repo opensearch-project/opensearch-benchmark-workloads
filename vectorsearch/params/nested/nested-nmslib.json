@@ -1,0 +1,23 @@
+{
+    "target_index_name": "target_index",
+    "target_field_name": "nested_field.target_field",
+    "target_index_body": "indices/nested/nested-nmslib-index.json",
+    "target_index_dimension": 128,
+    "target_index_bulk_size": 100,
+    "target_index_bulk_index_data_set_format": "hdf5",
+    "target_index_bulk_index_data_set_path": "/tmp/data-nested.hdf5",
+    "target_index_bulk_indexing_clients": 10,
+    
+    "target_index_max_num_segments": 1,
+    "target_index_space_type": "l2",
+    
+    "query_k": 5,
+    "query_body": {
+         "docvalue_fields" : ["_id"],
+         "stored_fields" : "_none_"
+    },
+
+    "query_data_set_format": "hdf5",
+    "query_data_set_path":"/tmp/data-nested.hdf5",
+    "query_count": 10000
+  }

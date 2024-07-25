@@ -1,0 +1,51 @@
+{
+    "settings": {
+      "index": {
+        "knn": true
+        {%- if target_index_primary_shards is defined and target_index_primary_shards %}
+        ,"number_of_shards": {{ target_index_primary_shards }}
+        {%- endif %}
+        {%- if target_index_replica_shards is defined and target_index_replica_shards %}
+        ,"number_of_replicas": {{ target_index_replica_shards }}
+        {%- endif %}
+      }
+    },
+    "mappings": {
+      "dynamic": "strict",
+      "properties": {
+        {% if id_field_name is defined and id_field_name != "_id" %}
+          "{{id_field_name}}": {
+            "type": "keyword"
+          },
+        {%- endif %}
+        {% if target_field_name is defined and target_field_name %}
+        "{{ target_field_name.split('.')[0] }}": {
+          "type": "nested",
+          "properties": {
+            "{{ target_field_name.split('.')[1] }}": {
+              "type": "knn_vector",
+              "dimension": {{ target_index_dimension }},
+              "method": {
+                "name": "hnsw",
+                "space_type": "{{ target_index_space_type }}",
+                "engine": "lucene",
+                "parameters": {
+                    {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
+                    "ef_construction": {{ hnsw_ef_construction }}
+                    {%- endif %}
+                    {%- if hnsw_m is defined and hnsw_m %}
+                    {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
+                    ,
+                    {%- endif %}
+                    "m": {{ hnsw_m }}
+                    {%- endif %}
+                }
+              }
+            }
+          }
+        }
+        {%- endif %}
+      }
+    }
+  }
+  
