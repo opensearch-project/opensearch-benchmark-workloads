@@ -56,7 +56,7 @@
     "schedule": [
         {{ benchmark.collect(parts="common/train-index-only-schedule.json") }},
         {{ benchmark.collect(parts="common/train-model-schedule.json") }},
-        {{ benchmark.collect(parts="common/index-only-schedule.json") }},
+        {{ benchmark.collect(parts="common/force-merge-schedule.json") }},
         {{ benchmark.collect(parts="common/search-only-schedule.json") }}
     ]
 }
