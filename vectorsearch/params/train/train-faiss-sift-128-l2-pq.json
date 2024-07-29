@@ -21,7 +21,7 @@
     "train_index_bulk_index_data_set_format": "hdf5",
     "train_index_bulk_index_data_set_path": "/tmp/sift-128-euclidean.hdf5",
     "train_index_bulk_indexing_clients": 10,
-    "train_index_num_vectors": 1000,
+    "train_index_num_vectors": 50000,
     
     "train_model_id": "test-model",
     "train_operation_retries": 100,
@@ -29,8 +29,10 @@
     "train_search_size": 10000,
     
     "encoder": "pq",
-    "faiss_encoder_code_size": 2,
-    "faiss_encoder_m": 4,
+    "faiss_encoder_code_size": 8,
+    "faiss_encoder_m": 16,
+    "faiss_nlist": 128,
+    "faiss_nprobes": 8,
 
     "target_index_max_num_segments": 1,
     "target_index_force_merge_timeout": 300,
