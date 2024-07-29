@@ -103,8 +103,4 @@
         "has_attributes": 0
     },
     "clients": {{ target_index_bulk_indexing_clients | default(1)}}
-},
-{
-    "name" : "refresh-target-index",
-    "operation" : "refresh-target-index"
 }

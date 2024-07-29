@@ -46,5 +46,5 @@
 
     "query_data_set_format": "hdf5",
     "query_data_set_path":"/tmp/sift-128-euclidean.hdf5",
-    "query_count": 100
+    "query_count": 10000
   }
