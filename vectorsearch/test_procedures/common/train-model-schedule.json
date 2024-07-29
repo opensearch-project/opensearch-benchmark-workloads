@@ -1,5 +1,13 @@
 {
     "operation": {
+        "name": "possibly-delete-target-index-before-model-train",
+        "operation-type": "delete-index",
+        "only-if-exists": true,
+        "index": "{{ target_index_name | default('target_index') }}"
+    }
+},
+{
+    "operation": {
         "operation-type": "delete-knn-model",
         "name": "delete-model",
         "model_id": "{{ train_model_id }}",
