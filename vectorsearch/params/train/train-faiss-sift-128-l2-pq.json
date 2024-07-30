@@ -36,8 +36,7 @@
 
     "target_index_max_num_segments": 1,
     "target_index_force_merge_timeout": 300,
-    "hnsw_ef_search": 100,
-    "hnsw_ef_construction": 100,
+    
     "query_k": 100,
     "query_body": {
          "docvalue_fields" : ["_id"],
