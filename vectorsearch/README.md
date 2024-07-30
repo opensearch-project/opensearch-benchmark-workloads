@@ -235,12 +235,12 @@ This workload allows the following parameters to be specified using `--workload-
 | train_operation_poll_period             | Poll period for querying training operation in seconds                                       |
 | train_search_size                       | Number of results per [scroll query](http://opensearch.org/docs/latest/api-reference/scroll/)|
 | encoder                                 | Encoder for quantization. One of `flat`, `sq`, `pq`. Defaults to `flat` when not specified. [See here](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#supported-faiss-encoders)
-| faiss_encoder_code_size                 | PQ Encoding [code size setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#pq-parameters).
-| faiss_encoder_m                         | PQ Encoding [m setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#pq-parameters)
-| faiss_encoder_type                      | SQ Encoding [type setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#sq-parameters)
-| faiss_encoder_clip                      | SQ Encoding [clip setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#sq-parameters)
-| faiss_nprobes                           | Faiss IVF nprobes setting. [See here](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#ivf-parameters)|
-| faiss_nlist                             | Faiss IVF nlist setting. [See here](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#ivf-parameters)|
+| pq_encoder_code_size                 | PQ Encoding [code size setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#pq-parameters).
+| pq_encoder_m                         | PQ Encoding [m setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#pq-parameters)
+| encoder_type                      | SQ Encoding [type setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#sq-parameters)
+| encoder_clip                      | SQ Encoding [clip setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#sq-parameters)
+| nprobes                           | IVF nprobes setting. [See here](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#ivf-parameters)|
+| nlist                             | IVF nlist setting. [See here](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#ivf-parameters)|
 | hnsw_ef_search                          | HNSW ef search parameter                                                                     |
 | hnsw_ef_construction                    | HNSW ef construction parameter                                                               |
 | id_field_name                           | Name of field that will be used to identify documents in an index                            |

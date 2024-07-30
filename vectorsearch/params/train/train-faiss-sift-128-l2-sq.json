@@ -29,10 +29,10 @@
     "train_search_size": 10000,
     
     "encoder": "sq",
-    "faiss_encoder_type": "fp16",
-    "faiss_encoder_clip": false,
-    "faiss_nlist": 128,
-    "faiss_nprobes": 8,
+    "encoder_type": "fp16",
+    "encoder_clip": false,
+    "nlist": 128,
+    "nprobes": 8,
 
     "target_index_max_num_segments": 1,
     "target_index_force_merge_timeout": 300,

@@ -29,10 +29,10 @@
     "train_search_size": 10000,
     
     "encoder": "pq",
-    "faiss_encoder_code_size": 8,
-    "faiss_encoder_m": 16,
-    "faiss_nlist": 128,
-    "faiss_nprobes": 8,
+    "pq_encoder_code_size": 8,
+    "pq_encoder_m": 16,
+    "nlist": 128,
+    "nprobes": 8,
 
     "target_index_max_num_segments": 1,
     "target_index_force_merge_timeout": 300,

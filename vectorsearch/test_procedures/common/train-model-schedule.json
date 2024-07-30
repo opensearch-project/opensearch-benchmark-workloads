@@ -33,32 +33,32 @@
                 "engine": "{{ train_method_engine | default('faiss') }}",
                 "space_type": "{{ target_index_space_type | default('l2') }}", 
                 "parameters": {
-                        {%- if faiss_nlist is defined and faiss_nlist %}
-                        {{ train_knn_model_comma() }} "nlist": {{ faiss_nlist }}
+                        {%- if nlist is defined and nlist %}
+                        {{ train_knn_model_comma() }} "nlist": {{ nlist }}
                         {%- endif %}
 
-                        {%- if faiss_nprobes is defined and faiss_nprobes %}
-                        {{ train_knn_model_comma() }} "nprobes": {{ faiss_nprobes}} 
+                        {%- if nprobes is defined and nprobes %}
+                        {{ train_knn_model_comma() }} "nprobes": {{ nprobes}} 
                         {%- endif %}
 
                         {%- if encoder is defined and encoder %}
                         {{ train_knn_model_comma() }} "encoder": {
                             "name": "{{ encoder }}",
                             "parameters": {
-                                {%- if faiss_encoder_code_size is defined and faiss_encoder_code_size %}
-                                    {{ train_knn_model_encoder_comma() }} "code_size": {{ faiss_encoder_code_size }}
+                                {%- if pq_encoder_code_size is defined and pq_encoder_code_size %}
+                                    {{ train_knn_model_encoder_comma() }} "code_size": {{ pq_encoder_code_size }}
                                 {%- endif %}
                                 
-                                {%- if faiss_encoder_m is defined and faiss_encoder_m %}
-                                    {{ train_knn_model_encoder_comma() }} "m": {{ faiss_encoder_m }}
+                                {%- if pq_encoder_m is defined and pq_encoder_m %}
+                                    {{ train_knn_model_encoder_comma() }} "m": {{ pq_encoder_m }}
                                 {%- endif %}
 
-                                {%- if faiss_encoder_type is defined and faiss_encoder_type %}
-                                    {{ train_knn_model_encoder_comma() }} "type": "{{ faiss_encoder_type }}"
+                                {%- if encoder_type is defined and encoder_type %}
+                                    {{ train_knn_model_encoder_comma() }} "type": "{{ encoder_type }}"
                                 {%- endif %}
 
-                                {%- if faiss_encoder_clip is defined and faiss_encoder_clip %}
-                                    {{ train_knn_model_encoder_comma() }} "clip": "{{ faiss_encoder_clip }}"
+                                {%- if encoder_clip is defined and encoder_clip %}
+                                    {{ train_knn_model_encoder_comma() }} "clip": "{{ encoder_clip }}"
                                 {%- endif %}
                             }
                         }
