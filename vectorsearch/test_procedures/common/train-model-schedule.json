@@ -23,9 +23,27 @@
                 "engine": "{{ train_method_engine | default('faiss') }}",
                 "space_type": "{{ target_index_space_type | default('l2') }}", 
                 "parameters": {
-                        {%- if faiss_nlist is defined and faiss_nlist %}
-                        "nlist": {{ faiss_nlist }}
-                        {%- endif %}
+                        {%- if train_method_name is defined and train_method_name == "hnsw" %}
+                            {%- if hnsw_ef_search is defined and hnsw_ef_search %}
+                            "ef_search": {{ hnsw_ef_search }}
+                            {%- endif %}
+                            {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
+                            {%- if hnsw_ef_search is defined and hnsw_ef_search %}
+                                ,
+                            {%- endif %}
+                                "ef_construction": {{ hnsw_ef_construction }}
+                            {%- endif %}
+                            {%- if hnsw_m is defined and hnsw_m %}
+                            {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
+                                ,
+                            {%- endif %}
+                                "m": {{ hnsw_m }}
+                            {%- endif %}
+
+                        {%- elif train_method_name is not defined or train_method_name == "ivf" %}
+                            {%- if faiss_nlist is defined and faiss_nlist %}
+                            "nlist": {{ faiss_nlist }}
+                            {%- endif %}
 
                         {%- if faiss_nprobes is defined and faiss_nprobes %}
                             {%- if faiss_nlist is defined and faiss_nlist %}
@@ -33,38 +51,47 @@
                             {%- endif %}
                         "nprobes": {{ faiss_nprobes}} 
                         {%- endif %}
-
-                        {%- if encoder is defined and encoder %}
-                            {%- if faiss_nprobes is defined and faiss_nprobes %} 
+                            {%- if faiss_nprobes is defined and faiss_nprobes %}
+                                {%- if faiss_nlist is defined and faiss_nlist %}
                             ,
+                                {%- endif %}
+                            "nprobes": {{ faiss_nprobes}} 
                             {%- endif %}
-                        "encoder": {
-                            "name": "{{ encoder }}",
-                            "parameters": {
-                                {%- if faiss_encoder_code_size is defined and faiss_encoder_code_size %}
-                                    "code_size": {{ faiss_encoder_code_size }}
-                                {%- endif %}
-                                
-                                {%- if faiss_encoder_m is defined and faiss_encoder_m %}
-                                    {%- if faiss_encoder_code_size is defined and faiss_encoder_code_size %}
-                                        ,
-                                    {%- endif %}
-                                    "m": {{ faiss_encoder_m }}
-                                {%- endif %}
 
-                                {%- if faiss_encoder_type is defined and faiss_encoder_type %}
-                                    "type": "{{ faiss_encoder_type }}"
-                                {%- endif %}
+                            
 
-                                {%- if faiss_encoder_clip is defined and faiss_encoder_clip %}
-                                    {%- if faiss_encoder_type is defined and faiss_encoder_type %}
-                                        ,
-                                    {%- endif %}
-                                    "clip": "{{ faiss_encoder_clip }}"
-                                {%- endif %}
-                            }
-                        }
                         {%- endif %}
+                        {%- if encoder is defined and encoder %}
+                                {%- if (faiss_nprobes is defined and faiss_nprobes) or (hnsw_m is defined)%} 
+                                ,
+                                {%- endif %}
+                            "encoder": {
+                                "name": "{{ encoder }}",
+                                "parameters": {
+                                    {%- if faiss_encoder_code_size is defined and faiss_encoder_code_size %}
+                                        "code_size": {{ faiss_encoder_code_size }}
+                                    {%- endif %}
+                                    
+                                    {%- if faiss_encoder_m is defined and faiss_encoder_m %}
+                                        {%- if faiss_encoder_code_size is defined and faiss_encoder_code_size %}
+                                            ,
+                                        {%- endif %}
+                                        "m": {{ faiss_encoder_m }}
+                                    {%- endif %}
+
+                                    {%- if faiss_encoder_type is defined and faiss_encoder_type %}
+                                        "type": "{{ faiss_encoder_type }}"
+                                    {%- endif %}
+
+                                    {%- if faiss_encoder_clip is defined and faiss_encoder_clip %}
+                                        {%- if faiss_encoder_type is defined and faiss_encoder_type %}
+                                            ,
+                                        {%- endif %}
+                                        "clip": "{{ faiss_encoder_clip }}"
+                                    {%- endif %}
+                                }
+                            }
+                            {%- endif %}
                 }
             }
         },

@@ -1,0 +1,50 @@
+{
+    "target_index_name": "target_index",
+    "target_field_name": "target_field",
+    "target_index_body": "indices/faiss-index.json",
+    "target_index_primary_shards": 1,
+    "target_index_dimension": 128,
+    "target_index_space_type": "l2",
+    "target_index_bulk_size": 100,
+    "target_index_bulk_index_data_set_format": "hdf5",
+    "target_index_bulk_index_data_set_path": "/tmp/sift-128-euclidean.hdf5",
+    "target_index_bulk_indexing_clients": 10,
+    
+    "train_index_name": "train_index",
+    "train_field_name": "train_field",
+    "train_method_engine": "faiss",
+    "train_index_body": "indices/train-index.json",
+    "train_index_primary_shards": 1,
+    "train_index_replica_shards": 1, 
+
+    "train_index_bulk_size": 100,
+    "train_index_bulk_index_data_set_format": "hdf5",
+    "train_index_bulk_index_data_set_path": "/tmp/sift-128-euclidean.hdf5",
+    "train_index_bulk_indexing_clients": 10,
+    "train_index_num_vectors": 50000,
+    
+    "train_model_id": "test-model",
+    "train_operation_retries": 100,
+    "train_operation_poll_period": 0.5,
+    "train_search_size": 10000,
+    "train_method_name": "hnsw",
+    
+    "encoder": "pq",
+    "faiss_encoder_code_size": 8,
+    "faiss_encoder_m": 16,
+
+    "target_index_max_num_segments": 1,
+    "target_index_force_merge_timeout": 300,
+    "hnsw_ef_search": 256,
+    "hnsw_ef_construction": 256,
+    "hnsw_m": 16,
+    "query_k": 100,
+    "query_body": {
+         "docvalue_fields" : ["_id"],
+         "stored_fields" : "_none_"
+    },
+
+    "query_data_set_format": "hdf5",
+    "query_data_set_path":"/tmp/sift-128-euclidean.hdf5",
+    "query_count": 100
+  }
