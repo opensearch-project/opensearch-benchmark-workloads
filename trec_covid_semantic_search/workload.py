@@ -6,6 +6,8 @@ from pathlib import Path
 from osbenchmark.workload.loader import Downloader
 from osbenchmark.workload.loader import Decompressor
 from osbenchmark.workload.loader import Decompressor
+from osbenchmark.worker_coordinator.runner import Retry
+from .runners import register as register_runners
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -183,4 +185,6 @@ def register(registry):
     registry.register_param_source("semantic-search-neural-source", QueryParamSourceNeural)
     registry.register_param_source("hybrid-query-bm25-neural-search-source", QueryParamSourceHybridBm25Neural)
     registry.register_param_source("hybrid-query-bm25-knn-search-source", QueryParamSourceHybridBm25Knn)
+    # This runner class and registration is a temporary workaround while the next version of OSB is pending release
     registry.register_param_source("create-ingest-pipeline", ingest_pipeline_param_source)
+    register_runners(registry)

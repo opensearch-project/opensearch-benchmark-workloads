@@ -22,7 +22,15 @@
           }
         },
         {
-            "operation": "delete-index"
+          "operation": "delete-index"
+        },
+        {
+          "name": "set-concurrent-segment-search",
+          "operation": {
+            "operation-type": "update-concurrent-segment-search-settings",
+            "enabled": "{{concurent_segment_search_enabled | default('false')}}",
+            "max_slice_count": "{{max_slice_count | default(0)}}"
+          }
         },
         {
           "operation": "delete-ingest-pipeline"
