@@ -71,6 +71,8 @@ This workload allows the following parameters to be specified using `--workload-
 * `num_variable_queries` (default: 0) Number of variable queries will be used for the semantic search task, 0 means fixed query and max value is 50.
 * `range_gte` (default: 100) Number that defines the lower bound (inclusive) for range query when it's used as elemnts in semantic search query
 * `range_lte` (default: 10000000) Number that defines the upper bound (inclusive) for range query when it's used as elemnts in semantic search query
+* `concurent_segment_search_enabled` (default: `false`) Enables or disables concurrent segment search feature
+* `max_slice_count` (default: 0) Set the maximum number of slices for concurrent segment search feature. 0 means we use Lucene meachnism of calculating the number of slices
 
 ### Running a benchmark
 
