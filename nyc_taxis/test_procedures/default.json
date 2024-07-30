@@ -5,8 +5,8 @@
       "schedule": [
         {
           "operation": "default",
-          "warmup-iterations": 500,
-          "iterations": 1000
+          "warmup-iterations": 1,
+          "iterations": 1
           {%- if not target_throughput %}
           ,"target-throughput": 500
           {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
@@ -19,8 +19,8 @@
         },
         {
           "operation": "range",
-          "warmup-iterations": 500,
-          "iterations": 1000
+          "warmup-iterations": 1,
+          "iterations": 1
           {%- if not target_throughput %}
           ,"target-throughput": 500
           {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
@@ -33,8 +33,8 @@
         },
         {
           "operation": "distance_amount_agg",
-          "warmup-iterations": 500,
-          "iterations": 500
+          "warmup-iterations": 1,
+          "iterations": 1
           {%- if not target_throughput %}
           ,"target-throughput": 500
           {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
@@ -47,8 +47,8 @@
         },
         {
           "operation": "autohisto_agg",
-          "warmup-iterations": 500,
-          "iterations": 1000
+          "warmup-iterations": 1,
+          "iterations": 1
           {%- if not target_throughput %}
           ,"target-throughput": 500
           {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
@@ -61,8 +61,8 @@
         },
         {
           "operation": "date_histogram_agg",
-          "warmup-iterations": 500,
-          "iterations": 1000
+          "warmup-iterations": 1,
+          "iterations": 1
           {%- if not target_throughput %}
           ,"target-throughput": 500
           {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
@@ -75,8 +75,8 @@
         },
         {
           "operation": "desc_sort_tip_amount",
-          "warmup-iterations": 500,
-          "iterations": 1000
+          "warmup-iterations": 1,
+          "iterations": 1
           {%- if not target_throughput %}
           ,"target-throughput": 500
           {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
@@ -89,8 +89,8 @@
         },
         {
           "operation": "asc_sort_tip_amount",
-          "warmup-iterations": 500,
-          "iterations": 1000
+          "warmup-iterations": 1,
+          "iterations": 1
           {%- if not target_throughput %}
           ,"target-throughput": 500
           {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
