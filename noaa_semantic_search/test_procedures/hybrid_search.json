@@ -9,7 +9,7 @@
       ]
     },
     {
-      "name": "hybrid-query-aggs-full",
+      "name": "bool-vs-hybrid",
       "description": "Indexes the whole document corpus using OpenSearch default settings. After that several query groups are run.",
       "default": false,
       "schedule": [
