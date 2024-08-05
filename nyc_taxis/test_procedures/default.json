@@ -11,7 +11,7 @@
   ],
   "corpora": [
     {
-      "name": "nyc_taxis",
+      "name": "nyc_taxis_1",
       "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/nyc_taxis",
       "documents": [
         {
