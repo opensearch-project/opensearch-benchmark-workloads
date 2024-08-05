@@ -14,7 +14,9 @@
       }
     },
     "mappings": {
+      {%- if skip_dynamic_mapping is not defined or skip_dynamic_mapping is false %}
       "dynamic": "strict",
+      {%- endif %}
       "properties": {
         {% if id_field_name is defined and id_field_name != "_id" %}
           "{{id_field_name}}": {
