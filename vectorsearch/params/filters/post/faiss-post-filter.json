@@ -7,7 +7,7 @@
     "target_index_dimension": 128,
     "target_index_space_type": "l2",
     
-    "skip_dynamic_mapping": true,
+    "skip_strict_mapping": true,
 
     "target_index_bulk_size": 100,
     "target_index_bulk_index_data_set_format": "hdf5",

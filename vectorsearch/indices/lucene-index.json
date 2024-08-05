@@ -14,7 +14,7 @@
       }
     },
     "mappings": {
-      {%- if skip_dynamic_mapping is not defined or skip_dynamic_mapping is false %}
+      {%- if skip_strict_mapping is not defined or skip_strict_mapping is false %}
       "dynamic": "strict",
       {%- endif %}
       "properties": {
