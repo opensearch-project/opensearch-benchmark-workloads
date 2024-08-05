@@ -253,7 +253,7 @@ This workload allows the following parameters to be specified using `--workload-
 | query_count                             | Number of queries for search operation                                                       |
 | query_body                              | Json properties that will be merged with search body                                         |
 | search_clients                          | Number of clients to use for running queries                                                 |
-| skip_dynamic_mapping | Whether to skip enforcing a strict index mapping. False by default. Use for instance if you want to add non-vector fields without changing the mapping in the index. |
+| skip_strict_mapping | Whether to skip enforcing a strict index mapping. False by default. Use for instance if you want to add non-vector fields without changing the mapping in the index. |
 | has_attributes | Used in filter benchmarks. If true attribute fields that are used in filtering are added to documents. Attributes are taken from the "attributes" field in the bulk data set. False by default. |
 | 
 
