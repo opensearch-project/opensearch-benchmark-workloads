@@ -5,7 +5,7 @@
   "description": "Taxi rides in New York in 2015",
   "indices": [
     {
-      "name": "nyc_taxis_2",
+      "name": "nyc_taxis_8",
       "body": "index.json"
     }
   ],
