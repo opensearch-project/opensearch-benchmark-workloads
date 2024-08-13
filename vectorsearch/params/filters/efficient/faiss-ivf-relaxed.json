@@ -1,7 +1,7 @@
 {
     "target_index_name": "target_index",
     "target_field_name": "target_field",
-    "target_index_body": "indices/faiss-index.json",
+    "target_index_body": "indices/filters/faiss-index-attributes.json",
     "target_index_primary_shards": 1,
     "target_index_dimension": 128,
     "target_index_space_type": "l2",
@@ -9,7 +9,6 @@
     "target_index_bulk_index_data_set_format": "hdf5",
     "target_index_bulk_index_data_set_path": "/tmp/filter_relaxed.hdf5",
     "target_index_bulk_indexing_clients": 10,
-    "skip_strict_mapping": true,
     
     "train_index_name": "train_index",
     "train_field_name": "train_field",
@@ -17,7 +16,7 @@
     "train_index_body": "indices/train-index.json",
     "train_index_primary_shards": 1,
     "train_index_replica_shards": 1, 
-    "target_dataset_has_attributes": true,
+    "target_dataset_filter_attributes": ["color", "taste", "age"],
 
     "train_index_bulk_size": 100,
     "train_index_bulk_index_data_set_format": "hdf5",
@@ -41,7 +40,7 @@
     },
 
     "filter_type": "efficient",
-    "query_filter": {
+    "filter_body": {
         "bool":
         {
             "should":
