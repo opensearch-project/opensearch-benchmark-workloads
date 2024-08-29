@@ -1,3 +1,13 @@
+{% set train_knn_model_comma = joiner(",") %}
+{% set train_knn_model_encoder_comma = joiner(",") %}
+{
+    "operation": {
+        "name": "delete-target-index-before-model-training",
+        "operation-type": "delete-index",
+        "only-if-exists": true,
+        "index": "{{ target_index_name | default('target_index') }}"
+    }
+},
 {
     "operation": {
         "operation-type": "delete-knn-model",
@@ -23,75 +33,36 @@
                 "engine": "{{ train_method_engine | default('faiss') }}",
                 "space_type": "{{ target_index_space_type | default('l2') }}", 
                 "parameters": {
-                        {%- if train_method_name is defined and train_method_name == "hnsw" %}
-                            {%- if hnsw_ef_search is defined and hnsw_ef_search %}
-                            "ef_search": {{ hnsw_ef_search }}
-                            {%- endif %}
-                            {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
-                            {%- if hnsw_ef_search is defined and hnsw_ef_search %}
-                                ,
-                            {%- endif %}
-                                "ef_construction": {{ hnsw_ef_construction }}
-                            {%- endif %}
-                            {%- if hnsw_m is defined and hnsw_m %}
-                            {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
-                                ,
-                            {%- endif %}
-                                "m": {{ hnsw_m }}
-                            {%- endif %}
-
-                        {%- elif train_method_name is not defined or train_method_name == "ivf" %}
-                            {%- if faiss_nlist is defined and faiss_nlist %}
-                            "nlist": {{ faiss_nlist }}
-                            {%- endif %}
-
-                        {%- if faiss_nprobes is defined and faiss_nprobes %}
-                            {%- if faiss_nlist is defined and faiss_nlist %}
-                            ,
-                            {%- endif %}
-                        "nprobes": {{ faiss_nprobes}} 
+                        {%- if nlist is defined and nlist %}
+                        {{ train_knn_model_comma() }} "nlist": {{ nlist }}
                         {%- endif %}
-                            {%- if faiss_nprobes is defined and faiss_nprobes %}
-                                {%- if faiss_nlist is defined and faiss_nlist %}
-                            ,
-                                {%- endif %}
-                            "nprobes": {{ faiss_nprobes}} 
-                            {%- endif %}
 
-                            
-
+                        {%- if nprobes is defined and nprobes %}
+                        {{ train_knn_model_comma() }} "nprobes": {{ nprobes}} 
                         {%- endif %}
+
                         {%- if encoder is defined and encoder %}
-                                {%- if (faiss_nprobes is defined and faiss_nprobes) or (hnsw_m is defined)%} 
-                                ,
+                        {{ train_knn_model_comma() }} "encoder": {
+                            "name": "{{ encoder }}",
+                            "parameters": {
+                                {%- if pq_encoder_code_size is defined and pq_encoder_code_size %}
+                                    {{ train_knn_model_encoder_comma() }} "code_size": {{ pq_encoder_code_size }}
                                 {%- endif %}
-                            "encoder": {
-                                "name": "{{ encoder }}",
-                                "parameters": {
-                                    {%- if faiss_encoder_code_size is defined and faiss_encoder_code_size %}
-                                        "code_size": {{ faiss_encoder_code_size }}
-                                    {%- endif %}
-                                    
-                                    {%- if faiss_encoder_m is defined and faiss_encoder_m %}
-                                        {%- if faiss_encoder_code_size is defined and faiss_encoder_code_size %}
-                                            ,
-                                        {%- endif %}
-                                        "m": {{ faiss_encoder_m }}
-                                    {%- endif %}
+                                
+                                {%- if pq_encoder_m is defined and pq_encoder_m %}
+                                    {{ train_knn_model_encoder_comma() }} "m": {{ pq_encoder_m }}
+                                {%- endif %}
 
-                                    {%- if faiss_encoder_type is defined and faiss_encoder_type %}
-                                        "type": "{{ faiss_encoder_type }}"
-                                    {%- endif %}
+                                {%- if encoder_type is defined and encoder_type %}
+                                    {{ train_knn_model_encoder_comma() }} "type": "{{ encoder_type }}"
+                                {%- endif %}
 
-                                    {%- if faiss_encoder_clip is defined and faiss_encoder_clip %}
-                                        {%- if faiss_encoder_type is defined and faiss_encoder_type %}
-                                            ,
-                                        {%- endif %}
-                                        "clip": "{{ faiss_encoder_clip }}"
-                                    {%- endif %}
-                                }
+                                {%- if encoder_clip is defined and encoder_clip %}
+                                    {{ train_knn_model_encoder_comma() }} "clip": "{{ encoder_clip }}"
+                                {%- endif %}
                             }
-                            {%- endif %}
+                        }
+                        {%- endif %}
                 }
             }
         },
@@ -99,4 +70,27 @@
         "retries": {{ train_operation_retries | default(1000) }}, 
         "poll_period": {{ train_operation_poll_period | default(0.5) }}
     }
+},
+{
+    "operation": {
+        "name": "create-target-index",
+        "operation-type": "create-index",
+        "index": "{{ target_index_name | default('target_index') }}"
+    }
+},
+{
+    "operation": {
+        "name": "custom-vector-bulk",
+        "operation-type": "bulk-vector-data-set",
+        "index": "{{ target_index_name | default('target_index') }}",
+        "field": "{{ target_field_name | default('target_field') }}",
+        "bulk_size": {{ target_index_bulk_size | default(500)}},
+        "data_set_format": "{{ target_index_bulk_index_data_set_format | default('hdf5') }}",
+        "data_set_path": "{{ target_index_bulk_index_data_set_path  }}",
+        "data_set_corpus": "{{ target_index_bulk_index_data_set_corpus  }}",
+        "num_vectors": {{ target_index_num_vectors | default(-1) }},
+        "id-field-name": "{{ id_field_name }}",
+        "has_attributes": 0
+    },
+    "clients": {{ target_index_bulk_indexing_clients | default(1)}}
 }
