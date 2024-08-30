@@ -61,6 +61,42 @@
           "document-count": 10000000
         }
       ]
+    },
+    {
+      "name": "cohere-nested",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "target-index": "{{ target_index_name }}",
+      "documents": [
+        {
+          "source-file": "cohere-1m-nested.hdf5",
+          "source-format": "hdf5",
+          "document-count": 1000000
+        }
+      ]
+    },
+    {
+      "name": "cohere-relaxed",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "target-index": "{{ target_index_name }}",
+      "documents": [
+        {
+          "source-file": "cohere-1m-relaxed-filters.hdf5",
+          "source-format": "hdf5",
+          "document-count": 1000000
+        }
+      ]
+    },
+    {
+      "name": "cohere-restrictive",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "target-index": "{{ target_index_name }}",
+      "documents": [
+        {
+          "source-file": "cohere-1m-restrictive-filters.hdf5",
+          "source-format": "hdf5",
+          "document-count": 1000000
+        }
+      ]
     }
   ],
     "operations": [
