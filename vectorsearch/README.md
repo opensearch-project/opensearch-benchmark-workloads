@@ -74,7 +74,7 @@ This workload allows the following parameters to be specified using `--workload-
 | Name                                    | Description                                                                                                                 |
 |-----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
 | target_index_name                       | Name of index to add vectors to                                                                                             |
-| target_field_name                       | Name of field to add vectors to                                                                                             |
+| target_field_name                       | Name of field to add vectors to. Use "." to indicate a nested field                                                         |
 | target_index_body                       | Path to target index definition                                                                                             |
 | target_index_primary_shards             | Target index primary shards                                                                                                 |
 | target_index_replica_shards             | Target index replica shards                                                                                                 |
