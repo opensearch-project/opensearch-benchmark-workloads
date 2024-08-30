@@ -21,6 +21,9 @@
         "target_field": {
           "type": "knn_vector",
           "dimension": {{ target_index_dimension }},
+          {%- if train_model_id is defined %}
+          "model_id": "{{ train_model_id }}"
+          {%- else %}
           "method": {
             "name": "hnsw",
             "space_type": "{{ target_index_space_type }}",
@@ -43,6 +46,7 @@
               {%- endif %}
             }
           }
+          {%- endif %}
         }
       }
     }
