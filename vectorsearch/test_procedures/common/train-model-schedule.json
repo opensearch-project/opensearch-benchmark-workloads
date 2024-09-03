@@ -90,7 +90,7 @@
         "data_set_corpus": "{{ target_index_bulk_index_data_set_corpus  }}",
         "num_vectors": {{ target_index_num_vectors | default(-1) }},
         "id-field-name": "{{ id_field_name }}",
-        "has_attributes": 0
+        "filter_attributes": {{ target_dataset_filter_attributes | default([]) | tojson }}
     },
     "clients": {{ target_index_bulk_indexing_clients | default(1)}}
 }

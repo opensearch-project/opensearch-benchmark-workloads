@@ -1,0 +1,75 @@
+{
+    "target_index_name": "target_index",
+    "target_field_name": "target_field",
+    "target_index_body": "indices/lucene-index.json",
+    "target_index_primary_shards": 1,
+    "target_index_dimension": 128,
+    "target_index_space_type": "l2",
+ 
+    
+    "target_index_bulk_size": 100,
+    "target_index_bulk_index_data_set_format": "hdf5",
+    "target_index_bulk_index_data_set_path": "/tmp/filter_restrictive.hdf5",
+    "target_index_bulk_indexing_clients": 10,
+    "target_dataset_filter_attributes": ["color", "taste", "age"],
+    
+    "target_index_max_num_segments": 1,
+    "target_index_force_merge_timeout": 300,
+    "hnsw_ef_search": 100,
+    "hnsw_ef_construction": 100,
+
+    "query_k": 100,
+    "query_body": {
+         "docvalue_fields" : ["_id"],
+         "stored_fields" : "_none_"
+    },
+    "filter_type": "efficient",
+    "filter_body": {
+        "bool":
+        {
+            "must":
+            [
+                {
+                    "range":
+                    {
+                        "age":
+                        {
+                            "gte": 30,
+                            "lte": 60
+                        }
+                    }
+                },
+                {
+                    "term":
+                    {
+                        "taste": "bitter"
+                    }
+                },
+                {
+                    "bool":
+                    {
+                        "should":
+                        [
+                            {
+                                "term":
+                                {
+                                    "color": "blue"
+                                }
+                            },
+                            {
+                                "term":
+                                {
+                                    "color": "green"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    
+    "query_data_set_format": "hdf5",
+    "query_data_set_path":"/tmp/filter_restrictive.hdf5",
+    "query_count": 100
+  }
