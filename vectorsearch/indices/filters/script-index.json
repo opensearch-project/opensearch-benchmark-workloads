@@ -1,0 +1,35 @@
+{
+    "settings": {
+      "index": {
+        {%- if target_index_primary_shards is defined and target_index_primary_shards %}
+        "number_of_shards": {{ target_index_primary_shards }}
+        {%- endif %}
+        {%- if target_index_replica_shards is defined %}
+        ,"number_of_replicas": {{ target_index_replica_shards }}
+        {%- endif %}
+      }
+    },
+    "mappings": {
+      "dynamic": "strict",
+      "properties": {
+        {% if id_field_name is defined and id_field_name != "_id" %}
+          "{{id_field_name}}": {
+            "type": "keyword"
+          },
+        {%- endif %}
+        "target_field": {
+          "type": "knn_vector",
+          "dimension": {{ target_index_dimension }}
+        },
+        "color": {
+            "type": "text"
+        },
+        "taste": {
+            "type": "text"
+        },
+        "age": {
+            "type": "integer"
+        }
+      }
+    }
+  }

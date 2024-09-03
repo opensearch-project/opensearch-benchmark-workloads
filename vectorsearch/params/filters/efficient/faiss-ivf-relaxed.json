@@ -1,0 +1,90 @@
+{
+    "target_index_name": "target_index",
+    "target_field_name": "target_field",
+    "target_index_body": "indices/filters/faiss-index-attributes.json",
+    "target_index_primary_shards": 1,
+    "target_index_dimension": 128,
+    "target_index_space_type": "l2",
+    "target_index_bulk_size": 100,
+    "target_index_bulk_index_data_set_format": "hdf5",
+    "target_index_bulk_index_data_set_path": "/tmp/filter_relaxed.hdf5",
+    "target_index_bulk_indexing_clients": 10,
+    
+    "train_index_name": "train_index",
+    "train_field_name": "train_field",
+    "train_method_engine": "faiss",
+    "train_index_body": "indices/train-index.json",
+    "train_index_primary_shards": 1,
+    "train_index_replica_shards": 1, 
+    "target_dataset_filter_attributes": ["color", "taste", "age"],
+
+    "train_index_bulk_size": 100,
+    "train_index_bulk_index_data_set_format": "hdf5",
+    "train_index_bulk_index_data_set_path": "/tmp/filter_relaxed.hdf5",
+    "train_index_bulk_indexing_clients": 10,
+    "train_index_num_vectors": 1000,
+    
+    "train_model_id": "test-model",
+    "train_operation_retries": 100,
+    "train_operation_poll_period": 0.5,
+    "train_search_size": 10000,
+     
+    "target_index_max_num_segments": 1,
+    "target_index_force_merge_timeout": 300,
+    "hnsw_ef_search": 100,
+    "hnsw_ef_construction": 100,
+    "query_k": 100,
+    "query_body": {
+         "docvalue_fields" : ["_id"],
+         "stored_fields" : "_none_"
+    },
+
+    "filter_type": "efficient",
+    "filter_body": {
+        "bool":
+        {
+            "should":
+            [
+                {
+                    "range":
+                    {
+                        "age":
+                        {
+                            "gte": 30,
+                            "lte": 70
+                        }
+                    }
+                },
+                {
+                    "term":
+                    {
+                        "color": "green"
+                    }
+                },
+                {
+                    "term":
+                    {
+                        "color": "blue"
+                    }
+                },
+                {
+                    "term":
+                    {
+                        "color": "yellow"
+                    }
+                },
+                {
+                    "term":
+                    {
+                        "taste": "sweet"
+                    }
+                }
+            ]
+        }
+    },
+    
+
+    "query_data_set_format": "hdf5",
+    "query_data_set_path":"/tmp/filter_relaxed.hdf5",
+    "query_count": 100
+  }
