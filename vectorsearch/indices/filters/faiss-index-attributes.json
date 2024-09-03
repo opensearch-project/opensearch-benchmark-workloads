@@ -1,0 +1,62 @@
+{
+    "settings": {
+      "index": {
+        "knn": true
+        {%- if target_index_primary_shards is defined and target_index_primary_shards %}
+        ,"number_of_shards": {{ target_index_primary_shards }}
+        {%- endif %}
+        {%- if target_index_replica_shards is defined %}
+        ,"number_of_replicas": {{ target_index_replica_shards }}
+        {%- endif %}
+      }
+    },
+    "mappings": {
+      "dynamic": "strict",
+      "properties": {
+        {% if id_field_name is defined and id_field_name != "_id" %}
+          "{{id_field_name}}": {
+            "type": "keyword"
+          },
+        {%- endif %}
+        "target_field": {
+          "type": "knn_vector",
+          "dimension": {{ target_index_dimension }},
+          {%- if train_model_id is defined %}
+          "model_id": "{{ train_model_id }}"
+          {%- else %}
+          "method": {
+            "name": "hnsw",
+            "space_type": "{{ target_index_space_type }}",
+            "engine": "faiss",
+            "parameters": {
+              {%- if hnsw_ef_search is defined and hnsw_ef_search %}
+                "ef_search": {{ hnsw_ef_search }}
+              {%- endif %}
+              {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
+              {%- if hnsw_ef_search is defined and hnsw_ef_search %}
+                ,
+              {%- endif %}
+                "ef_construction": {{ hnsw_ef_construction }}
+              {%- endif %}
+              {%- if hnsw_m is defined and hnsw_m %}
+              {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
+                ,
+              {%- endif %}
+                "m": {{ hnsw_m }}
+              {%- endif %}
+            }
+          }
+          {%- endif %}
+        },
+        "color": {
+          "type": "text"
+        },
+        "taste": {
+          "type": "text"
+        },
+        "age": {
+          "type": "integer"
+        }
+      }
+    }
+  }
