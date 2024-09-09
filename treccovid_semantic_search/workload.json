@@ -1,15 +1,25 @@
 {% import "benchmark.helpers" as benchmark with context %}
-
 {
   "version": 2,
     "description": "Trec-Covid is a dataset collection of documents about COVID-19 information.",
   "indices": [
+    {% if not corpus_size %}
+      {% set corpus_size = '100' %}
+    {% endif %}
+    {% if corpus_size == '100' %}    
     {
       "name": "treccovid",
       "body": "index.json"
     }
+    {% elif corpus_size == '1M' %}
+    {
+      "name": "treccovid1m",
+      "body": "index-1M.json"
+    }
+    {% endif %}
   ],
   "corpora": [
+    {% if corpus_size == '100' %}    
     {
       "name": "treccovid",
       "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/treccovid",
@@ -18,10 +28,24 @@
           "source-file": "documents.json.bz2",
           "document-count": 129192,
           "compressed-bytes": 51187469,
-          "uncompressed-bytes": 211980208
+          "uncompressed-bytes": 211980208,
+          "target-index": "treccovid"
         }
       ]
     }
+    {% elif corpus_size == '1M' %}
+    {
+      "name": "treccovid1m",
+      "base-url": "https://github.com/martin-gaievski/neural-search/releases/download/trec_covid_dataset_1m_v2",
+      "documents": [
+        {
+          "source-file": "documents.json.zip",
+          "document-count": 1027986,
+          "target-index": "treccovid1m"
+        }
+      ]
+    }
+    {% endif %}
   ],
   "operations": [
     {{ benchmark.collect(parts="operations/*.json") }}
