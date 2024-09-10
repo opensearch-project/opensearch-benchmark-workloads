@@ -68,7 +68,7 @@
       "target-index": "{{ target_index_name }}",
       "documents": [
         {
-          "source-file": "cohere-1m-nested.hdf5",
+          "source-file": "cohere-1m-nested.hdf5.bz2",
           "source-format": "hdf5",
           "document-count": 1000000
         }
@@ -80,7 +80,7 @@
       "target-index": "{{ target_index_name }}",
       "documents": [
         {
-          "source-file": "cohere-1m-relaxed-filters.hdf5",
+          "source-file": "cohere-1m-relaxed-filters.hdf5.bz2",
           "source-format": "hdf5",
           "document-count": 1000000
         }
@@ -92,7 +92,7 @@
       "target-index": "{{ target_index_name }}",
       "documents": [
         {
-          "source-file": "cohere-1m-restrictive-filters.hdf5",
+          "source-file": "cohere-1m-restrictive-filters.hdf5.bz2",
           "source-format": "hdf5",
           "document-count": 1000000
         }
