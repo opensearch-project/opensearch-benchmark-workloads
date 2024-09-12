@@ -74,7 +74,7 @@ This workload allows the following parameters to be specified using `--workload-
 | Name                                    | Description                                                                                                                 |
 |-----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
 | target_index_name                       | Name of index to add vectors to                                                                                             |
-| target_field_name                       | Name of field to add vectors to                                                                                             |
+| target_field_name                       | Name of field to add vectors to. Use "." to indicate a nested field                                                         |
 | target_index_body                       | Path to target index definition                                                                                             |
 | target_index_primary_shards             | Target index primary shards                                                                                                 |
 | target_index_replica_shards             | Target index replica shards                                                                                                 |
@@ -253,6 +253,7 @@ This workload allows the following parameters to be specified using `--workload-
 | query_count                             | Number of queries for search operation                                                       |
 | query_body                              | Json properties that will be merged with search body                                         |
 | search_clients                          | Number of clients to use for running queries                                                 |
+| target_dataset_filter_attributes        | Used in filter benchmarks. List of names of attribute fields in a dataset.                   | 
 
 #### Sample Outputs
 
