@@ -567,22 +567,6 @@
           {%- elif search_clients is defined and search_clients %}
           ,"clients": {{ search_clients | tojson}}
           {%- endif %}
-        },
-        {
-          "operation": "last_country_code_per_station_top_metrics_5000",
-          "warmup-iterations": 10,
-          "iterations": 50
-          {%- if not target_throughput %}
-          ,"target-throughput": 1
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%- if not search_clients %}
-          ,"clients": 1
-          {%- elif search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
-          {%- endif %}
         }
       ]
     },
