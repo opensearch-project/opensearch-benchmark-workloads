@@ -61,51 +61,114 @@
         {
           "operation": "randomized-nested-queries",
           "warmup-iterations": 500,
-          "iterations": 1000,
-          "target-throughput": {{ randomized_nested_queries_target_throughput or target_throughput | default(20) | tojson }},
-          "clients": {{ randomized_nested_queries_search_clients or search_clients | default(2) }}
+          "iterations": 1000
+          {%- if not target_throughput %}
+          ,"target-throughput": 20
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         },
         {
           "operation": "randomized-term-queries",
           "warmup-iterations": 500,
-          "iterations": 200,
-          "target-throughput": {{ randomized_term_queries_target_throughput or target_throughput | default(25) | tojson }},
-          "clients": {{ randomized_term_queries_search_clients or search_clients | default(2) }}
+          "iterations": 200
+          {%- if not target_throughput %}
+          ,"target-throughput": 25
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         },
         {
           "operation": "randomized-sorted-term-queries",
           "warmup-iterations": 500,
-          "iterations": 200,
-          "target-throughput": {{ randomized_sorted_term_queries_target_throughput or target_throughput | default(16) | tojson }},
-          "clients": {{ randomized_sorted_term_queries_search_clients or search_clients | default(2) }}
+          "iterations": 200
+          {%- if not target_throughput %}
+          ,"target-throughput": 16
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         },
         {
           "operation": "match-all",
           "warmup-iterations": 500,
-          "iterations": 200,
-          "target-throughput": {{ match_all_target_throughput or target_throughput | default(5) | tojson }},
-          "clients": {{ match_all_search_clients or search_clients | default(2) }}
+          "iterations": 200
+          {%- if not target_throughput %}
+          ,"target-throughput": 5
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         },
         {
           "operation": "nested-date-histo",
           "warmup-iterations": 100,
-          "iterations": 200,
-          "target-throughput": {{ nested_date_histo_target_throughput or target_throughput | default(1) | tojson }},
-          "clients": {{ nested_date_histo_search_clients or search_clients | default(2) }}
+          "iterations": 200
+          {%- if not target_throughput %}
+          ,"target-throughput": 1
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         },
         {
           "operation": "randomized-nested-queries-with-inner-hits_default",
           "warmup-iterations": 500,
-          "iterations": 1000,
-          "target-throughput": {{ randomized_nested_queries_with_inner_hits_default_target_throughput or target_throughput | default(18) | tojson }},
-          "clients": {{ randomized_nested_queries_with_inner_hits_default_search_clients or search_clients | default(2) }}
+          "iterations": 1000
+          {%- if not target_throughput %}
+          ,"target-throughput": 18
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         },
         {
           "operation": "randomized-nested-queries-with-inner-hits_default_big_size",
           "warmup-iterations": 500,
-          "iterations": 1000,
-          "target-throughput": {{ randomized_nested_queries_with_inner_hits_default_big_size_target_throughput or target_throughput | default(16) | tojson }},
-          "clients": {{ randomized_nested_queries_with_inner_hits_default_big_size_search_clients or search_clients | default(2) }}
+          "iterations": 1000
+          {%- if not target_throughput %}
+          ,"target-throughput": 16
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if not search_clients %}
+          ,"clients": 2
+          {%- elif search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         }
       ]
     },
