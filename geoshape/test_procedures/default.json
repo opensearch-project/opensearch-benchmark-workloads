@@ -127,16 +127,30 @@
         {
           "operation": "polygon",
           "warmup-iterations": 200,
-          "iterations": 100,
-          "target-throughput": {{ polygon_target_throughput or target_throughput | default(0.3) | tojson }},
-          "clients": {{ polygon_search_clients or search_clients | default(1) }}
+          "iterations": 100
+          {%- if not target_throughput %}
+          ,"target-throughput": 0.3
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         },
         {
           "operation": "bbox",
           "warmup-iterations": 200,
-          "iterations": 100,
-          "target-throughput": {{ bbox_target_throughput or target_throughput | default(0.25) | tojson }},
-          "clients": {{ bbox_search_clients or search_clients | default(1) }}
+          "iterations": 100
+          {%- if not target_throughput %}
+          ,"target-throughput": 0.25
+          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
+          {%- else %}
+          ,"target-throughput": {{ target_throughput | tojson }}
+          {%- endif %}
+          {%- if search_clients is defined and search_clients %}
+          ,"clients": {{ search_clients | tojson}}
+          {%- endif %}
         }
       ]
     }
