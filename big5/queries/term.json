@@ -2,7 +2,7 @@
   "query": {
     "term": {
       "log.file.path": {
-        "value": "/var/log/messages/fuschiashoulder"
+        "value": "/var/log/messages/birdknight"
       }
     }
   }
