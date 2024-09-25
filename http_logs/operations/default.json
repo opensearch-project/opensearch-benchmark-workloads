@@ -141,7 +141,7 @@
       ]
     },
     {
-      "name": "200s-in-range",
+      "name": "status-200s-in-range",
       "operation-type": "search",
       "index": "logs-*",
       "body": {
@@ -175,7 +175,7 @@
       ]
     },
     {
-      "name": "400s-in-range",
+      "name": "status-400s-in-range",
       "operation-type": "search",
       "index": "logs-*",
       "body": {
