@@ -7,11 +7,12 @@ This repository contains the default workload specifications for the OpenSearch 
 - [Test changes](#test-changes)
     - [Testing changes locally](#testing-changes-locally)
     - [Testing changes with integration tests](#testing-changes-with-integration-tests)
-- [Contributing a workload](#contributing-a-workload)
 - [Publish changes in a pull-request](#publish-changes-in-a-pull-request)
 - [Reviewing pull-requests](#reviewing-pull-requests)
      - [Backporting](#backporting)
      - [Important note on backporting reverted commits](#important-note-on-backporting-reverted-commits)
+- [Contributing a workload](#contributing-a-workload)
+
 
 ## Contributing a change to existing workload(s)
 
@@ -61,10 +62,6 @@ You are now ready to run integration tests aginst your forked workloads reposito
 
 ![example](https://dbyiw3u3rf9yr.cloudfront.net/assets/test-forked-workloads.png)
 
-## Contributing a workload
-
-For information on how to contribute a workload to the repository, please see [Sharing Custom Workloads](https://opensearch.org/docs/latest/benchmark/user-guide/contributing-workloads/) in the official documentation.
-
 ## Publish changes in a pull-request
 
 Before publishing the pull-request containg your changes, please ensure you've addressed the following in the PR:
@@ -99,10 +96,6 @@ In the case of a merge conflict for a backported change introduced by the contri
 ### Important note on backporting reverted commits
 Sometimes we'll need to revert a change. In those cases, we should revert the change across all branches. Do not revert the change only on main and backport that change across all branches. This can create other issues since each branch contains variations of workloads that slightly differ.
 
+## Contributing a workload
 
-
-
-
-
-
-
+For information on how to contribute a workload to the repository, please see [Sharing Custom Workloads](https://opensearch.org/docs/latest/benchmark/user-guide/contributing-workloads/) in the official documentation.
