@@ -26,7 +26,7 @@ You should also consider whether or not your change should be applied to one or 
 
 Once you've made your change in your feature branch, we recommend testing it locally and with integration tests via your forked OpenSearch Benchmark repository.
 
-#### Testing changes locally
+### Testing changes locally
 It's recommended to test your change locally by performing the following:
 1. Set up or use an existing OpenSearch cluster to test your changes against.
 2. Based on the major version of the test cluster, cherry-pick the commit(s) with your change to the corresponding major version branch in your forked workloads repository. For example, if you're testing against an OpenSearch 2.X.X cluster, cherry-pick the changes from the feature branch to `2` branch.
