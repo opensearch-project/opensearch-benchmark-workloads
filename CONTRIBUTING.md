@@ -31,6 +31,7 @@ It's recommended to test your change locally by performing the following:
 1. Set up or use an existing OpenSearch cluster to test your changes against.
 2. Based on the major version of the test cluster, cherry-pick the commit(s) with your change to the corresponding major version branch in your forked workloads repository. For example, if you're testing against an OpenSearch 2.X.X cluster, cherry-pick the changes from the feature branch to `2` branch.
 3. Run the OpenSearch Benchmark command and against your cluster in `--test-mode`. Ensure it works successfully.
+
 Other tips when running the command in test mode against your cluster:
 - Ensure you are using the workloads repository that you committed your changes in. To enforce this, provide the path to your repository via the `--workloads-repository` parameter.
 - Alternatively, you can force OSB to use a specific branch by specifying the distribution version of your OpenSearch cluster via the `--distribution-version` parameter. To build on the example from the previous step, to ensure you are using branch `2`, set `--distribution-version=2.0.0` in the OpenSearch Benchmark command.
