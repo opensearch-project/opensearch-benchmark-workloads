@@ -24,7 +24,7 @@ You should also consider whether or not your change should be applied to one or 
 
 ## Test changes
 
-Once you've made your change in your feature branch, we recommend testing it locally and with integration tests via your forked OpenSearch Benchmark repository.
+After making changes in your feature branch from your forked workloads repository, we recommend testing them locally and with integration tests via Github Actions in your forked OpenSearch Benchmark repository.
 
 ### Testing changes locally
 It's recommended to test your change locally by performing the following:
@@ -42,7 +42,7 @@ To ensure that there are no other breaking changes, we recommend testing with yo
 
 **Prerequisites:**
 
-Before we can run integration tests, we recommend dedicating a remote branch that you can repeatedly use to run integration tests on your forked workloads repository. You only need to perform these actions once.
+Before running integration tests, we recommend dedicating a remote branch in your forked OpenSearch Benchmark repository. You only need to perform these steps once. After you have set this branch up, you will use this branch whenever you need to run integration tests against workload changes from your forked workloads repository.
 
 1. In your forked OpenSearch Benchmark repository, create a separate branch that's based off of `main` and call it `test-forked-workloads`.
 2. In this branch, update two files -- `benchmark-os-it.ini` and `benchmark-in-memory.ini` files in the `/osbenchmark/it/resources` directory -- to point to the forked workloads repository containing your workload, similar to the output below.
@@ -64,6 +64,8 @@ You are now ready to run integration tests aginst your forked workloads reposito
 ![example](https://dbyiw3u3rf9yr.cloudfront.net/assets/test-forked-workloads.png)
 
 ## Publish changes in a pull-request
+
+When committing changes, please include the `--signoff` flag.
 
 Before publishing the pull-request containg your changes, please ensure you've addressed the following in the PR:
 
