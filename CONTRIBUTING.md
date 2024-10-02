@@ -1,6 +1,6 @@
 # Contributor Guidelines
 
-This repository contains the default workload specifications for the OpenSearch benchmarking tool [OpenSearch Benchmark](https://github.com/opensearch-project/OpenSearch-Benchmark). This is a general guide on best practices for contributing to this repository.
+This repository contains the default workload specifications for the OpenSearch benchmarking tool [OpenSearch Benchmark](https://github.com/opensearch-project/OpenSearch-Benchmark). This document is a general guide on best practices for contributing to this repository.
 
 ## Contents
 - [Contributing a change to existing workload(s)](#contributing-a-change-to-existing-workloads)
@@ -20,7 +20,7 @@ Before making a change, we recommend you fork the official workloads repository 
 
 You should also consider whether or not your change should be applied to one or more branches.
 - If you know your change is only applicable to a specific branch, create the feature branch based off of that specific branch and make the changes there.
-- If the change is applicable to several branches, create the feature branch based off of `main` branch and make the changes there.
+- If the change is applicable to several branches, create the feature branch based off of `main`, let's call it `test-forked-workloads`.
 
 ## Test changes
 
@@ -30,19 +30,20 @@ After making changes in your feature branch from your forked workloads repositor
 It's recommended to test your change locally by performing the following:
 1. Set up or use an existing OpenSearch cluster to test your changes against.
 2. Based on the major version of the test cluster, cherry-pick the commit(s) with your change to the corresponding major version branch in your forked workloads repository. For example, if you're testing against an OpenSearch 2.X.X cluster, cherry-pick the changes from the feature branch to `2` branch.
-3. Run the OpenSearch Benchmark command and against your cluster in `--test-mode`. Ensure it works successfully.
+3. Run the OpenSearch Benchmark command against your cluster with your modified workload in `--test-mode`. Ensure it works successfully.
 
 Other tips when running the command in test mode against your cluster:
 - Ensure you are using the workloads repository that you committed your changes in. To enforce this, provide the path to your repository via the `--workloads-repository` parameter.
 - Alternatively, you can force OSB to use a specific branch by specifying the distribution version of your OpenSearch cluster via the `--distribution-version` parameter. To build on the example from the previous step, to ensure you are using branch `2`, set `--distribution-version=2.0.0` in the OpenSearch Benchmark command.
+- Note that if changes that rely on newer OSB features are backported to older branches, integration tests in the OSB repository may begin to fail.
 
 ### Testing changes with integration tests
 
-To ensure that there are no other breaking changes, we recommend testing with your forked OpenSearch Benchmark repository Github Actions.
+To ensure that there are no other breaking changes, we recommend running integration tests locally. To do this, you will need your own fork of the OpenSearch Benchmark repository (note, this is not the workloads repository). The tests will be run using GitHub Actions as described below.
 
 **Prerequisites:**
 
-Before running integration tests, we recommend dedicating a remote branch in your forked OpenSearch Benchmark repository. You only need to perform these steps once. After you have set this branch up, you will use this branch whenever you need to run integration tests against workload changes from your forked workloads repository.
+To run integration tests, we recommend dedicating a branch in your forked OpenSearch Benchmark repository for this purpose. You only need to perform these steps once. After you have set this branch up, you will use this branch whenever you need to run integration tests against workload changes from your forked workloads repository.
 
 1. In your forked OpenSearch Benchmark repository, create a separate branch that's based off of `main` and call it `test-forked-workloads`.
 2. In this branch, update two files -- `benchmark-os-it.ini` and `benchmark-in-memory.ini` files in the `/osbenchmark/it/resources` directory -- to point to the forked workloads repository containing your workload, similar to the output below.
@@ -97,7 +98,7 @@ main → OpenSearch 3 → OpenSearch 2 → OpenSearch 1 → Elasticsearch 7 → 
 In the case of a merge conflict for a backported change introduced by the contributor's PR, a separate pull request should be raised which merges the change directly into that target branch. **Ensure the only changes added to the branch are the ones from the contributor's PR.**
 
 ### Important note on backporting reverted commits
-Sometimes we'll need to revert a change. In those cases, we should revert the change across all branches. Do not revert the change only on main and backport that change across all branches. This can create other issues since each branch contains variations of workloads that slightly differ.
+Sometimes we'll need to revert a change. In those cases, we should revert the change across all branches. Revert the precise change that was made to each branch, rather than backporting a new change. If reverting isn't performed properly, this can create other issues since each branch contain variations of relevant workloads appropriate for the respective branches. Note that versions `6` and `7` can be thought of as "older" versions of OpenSearch, based on an historical version-numbering oddity.
 
 ## Contributing a workload
 

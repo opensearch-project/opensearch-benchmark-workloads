@@ -1,6 +1,6 @@
 # OpenSearch Benchmark Workloads User Guide
 
-OpenSearch Benchmark (OSB) comes packaged with official workloads that can be found throughout this repository. This guide provides a brief overview of the organizsation of this repository as well as how OSB uses these workloads.
+OpenSearch Benchmark (OSB) comes packaged with several workloads that are included in this repository. This guide provides a brief overview of the organization of this repository as well as how OSB uses these workloads.
 
 ### Contents
 - [What do branches represent](#what-do-the-numbered-branches-represent)
