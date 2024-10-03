@@ -53,6 +53,47 @@
       }
     },
     {
+      "name": "bool-only-term-range-date-sort",
+      "operation-type": "search",
+      "body": {
+        "size": 100,
+        "query": {
+          "bool": {
+              "should": [
+                  {
+                      "term": {
+                          "station.country_code": "JA"
+                      }
+                  },
+                  {
+                      "range": {
+                          "TRANGE": {
+                              "gte": 0,
+                              "lte": 30
+                          }
+                      }
+                  },
+                  {
+                    "range": {
+                        "date": {
+                            "gte": "2016-06-04",
+                            "format":"yyyy-MM-dd"
+                        }
+                    }
+                  }
+              ]
+          }
+        },
+        "sort":[
+          {
+            "AWND":{
+               "order":"desc"
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "hybrid-query-only-term-range-date",
       "operation-type": "search",
       "request-params": {
@@ -87,6 +128,50 @@
             ]
           }
         }
+      }
+    },
+    {
+      "name": "hybrid-query-only-term-range-date-sort",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "term": {
+                        "station.country_code": "JA"
+                    }
+                },
+                {
+                    "range": {
+                        "TRANGE": {
+                            "gte": 0,
+                            "lte": 30
+                        }
+                    }
+                },
+                {
+                  "range": {
+                      "date": {
+                          "gte": "2016-06-04",
+                          "format":"yyyy-MM-dd"
+                      }
+                  }
+                }
+            ]
+          }
+        },
+        "sort":[
+          {
+            "AWND":{
+               "order":"desc"
+            }
+          }
+        ]
       }
     },
     {
@@ -308,6 +393,27 @@
       }
     },
     {
+      "name": "bool-query-only-range",
+      "operation-type": "search",
+      "body": {
+        "size": 100,
+        "query": {
+          "bool": {
+            "should": [
+              {
+                "range": {
+                  "TRANGE": {
+                    "gte": -100,
+                    "lte": -50
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
       "name": "hybrid-query-only-range",
       "operation-type": "search",
       "request-params": {
@@ -329,6 +435,65 @@
             ]
           }
         }
+      }
+    },
+    {
+      "name": "bool-query-only-range-sort",
+      "operation-type": "search",
+      "body": {
+        "size": 100,
+        "query": {
+          "bool": {
+            "should": [
+              {
+                "range": {
+                  "TRANGE": {
+                    "gte": -100,
+                    "lte": -50
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "sort":[
+          {
+            "AWND":{
+               "order":"desc"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "hybrid-query-only-range-sort",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                        "TRANGE": {
+                          "gte": -100,
+                          "lte": -50
+                        }
+                    }
+                }
+            ]
+          }
+        },
+        "sort":[
+          {
+            "AWND":{
+               "order":"desc"
+            }
+          }
+        ]
       }
     },
     {
@@ -498,6 +663,55 @@
       }
     },
     {
+      "name": "bool-query-only-range-medium-subset",
+      "operation-type": "search",
+      "body": {
+        "size": 100,
+        "query": {
+          "bool": {
+            "should": [
+              {
+                "range": {
+                  "TRANGE": {
+                    "gte": -90,
+                     "lte": -7
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "bool-query-only-range-medium-subset-sort",
+      "operation-type": "search",
+      "body": {
+        "size": 100,
+        "query": {
+           "bool":{
+             "should": [
+               {
+                 "range": {
+                   "TRANGE": {
+                     "gte": -90,
+                     "lte": -7
+                   }
+                 }
+               }
+             ]
+           }
+        },
+        "sort":[
+          {
+            "AWND":{
+               "order":"desc"
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "hybrid-query-only-range-medium-subset",
       "operation-type": "search",
       "request-params": {
@@ -519,6 +733,37 @@
             ]
           }
         }
+      }
+    },
+    {
+      "name": "hybrid-query-only-range-medium-subset-sort",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                      "TRANGE": {
+                        "gte": -90,
+                        "lte": -7
+                      }
+                    }
+                }
+            ]
+          }
+        },
+        "sort":[
+          {
+            "AWND":{
+               "order":"desc"
+            }
+          }
+        ]
       }
     },    
     {
@@ -688,6 +933,55 @@
       }
     },
     {
+      "name": "bool-query-only-range-large-subset",
+      "operation-type": "search",
+      "body": {
+        "size": 100,
+        "query": {
+          "bool": {
+            "should": [
+              {
+                "range": {
+                  "TRANGE": {
+                    "gte": 1,
+                    "lte": 35
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "bool-query-only-range-large-subset-sort",
+      "operation-type": "search",
+      "body": {
+        "size": 100,
+        "query": {
+          "bool": {
+            "should": [
+              {
+                "range": {
+                  "TRANGE": {
+                    "gte": 1,
+                    "lte": 35
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "sort":[
+          {
+            "AWND":{
+               "order":"desc"
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "hybrid-query-only-range-large-subset",
       "operation-type": "search",
       "request-params": {
@@ -709,6 +1003,37 @@
             ]
           }
         }
+      }
+    },
+    {
+      "name": "hybrid-query-only-range-large-subset-sort",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+      },
+      "body": {
+        "size": 100,
+        "query": {
+          "hybrid": {
+            "queries": [
+                {
+                    "range": {
+                      "TRANGE": {
+                        "gte": 1,
+                        "lte": 35
+                      }
+                    }
+                }
+            ]
+          }
+        },
+        "sort":[
+          {
+            "AWND":{
+               "order":"desc"
+            }
+          }
+        ]
       }
     },
     {
