@@ -96,7 +96,7 @@
         },
         {
           "operation": "hourly_agg",
-          "warmup-iterations": 50,
+          "warmup-iterations": 100,
           "iterations": 100,
           "target-throughput": {{ hourly_agg_target_throughput or target_throughput | default(0.2) | tojson }},
           "clients": {{ hourly_agg_search_clients or search_clients | default(1) }}
@@ -104,16 +104,9 @@
         {
           "operation": "scroll",
           "warmup-iterations": 100,
-          "iterations": 100
-          {%- if not target_throughput %}
-          ,"target-throughput": 0.2
-          {%- elif target_throughput is string and target_throughput.lower() == 'none' %}
-          {%- else %}
-          ,"target-throughput": {{ target_throughput | tojson }}
-          {%- endif %}
-          {%-if search_clients is defined and search_clients %}
-          ,"clients": {{ search_clients | tojson}}
-          {%- endif %}
+          "iterations": 100,
+          "target-throughput": {{ scroll_target_throughput or target_throughput | default(0.2) | tojson }},
+          "clients": {{ scroll_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "scroll",
