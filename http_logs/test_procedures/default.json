@@ -104,7 +104,7 @@
         {
           "operation": "scroll",
           "warmup-iterations": 100,
-          "iterations": 100,
+          "iterations": 200,
           "target-throughput": {{ scroll_target_throughput or target_throughput | default(0.2) | tojson }},
           "clients": {{ scroll_search_clients or search_clients | default(1) }}
         },
