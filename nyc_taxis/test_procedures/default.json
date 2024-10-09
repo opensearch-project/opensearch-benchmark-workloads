@@ -55,52 +55,52 @@
         },
         {
           "operation": "default",
-          "warmup-iterations": 50,
-          "iterations": 100,
+          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(50) | tojson }},
+          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(3) | tojson }},
-          "clients": {{ default_clients or search_clients | default(1) }}
+          "clients": {{ default_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "range",
-          "warmup-iterations": 50,
-          "iterations": 100,
+          "warmup-iterations": {{ range_warmup_iterations or warmup_iterations | default(50) | tojson }},
+          "iterations": {{ range_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ range_target_throughput or target_throughput | default(0.7) | tojson }},
-          "clients": {{ range_clients or search_clients | default(1) }}
+          "clients": {{ range_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "distance_amount_agg",
-          "warmup-iterations": 50,
-          "iterations": 50,
+          "warmup-iterations": {{ distance_amount_agg_warmup_iterations or warmup_iterations | default(50) | tojson }},
+          "iterations": {{ distance_amount_agg_iterations or iterations | default(50) | tojson }},
           "target-throughput": {{ distance_amount_agg_target_throughput or target_throughput | default(2) | tojson }},
-          "clients": {{ distance_amount_agg_clients or search_clients | default(1) }}
+          "clients": {{ distance_amount_agg_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "autohisto_agg",
-          "warmup-iterations": 50,
-          "iterations": 100,
+          "warmup-iterations": {{ autohisto_agg_warmup_iterations or warmup_iterations | default(50) | tojson }},
+          "iterations": {{ autohisto_agg_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ autohisto_agg_target_throughput or target_throughput | default(1.5) | tojson }},
-          "clients": {{ autohisto_agg_clients or search_clients | default(1) }}
+          "clients": {{ autohisto_agg_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "date_histogram_agg",
-          "warmup-iterations": 50,
-          "iterations": 100,
+          "warmup-iterations": {{ date_histogram_agg_warmup_iterations or warmup_iterations | default(50) | tojson }},
+          "iterations": {{ date_histogram_agg_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ date_histogram_agg_target_throughput or target_throughput | default(1.5) | tojson }},
-          "clients": {{ date_histogram_agg_clients or search_clients | default(1) }}
+          "clients": {{ date_histogram_agg_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "desc_sort_tip_amount",
-          "warmup-iterations": 50,
-          "iterations": 100,
+          "warmup-iterations": {{ desc_sort_tip_amount_warmup_iterations or warmup_iterations | default(50) | tojson }},
+          "iterations": {{ desc_sort_tip_amount_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ desc_sort_tip_amount_target_throughput or target_throughput | default(0.5) | tojson }},
-          "clients": {{ desc_sort_tip_amount_clients or search_clients | default(1) }}
+          "clients": {{ desc_sort_tip_amount_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "asc_sort_tip_amount",
-          "warmup-iterations": 50,
-          "iterations": 100,
+          "warmup-iterations": {{ asc_sort_tip_amount_warmup_iterations or warmup_iterations | default(50) | tojson }},
+          "iterations": {{ asc_sort_tip_amount_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ asc_sort_tip_amount_target_throughput or target_throughput | default(0.5) | tojson }},
-          "clients": {{ asc_sort_tip_amount_clients or search_clients | default(1) }}
+          "clients": {{ asc_sort_tip_amount_search_clients or search_clients | default(1) }}
         }
       ]
     },
