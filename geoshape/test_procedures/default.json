@@ -126,15 +126,15 @@
         },
         {
           "operation": "polygon",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ polygon_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ polygon_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ polygon_target_throughput or target_throughput | default(0.3) | tojson }},
           "clients": {{ polygon_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "bbox",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ bbox_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ bbox_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ bbox_target_throughput or target_throughput | default(0.25) | tojson }},
           "clients": {{ bbox_search_clients or search_clients | default(1) }}
         }
