@@ -1,6 +1,6 @@
 ## Big5 OSB Workload
 
-This repository contains the "Big5" workload for benchmarking OpenSearch using OpenSearch Benchmark. The "Big5" workload focuses on five essential areas in OpenSearch performance and querying: Text Querying, Sorting, Date Histogram, Range Queries, and Terms Aggregation.
+This repository contains the **_Big5_** workload for benchmarking OpenSearch using OpenSearch Benchmark. This workload focuses on five essential areas in OpenSearch performance and querying: Text Querying, Sorting, Date Histogram, Range Queries, and Terms Aggregation.
 
 This workload is derived from the Elasticsearch vs. OpenSearch comparison benchmark.  It has been modified to conform to OpenSearch Benchmark terminology and comply with OpenSearch features.
 
@@ -45,7 +45,7 @@ This workload allows the following parameters to be specified using `--workload-
 * `bulk_indexing_clients` (default: 8): Number of clients that issue bulk indexing requests.
 * `bulk_size` (default: 5000): The number of documents in each bulk during indexing.
 * `cluster_health` (default: "green"): The minimum required cluster health.
-* `corpus_size` (default: "100"): The size of the data corpus to use in GiB.  The currently provided sizes are 100, 1000 and 60.  Note that there are [certain considerations when using the 1000 GiB (1 TiB) data corpus](#considerations-when-using-the-1-tb-data-corpus).
+* `corpus_size` (default: "100"): The size of the data corpus to use in GiB.  The currently provided sizes are 100, 880 and 1000.  Note that there are [certain considerations when using the 1000 GiB (~1 TiB) data corpus](#considerations-when-using-larger-data-corpora).
 * `document_compressed_size_in_bytes`: If specifying an alternate data corpus, the compressed size of the corpus.
 * `document_count`: If specifying an alternate data corpus, the number of documents in that corpus.
 * `document_file`: If specifying an alternate data corpus, the file name of the corpus.
@@ -180,17 +180,16 @@ Running range-auto-date-histo-with-metrics                                     [
 ------------------------------------------------------
 ```
 
-### Considerations when Using the 1 TB Data Corpus
+### Considerations when Using Larger Data Corpora
 
-*Caveat*: This corpus is being made available as a feature that is currently in beta test.  Some points to note when carrying out performance runs using this corpus:
+There are several points to note when carrying out performance runs using large data corpora:
 
-  * Due to CloudFront download size limits, the uncompressed size of the 1 TB corpus is actually 0.95 TB (~0.9 TiB).  This [issue has been noted](https://github.com/opensearch-project/opensearch-benchmark/issues/543) and will be resolved in due course.
   * Use an external data store to record metrics.  Using the in-memory store will likely result in the system running out of memory and becoming unresponsive, resulting in inaccurate performance numbers.
-  * Use a load generation host with sufficient disk space to hold the corpus.
+  * Use a load generation host with at least 8 cores and 32 GB memory or more.  It should have sufficient disk space to hold the corpus.
   * Ensure the target cluster has adequate storage and at least 3 data nodes.
   * Specify an appropriate shard count and number of replicas so that shards are evenly distributed and appropriately sized.
   * Running the workload requires an instance type with at least 8 cores and 32 GB memory.
-  * Install the `pbzip2` decompressor to speed up decompression of the corpus.
+  * If you are using an older version of OSB, install the `pbzip2` decompressor to speed up decompression of the corpus.
   * Set the client timeout to a sufficiently large value, since some queries take a long time to complete.
   * Allow sufficient time for the workload to run.  _Approximate_ times for the various steps involved, using an 8-core loadgen host:
     - 15 minutes to download the corpus
@@ -199,7 +198,6 @@ Running range-auto-date-histo-with-metrics                                     [
     - 30 minutes for the force-merge
     - 8 hours to run the set of included queries
 
-More details will be added in due course.
 
 ### License
 

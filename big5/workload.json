@@ -28,16 +28,17 @@
 	    "compressed-bytes": 6023614688,
 	    "uncompressed-bytes": 107321418111
 	  }
-        {% elif corpus_size == 1000 %}
+        {% elif corpus_size == 880 %}
           {
-            "source-file": "documents-1000.json.bz2",
+            "source-file": "documents-880.json.bz2",
             "document-count": 1020000000,
             "compressed-bytes": 53220934846,
             "uncompressed-bytes": 943679382267
           }
-        {% elif corpus_size == "1000-full" %}
+        {% elif corpus_size == 1000 %}
           {
-            "source-file": "documents-1000-full.json.bz2",
+            "source-file": "documents-1000.json.bz2",
+            "source-file-parts": [ { "name": "documents-1000-part0", "size": 20189061054 }, { "name": "documents-1000-part1", "size": 20189061054 }, { "name": "documents-1000-part2", "size": 20189061055 } ],
             "document-count": 1160800000,
             "compressed-bytes": 60567183163,
             "uncompressed-bytes": 1073936121222
