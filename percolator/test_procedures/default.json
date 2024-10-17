@@ -61,58 +61,58 @@
         },
         {
           "operation": "percolator_with_content_president_bush",
-          "warmup-iterations": 100,
-          "iterations": 100,
+          "warmup-iterations": {{ percolator_with_content_president_bush_warmup_iterations or warmup_iterations | default(100) | tojson }},
+          "iterations": {{ percolator_with_content_president_bush_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ percolator_with_content_president_bush_target_throughput or target_throughput | default(50) | tojson }},
           "clients": {{ percolator_with_content_president_bush_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "percolator_with_content_saddam_hussein",
-          "warmup-iterations": 100,
-          "iterations": 100,
+          "warmup-iterations": {{ percolator_with_content_saddam_hussein_warmup_iterations or warmup_iterations | default(100) | tojson }},
+          "iterations": {{ percolator_with_content_saddam_hussein_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ percolator_with_content_saddam_hussein_target_throughput or target_throughput | default(50) | tojson }},
           "clients": {{ percolator_with_content_saddam_hussein_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "percolator_with_content_hurricane_katrina",
-          "warmup-iterations": 100,
-          "iterations": 100,
+          "warmup-iterations": {{ percolator_with_content_hurricane_katrina_warmup_iterations or warmup_iterations | default(100) | tojson }},
+          "iterations": {{ percolator_with_content_hurricane_katrina_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ percolator_with_content_hurricane_katrina_target_throughput or target_throughput | default(50) | tojson }},
           "clients": {{ percolator_with_content_hurricane_katrina_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "percolator_with_content_google",
-          "warmup-iterations": 100,
-          "iterations": 100,
+          "warmup-iterations": {{ percolator_with_content_google_warmup_iterations or warmup_iterations | default(100) | tojson }},
+          "iterations": {{ percolator_with_content_google_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ percolator_with_content_google_target_throughput or target_throughput | default(27) | tojson }},
           "clients": {{ percolator_with_content_google_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "percolator_no_score_with_content_google",
-          "warmup-iterations": 100,
-          "iterations": 100,
+          "warmup-iterations": {{ percolator_no_score_with_content_google_warmup_iterations or warmup_iterations | default(100) | tojson }},
+          "iterations": {{ percolator_no_score_with_content_google_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ percolator_no_score_with_content_google_target_throughput or target_throughput | default(100) | tojson }},
           "clients": {{ percolator_no_score_with_content_google_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "percolator_with_highlighting",
-          "warmup-iterations": 100,
-          "iterations": 100,
+          "warmup-iterations": {{ percolator_with_highlighting_warmup_iterations or warmup_iterations | default(100) | tojson }},
+          "iterations": {{ percolator_with_highlighting_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ percolator_with_highlighting_target_throughput or target_throughput | default(50) | tojson }},
           "clients": {{ percolator_with_highlighting_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "percolator_with_content_ignore_me",
-          "warmup-iterations": 10,
-          "iterations": 100,
+          "warmup-iterations": {{ percolator_with_content_ignore_me_warmup_iterations or warmup_iterations | default(10) | tojson }},
+          "iterations": {{ percolator_with_content_ignore_me_iterations or iterations | default(100) | tojson }},
           "#COMMENT": "Be aware that we specify *target-interval* here! This means we issue one query every 12 seconds",
           "target-interval": 12,
           "clients": {{ percolator_with_content_ignore_me_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "percolator_no_score_with_content_ignore_me",
-          "warmup-iterations": 100,
-          "iterations": 100,
+          "warmup-iterations": {{ percolator_no_score_with_content_ignore_me_warmup_iterations or warmup_iterations | default(100) | tojson }},
+          "iterations": {{ percolator_no_score_with_content_ignore_me_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ percolator_no_score_with_content_ignore_me_target_throughput or target_throughput | default(15) | tojson }},
           "clients": {{ percolator_no_score_with_content_ignore_me_search_clients or search_clients | default(1) }}
         }
