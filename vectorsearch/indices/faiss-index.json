@@ -24,6 +24,9 @@
           {%- if mode is defined %}
           "mode": "{{ mode }}",
           {%- endif %}
+          {%- if compression_level is defined %}
+          "compression_level": "{{ compression_level }}",
+          {%- endif %}
           {%- if train_model_id is defined %}
           "model_id": "{{ train_model_id }}"
           {%- else %}
