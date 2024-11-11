@@ -58,53 +58,53 @@
         },
         {
           "operation": "default",
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
         {
           "name": "term",
           "operation": "term",
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ term_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ term_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ term_target_throughput or target_throughput | default(50) | tojson }},
           "clients": {{ term_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "range",
-          "warmup-iterations": 100,
-          "iterations": 100,
+          "warmup-iterations": {{ range_warmup_iterations or warmup_iterations | default(100) | tojson }},
+          "iterations": {{ range_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ range_target_throughput or target_throughput | default(1) | tojson }},
           "clients": {{ range_search_clients or search_clients | default(1) }}
         },
         {
           "name": "status-200s-in-range",
           "operation": "200s-in-range",
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ status_200s_in_range_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ status_200s_in_range_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ status_200s_in_range_target_throughput or target_throughput | default(33) | tojson }},
           "clients": {{ status_200s_in_range_search_clients or search_clients | default(1) }}
         },
         {
           "name": "status-400s-in-range",
           "operation": "400s-in-range",
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ status_400s_in_range_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ status_400s_in_range_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ status_400s_in_range_target_throughput or target_throughput | default(50) | tojson }},
           "clients": {{ status_400s_in_range_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "hourly_agg",
-          "warmup-iterations": 50,
-          "iterations": 100,
+          "warmup-iterations": {{ hourly_agg_warmup_iterations or warmup_iterations | default(50) | tojson }},
+          "iterations": {{ hourly_agg_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ hourly_agg_target_throughput or target_throughput | default(0.2) | tojson }},
           "clients": {{ hourly_agg_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "multi_term_agg",
-          "warmup-iterations": 50,
-          "iterations": 100,
+          "warmup-iterations": {{ multi_term_agg_warmup_iterations or warmup_iterations | default(50) | tojson }},
+          "iterations": {{ multi_term_agg_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ multi_term_agg_target_throughput or target_throughput | default(0.2) | tojson }},
           "clients": {{ multi_term_agg_search_clients or search_clients | default(1) }}
         },
@@ -117,43 +117,43 @@
         },
         {
           "operation": "desc_sort_size",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ desc_sort_size_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ desc_sort_size_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ desc_sort_size_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ desc_sort_size_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "asc_sort_size",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ asc_sort_size_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ asc_sort_size_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ asc_sort_size_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ asc_sort_size_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "desc_sort_timestamp",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ desc_sort_timestamp_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ desc_sort_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ desc_sort_timestamp_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ desc_sort_timestamp_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "asc_sort_timestamp",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ asc_sort_timestamp_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ asc_sort_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ asc_sort_timestamp_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ asc_sort_timestamp_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "desc_sort_with_after_timestamp",
-          "warmup-iterations": 10,
-          "iterations": 100,
+          "warmup-iterations": {{ desc_sort_with_after_timestamp_warmup_iterations or warmup_iterations | default(10) | tojson }},
+          "iterations": {{ desc_sort_with_after_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ desc_sort_with_after_timestamp_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ desc_sort_with_after_timestamp_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "asc_sort_with_after_timestamp",
-          "warmup-iterations": 10,
-          "iterations": 100,
+          "warmup-iterations": {{ asc_sort_with_after_timestamp_warmup_iterations or warmup_iterations | default(10) | tojson }},
+          "iterations": {{ asc_sort_with_after_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ asc_sort_with_after_timestamp_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ asc_sort_with_after_timestamp_search_clients or search_clients | default(1) }}
         },
@@ -185,32 +185,32 @@
         {
           "name": "desc-sort-timestamp-after-force-merge-1-seg",
           "operation": "desc_sort_timestamp",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ desc_sort_timestamp_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ desc_sort_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ desc_sort_timestamp_target_throughput or target_throughput | default(2) | tojson }},
           "clients": {{ desc_sort_timestamp_search_clients or search_clients | default(1) }}
         },
         {
           "name": "asc-sort-timestamp-after-force-merge-1-seg",
           "operation": "asc_sort_timestamp",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ asc_sort_timestamp_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ asc_sort_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ asc_sort_timestamp_target_throughput or target_throughput | default(2) | tojson }},
           "clients": {{ asc_sort_timestamp_search_clients or search_clients | default(1) }}
         },
         {
           "name": "desc-sort-with-after-timestamp-after-force-merge-1-seg",
           "operation": "desc_sort_with_after_timestamp",
-          "warmup-iterations": 10,
-          "iterations": 100,
+          "warmup-iterations": {{ desc_sort_with_after_timestamp_warmup_iterations or warmup_iterations | default(10) | tojson }},
+          "iterations": {{ desc_sort_with_after_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ desc_sort_with_after_timestamp_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ desc_sort_with_after_timestamp_search_clients or search_clients | default(1) }}
         },
         {
           "name": "asc-sort-with-after-timestamp-after-force-merge-1-seg",
           "operation": "asc_sort_with_after_timestamp",
-          "warmup-iterations": 10,
-          "iterations": 100,
+          "warmup-iterations": {{ asc_sort_with_after_timestamp_warmup_iterations or warmup_iterations | default(10) | tojson }},
+          "iterations": {{ asc_sort_with_after_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ asc_sort_with_after_timestamp_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ asc_sort_with_after_timestamp_search_clients or search_clients | default(1) }}
         }
@@ -275,46 +275,46 @@
         },
         {
           "operation": "default",
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
         {
           "name": "term",
           "operation": "term",
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ term_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ term_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ term_target_throughput or target_throughput | default(50) | tojson }},
           "clients": {{ term_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "range",
-          "warmup-iterations": 100,
-          "iterations": 100,
+          "warmup-iterations": {{ range_warmup_iterations or warmup_iterations | default(100) | tojson }},
+          "iterations": {{ range_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ range_target_throughput or target_throughput | default(1) | tojson }},
           "clients": {{ range_search_clients or search_clients | default(1) }}
         },
         {
           "name": "status-200s-in-range",
           "operation": "200s-in-range",
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ status_200s_in_range_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ status_200s_in_range_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ status_200s_in_range_target_throughput or target_throughput | default(33) | tojson }},
           "clients": {{ status_200s_in_range_search_clients or search_clients | default(1) }}
         },
         {
           "name": "status-400s-in-range",
           "operation": "400s-in-range",
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ status_400s_in_range_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ status_400s_in_range_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ status_400s_in_range_target_throughput or target_throughput | default(50) | tojson }},
           "clients": {{ status_400s_in_range_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "hourly_agg",
-          "warmup-iterations": 50,
-          "iterations": 100,
+          "warmup-iterations": {{ hourly_agg_warmup_iterations or warmup_iterations | default(50) | tojson }},
+          "iterations": {{ hourly_agg_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ hourly_agg_target_throughput or target_throughput | default(0.2) | tojson }},
           "clients": {{ hourly_agg_search_clients or search_clients | default(1) }}
         },
@@ -327,43 +327,43 @@
         },
         {
           "operation": "desc_sort_size",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ desc_sort_size_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ desc_sort_size_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ desc_sort_size_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ desc_sort_size_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "asc_sort_size",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ asc_sort_size_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ asc_sort_size_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ asc_sort_size_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ asc_sort_size_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "desc_sort_timestamp",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ desc_sort_timestamp_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ desc_sort_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ desc_sort_timestamp_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ desc_sort_timestamp_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "asc_sort_timestamp",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ asc_sort_timestamp_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ asc_sort_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ asc_sort_timestamp_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ asc_sort_timestamp_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "desc_sort_with_after_timestamp",
-          "warmup-iterations": 10,
-          "iterations": 100,
+          "warmup-iterations": {{ desc_sort_with_after_timestamp_warmup_iterations or warmup_iterations | default(10) | tojson }},
+          "iterations": {{ desc_sort_with_after_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ desc_sort_with_after_timestamp_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ desc_sort_with_after_timestamp_search_clients or search_clients | default(1) }}
         },
         {
           "operation": "asc_sort_with_after_timestamp",
-          "warmup-iterations": 10,
-          "iterations": 100,
+          "warmup-iterations": {{ asc_sort_with_after_timestamp_warmup_iterations or warmup_iterations | default(10) | tojson }},
+          "iterations": {{ asc_sort_with_after_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ asc_sort_with_after_timestamp_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ asc_sort_with_after_timestamp_search_clients or search_clients | default(1) }}
         },
@@ -395,32 +395,32 @@
         {
           "name": "desc-sort-timestamp-after-force-merge-1-seg",
           "operation": "desc_sort_timestamp",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ desc_sort_timestamp_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ desc_sort_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ desc_sort_timestamp_target_throughput or target_throughput | default(2) | tojson }},
           "clients": {{ desc_sort_timestamp_search_clients or search_clients | default(1) }}
         },
         {
           "name": "asc-sort-timestamp-after-force-merge-1-seg",
           "operation": "asc_sort_timestamp",
-          "warmup-iterations": 200,
-          "iterations": 100,
+          "warmup-iterations": {{ asc_sort_timestamp_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ asc_sort_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ asc_sort_timestamp_target_throughput or target_throughput | default(2) | tojson }},
           "clients": {{ asc_sort_timestamp_search_clients or search_clients | default(1) }}
         },
         {
           "name": "desc-sort-with-after-timestamp-after-force-merge-1-seg",
           "operation": "desc_sort_with_after_timestamp",
-          "warmup-iterations": 10,
-          "iterations": 100,
+          "warmup-iterations": {{ desc_sort_with_after_timestamp_warmup_iterations or warmup_iterations | default(10) | tojson }},
+          "iterations": {{ desc_sort_with_after_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ desc_sort_with_after_timestamp_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ desc_sort_with_after_timestamp_search_clients or search_clients | default(1) }}
         },
         {
           "name": "asc-sort-with-after-timestamp-after-force-merge-1-seg",
           "operation": "asc_sort_with_after_timestamp",
-          "warmup-iterations": 10,
-          "iterations": 100,
+          "warmup-iterations": {{ asc_sort_with_after_timestamp_warmup_iterations or warmup_iterations | default(10) | tojson }},
+          "iterations": {{ asc_sort_with_after_timestamp_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ asc_sort_with_after_timestamp_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ asc_sort_with_after_timestamp_search_clients or search_clients | default(1) }}
         }
@@ -831,8 +831,8 @@
         {
           "name": "match-all",
           "operation": "default",
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
@@ -842,8 +842,8 @@
           "request-params": {
             "search-pipeline": "http-log-baseline-search-pipeline"
           },
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
@@ -853,8 +853,8 @@
           "request-params": {
             "search-pipeline": "http-log-status-filter-search-pipeline"
           },
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
@@ -864,8 +864,8 @@
           "request-params": {
             "search-pipeline": "http-log-rename-field-search-pipeline"
           },
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
@@ -875,8 +875,8 @@
           "request-params": {
             "search-pipeline": "http-log-rename-100-field-search-pipeline"
           },
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
@@ -886,8 +886,8 @@
           "request-params": {
             "search-pipeline": "http-log-dummy-scripting-search-pipeline"
           },
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
@@ -897,8 +897,8 @@
           "request-params": {
             "search-pipeline": "http-log-100-dummy-scripting-search-pipeline"
           },
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
@@ -908,35 +908,35 @@
           "request-params": {
             "search-pipeline": "http-log-all-processors-search-pipeline"
           },
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
         {
           "name": "multi-term-filter",
           "operation": "multi-term-filter",
-          "warmup-iterations": 500,
-          "iterations": 100,
+          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ multi_term_filter_target_throughput or target_throughput | default(50) | tojson }},
           "clients": {{ multi_term_filter_search_clients or search_clients | default(1) }}
         },
         {
           "name": "term-status-filter-search-pipeline",
           "operation": "term",
-          "warmup-iterations": 500,
+          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
           "request-params": {
             "search-pipeline": "http-log-status-filter-search-pipeline"
           },
-          "iterations": 100,
+          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ term_target_throughput or target_throughput | default(50) | tojson }},
           "clients": {{ term_search_clients or search_clients | default(1) }}
         },
         {
           "name": "range",
           "operation": "range",
-          "warmup-iterations": 100,
-          "iterations": 100,
+          "warmup-iterations": {{ range_warmup_iterations or warmup_iterations | default(100) | tojson }},
+          "iterations": {{ range_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ range_target_throughput or target_throughput | default(1) | tojson }},
           "clients": {{ range_search_clients or search_clients | default(1) }}
         },
@@ -946,8 +946,8 @@
           "request-params": {
             "search-pipeline": "http-log-all-processors-search-pipeline"
           },
-          "warmup-iterations": 100,
-          "iterations": 100,
+          "warmup-iterations": {{ range_warmup_iterations or warmup_iterations | default(100) | tojson }},
+          "iterations": {{ range_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ range_target_throughput or target_throughput | default(1) | tojson }},
           "clients": {{ range_search_clients or search_clients | default(1) }}
         }
