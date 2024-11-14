@@ -831,10 +831,10 @@
         {
           "name": "match-all",
           "operation": "default",
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
-          "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
-          "clients": {{ default_search_clients or search_clients | default(1) }}
+          "warmup-iterations": {{ match_all_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ match_all_iterations or iterations | default(100) | tojson }},
+          "target-throughput": {{ match_all_target_throughput or target_throughput | default(8) | tojson }},
+          "clients": {{ match_all_search_clients or search_clients | default(1) }}
         },
         {
           "name": "match-all-baseline-search-pipeline",
@@ -842,10 +842,10 @@
           "request-params": {
             "search-pipeline": "http-log-baseline-search-pipeline"
           },
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
-          "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
-          "clients": {{ default_search_clients or search_clients | default(1) }}
+          "warmup-iterations": {{ match_all_baseline_search_pipeline_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ match_all_baseline_search_pipeline_iterations or iterations | default(100) | tojson }},
+          "target-throughput": {{ match_all_baseline_search_pipeline_target_throughput or target_throughput | default(8) | tojson }},
+          "clients": {{ match_all_baseline_search_pipeline_search_clients or search_clients | default(1) }}
         },
         {
           "name": "match-all-status-filter-search-pipeline",
@@ -853,10 +853,10 @@
           "request-params": {
             "search-pipeline": "http-log-status-filter-search-pipeline"
           },
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
-          "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
-          "clients": {{ default_search_clients or search_clients | default(1) }}
+          "warmup-iterations": {{ match_all_status_filter_search_pipeline_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ match_all_status_filter_search_pipeline_iterations or iterations | default(100) | tojson }},
+          "target-throughput": {{ match_all_status_filter_search_pipeline_target_throughput or target_throughput | default(8) | tojson }},
+          "clients": {{ match_all_status_filter_search_pipeline_search_clients or search_clients | default(1) }}
         },
         {
           "name": "match-all-rename-field-search-pipeline",
@@ -864,10 +864,10 @@
           "request-params": {
             "search-pipeline": "http-log-rename-field-search-pipeline"
           },
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
-          "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
-          "clients": {{ default_search_clients or search_clients | default(1) }}
+          "warmup-iterations": {{ match_all_rename_field_search_pipeline_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ match_all_rename_field_search_pipeline_iterations or iterations | default(100) | tojson }},
+          "target-throughput": {{ match_all_rename_field_search_pipeline_target_throughput or target_throughput | default(8) | tojson }},
+          "clients": {{ match_all_rename_field_search_pipeline_search_clients or search_clients | default(1) }}
         },
         {
           "name": "match-all-rename-100-field-search-pipeline",
@@ -875,10 +875,10 @@
           "request-params": {
             "search-pipeline": "http-log-rename-100-field-search-pipeline"
           },
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
-          "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
-          "clients": {{ default_search_clients or search_clients | default(1) }}
+          "warmup-iterations": {{ match_all_rename_100_field_search_pipeline_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ match_all_rename_100_field_search_pipeline_iterations or iterations | default(100) | tojson }},
+          "target-throughput": {{ match_all_rename_100_field_search_pipeline_target_throughput or target_throughput | default(8) | tojson }},
+          "clients": {{ match_all_rename_100_field_search_pipeline_search_clients or search_clients | default(1) }}
         },
         {
           "name": "match-all-dummy-scripting-search-pipeline",
@@ -886,10 +886,10 @@
           "request-params": {
             "search-pipeline": "http-log-dummy-scripting-search-pipeline"
           },
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
-          "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
-          "clients": {{ default_search_clients or search_clients | default(1) }}
+          "warmup-iterations": {{ match_all_dummy_scripting_search_pipeline_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ match_all_dummy_scripting_search_pipeline_iterations or iterations | default(100) | tojson }},
+          "target-throughput": {{ match_all_dummy_scripting_search_pipeline_target_throughput or target_throughput | default(8) | tojson }},
+          "clients": {{ match_all_dummy_scripting_search_pipeline_search_clients or search_clients | default(1) }}
         },
         {
           "name": "match-all-100-dummy-scripting-search-pipeline",
@@ -897,10 +897,10 @@
           "request-params": {
             "search-pipeline": "http-log-100-dummy-scripting-search-pipeline"
           },
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
-          "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
-          "clients": {{ default_search_clients or search_clients | default(1) }}
+          "warmup-iterations": {{ match_all_100_dummy_scripting_search_pipeline_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ match_all_100_dummy_scripting_search_pipeline_iterations or iterations | default(100) | tojson }},
+          "target-throughput": {{ match_all_100_dummy_scripting_search_pipeline_target_throughput or target_throughput | default(8) | tojson }},
+          "clients": {{ match_all_100_dummy_scripting_search_pipeline_search_clients or search_clients | default(1) }}
         },
         {
           "name": "match-all-all-processors-search-pipeline",
@@ -908,29 +908,29 @@
           "request-params": {
             "search-pipeline": "http-log-all-processors-search-pipeline"
           },
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
-          "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
-          "clients": {{ default_search_clients or search_clients | default(1) }}
+          "warmup-iterations": {{ match_all_all_processors_search_pipeline_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ match_all_all_processors_search_pipeline_iterations or iterations | default(100) | tojson }},
+          "target-throughput": {{ match_all_all_processors_search_pipeline_target_throughput or target_throughput | default(8) | tojson }},
+          "clients": {{ match_all_all_processors_search_pipeline_search_clients or search_clients | default(1) }}
         },
         {
           "name": "multi-term-filter",
           "operation": "multi-term-filter",
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
+          "warmup-iterations": {{ multi_term_filter_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ multi_term_filter_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ multi_term_filter_target_throughput or target_throughput | default(50) | tojson }},
           "clients": {{ multi_term_filter_search_clients or search_clients | default(1) }}
         },
         {
           "name": "term-status-filter-search-pipeline",
           "operation": "term",
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "warmup-iterations": {{ term_status_filter_search_pipeline_warmup_iterations or warmup_iterations | default(500) | tojson }},
           "request-params": {
             "search-pipeline": "http-log-status-filter-search-pipeline"
           },
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
-          "target-throughput": {{ term_target_throughput or target_throughput | default(50) | tojson }},
-          "clients": {{ term_search_clients or search_clients | default(1) }}
+          "iterations": {{ term_status_filter_search_pipeline_iterations or iterations | default(100) | tojson }},
+          "target-throughput": {{ term_status_filter_search_pipeline_target_throughput or target_throughput | default(50) | tojson }},
+          "clients": {{ term_status_filter_search_pipeline_search_clients or search_clients | default(1) }}
         },
         {
           "name": "range",
