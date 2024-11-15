@@ -452,28 +452,28 @@
           "warmup-iterations": {{ significant_text_selective_warmup_iterations or warmup_iterations | default(200) | tojson }},
           "iterations": {{ significant_text_selective_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ significant_text_selective_target_throughput or target_throughput | default(2) | tojson }},
-          "clients": {{ significant_text_selective_search_clients or search_clients | tojson}}
+          "clients": {{ significant_text_selective_search_clients or search_clients | default(1) | tojson }}
         },
         {
           "operation": "significant_text_sampled_selective",
           "warmup-iterations": {{ significant_text_sampled_selective_warmup_iterations or warmup_iterations | default(200) | tojson }},
           "iterations": {{ significant_text_sampled_selective_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ significant_text_sampled_selective_target_throughput or target_throughput | default(20) | tojson }},
-          "clients": {{ significant_text_sampled_selective_search_clients or search_clients | tojson}}
+          "clients": {{ significant_text_sampled_selective_search_clients or search_clients | default(1) | tojson }}
         },
         {
           "operation": "significant_text_unselective",
           "warmup-iterations": {{ significant_text_unselective_warmup_iterations or warmup_iterations | default(50) | tojson }},
           "iterations": {{ significant_text_unselective_iterations or iterations | default(20) | tojson }},
           "target-throughput": {{ significant_text_unselective_target_throughput or target_throughput | default(0.04) | tojson }},
-          "clients": {{ significant_text_unselective_search_clients or search_clients | tojson}}
+          "clients": {{ significant_text_unselective_search_clients or search_clients | default(1) | tojson }}
         },
         {
           "operation": "significant_text_sampled_unselective",
           "warmup-iterations": {{ significant_text_sampled_unselective_warmup_iterations or warmup_iterations | default(200) | tojson }},
           "iterations": {{ significant_text_sampled_unselective_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ significant_text_sampled_unselective_target_throughput or target_throughput | default(6) | tojson }},
-          "clients": {{ significant_text_sampled_unselective_search_clients or search_clients | tojson}}
+          "clients": {{ significant_text_sampled_unselective_search_clients or search_clients | default(1) | tojson }}
         }
       ]
     }
