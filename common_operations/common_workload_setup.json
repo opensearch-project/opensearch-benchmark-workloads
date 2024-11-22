@@ -1,0 +1,5 @@
+{{ benchmark.collect(parts="delete_index.json") }},
+{{ benchmark.collect(parts="create_index.json") }},
+{{ benchmark.collect(parts="check_cluster_health.json") }},
+{{ benchmark.collect(parts="index_append.json") }},
+{{ benchmark.collect(parts="force_merge.json") }}
