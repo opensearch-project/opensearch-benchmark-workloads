@@ -3,13 +3,6 @@
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After that a couple of queries are run.",
       "default": true,
       "schedule": [
-        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {{index_settings | default({}) | tojson}}
-          }
-        },
         {{ benchmark.collect(parts="../../common_operations/common_workload_setup.json") }},
         {
           "operation": "index-stats",
@@ -193,62 +186,40 @@
       "name": "append-no-conflicts-index-only",
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only.",
       "schedule": [
-        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {{index_settings | default({}) | tojson}}
-          }
-        },
+        {% with default_index_settings={} %}
         {{ benchmark.collect(parts="../../common_operations/common_workload_setup.json") }}
+        {% endwith %}
       ]
     },
     {
       "name": "append-sorted-no-conflicts",
       "description": "Indexes the whole document corpus in an index sorted by country_code field in ascending order. Document ids are unique so all index operations are append only.",
       "schedule": [
-        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {%- if index_settings is defined %} {{index_settings | tojson}} {%- else %} {
-              "index.sort.field": ["country_code.raw", "admin1_code.raw"],
-              "index.sort.order": ["asc", "asc"]
-            }{%- endif %}
-          }
-        },
+        {% with default_index_settings={
+          "index.sort.field": ["country_code.raw", "admin1_code.raw"],
+          "index.sort.order": ["asc", "asc"]
+        } %}
         {{ benchmark.collect(parts="../../common_operations/common_workload_setup.json") }}
+        {% endwith %}
       ]
     },
     {
       "name": "append-fast-with-conflicts",
       "description": "Indexes the whole document corpus using a setup that will lead to a larger indexing throughput than the default settings. Benchmark will produce duplicate ids in 25% of all documents (not configurable) so we can simulate a scenario with appends most of the time and some updates in between.",
       "schedule": [
-        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {%- if index_settings is defined %} {{index_settings | tojson}} {%- else %} {
-              "index.refresh_interval": "30s",
-              "index.number_of_shards": {{number_of_shards | default(6)}},
-              "index.translog.flush_threshold_size": "4g"
-            }{%- endif %}
-          }
-        },
-        {{ benchmark.collect(parts="../../common_operations/common_workload_setup.json") }},
+        {% with default_index_settings={
+          "index.refresh_interval": "30s",
+          "index.number_of_shards": number_of_shards | default(6),
+          "index.translog.flush_threshold_size": "4g"
+        } %}
+        {{ benchmark.collect(parts="../../common_operations/common_workload_setup.json") }}
+        {% endwith %}
       ]
     },
     {
       "name": "significant-text",
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only.",
       "schedule": [
-        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {{index_settings | default({}) | tojson}}
-          }
-        },
         {{ benchmark.collect(parts="../../common_operations/common_workload_setup.json") }},
         {
           "operation": "significant_text_selective",
