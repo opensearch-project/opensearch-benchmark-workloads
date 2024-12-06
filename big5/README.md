@@ -68,6 +68,7 @@ This workload allows the following parameters to be specified using `--workload-
 * `target_throughput` (default: 2): Target throughput for each query operation in requests per second, use 0 or "" for no throughput throttling.
 * `warmup_iterations` (default: 100): Number of warmup query iterations prior to actual measurements commencing.
 
+NOTE: If disabling `target_throughput`, know that `target_throughput:""` is snynonymous with `target_throughput:0`.
 
 ### Data Document Structure
 
