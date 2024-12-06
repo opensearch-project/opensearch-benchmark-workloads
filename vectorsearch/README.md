@@ -36,6 +36,9 @@ opensearch-benchmark execute-test \
     --pipeline benchmark-only \
     --kill-running-processes
 ```
+### Best Recall Results
+
+For accurate recall results, we recommend users to keep `search_clients` equal to or less than the number of CPU cores on the load generation host that is running the benchmark.
 
 ## Current Procedures
 
