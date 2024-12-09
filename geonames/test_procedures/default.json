@@ -3,7 +3,9 @@
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After that a couple of queries are run.",
       "default": true,
       "schedule": [
+        {% with default_index_settings={} %}
         {{ benchmark.collect(parts="../../common_operations/common_workload_setup.json") }},
+        {% endwith %}
         {
           "operation": "index-stats",
           "warmup-iterations": {{ index_stats_warmup_iterations or warmup_iterations | default(500) | tojson }},
@@ -220,7 +222,9 @@
       "name": "significant-text",
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only.",
       "schedule": [
+        {% with default_index_settings={} %}
         {{ benchmark.collect(parts="../../common_operations/common_workload_setup.json") }},
+        {% endwith %}
         {
           "operation": "significant_text_selective",
           "warmup-iterations": {{ significant_text_selective_warmup_iterations or warmup_iterations | default(200) | tojson }},
