@@ -1,0 +1,10 @@
+{
+    "operation": "index-append",
+    "warmup-time-period": {{ warmup_time_period | default(120) | tojson }},
+    "clients": {{bulk_indexing_clients | default(8)}},
+    "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+},
+{
+    "name": "refresh-after-index",
+    "operation": "refresh"
+}
