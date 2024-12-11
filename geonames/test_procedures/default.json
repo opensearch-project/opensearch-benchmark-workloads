@@ -4,7 +4,7 @@
       "default": true,
       "schedule": [
         {% with default_index_settings={} %}
-        {{ benchmark.collect(parts="../../common_operations/common_workload_setup.json") }},
+        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
         {% endwith %}
         {
           "operation": "index-stats",
@@ -189,7 +189,7 @@
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only.",
       "schedule": [
         {% with default_index_settings={} %}
-        {{ benchmark.collect(parts="../../common_operations/common_workload_setup.json") }}
+        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
         {% endwith %}
       ]
     },
@@ -201,7 +201,7 @@
           "index.sort.field": ["country_code.raw", "admin1_code.raw"],
           "index.sort.order": ["asc", "asc"]
         } %}
-        {{ benchmark.collect(parts="../../common_operations/common_workload_setup.json") }}
+        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
         {% endwith %}
       ]
     },
@@ -214,7 +214,7 @@
           "index.number_of_shards": number_of_shards | default(6),
           "index.translog.flush_threshold_size": "4g"
         } %}
-        {{ benchmark.collect(parts="../../common_operations/common_workload_setup.json") }}
+        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
         {% endwith %}
       ]
     },
@@ -223,7 +223,7 @@
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only.",
       "schedule": [
         {% with default_index_settings={} %}
-        {{ benchmark.collect(parts="../../common_operations/common_workload_setup.json") }},
+        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
         {% endwith %}
         {
           "operation": "significant_text_selective",
