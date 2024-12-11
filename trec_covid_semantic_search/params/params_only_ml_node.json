@@ -1,0 +1,13 @@
+{
+    "bulk_indexing_clients": 4,
+    "bulk_size": 200,
+    "number_of_replicas": 1,
+    "number_of_shards" :8,
+    "ingest_percentage":100,
+    "search_clients": 8,
+    "warmup_iterations": 20,
+    "iterations": 100,
+    "variable_queries": 50,
+    "k": 100,
+    "only_run_on_ml_node" : "true"
+}
