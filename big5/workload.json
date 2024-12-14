@@ -15,6 +15,9 @@
   "corpora": [
     {
       "name": "big5",
+      {% if distribution_version.split('.') | map('int') | list >= "6.0.0".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list < "7.0.0".split('.') | map('int') | list %}
+        "target-type": "_doc",
+      {% endif %}
       "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/big5",
       "documents": [
 	{% if not corpus_size %}
