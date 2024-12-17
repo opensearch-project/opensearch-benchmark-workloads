@@ -67,6 +67,7 @@ This workload allows the following parameters to be specified using `--workload-
 * `test_iterations` (default: 200): Number of test iterations per query that will have their latency and throughput measured.
 * `target_throughput` (default: 2): Target throughput for each query operation in requests per second, use 0 or "" for no throughput throttling.
 * `warmup_iterations` (default: 100): Number of warmup query iterations prior to actual measurements commencing.
+* `index_translog_durability` (default: "async"): Controls the transaction log flush behavior. "request" flushes after every operation to avoid data loss, while "async" batches changes for efficiency.
 
 NOTE: If disabling `target_throughput`, know that `target_throughput:""` is snynonymous with `target_throughput:0`.
 
