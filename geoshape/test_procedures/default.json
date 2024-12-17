@@ -3,27 +3,9 @@
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After that a couple of queries are run.",
       "default": true,
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {{index_settings | default({}) | tojson}}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "osm*",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
+        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+        {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
         {
           "operation": "index-append-linestrings",
           "warmup-time-period": 120,
