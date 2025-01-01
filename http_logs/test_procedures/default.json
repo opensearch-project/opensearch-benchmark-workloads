@@ -3,59 +3,7 @@
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After that a couple of queries are run.",
       "default": true,
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {{index_settings | default({}) | tojson}}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "logs-*",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
-        {
-          "operation": "index-append",
-          "warmup-time-period": 240,
-          "clients": {{bulk_indexing_clients | default(8)}}
-        },
-        {
-          "name": "refresh-after-index",
-          "operation": "refresh"
-        },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "name": "wait-until-merges-finish",
-          "operation": {
-            "operation-type": "index-stats",
-            "index": "_all",
-            "condition": {
-              "path": "_all.total.merges.current",
-              "expected-value": 0
-            },
-            "retry-until-success": true,
-            "include-in-reporting": false
-          }
-        },
+        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
         {
           "operation": "default",
           "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
@@ -220,59 +168,7 @@
       "name": "append-no-conflicts-original",
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After that a couple of queries are run.",
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {{index_settings | default({}) | tojson}}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "logs-*",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
-        {
-          "operation": "index-append",
-          "warmup-time-period": 240,
-          "clients": {{bulk_indexing_clients | default(8)}}
-        },
-        {
-          "name": "refresh-after-index",
-          "operation": "refresh"
-        },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "name": "wait-until-merges-finish",
-          "operation": {
-            "operation-type": "index-stats",
-            "index": "_all",
-            "condition": {
-              "path": "_all.total.merges.current",
-              "expected-value": 0
-            },
-            "retry-until-success": true,
-            "include-in-reporting": false
-          }
-        },
+        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
         {
           "operation": "default",
           "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
@@ -430,150 +326,28 @@
       "name": "append-no-conflicts-index-only",
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only.",
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {{index_settings | default({}) | tojson}}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "logs-*",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
-        {
-          "operation": "index-append",
-          "warmup-time-period": 240,
-          "clients": {{bulk_indexing_clients | default(8)}},
-          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
-        },
-        {
-          "name": "refresh-after-index",
-          "operation": "refresh"
-        },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "name": "wait-until-merges-finish",
-          "operation": {
-            "operation-type": "index-stats",
-            "index": "_all",
-            "condition": {
-              "path": "_all.total.merges.current",
-              "expected-value": 0
-            },
-            "retry-until-success": true,
-            "include-in-reporting": false
-          }
-        }
+        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
       ]
     },
     {
       "name": "append-sorted-no-conflicts",
       "description": "Indexes the whole document corpus in an index sorted by timestamp field in descending order (most recent first) and using a setup that will lead to a larger indexing throughput than the default settings. Document ids are unique so all index operations are append only.",
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {%- if index_settings is defined %} {{index_settings | tojson}} {%- else %} {
+        {% with default_index_settings={
               "index.sort.field": "@timestamp",
               "index.sort.order": "desc"
-            }{%- endif %}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "logs-*",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
-        {
-          "operation": "index-append",
-          "warmup-time-period": 240,
-          "clients": {{bulk_indexing_clients | default(8)}},
-          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
-        },
-        {
-          "name": "refresh-after-index",
-          "operation": "refresh"
-        },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "name": "wait-until-merges-finish",
-          "operation": {
-            "operation-type": "index-stats",
-            "index": "_all",
-            "condition": {
-              "path": "_all.total.merges.current",
-              "expected-value": 0
-            },
-            "retry-until-success": true,
-            "include-in-reporting": false
-          }
-        }
+        } %}
+        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
+        {% endwith %}
       ]
     },
     {
       "name": "append-index-only-with-ingest-pipeline",
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. Runs the documents through an ingest node pipeline to parse the http logs. May require --opensearch-plugins='ingest-geoip' ",
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {{index_settings | default({}) | tojson}}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "logs-*",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
+        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+        {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
         {
         "operation": "create-http-log-{{ingest_pipeline | default('baseline')}}-pipeline"
         },
@@ -587,59 +361,21 @@
           "name": "refresh-after-index",
           "operation": "refresh"
         },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "name": "wait-until-merges-finish",
-          "operation": {
-            "operation-type": "index-stats",
-            "index": "_all",
-            "condition": {
-              "path": "_all.total.merges.current",
-              "expected-value": 0
-            },
-            "retry-until-success": true,
-            "include-in-reporting": false
-          }
-        }
+        {{ benchmark.collect(parts="../../common_operations/force_merge.json") }}
       ]
     },
     {
       "name": "update",
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {%- if index_settings is defined %} {{index_settings | tojson}} {%- else %} {
-              "index.number_of_shards": {{number_of_shards | default(1)}},
-              "index.number_of_replicas": {{number_of_replicas | default(0)}},
-              "index.store.type": "{{store_type | default('fs')}}"
-            }{%- endif %}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "logs-*",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
+        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+        {% with default_index_settings={
+          "index.number_of_shards": number_of_shards | default(1),
+          "index.number_of_replicas": number_of_replicas | default(0),
+          "index.store.type": store_type | default('fs')
+        } %}
+        {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% endwith %}
+        {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
         {
           "operation": "update",
           "warmup-time-period": 240,
@@ -650,89 +386,14 @@
           "name": "refresh-after-index",
           "operation": "refresh"
         },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "name": "wait-until-merges-finish",
-          "operation": {
-            "operation-type": "index-stats",
-            "index": "_all",
-            "condition": {
-              "path": "_all.total.merges.current",
-              "expected-value": 0
-            },
-            "retry-until-success": true,
-            "include-in-reporting": false
-          }
-        }
+        {{ benchmark.collect(parts="../../common_operations/force_merge.json") }}
       ]
     },
     {
       "name": "append-no-conflicts-index-reindex-only",
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After indexing, same data are reindexed.",
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {{index_settings | default({}) | tojson}}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "logs-*",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
-        {
-          "operation": "index-append",
-          "warmup-time-period": 240,
-          "clients": {{bulk_indexing_clients | default(8)}},
-          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
-        },
-        {
-          "name": "refresh-after-index",
-          "operation": "refresh"
-        },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "name": "wait-until-merges-finish",
-          "operation": {
-            "operation-type": "index-stats",
-            "index": "_all",
-            "condition": {
-              "path": "_all.total.merges.current",
-              "expected-value": 0
-            },
-            "retry-until-success": true,
-            "include-in-reporting": false
-          }
-        },
+        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
         {
           "name": "reindex",
           "operation": {
@@ -754,27 +415,9 @@
       "name": "search-pipeline",
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Runs the search request through an search pipeline with predefined search processors.",
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {{index_settings | default({}) | tojson}}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "logs-*",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
+        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+        {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
         {
           "operation": "create-http-log-baseline-search-pipeline"
         },
@@ -805,29 +448,7 @@
           "name": "refresh-after-index",
           "operation": "refresh"
         },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "name": "wait-until-merges-finish",
-          "operation": {
-            "operation-type": "index-stats",
-            "index": "_all",
-            "condition": {
-              "path": "_all.total.merges.current",
-              "expected-value": 0
-            },
-            "retry-until-success": true,
-            "include-in-reporting": false
-          }
-        },
+        {{ benchmark.collect(parts="../../common_operations/force_merge.json") }},
         {
           "name": "match-all",
           "operation": "default",
