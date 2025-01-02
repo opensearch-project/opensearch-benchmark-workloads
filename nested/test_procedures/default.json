@@ -3,61 +3,7 @@
       "description": "Indexes the document corpus for an hour using OpenSearch default settings. After that randomized nested queries are run.",
       "default": true,
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {{index_settings | default({}) | tojson}}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "sonested",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
-       {
-          "operation": "index-append",
-          "warmup-time-period": 120,
-          "time-period": 3600,
-          "clients": {{bulk_indexing_clients | default(4)}},
-          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
-        },
-        {
-          "name": "refresh-after-index",
-          "operation": "refresh"
-        },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "name": "wait-until-merges-finish",
-          "operation": {
-            "operation-type": "index-stats",
-            "index": "_all",
-            "condition": {
-              "path": "_all.total.merges.current",
-              "expected-value": 0
-            },
-            "retry-until-success": true,
-            "include-in-reporting": false
-          }
-        },
+        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
         {
           "operation": "randomized-nested-queries",
           "warmup-iterations": {{ randomized_nested_queries_warmup_iterations or warmup_iterations | default(500) | tojson }},
@@ -113,60 +59,6 @@
       "name": "index-only",
       "description": "Indexes the document corpus for an hour using OpenSearch default settings.",
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {{index_settings | default({}) | tojson}}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "sonested",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
-        {
-          "operation": "index-append",
-          "warmup-time-period": 120,
-          "time-period": 3600,
-          "clients": {{bulk_indexing_clients | default(4)}},
-          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
-        },
-        {
-        "name": "refresh-after-index",
-        "operation": "refresh"
-        },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "name": "wait-until-merges-finish",
-          "operation": {
-            "operation-type": "index-stats",
-            "index": "_all",
-            "condition": {
-              "path": "_all.total.merges.current",
-              "expected-value": 0
-            },
-            "retry-until-success": true,
-            "include-in-reporting": false
-          }
-        }
+        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
       ]
     }
