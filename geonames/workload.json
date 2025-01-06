@@ -14,12 +14,21 @@
       "name": "geonames",
       "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/geonames",
       "documents": [
-        {
-          "source-file": "documents-2.json.bz2",
-          "document-count": 11396503,
-          "compressed-bytes": 265208777,
-          "uncompressed-bytes": 3547613828
-        }
+        {% if use_zst %}
+          {
+            "source-file": "documents-2.json.zst",
+            "document-count": 11396503,
+            "compressed-bytes": 289546908,
+            "uncompressed-bytes": 3547613828
+          }
+        {% else %}
+          {
+            "source-file": "documents-2.json.bz2",
+            "document-count": 11396503,
+            "compressed-bytes": 265208777,
+            "uncompressed-bytes": 3547613828
+          }
+        {% endif %}
       ]
     }
   ],
