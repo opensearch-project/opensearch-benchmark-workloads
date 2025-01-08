@@ -3,31 +3,15 @@
       "description": "Indexes the whole document corpus using a setup that will lead to a larger indexing throughput than the default settings and produce a smaller index (higher compression rate). Document ids are unique so all index operations are append only. After that a couple of queries are run.",
       "default": true,
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {%- if index_settings is defined %} {{index_settings | tojson}} {%- else %} {
-              "index.codec": "best_compression",
-              "index.refresh_interval": "30s",
-              "index.translog.flush_threshold_size": "4g"
-            }{%- endif %}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "nyc_taxis",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
+        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+        {% with default_index_settings={
+          "index.codec": "best_compression",
+          "index.refresh_interval": "30s",
+          "index.translog.flush_threshold_size": "4g"
+        } %}
+        {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% endwith %}
+        {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
         {
           "operation": "index",
           "warmup-time-period": 240,
@@ -38,21 +22,7 @@
           "name": "refresh-after-index",
           "operation": "refresh"
         },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200{%- if force_merge_max_num_segments is defined %},
-            "max-num-segments": {{ force_merge_max_num_segments | tojson }}
-            {%- endif %}
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "operation": "wait-until-merges-finish"
-        },
+        {{ benchmark.collect(parts="../../common_operations/force_merge.json") }},
         {
           "operation": "default",
           "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(50) | tojson }},
@@ -108,31 +78,15 @@
       "name": "append-no-conflicts-index-only",
       "description": "Indexes the whole document corpus using a setup that will lead to a larger indexing throughput than the default settings and produce a smaller index (higher compression rate). Document ids are unique so all index operations are append only.",
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {%- if index_settings is defined %} {{index_settings | tojson}} {%- else %} {
-              "index.codec": "best_compression",
-              "index.refresh_interval": "30s",
-              "index.translog.flush_threshold_size": "4g"
-            }{%- endif %}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "nyc_taxis",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
+        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+        {% with default_index_settings={
+          "index.codec": "best_compression",
+          "index.refresh_interval": "30s",
+          "index.translog.flush_threshold_size": "4g"
+        } %}
+        {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% endwith %}
+        {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
         {
           "operation": "index",
           "warmup-time-period": 240,
@@ -143,54 +97,24 @@
           "name": "refresh-after-index",
           "operation": "refresh"
         },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200{%- if force_merge_max_num_segments is defined %},
-            "max-num-segments": {{ force_merge_max_num_segments | tojson }}
-            {%- endif %}
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "operation": "wait-until-merges-finish"
-        }
+        {{ benchmark.collect(parts="../../common_operations/force_merge.json") }}
       ]
     },
     {
       "name": "append-sorted-no-conflicts-index-only",
       "description": "Indexes the whole document corpus in an index sorted by pickup_datetime field in descending order (most recent first) and using a setup that will lead to a larger indexing throughput than the default settings and produce a smaller index (higher compression rate). Document ids are unique so all index operations are append only.",
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {%- if index_settings is defined %} {{index_settings | tojson}} {%- else %} {
-              "index.codec": "best_compression",
-              "index.refresh_interval": "30s",
-              "index.translog.flush_threshold_size": "4g",
-              "index.sort.field": "pickup_datetime",
-              "index.sort.order": "desc"
-            }{%- endif %}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "nyc_taxis",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
+        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+        {% with default_index_settings={
+          "index.codec": "best_compression",
+          "index.refresh_interval": "30s",
+          "index.translog.flush_threshold_size": "4g",
+          "index.sort.field": "pickup_datetime",
+          "index.sort.order": "desc"
+        } %}
+        {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% endwith %}
+        {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
         {
           "operation": "index",
           "warmup-time-period": 240,
@@ -201,51 +125,21 @@
           "name": "refresh-after-index",
           "operation": "refresh"
         },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200{%- if force_merge_max_num_segments is defined %},
-            "max-num-segments": {{ force_merge_max_num_segments | tojson }}
-            {%- endif %}
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "operation": "wait-until-merges-finish"
-        }
+        {{ benchmark.collect(parts="../../common_operations/force_merge.json") }}
       ]
     },
     {
       "name": "update",
       "schedule": [
-        {
-          "operation": "delete-index"
-        },
-        {
-          "operation": {
-            "operation-type": "create-index",
-            "settings": {%- if index_settings is defined %} {{index_settings | tojson}} {%- else %} {
-              "index.number_of_shards": {{number_of_shards | default(1)}},
-              "index.number_of_replicas": {{number_of_replicas | default(0)}},
-              "index.store.type": "{{store_type | default('fs')}}"
-            }{%- endif %}
-          }
-        },
-        {
-          "name": "check-cluster-health",
-          "operation": {
-            "operation-type": "cluster-health",
-            "index": "nyc_taxis",
-            "request-params": {
-              "wait_for_status": "{{cluster_health | default('green')}}",
-              "wait_for_no_relocating_shards": "true"
-            },
-            "retry-until-success": true
-          }
-        },
+        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+        {% with default_index_settings={
+          "index.number_of_shards": number_of_shards | default(1),
+          "index.number_of_replicas": number_of_replicas | default(0),
+          "index.store.type": store_type | default('fs')
+        } %}
+        {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% endwith %}
+        {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
         {
           "operation": "update",
           "warmup-time-period": 1200,
@@ -256,20 +150,6 @@
           "name": "refresh-after-index",
           "operation": "refresh"
         },
-        {
-          "operation": {
-            "operation-type": "force-merge",
-            "request-timeout": 7200{%- if force_merge_max_num_segments is defined %},
-            "max-num-segments": {{ force_merge_max_num_segments | tojson }}
-            {%- endif %}
-          }
-        },
-        {
-          "name": "refresh-after-force-merge",
-          "operation": "refresh"
-        },
-        {
-          "operation": "wait-until-merges-finish"
-        }
+        {{ benchmark.collect(parts="../../common_operations/force_merge.json") }}
       ]
     }
