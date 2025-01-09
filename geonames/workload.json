@@ -15,9 +15,14 @@
       "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/geonames",
       "documents": [
         {
+          {% if use_zstd %}
+          "source-file": "documents-2.json.zst",
+          "compressed-bytes": 289546908,
+          {% else %}
           "source-file": "documents-2.json.bz2",
-          "document-count": 11396503,
           "compressed-bytes": 265208777,
+          {% endif %}
+          "document-count": 11396503,
           "uncompressed-bytes": 3547613828
         }
       ]
