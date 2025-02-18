@@ -15,10 +15,15 @@
       "base-url": "https://opensearch-benchmark-workloads.s3.amazonaws.com/corpora/nyc_taxis",
       "documents": [
         {
+          {% if use_zstd %}
+          "source-file": "documents.json.zst",
+          "compressed-bytes": 4805742161,
+          {% else %}
           "source-file": "documents.json.bz2",
-          "#COMMENT": "ML benchmark rely on the fact that the document count stays constant.",
-          "document-count": 165346692,
           "compressed-bytes": 4820107188,
+          {% endif %}
+          "#COMMENT": "ML benchmark relies on the fact that the document count stays constant.",
+          "document-count": 165346692,
           "uncompressed-bytes": 79802445255
         }
       ]
