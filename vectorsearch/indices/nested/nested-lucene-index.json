@@ -8,6 +8,9 @@
         {%- if target_index_replica_shards is defined and target_index_replica_shards %}
         ,"number_of_replicas": {{ target_index_replica_shards }}
         {%- endif %}
+        {%- if derived_source_enabled is defined and derived_source_enabled %}
+        ,"knn.derived_source.enabled": true
+        {%- endif %}
       }
     },
     "mappings": {
