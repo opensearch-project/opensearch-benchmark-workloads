@@ -54,7 +54,9 @@
         } %}
         {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
         {% endwith %}
+        {% with default_index_settings={}, index_name="treccovid" %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
+        {% endwith %}
         {
           "operation": "index-append",
           "warmup-time-period": 60,

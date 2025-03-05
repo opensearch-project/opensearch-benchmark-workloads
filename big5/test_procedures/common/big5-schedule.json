@@ -1,4 +1,3 @@
-{{ benchmark.collect(parts="../../../common_operations/workload_setup.json") }},
 {
   "operation": "default",
   "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
