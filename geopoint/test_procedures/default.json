@@ -3,7 +3,9 @@
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After that a couple of queries are run.",
       "default": true,
       "schedule": [
+        {% with default_index_settings={}, index_name="osmgeopoints" %}
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+        {% endwith %}
         {
           "operation": "polygon",
           "warmup-iterations": {{ polygon_warmup_iterations or warmup_iterations | default(200) | tojson }},
@@ -38,7 +40,9 @@
       "name": "append-no-conflicts-index-only",
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only.",
       "schedule": [
+        {% with default_index_settings={}, index_name="osmgeopoints" %}
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
+        {% endwith %}
       ]
     },
     {
@@ -49,7 +53,7 @@
           "index.refresh_interval": "30s",
           "index.number_of_shards": number_of_shards | default(6),
           "index.translog.flush_threshold_size": "4g"
-        } %}
+        }, index_name="osmgeopoints" %}
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
         {% endwith %}
       ]

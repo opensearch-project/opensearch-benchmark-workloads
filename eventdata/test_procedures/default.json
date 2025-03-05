@@ -1,9 +1,11 @@
-    {
+{
       "name": "append-no-conflicts",
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only.",
       "default": true,
       "schedule": [
-        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
+        {% with default_index_settings={}, index_name="eventdata" %}
+          {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
+        {% endwith %}
       ]
     },
     {
@@ -11,7 +13,9 @@
       "description": "Indexes the whole document corpus using OpenSearch default settings and run transforms to pivot data by terms, date and geo tiles.",
       "default": false,
       "schedule": [
-        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+        {% with default_index_settings={}, index_name="eventdata" %}
+          {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+        {% endwith %}
         {
           "name": "delete-transform-group-by-terms",
           "operation": {
