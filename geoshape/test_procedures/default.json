@@ -5,7 +5,9 @@
       "schedule": [
         {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
         {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% with default_index_settings={}, index_name="osm*" %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
+        {% endwith %}
         {
           "operation": "index-append-linestrings",
           "warmup-time-period": 120,
