@@ -26,10 +26,10 @@
     ]
   },
   "mappings": {
-    "_data_stream_timestamp": {
-      "enabled": true
-    },
     {% if distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %}
+      "_data_stream_timestamp": {
+	"enabled": true
+      },
       "dynamic_templates": [
 	{
 	  "match_ip": {
@@ -60,182 +60,188 @@
 	}
       ],
     {% endif %}
-    "date_detection": false,
-    "properties": {
-      "@timestamp": {
-        "type": "date"
-      },
-      "agent": {
-        "type": "object",
-        "properties": {
-          "ephemeral_id": {
-            "type": "keyword",
-            "ignore_above": 1024
-          },
-          "id": {
-            "type": "keyword",
-            "ignore_above": 1024
-          },
-          "name": {
-            "type": "keyword",
-            "ignore_above": 1024
-          },
-          "type": {
-            "type": "keyword",
-            "ignore_above": 1024
-          },
-          "version": {
-            "type": "keyword",
-            "ignore_above": 1024
-          }
-        }
-      },
-      "aws": {
-        "type": "object",
-        "properties": {
-          "cloudwatch": {
-            "type": "object",
-            "properties": {
-              "ingestion_time": {
-                "type": "keyword",
-                "ignore_above": 1024
-              },
-              "log_group": {
-                "type": "keyword",
-                "ignore_above": 1024
-              },
-              "log_stream": {
-                "type": "keyword",
-                "ignore_above": 1024
-              }
-            }
-          }
-        }
-      },
-      "cloud": {
-        "type": "object",
-        "properties": {
-          "region": {
-            "type": "keyword",
-            "ignore_above": 1024
-          }
-        }
-      },
-      "data_stream": {
-        "properties": {
-          "dataset": {
-	    {% if constant_keyword_available is defined  %}
-	      "type": "constant_keyword",
-	      "value": "benchmarks"
-	    {% else %}
-	      "type": "keyword"
-	    {% endif %}
-          },
-          "namespace": {
-	    {% if constant_keyword_available is defined  %}
-	      "type": "constant_keyword",
-	      "value": "day1"
-	    {% else %}
-	      "type": "keyword"
-	    {% endif %}
-          },
-          "type": {
-	    {% if constant_keyword_available is defined  %}
-	      "type": "constant_keyword",
-	      "value": "logs"
-	    {% else %}
-	      "type": "keyword"
-	    {% endif %}
-          }
-        }
-      },
-      "ecs": {
-        "type": "object",
-        "properties": {
-          "version": {
-            "type": "keyword",
-            "ignore_above": 1024
-          }
-        }
-      },
-      "event": {
-        "type": "object",
-        "properties": {
-          "dataset": {
-            "type": "keyword",
-            "ignore_above": 1024
-          },
-          "id": {
-            "type": "keyword",
-            "ignore_above": 1024
-          },
-          "ingested": {
-            "type": "date"
-          }
-        }
-      },
-      "host": {
-        "type": "object"
-      },
-      "input": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "keyword",
-            "ignore_above": 1024
-          }
-        }
-      },
-      "log": {
-        "type": "object",
-        "properties": {
-          "file": {
-            "type": "object",
-            "properties": {
-              "path": {
-                "type": "keyword",
-                "ignore_above": 1024
-              }
-            }
-          }
-        }
-      },
-      "message": {
-        "type": "{{ match_only_text }}"
-      },
-      "meta": {
-        "type": "object",
-        "properties": {
-          "file": {
-            "type": "keyword",
-            "ignore_above": 1024
-          }
-        }
-      },
-      "metrics": {
-        "type": "object",
-        "properties": {
-          "size": {
-            "type": "long"
-          },
-          "tmin": {
-            "type": "long"
-          }
-        }
-      },
-      "process": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "keyword",
-            "ignore_above": 1024
-          }
-        }
-      },
-      "tags": {
-        "type": "keyword",
-        "ignore_above": 1024
+    {% if distribution_version.split('.') | map('int') | list  >= "6.0.0".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list  < "7.0.0".split('.') | map('int') | list %}
+      "_doc": {
+    {% endif %}
+	"date_detection": false,
+	"properties": {
+	  "@timestamp": {
+	    "type": "date"
+	  },
+	  "agent": {
+	    "type": "object",
+	    "properties": {
+	      "ephemeral_id": {
+		"type": "keyword",
+		"ignore_above": 1024
+	      },
+	      "id": {
+		"type": "keyword",
+		"ignore_above": 1024
+	      },
+	      "name": {
+		"type": "keyword",
+		"ignore_above": 1024
+	      },
+	      "type": {
+		"type": "keyword",
+		"ignore_above": 1024
+	      },
+	      "version": {
+		"type": "keyword",
+		"ignore_above": 1024
+	      }
+	    }
+	  },
+	  "aws": {
+	    "type": "object",
+	    "properties": {
+	      "cloudwatch": {
+		"type": "object",
+		"properties": {
+		  "ingestion_time": {
+		    "type": "keyword",
+		    "ignore_above": 1024
+		  },
+		  "log_group": {
+		    "type": "keyword",
+		    "ignore_above": 1024
+		  },
+		  "log_stream": {
+		    "type": "keyword",
+		    "ignore_above": 1024
+		  }
+		}
+	      }
+	    }
+	  },
+	  "cloud": {
+	    "type": "object",
+	    "properties": {
+	      "region": {
+		"type": "keyword",
+		"ignore_above": 1024
+	      }
+	    }
+	  },
+	  "data_stream": {
+	    "properties": {
+	      "dataset": {
+		{% if constant_keyword_available is defined  %}
+		  "type": "constant_keyword",
+		  "value": "benchmarks"
+		{% else %}
+		  "type": "keyword"
+		{% endif %}
+	      },
+	      "namespace": {
+		{% if constant_keyword_available is defined  %}
+		  "type": "constant_keyword",
+		  "value": "day1"
+		{% else %}
+		  "type": "keyword"
+		{% endif %}
+	      },
+	      "type": {
+		{% if constant_keyword_available is defined  %}
+		  "type": "constant_keyword",
+		  "value": "logs"
+		{% else %}
+		  "type": "keyword"
+		{% endif %}
+	      }
+	    }
+	  },
+	  "ecs": {
+	    "type": "object",
+	    "properties": {
+	      "version": {
+		"type": "keyword",
+		"ignore_above": 1024
+	      }
+	    }
+	  },
+	  "event": {
+	    "type": "object",
+	    "properties": {
+	      "dataset": {
+		"type": "keyword",
+		"ignore_above": 1024
+	      },
+	      "id": {
+		"type": "keyword",
+		"ignore_above": 1024
+	      },
+	      "ingested": {
+		"type": "date"
+	      }
+	    }
+	  },
+	  "host": {
+	    "type": "object"
+	  },
+	  "input": {
+	    "type": "object",
+	    "properties": {
+	      "type": {
+		"type": "keyword",
+		"ignore_above": 1024
+	      }
+	    }
+	  },
+	  "log": {
+	    "type": "object",
+	    "properties": {
+	      "file": {
+		"type": "object",
+		"properties": {
+		  "path": {
+		    "type": "keyword",
+		    "ignore_above": 1024
+		  }
+		}
+	      }
+	    }
+	  },
+	  "message": {
+	    "type": "{{ match_only_text }}"
+	  },
+	  "meta": {
+	    "type": "object",
+	    "properties": {
+	      "file": {
+		"type": "keyword",
+		"ignore_above": 1024
+	      }
+	    }
+	  },
+	  "metrics": {
+	    "type": "object",
+	    "properties": {
+	      "size": {
+		"type": "long"
+	      },
+	      "tmin": {
+		"type": "long"
+	      }
+	    }
+	  },
+	  "process": {
+	    "type": "object",
+	    "properties": {
+	      "name": {
+		"type": "keyword",
+		"ignore_above": 1024
+	      }
+	    }
+	  },
+	  "tags": {
+	    "type": "keyword",
+	    "ignore_above": 1024
+	  }
+	}
+    {% if distribution_version.split('.') | map('int') | list  >= "6.0.0".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list  < "7.0.0".split('.') | map('int') | list %}
       }
-    }
+    {% endif %}
   }
 }
