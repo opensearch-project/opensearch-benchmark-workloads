@@ -95,7 +95,11 @@
           "by_hour": {
             "date_histogram": {
               "field": "@timestamp",
-              "calendar_interval": "hour"
+              {% if distribution_version.split('.') | map('int') | list < "6.0.0".split('.') | map('int') | list or distribution_version.split('.') | map('int') | list >= "7.0.0".split('.') | map('int') | list %}
+                "calendar_interval": "hour"
+              {% else %}
+                "interval": "hour"
+              {% endif %}
             }
           }
         }
@@ -119,7 +123,11 @@
           "by_hour": {
             "date_histogram": {
               "field": "@timestamp",
-              "calendar_interval": "minute"
+              {% if distribution_version.split('.') | map('int') | list < "6.0.0".split('.') | map('int') | list or distribution_version.split('.') | map('int') | list >= "7.0.0".split('.') | map('int') | list %}
+                "calendar_interval": "minute"
+              {% else %}
+                "interval": "minute"
+              {% endif %}
             }
           }
         }
@@ -162,7 +170,11 @@
         "sort" : [
           {"@timestamp" : "desc"}
         ],
-        "search_after": ["2023-01-06T23:59:58.000Z"]
+	{% if distribution_version.split('.') | map('int') | list < "6.0.0".split('.') | map('int') | list or distribution_version.split('.') | map('int') | list >= "7.0.0".split('.') | map('int') | list %}
+          "search_after": ["2023-01-01T23:59:58.000Z"]
+	{% else %}
+          "search_after": [1673049598]
+	{% endif %}
       }
     },
     {
@@ -190,7 +202,11 @@
         "sort" : [
           {"@timestamp" : "asc"}
         ],
-        "search_after": ["2023-01-01T23:59:58.000Z"]
+	{% if distribution_version.split('.') | map('int') | list < "6.0.0".split('.') | map('int') | list or distribution_version.split('.') | map('int') | list >= "7.0.0".split('.') | map('int') | list %}
+          "search_after": ["2023-01-01T23:59:58.000Z"]
+	{% else %}
+          "search_after": [1673049598]
+	{% endif %}
       }
     },
     {
@@ -738,7 +754,11 @@
           "logs": {
             "composite": {
               "sources": [
-                { "date": { "date_histogram": { "field": "@timestamp", "calendar_interval": "day" } } }
+		{% if distribution_version.split('.') | map('int') | list < "6.0.0".split('.') | map('int') | list or distribution_version.split('.') | map('int') | list >= "7.0.0".split('.') | map('int') | list %}
+                  { "date": { "date_histogram": { "field": "@timestamp", "calendar_interval": "day" } } }
+		{% else %}
+                  { "date": { "date_histogram": { "field": "@timestamp", "interval": "day" } } }
+		{% endif %}
               ]
             }
           }
