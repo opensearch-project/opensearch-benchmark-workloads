@@ -110,6 +110,11 @@ Procedure name `create-and-index`.
 The Hybrid Query Aggregations No Index procedure is used to run set of multiple search queries with hybrid query and identical bool query, both with aggregations. We do not create index and do not ingest any documents in this procedure, the assumption is that index already exists.
 Procedure name `hybrid-query-aggs-no-index`.
 
+### Hybrid Query Sorting
+
+This procedure is used to run set of multiple hybrid queries with sort and search after parameters. We do not create index and do not ingest any documents in this procedure, the assumption is that index already exists.
+Procedure name `hybrid-search-sorting`.
+
 ### Profiling
 
 The Profiling of Hybrid Query with Aggregations procedure is used to run small set of hybrid queries with aggregations to collect runtime metrics thaty can be used for analysis like profiling or debug. It does not create index or ingestg documents.
