@@ -1,0 +1,342 @@
+  {
+    "name": "bool-3-subqueries-no-sort",
+    "operation-type": "search",
+    "body": {
+      "size": 100,
+      "query": {
+        "bool": {
+            "should": [
+                {
+                    "term": {
+                        "station.country_code": "JA"
+                    }
+                },
+                {
+                    "range": {
+                        "TRANGE": {
+                            "gte": 0,
+                            "lte": 30
+                        }
+                    }
+                },
+                {
+                  "range": {
+                      "date": {
+                          "gte": "2016-06-04",
+                          "format":"yyyy-MM-dd"
+                      }
+                  }
+                }
+            ]
+        }
+      }
+    }
+  },
+  {
+    "name": "bool-3-subqueries-sort-by-score-search-after",
+    "operation-type": "search",
+    "body": {
+      "size": 100,
+      "query": {
+        "bool": {
+            "should": [
+                {
+                    "term": {
+                        "station.country_code": "JA"
+                    }
+                },
+                {
+                    "range": {
+                        "TRANGE": {
+                            "gte": 0,
+                            "lte": 30
+                        }
+                    }
+                },
+                {
+                  "range": {
+                      "date": {
+                          "gte": "2016-06-04",
+                          "format":"yyyy-MM-dd"
+                      }
+                  }
+                }
+            ]
+         }
+       },
+       "sort": [
+           {
+               "_score": {
+                   "order": "asc"
+               }
+           }
+       ],
+       "search_after": [
+           5
+       ]
+    }
+  },  
+  {
+    "name": "bool-3-subqueries-sort-by-two-fields",
+    "operation-type": "search",
+    "body": {
+      "size": 100,
+      "query": {
+        "bool": {
+            "should": [
+                {
+                    "term": {
+                        "station.country_code": "JA"
+                    }
+                },
+                {
+                    "range": {
+                        "TRANGE": {
+                            "gte": 0,
+                            "lte": 30
+                        }
+                    }
+                },
+                {
+                  "range": {
+                      "date": {
+                          "gte": "2016-06-04",
+                          "format":"yyyy-MM-dd"
+                      }
+                  }
+                }
+            ]
+        }
+      },
+      "sort": [
+          {
+              "PRCP": "desc"
+          },
+          {
+              "date": "asc"
+          }
+      ]
+    }
+  },
+  {
+    "name": "bool-3-subqueries-sort-by-two-fields-search-after",
+    "operation-type": "search",
+    "body": {
+      "size": 100,
+      "query": {
+        "bool": {
+            "should": [
+                {
+                    "term": {
+                        "station.country_code": "JA"
+                    }
+                },
+                {
+                    "range": {
+                        "TRANGE": {
+                            "gte": 0,
+                            "lte": 30
+                        }
+                    }
+                },
+                {
+                  "range": {
+                      "date": {
+                          "gte": "2016-06-04",
+                          "format":"yyyy-MM-dd"
+                      }
+                  }
+                }
+            ]
+        }
+      },
+      "sort": [
+          {
+              "PRCP": "desc"
+          },
+          {
+              "date": "asc"
+          }
+      ],
+      "search_after": [
+          5, 2
+      ]
+    }
+  },    
+  {
+    "name": "hybrid-query-3-subqueries-no-sort",
+    "operation-type": "search",
+    "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+    },
+    "body": {
+      "size": 100,
+      "query": {
+        "hybrid": {
+          "queries": [
+              {
+                  "term": {
+                      "station.country_code": "JA"
+                  }
+              },
+              {
+                  "range": {
+                      "TRANGE": {
+                          "gte": 0,
+                          "lte": 30
+                      }
+                  }
+              },
+              {
+                "range": {
+                    "date": {
+                        "gte": "2016-06-04",
+                        "format":"yyyy-MM-dd"
+                    }
+                }
+              }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "name": "hybrid-query-3-subqueries-sort-by-score-search-after",
+    "operation-type": "search",
+    "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+    },
+    "body": {
+      "size": 100,
+      "query": {
+        "hybrid": {
+          "queries": [
+              {
+                  "term": {
+                      "station.country_code": "JA"
+                  }
+              },
+              {
+                  "range": {
+                      "TRANGE": {
+                          "gte": 0,
+                          "lte": 30
+                      }
+                  }
+              },
+              {
+                "range": {
+                    "date": {
+                        "gte": "2016-06-04",
+                        "format":"yyyy-MM-dd"
+                    }
+                }
+              }
+          ]
+        }
+      },
+      "sort": [
+          {
+              "_score": {
+                  "order": "asc"
+              }
+          }
+      ],
+      "search_after": [
+          5
+      ]
+    }
+  },
+  {
+    "name": "hybrid-query-3-subqueries-sort-by-two-fields",
+    "operation-type": "search",
+    "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+    },
+    "body": {
+      "size": 100,
+      "query": {
+        "hybrid": {
+          "queries": [
+              {
+                  "term": {
+                      "station.country_code": "JA"
+                  }
+              },
+              {
+                  "range": {
+                      "TRANGE": {
+                          "gte": 0,
+                          "lte": 30
+                      }
+                  }
+              },
+              {
+                "range": {
+                    "date": {
+                        "gte": "2016-06-04",
+                        "format":"yyyy-MM-dd"
+                    }
+                }
+              }
+          ]
+        }
+      },
+      "sort": [
+          {
+              "PRCP": "desc"
+          },
+          {
+              "date": "asc"
+          }
+      ]
+    }
+  },  
+  {
+    "name": "hybrid-query-3-subqueries-sort-by-two-fields-search-after",
+    "operation-type": "search",
+    "request-params": {
+        "search_pipeline": "nlp-min-max-arithmetic-search-pipeline"
+    },
+    "body": {
+      "size": 100,
+      "query": {
+        "hybrid": {
+          "queries": [
+              {
+                  "term": {
+                      "station.country_code": "JA"
+                  }
+              },
+              {
+                  "range": {
+                      "TRANGE": {
+                          "gte": 0,
+                          "lte": 30
+                      }
+                  }
+              },
+              {
+                "range": {
+                    "date": {
+                        "gte": "2016-06-04",
+                        "format":"yyyy-MM-dd"
+                    }
+                }
+              }
+          ]
+        }
+      },
+      "sort": [
+          {
+              "PRCP": "desc"
+          },
+          {
+              "date": "asc"
+          }
+      ],
+      "search_after": [
+          5, 2
+      ]
+    }
+  }
