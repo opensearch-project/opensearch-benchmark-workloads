@@ -254,4 +254,44 @@
           "clients": {{ significant_text_sampled_unselective_search_clients or search_clients | default(1) | tojson }}
         }
       ]
+    },
+    {
+      "name": "polling-ingest-index-only",
+      "description": "Ingest the documents from Streaming Service into OpenSearch using polling ingestion. The index is created with the default settings.",
+      "schedule": [
+        {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+        {% with default_index_settings={
+          "ingestion_source": {
+            "type": ingestion_source_type | default("kafka"),
+            "pointer.init.reset": "latest",
+            "param": {
+              "topic": ingestion_topic | default(""),
+              "bootstrap_servers": ingestion_bootstrap_servers | default("")
+            }
+          }
+        } %}
+        {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% endwith %}
+        {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
+        {
+          "operation": {
+              "name": "polling-ingest",
+              "operation-type": "produce-stream-message",
+              "bulk-size": {{bulk_size | default(100)}},
+              "ingest-percentage": {{ingest_percentage | default(100)}},
+              "ingestion-source": {
+                "type": {{ingestion_source_type | default("kafka") | tojson}},
+                "param": {
+                   "topic": {{ingestion_topic | default("") | tojson}},
+                   "bootstrap-servers": {{ingestion_bootstrap_servers | default("") | tojson}}
+                }
+             }
+          }
+        },
+        {
+          "name": "refresh-after-index",
+          "operation": "refresh"
+        },
+        {{ benchmark.collect(parts="../../common_operations/force_merge.json") }}
+      ]
     }
