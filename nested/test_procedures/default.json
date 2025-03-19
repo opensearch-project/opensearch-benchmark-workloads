@@ -3,7 +3,9 @@
       "description": "Indexes the document corpus for an hour using OpenSearch default settings. After that randomized nested queries are run.",
       "default": true,
       "schedule": [
+        {% with default_index_settings={}, index_name="sonested" %}
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+        {% endwith %}
         {
           "operation": "randomized-nested-queries",
           "warmup-iterations": {{ randomized_nested_queries_warmup_iterations or warmup_iterations | default(500) | tojson }},
@@ -59,6 +61,8 @@
       "name": "index-only",
       "description": "Indexes the document corpus for an hour using OpenSearch default settings.",
       "schedule": [
+        {% with default_index_settings={}, index_name="sonested" %}
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
+        {% endwith %}
       ]
     }

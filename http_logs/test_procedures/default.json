@@ -3,7 +3,9 @@
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After that a couple of queries are run.",
       "default": true,
       "schedule": [
+        {% with default_index_settings={}, index_name="logs-*" %}
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+        {% endwith %}
         {
           "operation": "default",
           "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
@@ -168,7 +170,9 @@
       "name": "append-no-conflicts-original",
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After that a couple of queries are run.",
       "schedule": [
+        {% with default_index_settings={}, index_name="logs-*" %}
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+        {% endwith %}
         {
           "operation": "default",
           "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
@@ -326,7 +330,9 @@
       "name": "append-no-conflicts-index-only",
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only.",
       "schedule": [
+        {% with default_index_settings={}, index_name="logs-*" %}
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
+        {% endwith %}
       ]
     },
     {
@@ -336,7 +342,7 @@
         {% with default_index_settings={
               "index.sort.field": "@timestamp",
               "index.sort.order": "desc"
-        } %}
+        }, index_name="logs-*" %}
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
         {% endwith %}
       ]
@@ -347,7 +353,9 @@
       "schedule": [
         {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
         {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% with default_index_settings={}, index_name="logs-*" %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
+        {% endwith %}
         {
         "operation": "create-http-log-{{ingest_pipeline | default('baseline')}}-pipeline"
         },
@@ -372,7 +380,7 @@
           "index.number_of_shards": number_of_shards | default(1),
           "index.number_of_replicas": number_of_replicas | default(0),
           "index.store.type": store_type | default('fs')
-        } %}
+        }, index_name="logs-*" %}
         {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
         {% endwith %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
@@ -393,7 +401,9 @@
       "name": "append-no-conflicts-index-reindex-only",
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After indexing, same data are reindexed.",
       "schedule": [
+        {% with default_index_settings={}, index_name="logs-*" %}
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+        {% endwith %}
         {
           "name": "reindex",
           "operation": {
@@ -417,7 +427,9 @@
       "schedule": [
         {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
         {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% with default_index_settings={}, index_name="logs-*" %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
+        {% endwith %}
         {
           "operation": "create-http-log-baseline-search-pipeline"
         },
