@@ -1,0 +1,27 @@
+{
+  "size": 0,
+  "query": {
+    "range": {
+      "@timestamp": {
+        "gte": "2022-12-30T00:00:00",
+        "lt": "2023-01-07T12:00:00"
+      }
+    }
+  },
+  "aggs": {
+    "logs": {
+      "composite": {
+        "sources": [
+          {
+            "date": {
+              "date_histogram": {
+                "field": "@timestamp",
+                "calendar_interval": "day"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

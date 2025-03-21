@@ -1,0 +1,95 @@
+
+{% if distribution_version is not defined %}
+  {% set distribution_version = "2.11.0" %}
+{% endif %}
+
+{
+  "version": 2,
+  "description": "Big5 workload based on synthetically generated data corpus",
+  "indices": [
+    {
+      "name": "{{ index_name | default('big5') }}",
+      "body": "{{ index_body | default('index.json') }}"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "big5",
+      {% if distribution_version.split('.') | map('int') | list >= "6.0.0".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list < "7.0.0".split('.') | map('int') | list %}
+        "target-type": "_doc",
+      {% endif %}
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/big5",
+      "documents": [
+	{% if not corpus_size %}
+	  {% set corpus_size = 100 %}
+	{% endif %}
+
+	{% if corpus_size == 100 %}
+    {
+      {% if use_zstd %}
+      "source-file": "documents-100.json.zst",
+      "compressed-bytes": 7306225533,
+      {% else %}
+      "source-file": "documents-100.json.bz2",
+      "compressed-bytes": 6023614688,
+      {% endif %}
+      "document-count": 116000000,
+      "uncompressed-bytes": 107321418111
+    }
+  {% elif corpus_size == 880 %}
+    {
+      {% if use_zstd %}
+      "source-file": "documents-880.json.zst",
+      "compressed-bytes": 27685953536,
+      {% else %}
+      "source-file": "documents-880.json.bz2",
+      "compressed-bytes": 27685953536,
+      {% endif %}
+      "document-count": 1020000000,
+      "uncompressed-bytes": 943679382267
+    }
+  {% elif corpus_size == 1000 %}
+    {
+      {% if use_zstd %}
+      "source-file": "documents-1000.json.zst",
+      "source-file-parts": [ { "name": "documents-1000-zstd-part0", "size": 21474836480 }, { "name": "documents-1000-zstd-part1", "size": 21474836480 }, { "name": "documents-1000-zstd-part2", "size": 21474836480 }, { "name": "documents-1000-zstd-part3", "size": 8944159128 } ],
+      "compressed-bytes": 73368668568,
+      {% else %}
+      "source-file": "documents-1000.json.bz2",
+      "source-file-parts": [ { "name": "documents-1000-part0", "size": 20189061054 }, { "name": "documents-1000-part1", "size": 20189061054 }, { "name": "documents-1000-part2", "size": 20189061055 } ],
+      "compressed-bytes": 60567183163,
+      {% endif %}
+      "document-count": 1160800000,
+      "uncompressed-bytes": 1073936121222
+    }
+	{% elif corpus_size == 60 %}
+    {
+      {% if use_zstd %}
+      "source-file": "documents-60.json.zst",
+      "compressed-bytes": 4309639180,
+      {% else %}
+      "source-file": "documents-60.json.bz2",
+      "compressed-bytes": 3494648233,
+      {% endif %}
+      "document-count": 69223950,
+      "uncompressed-bytes": 64048001338
+    }
+	{% else %}
+          {
+	    "source-url": "{{ document_url | safe }}",
+	    "source-file": "{{ document_file }}",
+	    "document-count": {{ document_count }},
+	    "compressed-bytes": {{ document_compressed_size_in_bytes }},
+	    "uncompressed-bytes": {{ document_uncompressed_size_in_bytes }}
+	  }
+	{% endif %}
+      ]
+    }
+  ],
+  "operations": [
+    {{ benchmark.collect(parts="operations/*.json") }}
+  ],
+  "test_procedures": [
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  ]
+}

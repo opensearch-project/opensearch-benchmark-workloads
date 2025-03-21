@@ -1,0 +1,21 @@
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "range": {
+            "@timestamp": {
+              "gte": "2023-01-01T00:00:00",
+              "lt": "2023-01-03T00:00:00"
+            }
+          }
+        },
+        {
+          "query_string": {
+            "query": "message: shield AND carp AND shark"
+          }
+        }
+      ]
+    }
+  }
+}

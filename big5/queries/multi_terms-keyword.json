@@ -1,0 +1,28 @@
+{
+  "size": 0,
+  "query": {
+    "range": {
+      "@timestamp": {
+        "gte": "2022-12-30T00:00:00",
+        "lt": "2023-01-01T03:00:00"
+      }
+    }
+  },
+  "aggs": {
+    "important_terms": {
+      "multi_terms": {
+        "terms": [
+          {
+            "field": "process.name"
+          },
+          {
+            "field": "event.id"
+          },
+          {
+            "field": "cloud.region"
+          }
+        ]
+      }
+    }
+  }
+}

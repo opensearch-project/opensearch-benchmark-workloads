@@ -1,0 +1,43 @@
+{
+  "size": 0,
+  "query": {
+    "range": {
+      "@timestamp": {
+        "gte": "2023-01-02T00:00:00",
+        "lt": "2023-01-03T00:00:00"
+      }
+    }
+  },
+  "aggs": {
+    "logs": {
+      "composite": {
+        "sources": [
+          {
+            "process_name": {
+              "terms": {
+                "field": "process.name",
+                "order": "desc"
+              }
+            }
+          },
+          {
+            "cloud_region": {
+              "terms": {
+                "field": "cloud.region",
+                "order": "asc"
+              }
+            }
+          },
+          {
+            "cloudstream": {
+              "terms": {
+                "field": "aws.cloudwatch.log_stream",
+                "order": "asc"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

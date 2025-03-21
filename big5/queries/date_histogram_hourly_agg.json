@@ -1,0 +1,11 @@
+{
+  "size": 0,
+  "aggs": {
+    "by_hour": {
+      "date_histogram": {
+        "field": "@timestamp",
+        "calendar_interval": "hour"
+      }
+    }
+  }
+}

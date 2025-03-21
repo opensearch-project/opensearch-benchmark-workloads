@@ -1,0 +1,16 @@
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "range": {
+            "metrics.size": {
+              "gte": 1,
+              "lte": 42
+            }
+          }
+        }
+      ]
+    }
+  }
+}
