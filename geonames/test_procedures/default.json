@@ -263,7 +263,7 @@
         {% with default_index_settings={
           "ingestion_source": {
             "type": ingestion_source_type | default("kafka"),
-            "pointer.init.reset": "latest",
+            "pointer.init.reset": ingestion_pointer_init_reset | default("latest"),
             "param": {
               "topic": ingestion_topic | default(""),
               "bootstrap_servers": ingestion_bootstrap_servers | default("")
