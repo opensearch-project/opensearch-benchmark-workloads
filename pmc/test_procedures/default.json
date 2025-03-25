@@ -15,7 +15,9 @@
         },
         {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
         {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% with default_index_settings={}, index_name="pmc" %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
+        {% endwith %}
         {
           "operation": "index-append",
           "warmup-time-period": 240,
@@ -77,7 +79,9 @@
       "schedule": [
         {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
         {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% with default_index_settings={}, index_name="pmc" %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
+        {% endwith %}
         {
           "operation": "index-append",
           "warmup-time-period": 240,
@@ -98,7 +102,7 @@
         {% with default_index_settings={
           "index.sort.field": "timestamp", 
           "index.sort.order": "desc"
-        } %}
+        }, index_name="pmc" %}
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }}
         {% endwith %}
       ]
@@ -115,7 +119,9 @@
         } %}
         {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
         {% endwith %}
+        {% with default_index_settings={}, index_name="pmc" %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
+        {% endwith %}
         {
           "operation": "index-update",
           "warmup-time-period": 240,
