@@ -49,4 +49,12 @@
       "schedule": [
         {{ benchmark.collect(parts="semantic-search-common/profiler-workflow.json") }}
       ]
+    },
+    {
+      "name": "hybrid-search-sorting",
+      "description": "Run search queries with sort and search_after.",
+      "default": false,
+      "schedule": [
+        {{ benchmark.collect(parts="semantic-search-common/search-with-sort.json") }}
+      ]
     }
