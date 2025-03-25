@@ -74,32 +74,38 @@ does not contain operations like refresh and warm up since they are not supporte
 
 This workload allows the following parameters to be specified using `--workload-params`:
 
-| Name                                    | Description                                                              |
-|-----------------------------------------|--------------------------------------------------------------------------|
-| target_index_name                       | Name of index to add vectors to                                          |
-| target_field_name                       | Name of field to add vectors to                                          |
-| target_index_body                       | Path to target index definition                                          |
-| target_index_primary_shards             | Target index primary shards                                              |
-| target_index_replica_shards             | Target index replica shards                                              |
-| target_index_dimension                  | Dimension of target index                                                |
-| target_index_space_type                 | Target index space type                                                  |
-| target_index_bulk_size                  | Target index bulk size                                                   |
-| target_index_bulk_index_data_set_format | Format of vector data set                                                |
-| target_index_bulk_index_data_set_path   | Path to vector data set                                                  |
-| target_index_bulk_index_data_set_corpus | Corpus name to vector data set                                                  |
-| target_index_bulk_index_clients         | Clients to be used for bulk ingestion (must be divisor of data set size) |
-| target_index_max_num_segments           | Number of segments to merge target index down to before beginning search |
-| target_index_force_merge_timeout        | Timeout for of force merge requests in seconds                           |
-| hnsw_ef_search                          | HNSW ef search parameter                                                 |
-| hnsw_ef_construction                    | HNSW ef construction parameter                                           |
-| id_field_name                           | Name of field that will be used to identify documents in an index        |
-| hnsw_m                                  | HNSW m parameter                                                         |
-| query_k                                 | The number of neighbors to return for the search                         |
-| query_data_set_format                   | Format of vector data set for queries                                    |
-| query_data_set_path                     | Path to vector data set for queries                                      |
-| query_count                             | Number of queries for search operation                                   |
-| query_body                              | Json properties that will be merged with search body                     |
-| search_clients                          | Number of clients to use for running queries                             |
+| Name                                    | Description                                                                                                                          |
+|-----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| target_index_name                       | Name of index to add vectors to                                                                                                      |
+| target_field_name                       | Name of field to add vectors to. Use "." to indicate a nested field                                                                  |
+| target_index_body                       | Path to target index definition                                                                                                      |
+| target_index_primary_shards             | Target index primary shards                                                                                                          |
+| target_index_replica_shards             | Target index replica shards                                                                                                          |
+| target_index_dimension                  | Dimension of target index                                                                                                            |
+| target_index_space_type                 | Target index space type                                                                                                              |
+| target_index_bulk_size                  | Target index bulk size                                                                                                               |
+| target_index_bulk_index_data_set_format | Format of vector data set                                                                                                            |
+| target_index_bulk_index_data_set_path   | Path to vector data set                                                                                                              |
+| target_index_bulk_index_data_set_corpus | Corpus name to vector data set                                                                                                       |
+| target_index_bulk_index_clients         | Clients to be used for bulk ingestion (must be divisor of data set size)                                                             |
+| target_index_max_num_segments           | Number of segments to merge target index down to before beginning search                                                             |
+| target_index_force_merge_timeout        | Timeout for of force merge requests in seconds                                                                                       |
+| hnsw_ef_search                          | HNSW ef search parameter                                                                                                             | 
+| hnsw_ef_construction                    | HNSW ef construction parameter                                                                                                       |
+| id_field_name                           | Name of field that will be used to identify documents in an index                                                                    |
+| hnsw_m                                  | HNSW m parameter                                                                                                                     |
+| query_k                                 | The number of neighbors to return for the search (only one of query_k, query_max_distance, query_min_score can be provided)          |
+| query_max_distance                      | The maximum distance to be returned for the vector search (only one of query_k, query_max_distance, query_min_score can be provided) |
+| query_min_score                         | The minimum score to be returned for the vector search (only one of query_k, query_max_distance, query_min_score can be provided)    |
+| query_data_set_format                   | Format of vector data set for queries                                                                                                |
+| query_data_set_path                     | Path to vector data set for queries                                                                                                  |
+| query_count                             | Number of queries for search operation                                                                                               |
+| query_body                              | Json properties that will be merged with search body                                                                                 |
+| search_clients                          | Number of clients to use for running queries                                                                                         |
+| repetitions                             | Number of repetitions until the data set is exhausted (default 1)                                                                    |
+| target_throughput                       | Target throughput for each query operation in requests per second (default 10)                                                       |
+| time_period                             | The period of time dedicated for the benchmark execution in seconds (default 900)                                                    |
+| derived_source_enabled                  | Whether or not derived source feature should be enabled on the index (default null, pass in either true or false)                    |
 
 
 
@@ -203,55 +209,56 @@ This procedure benchmarks approximate k-NN search algorithms that require a trai
 
 This workload allows the following parameters to be specified using `--workload-params`:
 
-| Name                                    | Description                                                                                  |
-|-----------------------------------------|----------------------------------------------------------------------------------------------|
-| target_index_name                       | Name of index to add vectors to                                                              |
-| target_field_name                       | Name of field to add vectors to                                                              |
-| target_index_body                       | Path to target index definition                                                              |
-| target_index_primary_shards             | Target index primary shards                                                                  |
-| target_index_replica_shards             | Target index replica shards                                                                  |
-| target_index_dimension                  | Dimension of target index                                                                    |
-| target_index_space_type                 | Target index space type                                                                      |
-| target_index_bulk_size                  | Target index bulk size                                                                       |
-| target_index_bulk_index_data_set_format | Format of vector data set                                                                    |
-| target_index_bulk_index_data_set_path   | Path to vector data set                                                                      |
-| target_index_bulk_index_data_set_corpus | Corpus name to vector data set                                                               |
-| target_index_bulk_index_clients         | Clients to be used for bulk ingestion (must be divisor of data set size)                     |
-| target_index_max_num_segments           | Number of segments to merge target index down to before beginning search                     |
-| target_index_force_merge_timeout        | Timeout for of force merge requests in seconds                                               |
-| train_index_name                        | Name of index for training                                                                   |
-| train_field_name                        | Name of field for training                                                                   |
-| train_method_engine                     | Engine for training (e.g "faiss")                                                            |
-| train_index_body                        | Path to train index definition                                                               |
-| train_index_primary_shards              | Train index primary shards                                                                   |
-| train_index_replica_shards              | Train index replica shards                                                                   |
-| train_index_bulk_size                   | Bulk size for train index                                                                    |
-| train_index_bulk_index_data_set_format  | Format of training data set                                                                  |
-| train_index_bulk_index_data_set_path    | Path to training data set                                                                    |
-| train_index_bulk_indexing_clients       | Clients to be used for bulk indexing                                                         |
-| train_index_num_vectors                 | Number of vectors in the training index                                                      |
-| train_model_id                          | ID of the training model                                                                     |
-| train_operation_retries                 | Number of retries for querying training operation to see if complete                         |
-| train_operation_poll_period             | Poll period for querying training operation in seconds                                       |
-| train_search_size                       | Number of results per [scroll query](http://opensearch.org/docs/latest/api-reference/scroll/)|
-| encoder                                 | Encoder for quantization. One of `flat`, `sq`, `pq`. Defaults to `flat` when not specified. [See here](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#supported-faiss-encoders)
-| pq_encoder_code_size                 | PQ Encoding [code size setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#pq-parameters).
-| pq_encoder_m                         | PQ Encoding [m setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#pq-parameters)
-| encoder_type                      | SQ Encoding [type setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#sq-parameters)
-| encoder_clip                      | SQ Encoding [clip setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#sq-parameters)
-| nprobes                           | IVF nprobes setting. [See here](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#ivf-parameters)|
-| nlist                             | IVF nlist setting. [See here](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#ivf-parameters)|
-| hnsw_ef_search                          | HNSW ef search parameter                                                                     |
-| hnsw_ef_construction                    | HNSW ef construction parameter                                                               |
-| id_field_name                           | Name of field that will be used to identify documents in an index                            |
-| hnsw_m                                  | HNSW m parameter                                                                             |
-| query_k                                 | The number of neighbors to return for the search                                             |
-| query_data_set_format                   | Format of vector data set for queries                                                        |
-| query_data_set_path                     | Path to vector data set for queries                                                          |
-| query_count                             | Number of queries for search operation                                                       |
-| query_body                              | Json properties that will be merged with search body                                         |
-| search_clients                          | Number of clients to use for running queries                                                 |
-| target_dataset_filter_attributes        | Used in filter benchmarks. List of names of attribute fields in a dataset.                   | 
+| Name                                    | Description                                                                                                                                                                                       |
+|-----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| target_index_name                       | Name of index to add vectors to                                                                                                                                                                   |
+| target_field_name                       | Name of field to add vectors to                                                                                                                                                                   |
+| target_index_body                       | Path to target index definition                                                                                                                                                                   |
+| target_index_primary_shards             | Target index primary shards                                                                                                                                                                       |
+| target_index_replica_shards             | Target index replica shards                                                                                                                                                                       |
+| target_index_dimension                  | Dimension of target index                                                                                                                                                                         |
+| target_index_space_type                 | Target index space type                                                                                                                                                                           |
+| target_index_bulk_size                  | Target index bulk size                                                                                                                                                                            |
+| target_index_bulk_index_data_set_format | Format of vector data set                                                                                                                                                                         |
+| target_index_bulk_index_data_set_path   | Path to vector data set                                                                                                                                                                           |
+| target_index_bulk_index_data_set_corpus | Corpus name to vector data set                                                                                                                                                                    |
+| target_index_bulk_index_clients         | Clients to be used for bulk ingestion (must be divisor of data set size)                                                                                                                          |
+| target_index_max_num_segments           | Number of segments to merge target index down to before beginning search                                                                                                                          |
+| target_index_force_merge_timeout        | Timeout for of force merge requests in seconds                                                                                                                                                    |
+| train_index_name                        | Name of index for training                                                                                                                                                                        |
+| train_field_name                        | Name of field for training                                                                                                                                                                        |
+| train_method_engine                     | Engine for training (e.g "faiss")                                                                                                                                                                 |
+| train_index_body                        | Path to train index definition                                                                                                                                                                    |
+| train_index_primary_shards              | Train index primary shards                                                                                                                                                                        |
+| train_index_replica_shards              | Train index replica shards                                                                                                                                                                        |
+| train_index_bulk_size                   | Bulk size for train index                                                                                                                                                                         |
+| train_index_bulk_index_data_set_format  | Format of training data set                                                                                                                                                                       |
+| train_index_bulk_index_data_set_path    | Path to training data set                                                                                                                                                                         |
+| train_index_bulk_indexing_clients       | Clients to be used for bulk indexing                                                                                                                                                              |
+| train_index_num_vectors                 | Number of vectors in the training index                                                                                                                                                           |
+| train_model_id                          | ID of the training model                                                                                                                                                                          |
+| train_operation_retries                 | Number of retries for querying training operation to see if complete                                                                                                                              |
+| train_operation_poll_period             | Poll period for querying training operation in seconds                                                                                                                                            |
+| train_search_size                       | Number of results per [scroll query](http://opensearch.org/docs/latest/api-reference/scroll/)                                                                                                     |
+| encoder                                 | Encoder for quantization. One of `flat`, `sq`, `pq`. Defaults to `flat` when not specified. [See here](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#supported-faiss-encoders) |
+| pq_encoder_code_size                    | PQ Encoding [code size setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#pq-parameters).                                                                                  |
+| pq_encoder_m                            | PQ Encoding [m setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#pq-parameters)                                                                                           |
+| encoder_type                            | SQ Encoding [type setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#sq-parameters)                                                                                        |
+| encoder_clip                            | SQ Encoding [clip setting](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#sq-parameters)                                                                                        |
+| nprobes                                 | IVF nprobes setting. [See here](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#ivf-parameters)                                                                                  |
+| nlist                                   | IVF nlist setting. [See here](https://opensearch.org/docs/latest/search-plugins/knn/knn-index/#ivf-parameters)                                                                                    |
+| hnsw_ef_search                          | HNSW ef search parameter                                                                                                                                                                          |
+| hnsw_ef_construction                    | HNSW ef construction parameter                                                                                                                                                                    |
+| id_field_name                           | Name of field that will be used to identify documents in an index                                                                                                                                 |
+| hnsw_m                                  | HNSW m parameter                                                                                                                                                                                  |
+| query_k                                 | The number of neighbors to return for the search                                                                                                                                                  |
+| query_data_set_format                   | Format of vector data set for queries                                                                                                                                                             |
+| query_data_set_path                     | Path to vector data set for queries                                                                                                                                                               |
+| query_count                             | Number of queries for search operation                                                                                                                                                            |
+| query_body                              | Json properties that will be merged with search body                                                                                                                                              |
+| search_clients                          | Number of clients to use for running queries                                                                                                                                                      |
+| target_dataset_filter_attributes        | Used in filter benchmarks. List of names of attribute fields in a dataset.                                                                                                                        | 
+| derived_source_enabled                  | Whether or not derived source feature should be enabled on the index (default null, pass in either true or false)                                                                                 |
 
 #### Sample Outputs
 

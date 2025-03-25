@@ -11,6 +11,9 @@
         {%- if hnsw_ef_search is defined and hnsw_ef_search %}
         ,"knn.algo_param.ef_search": {{ hnsw_ef_search }}
         {%- endif %}
+        {%- if derived_source_enabled is defined and derived_source_enabled %}
+        ,"knn.derived_source.enabled": true
+        {%- endif %}
       }
     },
     "mappings": {
