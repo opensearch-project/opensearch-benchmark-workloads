@@ -873,7 +873,7 @@
           "agent": {
             "cardinality": {
               "field": "event.id"
-              {% if distribution_version.split('.') | map('int') | list  >= "2.19.1".split('.') | map('int') | list %}
+              {% if distribution_version.split('.') | map('int') | list  >= "2.19.1".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %}
               ,"execution_hint":"ordinals"
               {% endif %}
             }
