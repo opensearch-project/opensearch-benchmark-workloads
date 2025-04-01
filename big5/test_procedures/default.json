@@ -1,0 +1,20 @@
+{
+  "name": "big5",
+  "default": true,
+  "schedule": [
+    {% with default_index_settings={}, index_name="big5" %}
+    {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+    {% endwith %}
+    {{ benchmark.collect(parts="common/big5-schedule.json") }}
+  ]
+},
+{
+  "name": "test",
+  "default": false,
+  "schedule": [
+    {% with default_index_settings={}, index_name="big5" %}
+    {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+    {% endwith %}
+    {{ benchmark.collect(parts="common/test-schedule.json") }}
+  ]
+}
