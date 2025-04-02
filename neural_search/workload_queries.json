@@ -1,0 +1,6 @@
+{
+  "base-url": "https://github.com/weijia-aws/neural-search/releases/download/quora",
+  "source-file": "queries.json.bz2",
+  "compressed-bytes": 263045,
+  "uncompressed-bytes": 1460859
+}
