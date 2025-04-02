@@ -5,7 +5,9 @@
       "schedule": [
         {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
         {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% with default_index_settings={}, index_name="weather-data-2016" %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
+        {% endwith %}
         {
           "operation": "index",
           "#COMMENT": "This is an incredibly short warmup time period but it is necessary to get also measurement samples. As this benchmark is rather about search than indexing this is ok.",
@@ -82,7 +84,9 @@
       "schedule": [
         {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
         {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% with default_index_settings={}, index_name="weather-data-2016" %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
+        {% endwith %}
         {
           "operation": "index",
           "#COMMENT": "This is an incredibly short warmup time period but it is necessary to get also measurement samples. As this benchmark is rather about search than indexing this is ok.",
@@ -104,7 +108,9 @@
       "schedule": [
         {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
         {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% with default_index_settings={}, index_name="weather-data-2016" %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
+        {% endwith %}
         {
           "operation": "index",
           "#COMMENT": "This is an incredibly short warmup time period but it is necessary to get also measurement samples. As this benchmark is rather about search than indexing this is ok.",
@@ -261,7 +267,9 @@
       "schedule": [
         {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
         {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+        {% with default_index_settings={}, index_name="weather-data-2016" %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
+        {% endwith %}
         {
           "operation": "index",
           "#COMMENT": "This is an incredibly short warmup time period but it is necessary to get also measurement samples. As this benchmark is rather about search than indexing this is ok.",
