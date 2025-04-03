@@ -872,7 +872,7 @@
         "aggs": {
           "agent": {
             "cardinality": {
-              "field": "event.id"
+             "field": "{{cardinality_agg_high_field | default('event.id')}}"
               {% if distribution_version.split('.') | map('int') | list  >= "2.19.1".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %}
               ,"execution_hint":"ordinals"
               {% endif %}
