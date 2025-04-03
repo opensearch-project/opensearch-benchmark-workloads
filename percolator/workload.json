@@ -1,4 +1,4 @@
-{% import "rally.helpers" as rally with context %}
+{% import "benchmark.helpers" as rally with context %}
 
 {
   "version": 2,
@@ -18,17 +18,19 @@
         {
           "source-file": "queries-2.json.bz2",
           "document-count": 2000000,
-          "compressed-bytes": 105192,
-          "uncompressed-bytes": 110039748
+          "compressed-bytes": 124009,
+          "uncompressed-bytes": 110039748,
+          "target-index": "queries",
+          "target-type": "percolator"
         }
       ]
     }
   ],
   "operations": [
-    {{ rally.collect(parts="operations/*.json") }}
+    {{ benchmark.collect(parts="operations/*.json") }}
   ],
-  "challenges": [
-    {{ rally.collect(parts="challenges/*.json") }}
+  "test_procedures": [
+    {{ benchmark.collect(parts="challenges/*.json") }}
   ]
 }
 
