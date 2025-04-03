@@ -49,7 +49,7 @@
       "corpora": "http_logs"
     },
     {
-      "name": "default",
+      "name": "match-all",
       "operation-type": "search",
       "index": "logs-*",
       "body": {

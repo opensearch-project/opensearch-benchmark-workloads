@@ -40,7 +40,7 @@
       "include-in-reporting": false
     },
     {
-      "name": "default",
+      "name": "match-all",
       "operation-type": "search",
       "body": {
         "query": {
