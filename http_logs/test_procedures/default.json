@@ -8,8 +8,8 @@
         {% endwith %}
         {
           "operation": "match-all",
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
+          "warmup-iterations": {{ match_all_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ match_all_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
@@ -175,8 +175,8 @@
         {% endwith %}
         {
           "operation": "match-all",
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
+          "warmup-iterations": {{ match_all_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ match_all_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
