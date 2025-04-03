@@ -1,0 +1,32 @@
+{% import "benchmark.helpers" as benchmark with context %}
+
+{
+  "version": 2,
+  "description": "Neural Search Benchmark for different search methods",
+  "indices": [
+    {
+      "name": "{{ index_name }}",
+      "body": "{{ index_body }}"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "quora",
+      "base-url": "https://github.com/weijia-aws/neural-search/releases/download/quora",
+      "documents": [
+        {
+          "source-file": "corpus.json.bz2",
+          "document-count": 522931,
+          "compressed-bytes": 10652253,
+          "uncompressed-bytes": 63335960
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ benchmark.collect(parts="operations/*.json") }}
+  ],
+  "test_procedures": [
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  ]
+}
