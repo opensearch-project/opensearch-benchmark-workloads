@@ -2,7 +2,8 @@
   "settings": {
     "index.number_of_shards": {{number_of_shards | default(5)}},
     "index.number_of_replicas": {{number_of_replicas | default(0)}},
-    "index.queries.cache.enabled": false
+    "index.queries.cache.enabled": false,
+    "index.requests.cache.enable": false
   },
   "mappings": {
     "content": {
@@ -10,11 +11,22 @@
         "enabled": {{ source_enabled | default(true) | tojson }}
       },
       "dynamic": "strict",
+      "_all": {
+        "enabled": false
+      },
       "properties": {
         "body": {
           "type": "text",
           "analyzer": "english"
-        },
+        }
+      }
+    },
+    "percolator": {
+      "dynamic": "strict",
+      "_all": {
+        "enabled": false
+      },
+      "properties": {
         "query": {
           "type": "percolator"
         }
