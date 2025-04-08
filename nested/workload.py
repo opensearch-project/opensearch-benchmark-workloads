@@ -43,9 +43,7 @@ class SortedTermQueryParamSource(QueryParamSource):
                         "answers.date": {
                             "mode": "max",
                             "order": "desc",
-                            "nested": {
-                                "path": "answers"
-                            }
+                            "nested_path": "answers"
                         }
                     }
                 ]
