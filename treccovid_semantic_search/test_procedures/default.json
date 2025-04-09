@@ -69,7 +69,7 @@
         },
         {{ benchmark.collect(parts="../../common_operations/force_merge.json") }},
         {
-          "operation": "default",
+          "operation": "match-all",
           "warmup-iterations": {{warmup_iterations | default(500) | tojson}},
           "iterations": {{iterations | default(500) | tojson }},
           "target-throughput": {{ target_throughput | default(100) | tojson}},

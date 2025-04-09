@@ -89,7 +89,7 @@
             "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
           },
           {
-            "operation": "default",
+            "operation": "match-all",
             "warmup-iterations": 500,
             "iterations": 200,
             "target-throughput": {{ default_target_throughput or target_throughput | default(20) | tojson }},

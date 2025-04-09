@@ -15,7 +15,7 @@
       "recency": {{recency | default(0)}}
     },
     {
-      "name": "default",
+      "name": "match-all",
       "operation-type": "search",
       "#COMMENT": "Large responses cause overhead on the client when decompressing the response. Disable to avoid the overhead",
       "response-compression-enabled": false,
