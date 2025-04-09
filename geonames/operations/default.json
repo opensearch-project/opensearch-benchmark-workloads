@@ -15,7 +15,7 @@
       "recency": {{recency | default(0)}}
     },
     {
-      "name": "default",
+      "name": "match-all",
       "operation-type": "search",
       "body": {
         "query": {

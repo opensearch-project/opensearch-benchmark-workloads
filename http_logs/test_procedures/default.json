@@ -7,9 +7,9 @@
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
         {% endwith %}
         {
-          "operation": "default",
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
+          "operation": "match-all",
+          "warmup-iterations": {{ match_all_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ match_all_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
@@ -174,9 +174,9 @@
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
         {% endwith %}
         {
-          "operation": "default",
-          "warmup-iterations": {{ default_warmup_iterations or warmup_iterations | default(500) | tojson }},
-          "iterations": {{ default_iterations or iterations | default(100) | tojson }},
+          "operation": "match-all",
+          "warmup-iterations": {{ match_all_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ match_all_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ default_target_throughput or target_throughput | default(8) | tojson }},
           "clients": {{ default_search_clients or search_clients | default(1) }}
         },
@@ -463,7 +463,7 @@
         {{ benchmark.collect(parts="../../common_operations/force_merge.json") }},
         {
           "name": "match-all",
-          "operation": "default",
+          "operation": "match-all",
           "warmup-iterations": {{ match_all_warmup_iterations or warmup_iterations | default(500) | tojson }},
           "iterations": {{ match_all_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ match_all_target_throughput or target_throughput | default(8) | tojson }},
@@ -471,7 +471,7 @@
         },
         {
           "name": "match-all-baseline-search-pipeline",
-          "operation": "default",
+          "operation": "match-all",
           "request-params": {
             "search-pipeline": "http-log-baseline-search-pipeline"
           },
@@ -482,7 +482,7 @@
         },
         {
           "name": "match-all-status-filter-search-pipeline",
-          "operation": "default",
+          "operation": "match-all",
           "request-params": {
             "search-pipeline": "http-log-status-filter-search-pipeline"
           },
@@ -493,7 +493,7 @@
         },
         {
           "name": "match-all-rename-field-search-pipeline",
-          "operation": "default",
+          "operation": "match-all",
           "request-params": {
             "search-pipeline": "http-log-rename-field-search-pipeline"
           },
@@ -504,7 +504,7 @@
         },
         {
           "name": "match-all-rename-100-field-search-pipeline",
-          "operation": "default",
+          "operation": "match-all",
           "request-params": {
             "search-pipeline": "http-log-rename-100-field-search-pipeline"
           },
@@ -515,7 +515,7 @@
         },
         {
           "name": "match-all-dummy-scripting-search-pipeline",
-          "operation": "default",
+          "operation": "match-all",
           "request-params": {
             "search-pipeline": "http-log-dummy-scripting-search-pipeline"
           },
@@ -526,7 +526,7 @@
         },
         {
           "name": "match-all-100-dummy-scripting-search-pipeline",
-          "operation": "default",
+          "operation": "match-all",
           "request-params": {
             "search-pipeline": "http-log-100-dummy-scripting-search-pipeline"
           },
@@ -537,7 +537,7 @@
         },
         {
           "name": "match-all-all-processors-search-pipeline",
-          "operation": "default",
+          "operation": "match-all",
           "request-params": {
             "search-pipeline": "http-log-all-processors-search-pipeline"
           },
