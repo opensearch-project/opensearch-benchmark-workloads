@@ -75,7 +75,7 @@
           "operation": "restore-snapshot"
         },
         {
-          "operation": "default",
+          "operation": "match-all",
           "warmup-iterations": 50,
           "iterations": 100
           {%- if not target_throughput %}

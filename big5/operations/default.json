@@ -5,7 +5,7 @@
       "ingest-percentage": {{ingest_percentage | default(100)}}
     },
     {
-      "name": "default",
+      "name": "match-all",
       "operation-type": "search",
       "index": "{{index_name | default('big5')}}",
       "body": {
