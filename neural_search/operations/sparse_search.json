@@ -1,0 +1,56 @@
+{
+  "name": "create-ingest-pipeline-sparse",
+  "operation-type": "put-pipeline",
+  "param-source": "create-ingest-pipeline-source",
+  "id": "{{default_ingest_pipeline | default('nlp-default-ingest-pipeline')}}",
+  "body": {
+    "description": "An NLP ingest pipeline",
+    "processors": [
+      {
+        "sparse_encoding": {
+          "model_id": "",
+          "prune_type": "{{prune_type | default('max_ratio')}}",
+          "prune_ratio": {{prune_ratio | default(0.1)}},
+          "field_map": {
+            "passage_text": "passage_embedding"
+          }
+        }
+      }
+    ]
+  }
+},
+{
+  "name": "register-ml-model-sparse",
+  "operation-type": "register-ml-model",
+  "model-name": "{{ model_name | default('amazon/neural-sparse/opensearch-neural-sparse-encoding-v2-distill')}}",
+  "model-version": "{{ model_version | default('1.0.0') }}",
+  "model-format": "{{ model_format | default('TORCH_SCRIPT') }}",
+  "model-config-file": "{{ model_config_file | default('') }}"
+},
+{
+  "name": "delete-ml-model-sparse",
+  "operation-type": "delete-ml-model",
+  "model-name": "{{ model_name | default('amazon/neural-sparse/opensearch-neural-sparse-encoding-v2-distill')}}"
+},
+{
+  "name": "sparse-search",
+  "operation-type": "search",
+  "param-source": "neural-sparse-search-source",
+  "variable-queries": {{variable_queries | default(0)}},
+  "index": "{{ index_name }}",
+  "body": {
+   "_source": {
+     "excludes": [
+       "passage_embedding"
+      ]
+   },
+   "query": {
+     "neural_sparse": {
+       "passage_embedding": {
+         "query_text": "What are some of the best science projects?",
+         "model_id": ""
+       }
+     }
+   }
+  }
+}
