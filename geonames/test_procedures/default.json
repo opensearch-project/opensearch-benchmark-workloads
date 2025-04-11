@@ -275,6 +275,7 @@
         {% with index_name="geonames" %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
         {% endwith %}
+        {
           "operation": {
               "name": "polling-ingest",
               "operation-type": "produce-stream-message",
