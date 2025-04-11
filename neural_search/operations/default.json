@@ -1,18 +1,8 @@
-{
-  "name": "delete-target-index",
-  "operation-type": "delete-index",
-  "only-if-exists": true,
-  "index": "{{ index_name }}"
-},
+
 {
   "name": "delete-ingest-pipeline",
   "operation-type": "delete-pipeline",
   "id": "{{default_ingest_pipeline | default('nlp-default-ingest-pipeline')}}"
-},
-{
-  "name": "create-target-index",
-  "operation-type": "create-index",
-  "index": "{{ index_name }}"
 },
 {
   "name": "put-cluster-settings",
@@ -48,8 +38,9 @@
   "include-in-reporting": false
 },
 {
-  "name": "default",
+  "name": "match-all",
   "operation-type": "search",
+  "index": "{{ index_name }}",
   "body": {
     "query": {
       "match_all": {}

@@ -1,13 +1,13 @@
-## Neural Search Plugin Workload
+## AI Search Workload
 
-This workload is to benchmark performance of indexing and search for different search methods (Semantic, Hybrid, Sparse and multimodal) using Neural Search Plugin of OpenSearch.
+This workload is to benchmark performance of indexing and search for different search methods (Semantic, Hybrid, Sparse and multimodal). Check this [link](https://opensearch.org/docs/latest/vector-search/ai-search/index/) for more information about AI search. 
 ### Dataset
 
 The Quora Question Pairs (QQP) dataset, released by Quora, is a collection of over 400,000 question pairs, each labeled to indicate whether the two questions are paraphrases of each other, used for research in natural language processing and machine learning.
 - Quora website: https://www.quora.com/q/quoradata/First-Quora-Dataset-Release-Question-Pairs
 - Dataset: https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/quora.zip
 
-### Example document and query
+### Example document and query for Quora dataset
 ```json
 {
     "_id": "22",
@@ -30,16 +30,16 @@ The Quora Question Pairs (QQP) dataset, released by Quora, is a collection of ov
    }
 ```
 ### Running a benchmark
-Before running a benchmark, ensure that the load generation host is able to access your cluster endpoint and that the appropriate dataset is available on the host.
+Before running a benchmark, ensure that the load generation host is able to access your cluster endpoint, which can be verified by a `curl $ENDPOINT` command.
 
-Currently, we support 1 test procedures for the neural search workload. The default procedure is named sparse-search and does not include the steps required to train the model being used. This test procedures will index a data set of vectors into an OpenSearch cluster and then run a set of queries against the generated index.
+By default, we use pretrained models for the workload, so steps to train the model being used are not required. Currently, we support 1 test procedures for the AI search workload, the default procedure is named sparse-search. This test procedures will index a data set of vectors into an OpenSearch cluster and then run a set of queries against the generated index.
 
-Due to the number of parameters this workload offers, it's recommended to create a parameter file that specifies the desired workload parameters instead of listing them all on the OSB command line. Users are welcome to use the example param files, sparse_search.json, in /params, as references. Here, we named the parameter file using a format <search_method_name>.json
+Due to the number of parameters this workload offers, it's recommended to create a parameter file that specifies the desired workload parameters instead of listing them all on the OSB command line. An example parameter file `sparse_search.json` is provided in the `params` directory within this workload.
 
 To run the workload, invoke the following command with the params file.
 ```
 # OpenSearch Cluster End point url with hostname and port
-export ENDPOINT=  
+export ENDPOINT= https://search.example.com
 # Absolute file path of Workload param file
 export PARAMS_FILE=
 
@@ -56,8 +56,13 @@ opensearch-benchmark execute-test \
 
 #### sparse-search
 
-This procedure runs all tasks of this sparse-search workload. First it deletes the current index and model. Then it indexes the corpus with vector embedding. Then it does the force-merging. At the end it does the sparse search.
+This test procedure carries out the following steps:
+ - Delete the current index and model
+ - Ingests the data corpus with vector embedding
+ - Runs a force-merge
+ - Performs the sparse search
 
+The full list of tasks is provided below:
 ### Workload tasks:
 
 - delete-target-index
@@ -74,42 +79,53 @@ This procedure runs all tasks of this sparse-search workload. First it deletes t
 - force-merge
 - refresh-after-force-merge
 - wait-until-merges-finish
-- default
+- match-all-search
 - sparse-search
 
 ### Parameters
 
 This workload allows [specifying the following parameters](#specifying-workload-parameters) using the `--workload-params` option to OpenSearch Benchmark:
 
-* `default_ingest_pipeline` (default: nlp-default-ingest-pipeline): name of the ingest pipeline
-* `prune_type` (default: max_ratio)
-* `prune_ratio` (default: 0.1)
-* `index_name`: : Name of the index
-* `bulk_size` (default: 100)
+* `allow_registering_model_via_url` (default: true): Whether allows user to register models using a URL
 * `bulk_indexing_clients` (default: 1): Number of clients that issue bulk indexing requests.
-* `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
-* `number_of_replicas` (default: 0)
-* `number_of_shards` (default: 1)
-* `query_cache_enabled` (default: false)
-* `requests_cache_enabled` (default: false)
-* `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
-* `force_merge_max_num_segments` (default: unset): An integer specifying the max amount of segments the force-merge operation should use.
-* `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
+* `bulk_size` (default: 100): Number of documents to be ingested in the bulk request.
 * `cluster_health` (default: "green"): The minimum required cluster health.
-* `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
-* `target_throughput` (default: default values for each operation): Number of requests per second, `""` for no limit.
-* `search_clients`: Number of clients that issue search requests.
-* `model_name` (default: amazon/neural-sparse/opensearch-neural-sparse-encoding-v2-distill) OpenSearch-provided pretrained model name.
-* `model_version` (default: 1.0.0) Model version.
-* `model_format` (default: TORCH_SCRIPT) Model format.
+* `corpora_name`: Name of the corpora
+* `default_ingest_pipeline` (default: nlp-default-ingest-pipeline): name of the ingest pipeline
 * `dimensions` (default: 768): Vector dimensions, needed to match the model.
 * `engine` (default:` lucene): The approximate k-NN library to use for indexing and search.
-* `method` (default:` hnsw): K-NN search algorithm.
-* `space_type` (default:` l2): The vector space used to calculate the distance between vectors.
-* `k` (default: 10) Number of nearest neighbors are returned.
-* `warmup_iterations` Number of Warmup iteration of each search client executes.
+* `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
+* `flush_threshold_size` (default: "1g") Size when reached to flush the translog
+* `force_merge_max_num_segments` (default: unset): An integer specifying the max amount of segments the force-merge operation should use.
+* `index_body`: Body of the index setting, must pass as workload parameter
+* `index_knn`: Whether to create a vector index, required as parameter for all search methods EXCEPT sparse search
+* `index_name`: Name of the index, must pass as workload parameter
+* `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
+* `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
 * `iterations`  Number of test iterations of each search client executes.
-* `num_variable_queries` (default: 0) Number of variable queries will be used for the semantic search task, 0 means fixed query.
+* `k` (default: 10) Number of nearest neighbors are returned.
+* `method` (default:` hnsw): K-NN search algorithm.
+* `model_config_file` (default: "") Config file for the model
+* `model_format` (default: TORCH_SCRIPT) Model format.
+* `model_name` (default: amazon/neural-sparse/opensearch-neural-sparse-encoding-v2-distill) OpenSearch-provided pretrained model name.
+* `model_version` (default: 1.0.0) Model version.
+* `native_memory_threshold` (default: 99): Sets a circuit breaker that checks all system memory usage before running an ML task. If the native memory exceeds the threshold, OpenSearch throws an exception and stops running any ML task
+* `number_of_replicas` (default: 0): Number of replicas for indexes in the cluster
+* `number_of_shards` (default: 1): Number of primary shards in the index
+* `only_run_on_ml_node` (default: false): If true, ML Commons tasks and models run ML tasks on ML nodes only. If false, tasks and models run on ML nodes first. If no ML nodes exist, tasks and models run on data nodes
+* `passage_embedding_type`: Embedding type of the passage, must pass as workload parameter for sparse search procedure
+* `prune_ratio` (default: 0.1): The ratio for the pruning strategy. Required when `prune_type` is specified.
+* `prune_type` (default: max_ratio): The prune strategy for sparse vectors. Valid values are max_ratio, alpha_mass, top_k, abs_value, and none. This parameter is only required for sparse search
+* `query_cache_enabled` (default: false): Enables or disables the index query cache
+* `refresh_interval` (default: "5s") Interval to refresh the index in seconds
+* `requests_cache_enabled` (default: false): Enables or disables the index request cache
+* `search_clients`: Number of clients that issue search requests.
+* `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
+* `space_type` (default:` l2): The vector space used to calculate the distance between vectors.
+* `target_throughput` (default: default values for each operation): Number of requests per second, `""` for no limit.
+* `variable_queries` (default: 0) Number of variable queries will be used for the semantic search task, 0 means fixed query.
+* `warmup_iterations` Number of Warmup iteration of each search client executes.
+* `warmup-time-period` (default: 120): Amount of time, in seconds, to warm up the benchmark candidate
 
 ### Specifying Workload Parameters
 
@@ -120,13 +136,14 @@ Example:
   "index_name": "quora",
   "index_body": "indices/quora.json",
   "corpora_name": "quora",
-  "ingest_percentage": 1,
+  "ingest_percentage": 100,
   "variable_queries": 0,
+  "warmup_time_period": 5,
   "default_ingest_pipeline": "nlp-default-ingest-pipeline-sparse"
 }
  ```
 
-This is already setup as `sparse_search.json` in params directory, provide it to OpenSearch Benchmark with `--workload-params="/path/to/sparse_search.json"`. The overrides for simple parameters could be specified in-place, for example `--workload-params=search_clients:2`.
+This is already setup as `sparse_search.json` in params directory, provide it to OpenSearch Benchmark with `--workload-params="/path/to/sparse_search.json"`. If only one or two parameters need to be specified, rather than using a parameter file, they can be specified on the command line like so: --workload-params=search_clients:2.
 
 ### Sample command and output
 
@@ -144,13 +161,12 @@ This is already setup as `sparse_search.json` in params directory, provide it to
 \____/ .___/\___/_/ /_/____/\___/\__,_/_/   \___/_/ /_/  /_____/\___/_/ /_/\___/_/ /_/_/ /_/ /_/\__,_/_/  /_/|_|
     /_/
 
-[INFO] [Test Execution ID]: 08ad495b-e63a-476a-add5-965f1bebac05
+[INFO] [Test Execution ID]: b8d17b2d-746b-48a6-af43-556005590efc
 [INFO] Executing test with workload [neural_search], test_procedure [sparse-search] and provision_config_instance ['external'] with version [2.19.0].
 
-[WARNING] merges_total_time is 100 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
-[WARNING] indexing_total_time is 461 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
-[WARNING] refresh_total_time is 125 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
-[WARNING] flush_total_time is 104 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] merges_total_time is 102 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] indexing_total_time is 32 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] refresh_total_time is 93 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
 Running delete-target-index                                                    [100% done]
 Running delete-ingest-pipeline                                                 [100% done]
 Running delete-ml-model-sparse                                                 [100% done]
@@ -165,7 +181,7 @@ Running refresh-after-index                                                    [
 Running force-merge                                                            [100% done]
 Running refresh-after-force-merge                                              [100% done]
 Running wait-until-merges-finish                                               [100% done]
-Running default                                                                [100% done]
+Running match-all                                                              [100% done]
 Running sparse-search                                                          [100% done]
 
 ------------------------------------------------------
@@ -176,100 +192,100 @@ Running sparse-search                                                          [
 /_/   /_/_/ /_/\__,_/_/   /____/\___/\____/_/   \___/
 ------------------------------------------------------
             
-|                                                         Metric |                     Task |      Value |   Unit |
-|---------------------------------------------------------------:|-------------------------:|-----------:|-------:|
-|                     Cumulative indexing time of primary shards |                          |   0.272583 |    min |
-|             Min cumulative indexing time across primary shards |                          |          0 |    min |
-|          Median cumulative indexing time across primary shards |                          |          0 |    min |
-|             Max cumulative indexing time across primary shards |                          |   0.199967 |    min |
-|            Cumulative indexing throttle time of primary shards |                          |          0 |    min |
-|    Min cumulative indexing throttle time across primary shards |                          |          0 |    min |
-| Median cumulative indexing throttle time across primary shards |                          |          0 |    min |
-|    Max cumulative indexing throttle time across primary shards |                          |          0 |    min |
-|                        Cumulative merge time of primary shards |                          |    1.94958 |    min |
-|                       Cumulative merge count of primary shards |                          |         22 |        |
-|                Min cumulative merge time across primary shards |                          |          0 |    min |
-|             Median cumulative merge time across primary shards |                          |          0 |    min |
-|                Max cumulative merge time across primary shards |                          |    1.90437 |    min |
-|               Cumulative merge throttle time of primary shards |                          |     1.8385 |    min |
-|       Min cumulative merge throttle time across primary shards |                          |          0 |    min |
-|    Median cumulative merge throttle time across primary shards |                          |          0 |    min |
-|       Max cumulative merge throttle time across primary shards |                          |     1.8385 |    min |
-|                      Cumulative refresh time of primary shards |                          |     0.1798 |    min |
-|                     Cumulative refresh count of primary shards |                          |       1383 |        |
-|              Min cumulative refresh time across primary shards |                          |          0 |    min |
-|           Median cumulative refresh time across primary shards |                          |          0 |    min |
-|              Max cumulative refresh time across primary shards |                          |     0.0919 |    min |
-|                        Cumulative flush time of primary shards |                          |     0.0114 |    min |
-|                       Cumulative flush count of primary shards |                          |         78 |        |
-|                Min cumulative flush time across primary shards |                          |          0 |    min |
-|             Median cumulative flush time across primary shards |                          |          0 |    min |
-|                Max cumulative flush time across primary shards |                          | 0.00781667 |    min |
-|                                        Total Young Gen GC time |                          |       0.56 |      s |
-|                                       Total Young Gen GC count |                          |        319 |        |
-|                                          Total Old Gen GC time |                          |      0.059 |      s |
-|                                         Total Old Gen GC count |                          |          2 |        |
-|                                                     Store size |                          |    2.24142 |     GB |
-|                                                  Translog size |                          |   0.670547 |     GB |
-|                                         Heap used for segments |                          |          0 |     MB |
-|                                       Heap used for doc values |                          |          0 |     MB |
-|                                            Heap used for terms |                          |          0 |     MB |
-|                                            Heap used for norms |                          |          0 |     MB |
-|                                           Heap used for points |                          |          0 |     MB |
-|                                    Heap used for stored fields |                          |          0 |     MB |
-|                                                  Segment count |                          |        176 |        |
-|                                                 Min Throughput |             index-append |    15442.9 | docs/s |
-|                                                Mean Throughput |             index-append |    15959.1 | docs/s |
-|                                              Median Throughput |             index-append |    16090.6 | docs/s |
-|                                                 Max Throughput |             index-append |      16112 | docs/s |
-|                                        50th percentile latency |             index-append |    3.60958 |     ms |
-|                                        90th percentile latency |             index-append |    4.11443 |     ms |
-|                                        99th percentile latency |             index-append |     6.6752 |     ms |
-|                                      99.9th percentile latency |             index-append |    10.4504 |     ms |
-|                                       100th percentile latency |             index-append |    15.0526 |     ms |
-|                                   50th percentile service time |             index-append |    3.60958 |     ms |
-|                                   90th percentile service time |             index-append |    4.11443 |     ms |
-|                                   99th percentile service time |             index-append |     6.6752 |     ms |
-|                                 99.9th percentile service time |             index-append |    10.4504 |     ms |
-|                                  100th percentile service time |             index-append |    15.0526 |     ms |
-|                                                     error rate |             index-append |          0 |      % |
-|                                                 Min Throughput | wait-until-merges-finish |      21.67 |  ops/s |
-|                                                Mean Throughput | wait-until-merges-finish |      21.67 |  ops/s |
-|                                              Median Throughput | wait-until-merges-finish |      21.67 |  ops/s |
-|                                                 Max Throughput | wait-until-merges-finish |      21.67 |  ops/s |
-|                                       100th percentile latency | wait-until-merges-finish |    45.5904 |     ms |
-|                                  100th percentile service time | wait-until-merges-finish |    45.5904 |     ms |
-|                                                     error rate | wait-until-merges-finish |          0 |      % |
-|                                                 Min Throughput |                  default |      99.89 |  ops/s |
-|                                                Mean Throughput |                  default |      99.91 |  ops/s |
-|                                              Median Throughput |                  default |      99.91 |  ops/s |
-|                                                 Max Throughput |                  default |      99.93 |  ops/s |
-|                                        50th percentile latency |                  default |    3.20208 |     ms |
-|                                        90th percentile latency |                  default |    5.11781 |     ms |
-|                                        99th percentile latency |                  default |    6.38286 |     ms |
-|                                       100th percentile latency |                  default |    6.96813 |     ms |
-|                                   50th percentile service time |                  default |    2.16298 |     ms |
-|                                   90th percentile service time |                  default |    4.14619 |     ms |
-|                                   99th percentile service time |                  default |    5.25284 |     ms |
-|                                  100th percentile service time |                  default |     5.8795 |     ms |
-|                                                     error rate |                  default |          0 |      % |
-|                                                 Min Throughput |            sparse-search |       9.99 |  ops/s |
-|                                                Mean Throughput |            sparse-search |       9.99 |  ops/s |
-|                                              Median Throughput |            sparse-search |       9.99 |  ops/s |
-|                                                 Max Throughput |            sparse-search |       9.99 |  ops/s |
-|                                        50th percentile latency |            sparse-search |    47.2827 |     ms |
-|                                        90th percentile latency |            sparse-search |    48.0657 |     ms |
-|                                        99th percentile latency |            sparse-search |    49.2571 |     ms |
-|                                       100th percentile latency |            sparse-search |    50.8855 |     ms |
-|                                   50th percentile service time |            sparse-search |    45.7156 |     ms |
-|                                   90th percentile service time |            sparse-search |    46.4979 |     ms |
-|                                   99th percentile service time |            sparse-search |    47.5054 |     ms |
-|                                  100th percentile service time |            sparse-search |    47.5916 |     ms |
-|                                                     error rate |            sparse-search |          0 |      % |
+|                                                         Metric |                     Task |     Value |   Unit |
+|---------------------------------------------------------------:|-------------------------:|----------:|-------:|
+|                     Cumulative indexing time of primary shards |                          |  0.238333 |    min |
+|             Min cumulative indexing time across primary shards |                          |         0 |    min |
+|          Median cumulative indexing time across primary shards |                          |         0 |    min |
+|             Max cumulative indexing time across primary shards |                          |    0.2098 |    min |
+|            Cumulative indexing throttle time of primary shards |                          |         0 |    min |
+|    Min cumulative indexing throttle time across primary shards |                          |         0 |    min |
+| Median cumulative indexing throttle time across primary shards |                          |         0 |    min |
+|    Max cumulative indexing throttle time across primary shards |                          |         0 |    min |
+|                        Cumulative merge time of primary shards |                          |   0.85035 |    min |
+|                       Cumulative merge count of primary shards |                          |         7 |        |
+|                Min cumulative merge time across primary shards |                          |         0 |    min |
+|             Median cumulative merge time across primary shards |                          |         0 |    min |
+|                Max cumulative merge time across primary shards |                          |    0.8348 |    min |
+|               Cumulative merge throttle time of primary shards |                          |   0.71885 |    min |
+|       Min cumulative merge throttle time across primary shards |                          |         0 |    min |
+|    Median cumulative merge throttle time across primary shards |                          |         0 |    min |
+|       Max cumulative merge throttle time across primary shards |                          |   0.71885 |    min |
+|                      Cumulative refresh time of primary shards |                          |    0.0269 |    min |
+|                     Cumulative refresh count of primary shards |                          |       481 |        |
+|              Min cumulative refresh time across primary shards |                          |         0 |    min |
+|           Median cumulative refresh time across primary shards |                          |         0 |    min |
+|              Max cumulative refresh time across primary shards |                          | 0.0168333 |    min |
+|                        Cumulative flush time of primary shards |                          |   0.00455 |    min |
+|                       Cumulative flush count of primary shards |                          |         1 |        |
+|                Min cumulative flush time across primary shards |                          |         0 |    min |
+|             Median cumulative flush time across primary shards |                          |         0 |    min |
+|                Max cumulative flush time across primary shards |                          |   0.00455 |    min |
+|                                        Total Young Gen GC time |                          |     0.674 |      s |
+|                                       Total Young Gen GC count |                          |       345 |        |
+|                                          Total Old Gen GC time |                          |      0.16 |      s |
+|                                         Total Old Gen GC count |                          |         3 |        |
+|                                                     Store size |                          |   8.11566 |     GB |
+|                                                  Translog size |                          |  0.642941 |     GB |
+|                                         Heap used for segments |                          |         0 |     MB |
+|                                       Heap used for doc values |                          |         0 |     MB |
+|                                            Heap used for terms |                          |         0 |     MB |
+|                                            Heap used for norms |                          |         0 |     MB |
+|                                           Heap used for points |                          |         0 |     MB |
+|                                    Heap used for stored fields |                          |         0 |     MB |
+|                                                  Segment count |                          |       220 |        |
+|                                                 Min Throughput |             index-append |   49997.9 | docs/s |
+|                                                Mean Throughput |             index-append |   54492.8 | docs/s |
+|                                              Median Throughput |             index-append |     55239 | docs/s |
+|                                                 Max Throughput |             index-append |   57495.2 | docs/s |
+|                                        50th percentile latency |             index-append |   8.41481 |     ms |
+|                                        90th percentile latency |             index-append |   12.9676 |     ms |
+|                                        99th percentile latency |             index-append |   23.6447 |     ms |
+|                                      99.9th percentile latency |             index-append |   296.772 |     ms |
+|                                       100th percentile latency |             index-append |   346.362 |     ms |
+|                                   50th percentile service time |             index-append |   8.41481 |     ms |
+|                                   90th percentile service time |             index-append |   12.9676 |     ms |
+|                                   99th percentile service time |             index-append |   23.6447 |     ms |
+|                                 99.9th percentile service time |             index-append |   296.772 |     ms |
+|                                  100th percentile service time |             index-append |   346.362 |     ms |
+|                                                     error rate |             index-append |         0 |      % |
+|                                                 Min Throughput | wait-until-merges-finish |     22.75 |  ops/s |
+|                                                Mean Throughput | wait-until-merges-finish |     22.75 |  ops/s |
+|                                              Median Throughput | wait-until-merges-finish |     22.75 |  ops/s |
+|                                                 Max Throughput | wait-until-merges-finish |     22.75 |  ops/s |
+|                                       100th percentile latency | wait-until-merges-finish |   43.5016 |     ms |
+|                                  100th percentile service time | wait-until-merges-finish |   43.5016 |     ms |
+|                                                     error rate | wait-until-merges-finish |         0 |      % |
+|                                                 Min Throughput |                match-all |     99.79 |  ops/s |
+|                                                Mean Throughput |                match-all |     99.84 |  ops/s |
+|                                              Median Throughput |                match-all |     99.84 |  ops/s |
+|                                                 Max Throughput |                match-all |     99.87 |  ops/s |
+|                                        50th percentile latency |                match-all |   3.75933 |     ms |
+|                                        90th percentile latency |                match-all |   5.12179 |     ms |
+|                                        99th percentile latency |                match-all |   7.12119 |     ms |
+|                                       100th percentile latency |                match-all |   11.4097 |     ms |
+|                                   50th percentile service time |                match-all |   2.76821 |     ms |
+|                                   90th percentile service time |                match-all |   4.35323 |     ms |
+|                                   99th percentile service time |                match-all |   6.15755 |     ms |
+|                                  100th percentile service time |                match-all |    10.635 |     ms |
+|                                                     error rate |                match-all |         0 |      % |
+|                                                 Min Throughput |            sparse-search |      9.84 |  ops/s |
+|                                                Mean Throughput |            sparse-search |      9.88 |  ops/s |
+|                                              Median Throughput |            sparse-search |      9.88 |  ops/s |
+|                                                 Max Throughput |            sparse-search |      9.91 |  ops/s |
+|                                        50th percentile latency |            sparse-search |   47.7587 |     ms |
+|                                        90th percentile latency |            sparse-search |   48.5417 |     ms |
+|                                        99th percentile latency |            sparse-search |   50.0997 |     ms |
+|                                       100th percentile latency |            sparse-search |   50.4377 |     ms |
+|                                   50th percentile service time |            sparse-search |   46.2167 |     ms |
+|                                   90th percentile service time |            sparse-search |   47.0693 |     ms |
+|                                   99th percentile service time |            sparse-search |   48.4767 |     ms |
+|                                  100th percentile service time |            sparse-search |   48.9709 |     ms |
+|                                                     error rate |            sparse-search |         0 |      % |
 
 
 ---------------------------------
-[INFO] SUCCESS (took 178 seconds)
+[INFO] SUCCESS (took 159 seconds)
 ---------------------------------
 ```
 

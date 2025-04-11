@@ -1,20 +1,9 @@
-{
-  "operation": "create-target-index"
-},
+{{ benchmark.collect(parts="../../../common_operations/create_index.json") }},
 {{ benchmark.collect(parts="../../../common_operations/check_cluster_health.json") }},
-{
-  "operation": "index-append",
-  "warmup-time-period": 5,
-  "clients": {{bulk_indexing_clients | default(1)}},
-  "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
-},
-{
-  "name": "refresh-after-index",
-  "operation": "refresh"
-},
+{{ benchmark.collect(parts="../../../common_operations/index_append.json") }},
 {{ benchmark.collect(parts="../../../common_operations/force_merge.json") }},
 {
-  "operation": "default",
+  "operation": "match-all",
   "warmup-iterations": {{warmup_iterations | default(500) | tojson}},
   "iterations": {{iterations | default(500) | tojson }},
   "target-throughput": {{ target_throughput | default(100) | tojson}},

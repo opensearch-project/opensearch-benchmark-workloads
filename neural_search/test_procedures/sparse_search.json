@@ -3,9 +3,7 @@
   "description": "Indexes the corpus and then runs queries with Neural Sparse Search.",
   "default": true,
   "schedule": [
-    {
-      "operation": "delete-target-index"
-    },
+    {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
     {
       "operation": "delete-ingest-pipeline"
     },
@@ -24,7 +22,7 @@
     {
       "operation": "create-ingest-pipeline-sparse"
     },
-    {{ benchmark.collect(parts="common/ingest_document_and_default_search.json") }},
+    {{ benchmark.collect(parts="common/ingest_document_and_match_all_search.json") }},
     {
       "operation": "sparse-search",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},

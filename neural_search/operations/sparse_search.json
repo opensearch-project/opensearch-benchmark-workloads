@@ -41,7 +41,7 @@
   "body": {
    "_source": {
      "excludes": [
-     "passage_embedding"
+       "passage_embedding"
       ]
    },
    "query": {
