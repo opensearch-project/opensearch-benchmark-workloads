@@ -1,0 +1,24 @@
+{
+    "operation": "semantic-search-neural",
+    "warmup-iterations": {{warmup_iterations | default(50) | tojson}},
+    "iterations": {{iterations | default(100) | tojson }},
+    "clients": {{ search_clients | default(1)}}
+  },
+  {
+    "operation": "semantic-search-hybrid-bm25-and-knn-search",
+    "warmup-iterations": {{warmup_iterations | default(50) | tojson}},
+    "iterations": {{iterations | default(100) | tojson }},
+    "clients": {{ search_clients | default(1)}}
+  },
+  {
+    "operation": "semantic-search-hybrid-bm25-and-neural-search",
+    "warmup-iterations": {{warmup_iterations | default(50) | tojson}},
+    "iterations": {{iterations | default(100) | tojson }},
+    "clients": {{ search_clients | default(1)}}
+  },
+  {
+    "operation": "semantic-search-hybrid-bm25-range-and-neural-search",
+    "warmup-iterations": {{warmup_iterations | default(50) | tojson}},
+    "iterations": {{iterations | default(100) | tojson }},
+    "clients": {{ search_clients | default(1)}}
+  }
