@@ -3,7 +3,7 @@
       "description": "Indexes the whole document corpus using OpenSearch default settings. We only adjust the number of replicas as we benchmark a single node cluster and Benchmark will only start the benchmark if the cluster turns green. Document ids are unique so all index operations are append only. After that a couple of queries are run.",
       "default": true,
       "schedule": [
-        {% with default_index_settings={}, index_name="geonames" %}
+        {% with index_name="geonames" %}
         {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
         {% endwith %}
         {
@@ -275,6 +275,7 @@
         {% with index_name="geonames" %}
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
         {% endwith %}
+        {
           "operation": {
               "name": "polling-ingest",
               "operation-type": "produce-stream-message",
