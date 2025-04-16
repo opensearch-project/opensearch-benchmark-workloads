@@ -1,0 +1,34 @@
+{
+  "name": "sparse-search",
+  "description": "Indexes the corpus and then runs queries with Neural Sparse Search.",
+  "default": true,
+  "schedule": [
+    {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+    {
+      "operation": "delete-ingest-pipeline"
+    },
+    {
+      "operation": "delete-ml-model-sparse"
+    },
+    {
+      "operation": "put-cluster-settings"
+    },
+    {
+      "operation": "register-ml-model-sparse"
+    },
+    {
+      "operation": "deploy-ml-model"
+    },
+    {
+      "operation": "create-ingest-pipeline-sparse"
+    },
+    {{ benchmark.collect(parts="common/ingest_document_and_match_all_search.json") }},
+    {
+      "operation": "sparse-search",
+      "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+      "iterations": {{iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(10) | tojson}},
+      "clients": {{ search_clients | default(1)}}
+    }
+  ]
+}
