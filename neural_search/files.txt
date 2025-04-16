@@ -1,0 +1,2 @@
+corpus.json.bz2
+queries.json.bz2
