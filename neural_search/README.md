@@ -41,7 +41,7 @@ To run the workload, invoke the following command with the params file.
 # OpenSearch Cluster End point url with hostname and port
 export ENDPOINT= https://search.example.com
 # Absolute file path of Workload param file
-export PARAMS_FILE=
+export PARAMS_FILE=/path/to/params.json
 
 opensearch-benchmark execute-test \
     --target-hosts $ENDPOINT \
