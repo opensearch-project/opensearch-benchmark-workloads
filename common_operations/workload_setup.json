@@ -1,5 +1,11 @@
 {% if use_snapshot %}
-  {% with snapshot_repo=snapshot_repo, snapshot_name=snapshot_name, snapshot_indices=snapshot_indices %}
+  {% with 
+  snapshot_repo=snapshot_repo,
+  snapshot_name=snapshot_name,
+  snapshot_indices=snapshot_indices,
+  snapshot_rename_pattern=snapshot_rename_pattern,
+  snapshot_rename_replacement=snapshot_rename_replacement
+  %}
     {{ benchmark.collect(parts="restore_snapshot.json") }}
   {% endwith %}
 {% else %}

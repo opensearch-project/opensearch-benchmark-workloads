@@ -7,8 +7,8 @@
     "body": {
       "indices": "{{ snapshot_indices | default('_all') }}",
       "include_global_state": false,
-      "rename_pattern": "(.+)",
-      "rename_replacement": "$1"
+      "rename_pattern": "{{ snapshot_rename_pattern | default('(.+)') }}",
+      "rename_replacement": "{{ snapshot_rename_replacement | default('$1') }}"
     }
   }
 }
