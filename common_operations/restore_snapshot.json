@@ -1,0 +1,14 @@
+{
+  "operation": {
+    "name": "restore-snapshot",
+    "operation-type": "raw-request",
+    "method": "POST",
+    "path": "/_snapshot/{{ snapshot_repo }}/{{ snapshot_name }}/_restore",
+    "body": {
+      "indices": "{{ snapshot_indices | default('_all') }}",
+      "include_global_state": false,
+      "rename_pattern": "{{ snapshot_rename_pattern | default('(.+)') }}",
+      "rename_replacement": "{{ snapshot_rename_replacement | default('$1') }}"
+    }
+  }
+}
