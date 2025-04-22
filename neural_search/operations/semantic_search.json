@@ -1,0 +1,23 @@
+{
+  "name": "semantic-search",
+  "operation-type": "search",
+  "variable-queries": {{variable_queries | default(0)}},
+  "param-source": "neural-semantic-search-source",
+  "index": "{{ index_name }}",
+  "body": {
+    "_source": {
+      "excludes": [
+        "passage_embedding"
+      ]
+    },
+    "query": {
+      "neural": {
+        "passage_embedding": {
+          "query_text": "What are some of the best science projects?",
+          "model_id": "",
+          "k": {{k | default(10)}}
+        }
+      }
+    }
+  }
+}

@@ -46,4 +46,37 @@
       "match_all": {}
     }
   }
+},
+
+{
+  "name": "create-text-embedding-processor-ingest-pipeline",
+  "operation-type": "put-pipeline",
+  "param-source": "create-ingest-pipeline-source",
+  "id": "{{default_ingest_pipeline | default('nlp-default-ingest-pipeline')}}",
+  "body": {
+    "description": "An NLP ingest pipeline for dense embedding",
+    "processors": [
+      {
+        "text_embedding": {
+          "model_id": "",
+          "field_map": {
+            "text": "passage_embedding"
+          }
+        }
+      }
+    ]
+  }
+},
+{
+  "name": "register-ml-model-sentence-transformer",
+  "operation-type": "register-ml-model",
+  "model-name": "{{ model_name | default('huggingface/sentence-transformers/all-mpnet-base-v2')}}",
+  "model-version": "{{ model_version | default('1.0.1') }}",
+  "model-format": "{{ model_format | default('TORCH_SCRIPT') }}",
+  "model-config-file": "{{ model_config_file | default('') }}"
+},
+{
+  "name": "delete-ml-model-sentence-transformer",
+  "operation-type": "delete-ml-model",
+  "model-name": "{{ model_name | default('huggingface/sentence-transformers/all-mpnet-base-v2')}}"
 }

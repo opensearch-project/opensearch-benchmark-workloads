@@ -14,10 +14,15 @@ def ingest_pipeline_param_source(workload, params, **kwargs):
     if 'sparse_encoding' in processor:
         model_id = processor['sparse_encoding']['model_id']
         processor_name = 'sparse_encoding'
+    elif 'text_embedding' in processor:
+        model_id = processor['text_embedding']['model_id']
+        processor_name = 'text_embedding'
     else:
         raise Exception('Processor: {} is not supported'.format(processor))
 
     if not model_id:
+        # We don't have to manually provide the model_id.json file, it will be created during register-ml-model operation.
+        # See the logic in OSB: https://github.com/weijia-aws/opensearch-benchmark/blob/main/osbenchmark/worker_coordinator/runner.py#L2741
         with open('model_id.json') as f:
             d = json.loads(f.read())
             model_id = d['model_id']
@@ -78,7 +83,43 @@ class NeuralSparseQueryParamSource(QueryParamSource):
                 params['body']['query']['neural_sparse']['passage_embedding']['query_text'] = query_text
         return params
 
+class NeuralHybridQueryParamSource(QueryParamSource):
+    def params(self):
+        params = self._params
+        with open('model_id.json', 'r') as f:
+            d = json.loads(f.read())
+            params['body']['query']['hybrid']['queries'][1]['neural']['passage_embedding']['model_id'] = d['model_id']
+
+        count = self._params.get("variable-queries", 0)
+        if count > 0:
+            script_dir = os.path.dirname(os.path.realpath(__file__))
+            with open(script_dir + '/queries.json', 'r') as f:
+                lines = f.read().splitlines()
+                line = random.choice(lines)
+                query_text = json.loads(line)['text']
+                params['body']['query']['hybrid']['queries'][0]['match']['text']['query'] = query_text
+                params['body']['query']['hybrid']['queries'][1]['neural']['passage_embedding']['query_text'] = query_text
+        return params
+
+class NeuralSemanticQueryParamSource(QueryParamSource):
+    def params(self):
+        params = self._params
+        with open('model_id.json', 'r') as f:
+            d = json.loads(f.read())
+            params['body']['query']['neural']['passage_embedding']['model_id'] = d['model_id']
+        count = self._params.get("variable-queries", 0)
+        if count > 0:
+            script_dir = os.path.dirname(os.path.realpath(__file__))
+            with open(script_dir + '/queries.json', 'r') as f:
+                lines = f.read().splitlines()
+                line = random.choice(lines)
+                query_text = json.loads(line)['text']
+                params['body']['query']['neural']['passage_embedding']['query_text'] = query_text
+        return params
+
 def register(registry):
     registry.register_param_source("neural-sparse-search-source", NeuralSparseQueryParamSource)
+    registry.register_param_source("neural-hybrid-search-source", NeuralHybridQueryParamSource)
+    registry.register_param_source("neural-semantic-search-source", NeuralSemanticQueryParamSource)
     registry.register_param_source("create-ingest-pipeline-source", ingest_pipeline_param_source)
 

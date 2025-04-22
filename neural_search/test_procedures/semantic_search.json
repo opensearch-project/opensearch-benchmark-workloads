@@ -1,30 +1,30 @@
 {
-  "name": "sparse-search",
-  "description": "Indexes the corpus and then runs queries with Neural Sparse Search.",
-  "default": true,
+  "name": "semantic-search",
+  "description": "Indexes the corpus and then runs neural clause queries with Semantic search.",
+  "default": false,
   "schedule": [
     {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
     {
       "operation": "delete-ingest-pipeline"
     },
     {
-      "operation": "delete-ml-model-sparse"
+      "operation": "delete-ml-model-sentence-transformer"
     },
     {
       "operation": "put-cluster-settings"
     },
     {
-      "operation": "register-ml-model-sparse"
+      "operation": "register-ml-model-sentence-transformer"
     },
     {
       "operation": "deploy-ml-model"
     },
     {
-      "operation": "create-ingest-pipeline-sparse"
+      "operation": "create-text-embedding-processor-ingest-pipeline"
     },
     {{ benchmark.collect(parts="common/create_index_ingest_document_and_match_all_search.json") }},
     {
-      "operation": "sparse-search",
+      "operation": "semantic-search",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
       "iterations": {{iterations | default(100) | tojson }},
       "target-throughput": {{ target_throughput | default(10) | tojson}},

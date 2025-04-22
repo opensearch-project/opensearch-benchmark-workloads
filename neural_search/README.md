@@ -32,7 +32,7 @@ The Quora Question Pairs (QQP) dataset, released by Quora, is a collection of ov
 ### Running a benchmark
 Before running a benchmark, ensure that the load generation host is able to access your cluster endpoint, which can be verified by a `curl $ENDPOINT` command.
 
-By default, we use pretrained models for the workload, so steps to train the model being used are not required. Currently, we support 1 test procedures for the AI search workload, the default procedure is named sparse-search. This test procedures will index a data set of vectors into an OpenSearch cluster and then run a set of queries against the generated index.
+By default, we use pretrained models for the workload, so steps to train the model being used are not required. Currently, we support 3 test procedures for the AI search workload, the default procedure is named sparse-search. This test procedures will index a data set of vectors into an OpenSearch cluster and then run a set of queries against the generated index.
 
 Due to the number of parameters this workload offers, it's recommended to create a parameter file that specifies the desired workload parameters instead of listing them all on the OSB command line. An example parameter file `sparse_search.json` is provided in the `params` directory within this workload.
 
@@ -54,9 +54,9 @@ opensearch-benchmark execute-test \
 ```
 ### Procedures
 
-#### sparse-search
+#### sparse-search, hybrid-search, semantic-search
 
-This test procedure carries out the following steps:
+These test procedures carry out the following steps:
  - Delete the current index and model
  - Ingests the data corpus with vector embedding
  - Runs a force-merge
@@ -65,14 +65,16 @@ This test procedure carries out the following steps:
 The full list of tasks is provided below:
 ### Workload tasks:
 
-- delete-target-index
+- delete-index
+- delete-normalization-search-pipeline (hybrid search only)
 - delete-ingest-pipeline
-- delete-ml-model-sparse
+- delete-ml-model
 - put-cluster-settings
-- register-ml-model-sparse
+- register-ml-model
 - deploy-ml-model
-- create-ingest-pipeline-sparse
-- create-target-index
+- create-ingest-pipeline
+- create-normalization-search-pipeline (hybrid search only)
+- create-index
 - check-cluster-health
 - index-append
 - refresh-after-index
@@ -80,8 +82,10 @@ The full list of tasks is provided below:
 - refresh-after-force-merge
 - wait-until-merges-finish
 - match-all-search
-- sparse-search
-
+- <search_method_name>-search (e.g. sparse-search, semantic-search excluding hybrid search)
+- hybrid-search-with-normalization-search-pipeline (hybrid search only)
+- hybrid-search-with-temporary-pipeline (hybrid search only, note that the temporary pipeline is created during search, so not necessary to explicitly create it)
+ 
 ### Parameters
 
 This workload allows [specifying the following parameters](#specifying-workload-parameters) using the `--workload-params` option to OpenSearch Benchmark:
@@ -144,8 +148,9 @@ Example:
  ```
 
 This is already setup as `sparse_search.json` in params directory, provide it to OpenSearch Benchmark with `--workload-params="/path/to/sparse_search.json"`. If only one or two parameters need to be specified, rather than using a parameter file, they can be specified on the command line like so: --workload-params=search_clients:2.
+We also provide necessary parameters for Semantic and Hybrid search, check `semantic_search.json` and `hybrid_search.json` in params directory
 
-### Sample command and output
+### Sample command and output for sparse-search with 10% ingest_percentage
 
 ```
 ./opensearch-benchmark execute-test --pipeline=benchmark-only \
@@ -161,20 +166,21 @@ This is already setup as `sparse_search.json` in params directory, provide it to
 \____/ .___/\___/_/ /_/____/\___/\__,_/_/   \___/_/ /_/  /_____/\___/_/ /_/\___/_/ /_/_/ /_/ /_/\__,_/_/  /_/|_|
     /_/
 
-[INFO] [Test Execution ID]: b8d17b2d-746b-48a6-af43-556005590efc
+[INFO] [Test Execution ID]: f9113820-8a4a-4d77-b31a-ac8f7c75a33a
 [INFO] Executing test with workload [neural_search], test_procedure [sparse-search] and provision_config_instance ['external'] with version [2.19.0].
 
-[WARNING] merges_total_time is 102 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
-[WARNING] indexing_total_time is 32 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
-[WARNING] refresh_total_time is 93 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
-Running delete-target-index                                                    [100% done]
+[WARNING] merges_total_time is 154 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] indexing_total_time is 281 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] refresh_total_time is 197 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] flush_total_time is 104 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+Running delete-index                                                           [100% done]
 Running delete-ingest-pipeline                                                 [100% done]
 Running delete-ml-model-sparse                                                 [100% done]
 Running put-cluster-settings                                                   [100% done]
 Running register-ml-model-sparse                                               [100% done]
 Running deploy-ml-model                                                        [100% done]
 Running create-ingest-pipeline-sparse                                          [100% done]
-Running create-target-index                                                    [100% done]
+Running create-index                                                           [100% done]
 Running check-cluster-health                                                   [100% done]
 Running index-append                                                           [100% done]
 Running refresh-after-index                                                    [100% done]
@@ -192,100 +198,403 @@ Running sparse-search                                                          [
 /_/   /_/_/ /_/\__,_/_/   /____/\___/\____/_/   \___/
 ------------------------------------------------------
             
-|                                                         Metric |                     Task |     Value |   Unit |
-|---------------------------------------------------------------:|-------------------------:|----------:|-------:|
-|                     Cumulative indexing time of primary shards |                          |  0.238333 |    min |
-|             Min cumulative indexing time across primary shards |                          |         0 |    min |
-|          Median cumulative indexing time across primary shards |                          |         0 |    min |
-|             Max cumulative indexing time across primary shards |                          |    0.2098 |    min |
-|            Cumulative indexing throttle time of primary shards |                          |         0 |    min |
-|    Min cumulative indexing throttle time across primary shards |                          |         0 |    min |
-| Median cumulative indexing throttle time across primary shards |                          |         0 |    min |
-|    Max cumulative indexing throttle time across primary shards |                          |         0 |    min |
-|                        Cumulative merge time of primary shards |                          |   0.85035 |    min |
-|                       Cumulative merge count of primary shards |                          |         7 |        |
-|                Min cumulative merge time across primary shards |                          |         0 |    min |
-|             Median cumulative merge time across primary shards |                          |         0 |    min |
-|                Max cumulative merge time across primary shards |                          |    0.8348 |    min |
-|               Cumulative merge throttle time of primary shards |                          |   0.71885 |    min |
-|       Min cumulative merge throttle time across primary shards |                          |         0 |    min |
-|    Median cumulative merge throttle time across primary shards |                          |         0 |    min |
-|       Max cumulative merge throttle time across primary shards |                          |   0.71885 |    min |
-|                      Cumulative refresh time of primary shards |                          |    0.0269 |    min |
-|                     Cumulative refresh count of primary shards |                          |       481 |        |
-|              Min cumulative refresh time across primary shards |                          |         0 |    min |
-|           Median cumulative refresh time across primary shards |                          |         0 |    min |
-|              Max cumulative refresh time across primary shards |                          | 0.0168333 |    min |
-|                        Cumulative flush time of primary shards |                          |   0.00455 |    min |
-|                       Cumulative flush count of primary shards |                          |         1 |        |
-|                Min cumulative flush time across primary shards |                          |         0 |    min |
-|             Median cumulative flush time across primary shards |                          |         0 |    min |
-|                Max cumulative flush time across primary shards |                          |   0.00455 |    min |
-|                                        Total Young Gen GC time |                          |     0.674 |      s |
-|                                       Total Young Gen GC count |                          |       345 |        |
-|                                          Total Old Gen GC time |                          |      0.16 |      s |
-|                                         Total Old Gen GC count |                          |         3 |        |
-|                                                     Store size |                          |   8.11566 |     GB |
-|                                                  Translog size |                          |  0.642941 |     GB |
-|                                         Heap used for segments |                          |         0 |     MB |
-|                                       Heap used for doc values |                          |         0 |     MB |
-|                                            Heap used for terms |                          |         0 |     MB |
-|                                            Heap used for norms |                          |         0 |     MB |
-|                                           Heap used for points |                          |         0 |     MB |
-|                                    Heap used for stored fields |                          |         0 |     MB |
-|                                                  Segment count |                          |       220 |        |
-|                                                 Min Throughput |             index-append |   49997.9 | docs/s |
-|                                                Mean Throughput |             index-append |   54492.8 | docs/s |
-|                                              Median Throughput |             index-append |     55239 | docs/s |
-|                                                 Max Throughput |             index-append |   57495.2 | docs/s |
-|                                        50th percentile latency |             index-append |   8.41481 |     ms |
-|                                        90th percentile latency |             index-append |   12.9676 |     ms |
-|                                        99th percentile latency |             index-append |   23.6447 |     ms |
-|                                      99.9th percentile latency |             index-append |   296.772 |     ms |
-|                                       100th percentile latency |             index-append |   346.362 |     ms |
-|                                   50th percentile service time |             index-append |   8.41481 |     ms |
-|                                   90th percentile service time |             index-append |   12.9676 |     ms |
-|                                   99th percentile service time |             index-append |   23.6447 |     ms |
-|                                 99.9th percentile service time |             index-append |   296.772 |     ms |
-|                                  100th percentile service time |             index-append |   346.362 |     ms |
-|                                                     error rate |             index-append |         0 |      % |
-|                                                 Min Throughput | wait-until-merges-finish |     22.75 |  ops/s |
-|                                                Mean Throughput | wait-until-merges-finish |     22.75 |  ops/s |
-|                                              Median Throughput | wait-until-merges-finish |     22.75 |  ops/s |
-|                                                 Max Throughput | wait-until-merges-finish |     22.75 |  ops/s |
-|                                       100th percentile latency | wait-until-merges-finish |   43.5016 |     ms |
-|                                  100th percentile service time | wait-until-merges-finish |   43.5016 |     ms |
-|                                                     error rate | wait-until-merges-finish |         0 |      % |
-|                                                 Min Throughput |                match-all |     99.79 |  ops/s |
-|                                                Mean Throughput |                match-all |     99.84 |  ops/s |
-|                                              Median Throughput |                match-all |     99.84 |  ops/s |
-|                                                 Max Throughput |                match-all |     99.87 |  ops/s |
-|                                        50th percentile latency |                match-all |   3.75933 |     ms |
-|                                        90th percentile latency |                match-all |   5.12179 |     ms |
-|                                        99th percentile latency |                match-all |   7.12119 |     ms |
-|                                       100th percentile latency |                match-all |   11.4097 |     ms |
-|                                   50th percentile service time |                match-all |   2.76821 |     ms |
-|                                   90th percentile service time |                match-all |   4.35323 |     ms |
-|                                   99th percentile service time |                match-all |   6.15755 |     ms |
-|                                  100th percentile service time |                match-all |    10.635 |     ms |
-|                                                     error rate |                match-all |         0 |      % |
-|                                                 Min Throughput |            sparse-search |      9.84 |  ops/s |
-|                                                Mean Throughput |            sparse-search |      9.88 |  ops/s |
-|                                              Median Throughput |            sparse-search |      9.88 |  ops/s |
-|                                                 Max Throughput |            sparse-search |      9.91 |  ops/s |
-|                                        50th percentile latency |            sparse-search |   47.7587 |     ms |
-|                                        90th percentile latency |            sparse-search |   48.5417 |     ms |
-|                                        99th percentile latency |            sparse-search |   50.0997 |     ms |
-|                                       100th percentile latency |            sparse-search |   50.4377 |     ms |
-|                                   50th percentile service time |            sparse-search |   46.2167 |     ms |
-|                                   90th percentile service time |            sparse-search |   47.0693 |     ms |
-|                                   99th percentile service time |            sparse-search |   48.4767 |     ms |
-|                                  100th percentile service time |            sparse-search |   48.9709 |     ms |
-|                                                     error rate |            sparse-search |         0 |      % |
+|                                                         Metric |                     Task |      Value |   Unit |
+|---------------------------------------------------------------:|-------------------------:|-----------:|-------:|
+|                     Cumulative indexing time of primary shards |                          |   0.262283 |    min |
+|             Min cumulative indexing time across primary shards |                          |          0 |    min |
+|          Median cumulative indexing time across primary shards |                          |          0 |    min |
+|             Max cumulative indexing time across primary shards |                          |    0.20625 |    min |
+|            Cumulative indexing throttle time of primary shards |                          |          0 |    min |
+|    Min cumulative indexing throttle time across primary shards |                          |          0 |    min |
+| Median cumulative indexing throttle time across primary shards |                          |          0 |    min |
+|    Max cumulative indexing throttle time across primary shards |                          |          0 |    min |
+|                        Cumulative merge time of primary shards |                          |   0.251083 |    min |
+|                       Cumulative merge count of primary shards |                          |         13 |        |
+|                Min cumulative merge time across primary shards |                          |          0 |    min |
+|             Median cumulative merge time across primary shards |                          |          0 |    min |
+|                Max cumulative merge time across primary shards |                          |   0.227917 |    min |
+|               Cumulative merge throttle time of primary shards |                          |    0.21825 |    min |
+|       Min cumulative merge throttle time across primary shards |                          |          0 |    min |
+|    Median cumulative merge throttle time across primary shards |                          |          0 |    min |
+|       Max cumulative merge throttle time across primary shards |                          |    0.21825 |    min |
+|                      Cumulative refresh time of primary shards |                          |     0.0664 |    min |
+|                     Cumulative refresh count of primary shards |                          |        249 |        |
+|              Min cumulative refresh time across primary shards |                          |          0 |    min |
+|           Median cumulative refresh time across primary shards |                          |          0 |    min |
+|              Max cumulative refresh time across primary shards |                          |  0.0531833 |    min |
+|                        Cumulative flush time of primary shards |                          |  0.0123833 |    min |
+|                       Cumulative flush count of primary shards |                          |         19 |        |
+|                Min cumulative flush time across primary shards |                          |          0 |    min |
+|             Median cumulative flush time across primary shards |                          |          0 |    min |
+|                Max cumulative flush time across primary shards |                          | 0.00746667 |    min |
+|                                        Total Young Gen GC time |                          |      3.157 |      s |
+|                                       Total Young Gen GC count |                          |        341 |        |
+|                                          Total Old Gen GC time |                          |          0 |      s |
+|                                         Total Old Gen GC count |                          |          0 |        |
+|                                                     Store size |                          |   0.812424 |     GB |
+|                                                  Translog size |                          | 0.00059478 |     GB |
+|                                         Heap used for segments |                          |          0 |     MB |
+|                                       Heap used for doc values |                          |          0 |     MB |
+|                                            Heap used for terms |                          |          0 |     MB |
+|                                            Heap used for norms |                          |          0 |     MB |
+|                                           Heap used for points |                          |          0 |     MB |
+|                                    Heap used for stored fields |                          |          0 |     MB |
+|                                                  Segment count |                          |         50 |        |
+|                                                 Min Throughput |             index-append |     135.75 | docs/s |
+|                                                Mean Throughput |             index-append |     138.67 | docs/s |
+|                                              Median Throughput |             index-append |      137.2 | docs/s |
+|                                                 Max Throughput |             index-append |     172.01 | docs/s |
+|                                        50th percentile latency |             index-append |    5862.68 |     ms |
+|                                        90th percentile latency |             index-append |       6282 |     ms |
+|                                        99th percentile latency |             index-append |    6810.27 |     ms |
+|                                       100th percentile latency |             index-append |    7018.13 |     ms |
+|                                   50th percentile service time |             index-append |    5862.68 |     ms |
+|                                   90th percentile service time |             index-append |       6282 |     ms |
+|                                   99th percentile service time |             index-append |    6810.27 |     ms |
+|                                  100th percentile service time |             index-append |    7018.13 |     ms |
+|                                                     error rate |             index-append |          0 |      % |
+|                                                 Min Throughput | wait-until-merges-finish |      58.79 |  ops/s |
+|                                                Mean Throughput | wait-until-merges-finish |      58.79 |  ops/s |
+|                                              Median Throughput | wait-until-merges-finish |      58.79 |  ops/s |
+|                                                 Max Throughput | wait-until-merges-finish |      58.79 |  ops/s |
+|                                       100th percentile latency | wait-until-merges-finish |    16.5668 |     ms |
+|                                  100th percentile service time | wait-until-merges-finish |    16.5668 |     ms |
+|                                                     error rate | wait-until-merges-finish |          0 |      % |
+|                                                 Min Throughput |                match-all |      99.86 |  ops/s |
+|                                                Mean Throughput |                match-all |      99.89 |  ops/s |
+|                                              Median Throughput |                match-all |       99.9 |  ops/s |
+|                                                 Max Throughput |                match-all |      99.92 |  ops/s |
+|                                        50th percentile latency |                match-all |      3.811 |     ms |
+|                                        90th percentile latency |                match-all |    5.15052 |     ms |
+|                                        99th percentile latency |                match-all |    6.75557 |     ms |
+|                                       100th percentile latency |                match-all |      8.057 |     ms |
+|                                   50th percentile service time |                match-all |    2.82021 |     ms |
+|                                   90th percentile service time |                match-all |    4.19529 |     ms |
+|                                   99th percentile service time |                match-all |    5.80084 |     ms |
+|                                  100th percentile service time |                match-all |    7.61792 |     ms |
+|                                                     error rate |                match-all |          0 |      % |
+|                                                 Min Throughput |            sparse-search |       9.98 |  ops/s |
+|                                                Mean Throughput |            sparse-search |       9.99 |  ops/s |
+|                                              Median Throughput |            sparse-search |       9.99 |  ops/s |
+|                                                 Max Throughput |            sparse-search |       9.99 |  ops/s |
+|                                        50th percentile latency |            sparse-search |    55.6142 |     ms |
+|                                        90th percentile latency |            sparse-search |    57.5806 |     ms |
+|                                        99th percentile latency |            sparse-search |    69.8495 |     ms |
+|                                       100th percentile latency |            sparse-search |    70.3124 |     ms |
+|                                   50th percentile service time |            sparse-search |    54.0472 |     ms |
+|                                   90th percentile service time |            sparse-search |    56.3233 |     ms |
+|                                   99th percentile service time |            sparse-search |    68.5102 |     ms |
+|                                  100th percentile service time |            sparse-search |    68.9099 |     ms |
+|                                                     error rate |            sparse-search |          0 |      % |
 
 
 ---------------------------------
-[INFO] SUCCESS (took 159 seconds)
+[INFO] SUCCESS (took 546 seconds)
+---------------------------------
+```
+
+### Sample command and output for hybrid-search with 10% ingest_percentage
+```
+./opensearch-benchmark execute-test --pipeline=benchmark-only \
+--workload=neural_search \
+--workload-params=/path/to/opensearch-benchmark-workloads/neural_search/params/hybrid_search.json \
+--test-procedure=hybrid-search --kill-running-processes
+
+
+
+   ____                  _____                      __       ____                  __                         __
+  / __ \____  ___  ____ / ___/___  ____ ___________/ /_     / __ )___  ____  _____/ /_  ____ ___  ____ ______/ /__
+ / / / / __ \/ _ \/ __ \\__ \/ _ \/ __ `/ ___/ ___/ __ \   / __  / _ \/ __ \/ ___/ __ \/ __ `__ \/ __ `/ ___/ //_/
+/ /_/ / /_/ /  __/ / / /__/ /  __/ /_/ / /  / /__/ / / /  / /_/ /  __/ / / / /__/ / / / / / / / / /_/ / /  / ,<
+\____/ .___/\___/_/ /_/____/\___/\__,_/_/   \___/_/ /_/  /_____/\___/_/ /_/\___/_/ /_/_/ /_/ /_/\__,_/_/  /_/|_|
+    /_/
+
+[INFO] [Test Execution ID]: 00055099-e89d-4947-8820-8fd0d8cb7ab7
+[INFO] Executing test with workload [neural_search], test_procedure [hybrid-search] and provision_config_instance ['external'] with version [2.19.0].
+
+
+[WARNING] merges_total_time is 250907 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] merges_total_throttled_time is 94762 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] indexing_total_time is 87055 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] refresh_total_time is 11830 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] flush_total_time is 3363 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+Running delete-index                                                           [100% done]
+Running delete-normalization-search-pipeline                                   [100% done]
+Running delete-ingest-pipeline                                                 [100% done]
+Running delete-ml-model-sentence-transformer                                   [100% done]
+Running put-cluster-settings                                                   [100% done]
+Running register-ml-model-sentence-transformer                                 [100% done]
+Running deploy-ml-model                                                        [100% done]
+Running create-text-embedding-processor-ingest-pipeline                        [100% done]
+Running create-normalization-search-pipeline                                   [100% done]
+Running create-index                                                           [100% done]
+Running check-cluster-health                                                   [100% done]
+Running index-append                                                           [100% done]
+Running refresh-after-index                                                    [100% done]
+Running force-merge                                                            [100% done]
+Running refresh-after-force-merge                                              [100% done]
+Running wait-until-merges-finish                                               [100% done]
+Running match-all                                                              [100% done]
+Running hybrid-search-with-normalization-search-pipeline                       [100% done]
+Running hybrid-search-with-temporary-pipeline                                  [100% done]
+
+------------------------------------------------------
+    _______             __   _____
+   / ____(_)___  ____ _/ /  / ___/_________  ________
+  / /_  / / __ \/ __ `/ /   \__ \/ ___/ __ \/ ___/ _ \
+ / __/ / / / / / /_/ / /   ___/ / /__/ /_/ / /  /  __/
+/_/   /_/_/ /_/\__,_/_/   /____/\___/\____/_/   \___/
+------------------------------------------------------
+            
+|                                                         Metric |                                             Task |       Value |   Unit |
+|---------------------------------------------------------------:|-------------------------------------------------:|------------:|-------:|
+|                     Cumulative indexing time of primary shards |                                                  |      1.0936 |    min |
+|             Min cumulative indexing time across primary shards |                                                  |           0 |    min |
+|          Median cumulative indexing time across primary shards |                                                  | 0.000241667 |    min |
+|             Max cumulative indexing time across primary shards |                                                  |    0.915383 |    min |
+|            Cumulative indexing throttle time of primary shards |                                                  |           0 |    min |
+|    Min cumulative indexing throttle time across primary shards |                                                  |           0 |    min |
+| Median cumulative indexing throttle time across primary shards |                                                  |           0 |    min |
+|    Max cumulative indexing throttle time across primary shards |                                                  |           0 |    min |
+|                        Cumulative merge time of primary shards |                                                  |      3.4418 |    min |
+|                       Cumulative merge count of primary shards |                                                  |          21 |        |
+|                Min cumulative merge time across primary shards |                                                  |           0 |    min |
+|             Median cumulative merge time across primary shards |                                                  |           0 |    min |
+|                Max cumulative merge time across primary shards |                                                  |     2.34063 |    min |
+|               Cumulative merge throttle time of primary shards |                                                  |      1.9076 |    min |
+|       Min cumulative merge throttle time across primary shards |                                                  |           0 |    min |
+|    Median cumulative merge throttle time across primary shards |                                                  |           0 |    min |
+|       Max cumulative merge throttle time across primary shards |                                                  |     1.06762 |    min |
+|                      Cumulative refresh time of primary shards |                                                  |      0.1383 |    min |
+|                     Cumulative refresh count of primary shards |                                                  |         421 |        |
+|              Min cumulative refresh time across primary shards |                                                  |           0 |    min |
+|           Median cumulative refresh time across primary shards |                                                  | 0.000633333 |    min |
+|              Max cumulative refresh time across primary shards |                                                  |   0.0941333 |    min |
+|                        Cumulative flush time of primary shards |                                                  |   0.0757833 |    min |
+|                       Cumulative flush count of primary shards |                                                  |          18 |        |
+|                Min cumulative flush time across primary shards |                                                  |           0 |    min |
+|             Median cumulative flush time across primary shards |                                                  |           0 |    min |
+|                Max cumulative flush time across primary shards |                                                  |   0.0387667 |    min |
+|                                        Total Young Gen GC time |                                                  |       6.922 |      s |
+|                                       Total Young Gen GC count |                                                  |         537 |        |
+|                                          Total Old Gen GC time |                                                  |       0.027 |      s |
+|                                         Total Old Gen GC count |                                                  |           1 |        |
+|                                                     Store size |                                                  |      2.3656 |     GB |
+|                                                  Translog size |                                                  | 0.000158895 |     GB |
+|                                         Heap used for segments |                                                  |           0 |     MB |
+|                                       Heap used for doc values |                                                  |           0 |     MB |
+|                                            Heap used for terms |                                                  |           0 |     MB |
+|                                            Heap used for norms |                                                  |           0 |     MB |
+|                                           Heap used for points |                                                  |           0 |     MB |
+|                                    Heap used for stored fields |                                                  |           0 |     MB |
+|                                                  Segment count |                                                  |          61 |        |
+|                                                 Min Throughput |                                     index-append |      106.53 | docs/s |
+|                                                Mean Throughput |                                     index-append |      108.74 | docs/s |
+|                                              Median Throughput |                                     index-append |      108.34 | docs/s |
+|                                                 Max Throughput |                                     index-append |       123.7 | docs/s |
+|                                        50th percentile latency |                                     index-append |     7484.18 |     ms |
+|                                        90th percentile latency |                                     index-append |     7941.03 |     ms |
+|                                        99th percentile latency |                                     index-append |      8248.5 |     ms |
+|                                       100th percentile latency |                                     index-append |     8442.99 |     ms |
+|                                   50th percentile service time |                                     index-append |     7484.18 |     ms |
+|                                   90th percentile service time |                                     index-append |     7941.03 |     ms |
+|                                   99th percentile service time |                                     index-append |      8248.5 |     ms |
+|                                  100th percentile service time |                                     index-append |     8442.99 |     ms |
+|                                                     error rate |                                     index-append |           0 |      % |
+|                                                 Min Throughput |                         wait-until-merges-finish |       32.93 |  ops/s |
+|                                                Mean Throughput |                         wait-until-merges-finish |       32.93 |  ops/s |
+|                                              Median Throughput |                         wait-until-merges-finish |       32.93 |  ops/s |
+|                                                 Max Throughput |                         wait-until-merges-finish |       32.93 |  ops/s |
+|                                       100th percentile latency |                         wait-until-merges-finish |     29.8682 |     ms |
+|                                  100th percentile service time |                         wait-until-merges-finish |     29.8682 |     ms |
+|                                                     error rate |                         wait-until-merges-finish |           0 |      % |
+|                                                 Min Throughput |                                        match-all |       99.75 |  ops/s |
+|                                                Mean Throughput |                                        match-all |       99.81 |  ops/s |
+|                                              Median Throughput |                                        match-all |       99.81 |  ops/s |
+|                                                 Max Throughput |                                        match-all |       99.85 |  ops/s |
+|                                        50th percentile latency |                                        match-all |     5.68915 |     ms |
+|                                        90th percentile latency |                                        match-all |     6.91882 |     ms |
+|                                        99th percentile latency |                                        match-all |     8.11854 |     ms |
+|                                       100th percentile latency |                                        match-all |     12.9665 |     ms |
+|                                   50th percentile service time |                                        match-all |     4.82085 |     ms |
+|                                   90th percentile service time |                                        match-all |     6.03139 |     ms |
+|                                   99th percentile service time |                                        match-all |     7.11355 |     ms |
+|                                  100th percentile service time |                                        match-all |     12.0791 |     ms |
+|                                                     error rate |                                        match-all |           0 |      % |
+|                                                 Min Throughput | hybrid-search-with-normalization-search-pipeline |        9.97 |  ops/s |
+|                                                Mean Throughput | hybrid-search-with-normalization-search-pipeline |        9.98 |  ops/s |
+|                                              Median Throughput | hybrid-search-with-normalization-search-pipeline |        9.98 |  ops/s |
+|                                                 Max Throughput | hybrid-search-with-normalization-search-pipeline |        9.98 |  ops/s |
+|                                        50th percentile latency | hybrid-search-with-normalization-search-pipeline |     59.8849 |     ms |
+|                                        90th percentile latency | hybrid-search-with-normalization-search-pipeline |     76.8286 |     ms |
+|                                        99th percentile latency | hybrid-search-with-normalization-search-pipeline |     110.476 |     ms |
+|                                       100th percentile latency | hybrid-search-with-normalization-search-pipeline |     137.262 |     ms |
+|                                   50th percentile service time | hybrid-search-with-normalization-search-pipeline |     58.3298 |     ms |
+|                                   90th percentile service time | hybrid-search-with-normalization-search-pipeline |     73.8675 |     ms |
+|                                   99th percentile service time | hybrid-search-with-normalization-search-pipeline |     98.7083 |     ms |
+|                                  100th percentile service time | hybrid-search-with-normalization-search-pipeline |     136.827 |     ms |
+|                                                     error rate | hybrid-search-with-normalization-search-pipeline |           0 |      % |
+|                                                 Min Throughput |            hybrid-search-with-temporary-pipeline |       10.01 |  ops/s |
+|                                                Mean Throughput |            hybrid-search-with-temporary-pipeline |       10.02 |  ops/s |
+|                                              Median Throughput |            hybrid-search-with-temporary-pipeline |       10.02 |  ops/s |
+|                                                 Max Throughput |            hybrid-search-with-temporary-pipeline |       10.02 |  ops/s |
+|                                        50th percentile latency |            hybrid-search-with-temporary-pipeline |     54.3199 |     ms |
+|                                        90th percentile latency |            hybrid-search-with-temporary-pipeline |     67.9906 |     ms |
+|                                        99th percentile latency |            hybrid-search-with-temporary-pipeline |     81.9958 |     ms |
+|                                       100th percentile latency |            hybrid-search-with-temporary-pipeline |     112.287 |     ms |
+|                                   50th percentile service time |            hybrid-search-with-temporary-pipeline |     52.9332 |     ms |
+|                                   90th percentile service time |            hybrid-search-with-temporary-pipeline |     66.2705 |     ms |
+|                                   99th percentile service time |            hybrid-search-with-temporary-pipeline |     78.0661 |     ms |
+|                                  100th percentile service time |            hybrid-search-with-temporary-pipeline |      110.83 |     ms |
+|                                                     error rate |            hybrid-search-with-temporary-pipeline |           0 |      % |
+
+
+---------------------------------
+[INFO] SUCCESS (took 695 seconds)
+---------------------------------
+```
+
+### Sample command and output for semantic-search with 10% ingest_percentage
+```
+./opensearch-benchmark execute-test --pipeline=benchmark-only \
+--workload=neural_search \
+--workload-params=/path/to/opensearch-benchmark-workloads/neural_search/params/semantic_search.json \
+--test-procedure=semantic-search --kill-running-processes
+
+
+
+   ____                  _____                      __       ____                  __                         __
+  / __ \____  ___  ____ / ___/___  ____ ___________/ /_     / __ )___  ____  _____/ /_  ____ ___  ____ ______/ /__
+ / / / / __ \/ _ \/ __ \\__ \/ _ \/ __ `/ ___/ ___/ __ \   / __  / _ \/ __ \/ ___/ __ \/ __ `__ \/ __ `/ ___/ //_/
+/ /_/ / /_/ /  __/ / / /__/ /  __/ /_/ / /  / /__/ / / /  / /_/ /  __/ / / / /__/ / / / / / / / / /_/ / /  / ,<
+\____/ .___/\___/_/ /_/____/\___/\__,_/_/   \___/_/ /_/  /_____/\___/_/ /_/\___/_/ /_/_/ /_/ /_/\__,_/_/  /_/|_|
+    /_/
+
+[INFO] [Test Execution ID]: 48a02517-0429-49fd-8d04-2494a0c0f2ef
+[INFO] Executing test with workload [neural_search], test_procedure [semantic-search] and provision_config_instance ['external'] with version [2.19.0].
+
+[WARNING] merges_total_time is 241478 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] merges_total_throttled_time is 80053 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] indexing_total_time is 89015 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] refresh_total_time is 12355 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] flush_total_time is 1902 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+Running delete-index                                                           [100% done]
+Running delete-ingest-pipeline                                                 [100% done]
+Running delete-ml-model-sentence-transformer                                   [100% done]
+Running put-cluster-settings                                                   [100% done]
+Running register-ml-model-sentence-transformer                                 [100% done]
+Running deploy-ml-model                                                        [100% done]
+Running create-text-embedding-processor-ingest-pipeline                        [100% done]
+Running create-index                                                           [100% done]
+Running check-cluster-health                                                   [100% done]
+Running index-append                                                           [100% done]
+Running refresh-after-index                                                    [100% done]
+Running force-merge                                                            [100% done]
+Running refresh-after-force-merge                                              [100% done]
+Running wait-until-merges-finish                                               [100% done]
+Running match-all                                                              [100% done]
+Running semantic-search                                                        [100% done]
+
+------------------------------------------------------
+    _______             __   _____
+   / ____(_)___  ____ _/ /  / ___/_________  ________
+  / /_  / / __ \/ __ `/ /   \__ \/ ___/ __ \/ ___/ _ \
+ / __/ / / / / / /_/ / /   ___/ / /__/ /_/ / /  /  __/
+/_/   /_/_/ /_/\__,_/_/   /____/\___/\____/_/   \___/
+------------------------------------------------------
+            
+|                                                         Metric |                     Task |       Value |   Unit |
+|---------------------------------------------------------------:|-------------------------:|------------:|-------:|
+|                     Cumulative indexing time of primary shards |                          |     1.45082 |    min |
+|             Min cumulative indexing time across primary shards |                          |           0 |    min |
+|          Median cumulative indexing time across primary shards |                          | 1.66667e-05 |    min |
+|             Max cumulative indexing time across primary shards |                          |     1.33567 |    min |
+|            Cumulative indexing throttle time of primary shards |                          |           0 |    min |
+|    Min cumulative indexing throttle time across primary shards |                          |           0 |    min |
+| Median cumulative indexing throttle time across primary shards |                          |           0 |    min |
+|    Max cumulative indexing throttle time across primary shards |                          |           0 |    min |
+|                        Cumulative merge time of primary shards |                          |     4.18178 |    min |
+|                       Cumulative merge count of primary shards |                          |          18 |        |
+|                Min cumulative merge time across primary shards |                          |           0 |    min |
+|             Median cumulative merge time across primary shards |                          |           0 |    min |
+|                Max cumulative merge time across primary shards |                          |     3.46207 |    min |
+|               Cumulative merge throttle time of primary shards |                          |     1.57937 |    min |
+|       Min cumulative merge throttle time across primary shards |                          |           0 |    min |
+|    Median cumulative merge throttle time across primary shards |                          |           0 |    min |
+|       Max cumulative merge throttle time across primary shards |                          |    0.884733 |    min |
+|                      Cumulative refresh time of primary shards |                          |    0.196833 |    min |
+|                     Cumulative refresh count of primary shards |                          |         325 |        |
+|              Min cumulative refresh time across primary shards |                          |           0 |    min |
+|           Median cumulative refresh time across primary shards |                          | 0.000266667 |    min |
+|              Max cumulative refresh time across primary shards |                          |    0.167067 |    min |
+|                        Cumulative flush time of primary shards |                          |     0.05605 |    min |
+|                       Cumulative flush count of primary shards |                          |          14 |        |
+|                Min cumulative flush time across primary shards |                          |           0 |    min |
+|             Median cumulative flush time across primary shards |                          |           0 |    min |
+|                Max cumulative flush time across primary shards |                          |   0.0244167 |    min |
+|                                        Total Young Gen GC time |                          |       9.074 |      s |
+|                                       Total Young Gen GC count |                          |         612 |        |
+|                                          Total Old Gen GC time |                          |        0.03 |      s |
+|                                         Total Old Gen GC count |                          |           1 |        |
+|                                                     Store size |                          |     2.36527 |     GB |
+|                                                  Translog size |                          | 9.22009e-07 |     GB |
+|                                         Heap used for segments |                          |           0 |     MB |
+|                                       Heap used for doc values |                          |           0 |     MB |
+|                                            Heap used for terms |                          |           0 |     MB |
+|                                            Heap used for norms |                          |           0 |     MB |
+|                                           Heap used for points |                          |           0 |     MB |
+|                                    Heap used for stored fields |                          |           0 |     MB |
+|                                                  Segment count |                          |          54 |        |
+|                                                 Min Throughput |             index-append |      104.38 | docs/s |
+|                                                Mean Throughput |             index-append |      107.34 | docs/s |
+|                                              Median Throughput |             index-append |      105.96 | docs/s |
+|                                                 Max Throughput |             index-append |      133.87 | docs/s |
+|                                        50th percentile latency |             index-append |     7635.14 |     ms |
+|                                        90th percentile latency |             index-append |     8153.36 |     ms |
+|                                        99th percentile latency |             index-append |     8733.38 |     ms |
+|                                       100th percentile latency |             index-append |     8976.95 |     ms |
+|                                   50th percentile service time |             index-append |     7635.14 |     ms |
+|                                   90th percentile service time |             index-append |     8153.36 |     ms |
+|                                   99th percentile service time |             index-append |     8733.38 |     ms |
+|                                  100th percentile service time |             index-append |     8976.95 |     ms |
+|                                                     error rate |             index-append |           0 |      % |
+|                                                 Min Throughput | wait-until-merges-finish |       41.97 |  ops/s |
+|                                                Mean Throughput | wait-until-merges-finish |       41.97 |  ops/s |
+|                                              Median Throughput | wait-until-merges-finish |       41.97 |  ops/s |
+|                                                 Max Throughput | wait-until-merges-finish |       41.97 |  ops/s |
+|                                       100th percentile latency | wait-until-merges-finish |      23.545 |     ms |
+|                                  100th percentile service time | wait-until-merges-finish |      23.545 |     ms |
+|                                                     error rate | wait-until-merges-finish |           0 |      % |
+|                                                 Min Throughput |                match-all |        99.8 |  ops/s |
+|                                                Mean Throughput |                match-all |       99.84 |  ops/s |
+|                                              Median Throughput |                match-all |       99.85 |  ops/s |
+|                                                 Max Throughput |                match-all |       99.88 |  ops/s |
+|                                        50th percentile latency |                match-all |     5.64821 |     ms |
+|                                        90th percentile latency |                match-all |     6.29294 |     ms |
+|                                        99th percentile latency |                match-all |     7.06777 |     ms |
+|                                       100th percentile latency |                match-all |     9.32783 |     ms |
+|                                   50th percentile service time |                match-all |     4.79592 |     ms |
+|                                   90th percentile service time |                match-all |     5.39156 |     ms |
+|                                   99th percentile service time |                match-all |     6.07555 |     ms |
+|                                  100th percentile service time |                match-all |     8.38604 |     ms |
+|                                                     error rate |                match-all |           0 |      % |
+|                                                 Min Throughput |          semantic-search |        9.96 |  ops/s |
+|                                                Mean Throughput |          semantic-search |        9.97 |  ops/s |
+|                                              Median Throughput |          semantic-search |        9.97 |  ops/s |
+|                                                 Max Throughput |          semantic-search |        9.98 |  ops/s |
+|                                        50th percentile latency |          semantic-search |     55.6083 |     ms |
+|                                        90th percentile latency |          semantic-search |       56.12 |     ms |
+|                                        99th percentile latency |          semantic-search |     57.9657 |     ms |
+|                                       100th percentile latency |          semantic-search |     62.4806 |     ms |
+|                                   50th percentile service time |          semantic-search |     54.1118 |     ms |
+|                                   90th percentile service time |          semantic-search |     54.5326 |     ms |
+|                                   99th percentile service time |          semantic-search |     56.4637 |     ms |
+|                                  100th percentile service time |          semantic-search |     60.9003 |     ms |
+|                                                     error rate |          semantic-search |           0 |      % |
+
+
+---------------------------------
+[INFO] SUCCESS (took 671 seconds)
 ---------------------------------
 ```
 

@@ -1,0 +1,124 @@
+
+{
+  "name": "create-normalization-search-pipeline",
+  "operation-type": "create-search-pipeline",
+  "id": "nlp-normalization-search-pipeline",
+  "body": {
+    "description": "Post processor for hybrid search with min_max normalization and arithmetic_mean combination",
+    "phase_results_processors": [
+      {
+        "normalization-processor": {
+          "normalization": {
+            "technique": "min_max"
+            },
+          "combination": {
+            "technique": "arithmetic_mean"
+          }
+        }
+      }
+    ]
+  }
+},
+{
+  "name": "delete-normalization-search-pipeline",
+  "operation-type": "delete-pipeline",
+  "id": "nlp-normalization-search-pipeline"
+},
+{
+  "name": "hybrid-search-with-normalization-search-pipeline",
+  "operation-type": "search",
+  "param-source": "neural-hybrid-search-source",
+  "index": "{{ index_name }}",
+  "request-params": {
+    "search_pipeline": "nlp-normalization-search-pipeline"
+  },
+  "variable-queries": {{variable_queries | default(0)}},
+  "body": {
+    "_source": {
+      "excludes": [
+        "passage_embedding"
+      ]
+    },
+    "query": {
+      "hybrid": {
+        "queries": [
+          {
+            "match": {
+              "text": {
+                "query": "What are some of the best science projects?"
+              }
+            }
+          },
+          {
+            "neural": {
+              "passage_embedding": {
+                "query_text": "What are some of the best science projects?",
+                "model_id": "",
+                "k": {{query_k | default(10)}}
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+},
+{
+  "name": "hybrid-search-with-temporary-pipeline",
+  "operation-type": "search",
+  "param-source": "neural-hybrid-search-source",
+  "variable-queries": {{variable_queries | default(0)}},
+  "index": "{{ index_name }}",
+  "body": {
+    "_source": {
+      "excludes": [
+        "passage_embedding"
+      ]
+    },
+    "query": {
+      "hybrid": {
+        "queries": [
+        {
+          "match": {
+            "text": {
+              "query": "What are some of the best science projects?"
+            }
+          }
+        },
+        {
+          "neural": {
+            "passage_embedding": {
+              "query_text": "What are some of the best science projects?",
+              "model_id": "",
+              "k": {{query_k | default(10)}}
+            }
+          }
+        }
+        ]
+      }
+    },
+    "search_pipeline": {
+      "request_processors": [
+        {
+          "filter_query": {
+            "tag": "tag1",
+            "description": "This processor is going to restrict to publicly visible documents",
+            "query": {
+              "term": {
+                "visibility": "public"
+              }
+            }
+          }
+        }
+      ],
+      "response_processors": [
+        {
+          "rename_field": {
+            "field": "message",
+            "target_field": "notification"
+          }
+        }
+      ]
+    }
+  }
+}

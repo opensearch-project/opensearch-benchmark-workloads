@@ -1,0 +1,47 @@
+{
+  "name": "hybrid-search",
+  "description": "Indexes the corpus and then runs neural clause queries with Hybrid search.",
+  "default": false,
+  "schedule": [
+    {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+    {
+      "operation": "delete-normalization-search-pipeline"
+    },
+    {
+      "operation": "delete-ingest-pipeline"
+    },
+    {
+      "operation": "delete-ml-model-sentence-transformer"
+    },
+    {
+      "operation": "put-cluster-settings"
+    },
+    {
+      "operation": "register-ml-model-sentence-transformer"
+    },
+    {
+      "operation": "deploy-ml-model"
+    },
+    {
+      "operation": "create-text-embedding-processor-ingest-pipeline"
+    },
+     {
+      "operation": "create-normalization-search-pipeline"
+    },
+    {{ benchmark.collect(parts="common/create_index_ingest_document_and_match_all_search.json") }},
+    {
+      "operation": "hybrid-search-with-normalization-search-pipeline",
+      "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+      "iterations": {{iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(10) | tojson}},
+      "clients": {{ search_clients | default(1)}}
+    },
+    {
+      "operation": "hybrid-search-with-temporary-pipeline",
+      "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+      "iterations": {{iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(10) | tojson}},
+      "clients": {{ search_clients | default(1)}}
+    }
+  ]
+}
