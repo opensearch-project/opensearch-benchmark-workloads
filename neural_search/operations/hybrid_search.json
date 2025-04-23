@@ -1,36 +1,51 @@
 
 {
-  "name": "create-normalization-search-pipeline",
+  "name": "create-search-pipeline",
   "operation-type": "create-search-pipeline",
-  "id": "nlp-normalization-search-pipeline",
+  "id": "nlp-search-pipeline",
   "body": {
-    "description": "Post processor for hybrid search with min_max normalization and arithmetic_mean combination",
+    "description": "Post processor for hybrid search",
     "phase_results_processors": [
       {
-        "normalization-processor": {
-          "normalization": {
-            "technique": "min_max"
-            },
-          "combination": {
-            "technique": "arithmetic_mean"
+        {%- if search_pipeline_processor is defined and search_pipeline_processor == 'score-ranker-processor' %}
+          "score-ranker-processor": {
+            "combination": {
+              "technique": "rrf",
+              "rank_constant": {{ rank_constant | default(60)}}
+            }
           }
-        }
+        {% else %}
+          "normalization-processor": {
+            "normalization": {
+              "technique": "{{ normalization_technique | default('min_max')}}"
+            },
+            "combination": {
+              {%- if combination_parameters_weights is defined and combination_parameters_weights %}
+                "parameters": {
+                  "weights": {{ combination_parameters_weights }}
+                },
+              {% endif %}
+
+              "technique": "{{ combination_technique | default('arithmetic_mean')}}"
+            }
+          }
+        {% endif %}
       }
     ]
   }
 },
 {
-  "name": "delete-normalization-search-pipeline",
+  "name": "delete-search-pipeline",
   "operation-type": "delete-pipeline",
-  "id": "nlp-normalization-search-pipeline"
+  "id": "nlp-search-pipeline"
 },
 {
-  "name": "hybrid-search-with-normalization-search-pipeline",
+  "name": "hybrid-search-with-search-pipeline",
   "operation-type": "search",
   "param-source": "neural-hybrid-search-source",
   "index": "{{ index_name }}",
   "request-params": {
-    "search_pipeline": "nlp-normalization-search-pipeline"
+    "search_pipeline": "nlp-search-pipeline"
   },
   "variable-queries": {{variable_queries | default(0)}},
   "body": {
@@ -39,6 +54,7 @@
         "passage_embedding"
       ]
     },
+    "size": {{hybrid_query_size | default(10)}},
     "query": {
       "hybrid": {
         "queries": [
@@ -75,6 +91,7 @@
         "passage_embedding"
       ]
     },
+    "size": {{hybrid_query_size | default(10)}},
     "query": {
       "hybrid": {
         "queries": [
@@ -90,7 +107,7 @@
             "passage_embedding": {
               "query_text": "What are some of the best science projects?",
               "model_id": "",
-              "k": {{query_k | default(10)}}
+              "k": {{k | default(10)}}
             }
           }
         }
@@ -98,25 +115,31 @@
       }
     },
     "search_pipeline": {
-      "request_processors": [
+      "phase_results_processors": [
         {
-          "filter_query": {
-            "tag": "tag1",
-            "description": "This processor is going to restrict to publicly visible documents",
-            "query": {
-              "term": {
-                "visibility": "public"
+          {%- if search_pipeline_processor is defined and search_pipeline_processor == 'score-ranker-processor' %}
+            "score-ranker-processor": {
+              "combination": {
+                "technique": "rrf",
+                "rank_constant": {{ rank_constant | default(60)}}
               }
             }
-          }
-        }
-      ],
-      "response_processors": [
-        {
-          "rename_field": {
-            "field": "message",
-            "target_field": "notification"
-          }
+          {% else %}
+            "normalization-processor": {
+              "normalization": {
+                "technique": "{{ normalization_technique | default('min_max')}}"
+              },
+              "combination": {
+                {%- if combination_parameters_weights is defined and combination_parameters_weights %}
+                  "parameters": {
+                    "weights": {{ combination_parameters_weights }}
+                  },
+                {% endif %}
+
+                "technique": "{{ combination_technique | default('arithmetic_mean')}}"
+              }
+            }
+          {% endif %}
         }
       ]
     }

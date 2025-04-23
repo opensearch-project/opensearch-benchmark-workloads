@@ -22,7 +22,7 @@ def ingest_pipeline_param_source(workload, params, **kwargs):
 
     if not model_id:
         # We don't have to manually provide the model_id.json file, it will be created during register-ml-model operation.
-        # See the logic in OSB: https://github.com/weijia-aws/opensearch-benchmark/blob/main/osbenchmark/worker_coordinator/runner.py#L2741
+        # See the logic in OSB: https://github.com/opensearch-project/opensearch-benchmark/blob/main/osbenchmark/worker_coordinator/runner.py#L2741
         with open('model_id.json') as f:
             d = json.loads(f.read())
             model_id = d['model_id']

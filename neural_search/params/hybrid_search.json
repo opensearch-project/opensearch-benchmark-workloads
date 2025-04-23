@@ -6,5 +6,7 @@
   "variable_queries": 0,
   "warmup_time_period": 5,
   "index_knn": true,
-  "ingest_percentage": 100
+  "k": 10,
+  "combination_parameters_weights": [0.3, 0.7],
+  "ingest_percentage": 1
 }

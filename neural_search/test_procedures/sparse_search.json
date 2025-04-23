@@ -1,6 +1,6 @@
 {
   "name": "sparse-search",
-  "description": "Indexes the corpus and then runs queries with Neural Sparse Search.",
+  "description": "Creates model and pipelines, indexes the corpus and then runs queries with Neural Sparse Search.",
   "default": true,
   "schedule": [
     {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
@@ -22,7 +22,49 @@
     {
       "operation": "create-ingest-pipeline-sparse"
     },
-    {{ benchmark.collect(parts="common/create_index_ingest_document_and_match_all_search.json") }},
+    {{ benchmark.collect(parts="common/create_index_and_ingest_document.json") }},
+    {{ benchmark.collect(parts="common/match_all_search.json") }},
+    {
+      "operation": "sparse-search",
+      "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+      "iterations": {{iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(10) | tojson}},
+      "clients": {{ search_clients | default(1)}}
+    }
+  ]
+},
+{
+  "name": "sparse-search-create-resources-and-index-document",
+  "description": "Create resourses (model, pipeline and index) for Sparse search, then ingest the corpus",
+  "default": false,
+  "schedule": [
+    {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+    {
+      "operation": "delete-ingest-pipeline"
+    },
+    {
+      "operation": "delete-ml-model-sparse"
+    },
+    {
+      "operation": "put-cluster-settings"
+    },
+    {
+      "operation": "register-ml-model-sparse"
+    },
+    {
+      "operation": "deploy-ml-model"
+    },
+    {
+      "operation": "create-ingest-pipeline-sparse"
+    },
+    {{ benchmark.collect(parts="common/create_index_and_ingest_document.json") }}
+  ]
+},
+{
+  "name": "sparse-search-query-only",
+  "description": "Runs neural clause queries with Sparse search, applicable only when pipelines, model and index are created, and corpus is ingested.",
+  "default": false,
+  "schedule": [
     {
       "operation": "sparse-search",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
