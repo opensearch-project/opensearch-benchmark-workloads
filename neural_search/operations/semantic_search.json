@@ -13,15 +13,16 @@
     "query": {
       "neural": {
         "passage_embedding": {
-          "query_text": "What are some of the best science projects?",
-          "model_id": "",
           {%- if k is defined and k %}
-            "k": {{ k }}
+            "k": {{ k }},
           {%- elif min_score is defined and min_score %}
-            "min_score": {{ min_score }}
+            "min_score": {{ min_score }},
           {%- elif max_distance is defined and max_distance %}
-            "max_distance": {{ max_distance }}
+            "max_distance": {{ max_distance }},
           {%- endif %}
+
+          "query_text": "What are some of the best science projects?",
+          "model_id": ""
         }
       }
     }

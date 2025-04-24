@@ -606,6 +606,10 @@ Running semantic-search                                                        [
 ---------------------------------
 ```
 
+### Gotchas
+1. The above benchmark is running against a cluster that has two data nodes (See Docker compose [detail](https://docs.opensearch.org/docs/latest/install-and-configure/install-opensearch/docker/#sample-docker-composeyml)). 
+If your cluster only have one data node, test procedures may stuck in `check-cluster-health` step, in that case, you should add a `number_of_replicas` parameter with value `0`
+
 ### License
 
 - For quora dataset, we use the same license for the data as the original data: [CC-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/), also see the LICENSE.txt file within this workload for the license information

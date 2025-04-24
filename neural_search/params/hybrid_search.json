@@ -8,5 +8,5 @@
   "index_knn": true,
   "k": 10,
   "combination_parameters_weights": [0.3, 0.7],
-  "ingest_percentage": 1
+  "ingest_percentage": 10
 }

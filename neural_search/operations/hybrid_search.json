@@ -70,7 +70,7 @@
               "passage_embedding": {
                 "query_text": "What are some of the best science projects?",
                 "model_id": "",
-                "k": {{query_k | default(10)}}
+                "k": {{ k | default(10)}}
               }
             }
           }

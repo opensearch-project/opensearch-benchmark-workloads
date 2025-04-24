@@ -7,5 +7,5 @@
   "warmup_time_period": 5,
   "index_knn": true,
   "k": 10,
-  "ingest_percentage": 1
+  "ingest_percentage": 10
 }
