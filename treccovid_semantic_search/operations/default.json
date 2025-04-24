@@ -49,6 +49,26 @@
       }
     },
     {
+      "name": "create-normalization-processor-search-pipeline",
+      "operation-type": "create-search-pipeline",
+      "id": "nlp-normalization-search-pipeline",
+      "body": {
+        "description": "Post processor for hybrid search with min_max normalization and arithmetic_mean combination",
+        "phase_results_processors": [
+          {
+              "normalization-processor": {
+                  "normalization": {
+                      "technique": "min_max"
+                  },
+                  "combination": {
+                      "technique": "arithmetic_mean"
+                  }
+              }
+          }
+        ]
+      }
+    },
+    {
       "name": "semantic-search",
       "operation-type": "search",
       "num-variable-queries": {{num_variable_queries | default(0)}},
@@ -66,6 +86,64 @@
               "model_id": "",
               "k": {{k | default(10)}}
             }
+          }
+        }
+      }
+    },
+    {
+      "name": "semantic-search-neural",
+      "operation-type": "search",
+      "variable-queries": {{variable_queries | default(0)}},
+      "param-source": "semantic-search-neural-source",
+      "body": {
+        "_source": {
+          "excludes": [
+            "passage_embedding"
+          ]
+        },
+        "query": {
+          "neural": {
+            "passage_embedding": {
+              "query_text": "what types of rapid testing for Covid-19 have been developed?",
+              "model_id": "",
+              "k": {{k | default(10)}}
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "hybrid-search-bm25-neural",
+      "operation-type": "search",
+      "request-params": {
+        "search_pipeline": "nlp-normalization-search-pipeline"
+      },
+      "variable-queries": {{variable_queries | default(0)}},
+      "param-source": "hybrid-query-bm25-neural-search-source",
+      "body": {
+        "_source": {
+          "excludes": [
+            "passage_embedding"
+          ]
+        },
+        "query": {
+          "hybrid": {
+            "queries": [
+              {
+                "match": {
+                  "title": ""
+                }
+              },
+              {
+                "neural": {
+                  "passage_embedding": {
+                    "query_text": "what types of rapid testing for Covid-19 have been developed?",
+                    "model_id": "",
+                    "k": {{k | default(10)}}
+                  }
+                }
+              }
+            ] 
           }
         }
       }
