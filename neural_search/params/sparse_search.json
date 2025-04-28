@@ -4,7 +4,7 @@
   "index_body": "indices/quora.json",
   "corpora_name": "quora",
   "ingest_percentage": 10,
-  "variable_queries": 0,
+  "variable_queries": 10000,
   "warmup_time_period": 5,
   "default_ingest_pipeline": "nlp-default-ingest-pipeline-sparse"
 }

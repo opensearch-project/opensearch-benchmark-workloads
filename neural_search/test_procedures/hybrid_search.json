@@ -34,14 +34,14 @@
       "operation": "hybrid-search-with-search-pipeline",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
       "iterations": {{iterations | default(100) | tojson }},
-      "target-throughput": {{ target_throughput | default(10) | tojson}},
+      "target-throughput": {{ target_throughput | default(0) | tojson}},
       "clients": {{ search_clients | default(1)}}
     },
     {
       "operation": "hybrid-search-with-temporary-pipeline",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
       "iterations": {{iterations | default(100) | tojson }},
-      "target-throughput": {{ target_throughput | default(10) | tojson}},
+      "target-throughput": {{ target_throughput | default(0) | tojson}},
       "clients": {{ search_clients | default(1)}}
     }
   ]
@@ -88,14 +88,35 @@
       "operation": "hybrid-search-with-search-pipeline",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
       "iterations": {{iterations | default(100) | tojson }},
-      "target-throughput": {{ target_throughput | default(10) | tojson}},
+      "target-throughput": {{ target_throughput | default(0) | tojson}},
+      "clients": {{ search_clients | default(1)}}
+    },
+    {
+      "operation": "hybrid-search-bool",
+      "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+      "iterations": {{iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(0) | tojson}},
+      "clients": {{ search_clients | default(1)}}
+    },
+    {
+      "operation": "hybrid-search-complex-with-search-pipeline",
+      "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+      "iterations": {{iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(0) | tojson}},
+      "clients": {{ search_clients | default(1)}}
+    },
+    {
+      "operation": "hybrid-search-complex-aggs-with-search-pipeline",
+      "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+      "iterations": {{iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(0) | tojson}},
       "clients": {{ search_clients | default(1)}}
     },
     {
       "operation": "hybrid-search-with-temporary-pipeline",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
       "iterations": {{iterations | default(100) | tojson }},
-      "target-throughput": {{ target_throughput | default(10) | tojson}},
+      "target-throughput": {{ target_throughput | default(0) | tojson}},
       "clients": {{ search_clients | default(1)}}
     }
   ]

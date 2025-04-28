@@ -35,7 +35,8 @@
         {%- endif %}
       },
       "text": {
-        "type": "text"
+        "type": "text",
+        "fielddata": true
       }
     }
   }

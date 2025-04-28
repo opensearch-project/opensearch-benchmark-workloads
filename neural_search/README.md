@@ -136,7 +136,7 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
 * `space_type` (default:` l2): The vector space used to calculate the distance between vectors.
 * `target_throughput` (default: default values for each operation): Number of requests per second, `""` for no limit.
-* `variable_queries` (default: 0) Number of variable queries will be used for the semantic search task, 0 means fixed query.
+* `variable_queries` (default: 10000) Number of variable queries will be used for the search task, 0 means fixed query.
 * `warmup_iterations`: Number of Warmup iteration of each search client executes.
 * `warmup-time-period` (default: 120): Amount of time, in seconds, to warm up the benchmark candidate
 
@@ -513,96 +513,96 @@ Running semantic-search                                                        [
             
 |                                                         Metric |                     Task |       Value |   Unit |
 |---------------------------------------------------------------:|-------------------------:|------------:|-------:|
-|                     Cumulative indexing time of primary shards |                          |     1.45082 |    min |
+|                     Cumulative indexing time of primary shards |                          |     1.60687 |    min |
 |             Min cumulative indexing time across primary shards |                          |           0 |    min |
-|          Median cumulative indexing time across primary shards |                          | 1.66667e-05 |    min |
-|             Max cumulative indexing time across primary shards |                          |     1.33567 |    min |
+|          Median cumulative indexing time across primary shards |                          |           0 |    min |
+|             Max cumulative indexing time across primary shards |                          |     1.51987 |    min |
 |            Cumulative indexing throttle time of primary shards |                          |           0 |    min |
 |    Min cumulative indexing throttle time across primary shards |                          |           0 |    min |
 | Median cumulative indexing throttle time across primary shards |                          |           0 |    min |
 |    Max cumulative indexing throttle time across primary shards |                          |           0 |    min |
-|                        Cumulative merge time of primary shards |                          |     4.18178 |    min |
+|                        Cumulative merge time of primary shards |                          |     4.30778 |    min |
 |                       Cumulative merge count of primary shards |                          |          18 |        |
 |                Min cumulative merge time across primary shards |                          |           0 |    min |
 |             Median cumulative merge time across primary shards |                          |           0 |    min |
-|                Max cumulative merge time across primary shards |                          |     3.46207 |    min |
-|               Cumulative merge throttle time of primary shards |                          |     1.57937 |    min |
+|                Max cumulative merge time across primary shards |                          |     3.65718 |    min |
+|               Cumulative merge throttle time of primary shards |                          |     1.43952 |    min |
 |       Min cumulative merge throttle time across primary shards |                          |           0 |    min |
 |    Median cumulative merge throttle time across primary shards |                          |           0 |    min |
-|       Max cumulative merge throttle time across primary shards |                          |    0.884733 |    min |
-|                      Cumulative refresh time of primary shards |                          |    0.196833 |    min |
-|                     Cumulative refresh count of primary shards |                          |         325 |        |
+|       Max cumulative merge throttle time across primary shards |                          |    0.845733 |    min |
+|                      Cumulative refresh time of primary shards |                          |    0.236267 |    min |
+|                     Cumulative refresh count of primary shards |                          |         332 |        |
 |              Min cumulative refresh time across primary shards |                          |           0 |    min |
-|           Median cumulative refresh time across primary shards |                          | 0.000266667 |    min |
-|              Max cumulative refresh time across primary shards |                          |    0.167067 |    min |
-|                        Cumulative flush time of primary shards |                          |     0.05605 |    min |
-|                       Cumulative flush count of primary shards |                          |          14 |        |
+|           Median cumulative refresh time across primary shards |                          |           0 |    min |
+|              Max cumulative refresh time across primary shards |                          |     0.20325 |    min |
+|                        Cumulative flush time of primary shards |                          |   0.0163333 |    min |
+|                       Cumulative flush count of primary shards |                          |          20 |        |
 |                Min cumulative flush time across primary shards |                          |           0 |    min |
 |             Median cumulative flush time across primary shards |                          |           0 |    min |
-|                Max cumulative flush time across primary shards |                          |   0.0244167 |    min |
-|                                        Total Young Gen GC time |                          |       9.074 |      s |
-|                                       Total Young Gen GC count |                          |         612 |        |
-|                                          Total Old Gen GC time |                          |        0.03 |      s |
-|                                         Total Old Gen GC count |                          |           1 |        |
-|                                                     Store size |                          |     2.36527 |     GB |
-|                                                  Translog size |                          | 9.22009e-07 |     GB |
+|                Max cumulative flush time across primary shards |                          |      0.0126 |    min |
+|                                        Total Young Gen GC time |                          |       9.972 |      s |
+|                                       Total Young Gen GC count |                          |         702 |        |
+|                                          Total Old Gen GC time |                          |           0 |      s |
+|                                         Total Old Gen GC count |                          |           0 |        |
+|                                                     Store size |                          |     3.93267 |     GB |
+|                                                  Translog size |                          | 9.73605e-05 |     GB |
 |                                         Heap used for segments |                          |           0 |     MB |
 |                                       Heap used for doc values |                          |           0 |     MB |
 |                                            Heap used for terms |                          |           0 |     MB |
 |                                            Heap used for norms |                          |           0 |     MB |
 |                                           Heap used for points |                          |           0 |     MB |
 |                                    Heap used for stored fields |                          |           0 |     MB |
-|                                                  Segment count |                          |          54 |        |
-|                                                 Min Throughput |             index-append |      104.38 | docs/s |
-|                                                Mean Throughput |             index-append |      107.34 | docs/s |
-|                                              Median Throughput |             index-append |      105.96 | docs/s |
-|                                                 Max Throughput |             index-append |      133.87 | docs/s |
-|                                        50th percentile latency |             index-append |     7635.14 |     ms |
-|                                        90th percentile latency |             index-append |     8153.36 |     ms |
-|                                        99th percentile latency |             index-append |     8733.38 |     ms |
-|                                       100th percentile latency |             index-append |     8976.95 |     ms |
-|                                   50th percentile service time |             index-append |     7635.14 |     ms |
-|                                   90th percentile service time |             index-append |     8153.36 |     ms |
-|                                   99th percentile service time |             index-append |     8733.38 |     ms |
-|                                  100th percentile service time |             index-append |     8976.95 |     ms |
+|                                                  Segment count |                          |         140 |        |
+|                                                 Min Throughput |             index-append |       99.99 | docs/s |
+|                                                Mean Throughput |             index-append |      103.42 | docs/s |
+|                                              Median Throughput |             index-append |      100.95 | docs/s |
+|                                                 Max Throughput |             index-append |      142.92 | docs/s |
+|                                        50th percentile latency |             index-append |     7965.27 |     ms |
+|                                        90th percentile latency |             index-append |     8665.57 |     ms |
+|                                        99th percentile latency |             index-append |     9338.32 |     ms |
+|                                       100th percentile latency |             index-append |     9582.74 |     ms |
+|                                   50th percentile service time |             index-append |     7965.27 |     ms |
+|                                   90th percentile service time |             index-append |     8665.57 |     ms |
+|                                   99th percentile service time |             index-append |     9338.32 |     ms |
+|                                  100th percentile service time |             index-append |     9582.74 |     ms |
 |                                                     error rate |             index-append |           0 |      % |
-|                                                 Min Throughput | wait-until-merges-finish |       41.97 |  ops/s |
-|                                                Mean Throughput | wait-until-merges-finish |       41.97 |  ops/s |
-|                                              Median Throughput | wait-until-merges-finish |       41.97 |  ops/s |
-|                                                 Max Throughput | wait-until-merges-finish |       41.97 |  ops/s |
-|                                       100th percentile latency | wait-until-merges-finish |      23.545 |     ms |
-|                                  100th percentile service time | wait-until-merges-finish |      23.545 |     ms |
+|                                                 Min Throughput | wait-until-merges-finish |       35.19 |  ops/s |
+|                                                Mean Throughput | wait-until-merges-finish |       35.19 |  ops/s |
+|                                              Median Throughput | wait-until-merges-finish |       35.19 |  ops/s |
+|                                                 Max Throughput | wait-until-merges-finish |       35.19 |  ops/s |
+|                                       100th percentile latency | wait-until-merges-finish |     27.5702 |     ms |
+|                                  100th percentile service time | wait-until-merges-finish |     27.5702 |     ms |
 |                                                     error rate | wait-until-merges-finish |           0 |      % |
-|                                                 Min Throughput |                match-all |        99.8 |  ops/s |
-|                                                Mean Throughput |                match-all |       99.84 |  ops/s |
-|                                              Median Throughput |                match-all |       99.85 |  ops/s |
-|                                                 Max Throughput |                match-all |       99.88 |  ops/s |
-|                                        50th percentile latency |                match-all |     5.64821 |     ms |
-|                                        90th percentile latency |                match-all |     6.29294 |     ms |
-|                                        99th percentile latency |                match-all |     7.06777 |     ms |
-|                                       100th percentile latency |                match-all |     9.32783 |     ms |
-|                                   50th percentile service time |                match-all |     4.79592 |     ms |
-|                                   90th percentile service time |                match-all |     5.39156 |     ms |
-|                                   99th percentile service time |                match-all |     6.07555 |     ms |
-|                                  100th percentile service time |                match-all |     8.38604 |     ms |
+|                                                 Min Throughput |                match-all |       99.84 |  ops/s |
+|                                                Mean Throughput |                match-all |       99.88 |  ops/s |
+|                                              Median Throughput |                match-all |       99.88 |  ops/s |
+|                                                 Max Throughput |                match-all |       99.91 |  ops/s |
+|                                        50th percentile latency |                match-all |     5.87402 |     ms |
+|                                        90th percentile latency |                match-all |     7.08426 |     ms |
+|                                        99th percentile latency |                match-all |     14.2448 |     ms |
+|                                       100th percentile latency |                match-all |     15.7523 |     ms |
+|                                   50th percentile service time |                match-all |      5.0644 |     ms |
+|                                   90th percentile service time |                match-all |     6.33745 |     ms |
+|                                   99th percentile service time |                match-all |     9.41646 |     ms |
+|                                  100th percentile service time |                match-all |     14.2137 |     ms |
 |                                                     error rate |                match-all |           0 |      % |
-|                                                 Min Throughput |          semantic-search |        9.96 |  ops/s |
-|                                                Mean Throughput |          semantic-search |        9.97 |  ops/s |
-|                                              Median Throughput |          semantic-search |        9.97 |  ops/s |
-|                                                 Max Throughput |          semantic-search |        9.98 |  ops/s |
-|                                        50th percentile latency |          semantic-search |     55.6083 |     ms |
-|                                        90th percentile latency |          semantic-search |       56.12 |     ms |
-|                                        99th percentile latency |          semantic-search |     57.9657 |     ms |
-|                                       100th percentile latency |          semantic-search |     62.4806 |     ms |
-|                                   50th percentile service time |          semantic-search |     54.1118 |     ms |
-|                                   90th percentile service time |          semantic-search |     54.5326 |     ms |
-|                                   99th percentile service time |          semantic-search |     56.4637 |     ms |
-|                                  100th percentile service time |          semantic-search |     60.9003 |     ms |
+|                                                 Min Throughput |          semantic-search |       15.39 |  ops/s |
+|                                                Mean Throughput |          semantic-search |       15.65 |  ops/s |
+|                                              Median Throughput |          semantic-search |       15.69 |  ops/s |
+|                                                 Max Throughput |          semantic-search |       15.77 |  ops/s |
+|                                        50th percentile latency |          semantic-search |     54.1964 |     ms |
+|                                        90th percentile latency |          semantic-search |      68.735 |     ms |
+|                                        99th percentile latency |          semantic-search |     86.6366 |     ms |
+|                                       100th percentile latency |          semantic-search |     111.449 |     ms |
+|                                   50th percentile service time |          semantic-search |     54.1964 |     ms |
+|                                   90th percentile service time |          semantic-search |      68.735 |     ms |
+|                                   99th percentile service time |          semantic-search |     86.6366 |     ms |
+|                                  100th percentile service time |          semantic-search |     111.449 |     ms |
 |                                                     error rate |          semantic-search |           0 |      % |
 
 
 ---------------------------------
-[INFO] SUCCESS (took 671 seconds)
+[INFO] SUCCESS (took 682 seconds)
 ---------------------------------
 ```
 

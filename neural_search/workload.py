@@ -3,6 +3,10 @@ import os
 import json
 from pathlib import Path
 
+import re
+from typing import List
+from collections import Counter
+
 from osbenchmark.workload.loader import Downloader
 from osbenchmark.workload.loader import Decompressor
 
@@ -101,6 +105,82 @@ class NeuralHybridQueryParamSource(QueryParamSource):
                 params['body']['query']['hybrid']['queries'][1]['neural']['passage_embedding']['query_text'] = query_text
         return params
 
+class NeuralHybridQueryBoolParamSource(QueryParamSource):
+    def params(self):
+        params = self._params
+        with open('model_id.json', 'r') as f:
+            d = json.loads(f.read())
+            params['body']['query']['bool']['should'][1]['neural']['passage_embedding']['model_id'] = d['model_id']
+
+        count = self._params.get("variable-queries", 0)
+        if count > 0:
+            script_dir = os.path.dirname(os.path.realpath(__file__))
+            with open(script_dir + '/queries.json', 'r') as f:
+                lines = f.read().splitlines()
+                line = random.choice(lines)
+                query_text = json.loads(line)['text']
+                params['body']['query']['bool']['should'][0]['match']['text']['query'] = query_text
+                params['body']['query']['bool']['should'][1]['neural']['passage_embedding']['query_text'] = query_text
+        return params
+
+
+class NeuralHybridQueryComplexParamSource(QueryParamSource):
+    def params(self):
+        params = self._params
+        with open('model_id.json', 'r') as f:
+            d = json.loads(f.read())
+            params['body']['query']['hybrid']['queries'][2]['neural']['passage_embedding']['model_id'] = d['model_id']
+
+        def tokenize_query(query_text: str) -> List[str]:
+            # Convert to lowercase and split into tokens
+            # Remove special characters but keep alphanumeric and spaces
+            clean_text = re.sub(r'[^a-zA-Z0-9\s]', '', query_text.lower())
+            tokens = clean_text.split()
+            return tokens
+
+        count = self._params.get("variable-queries", 0)
+        if count > 0:
+            script_dir = os.path.dirname(os.path.realpath(__file__))
+            with open(script_dir + '/queries.json', 'r') as f:
+                lines = f.read().splitlines()
+                line = random.choice(lines)
+                query_text = json.loads(line)['text']
+
+                tokens = tokenize_query(query_text)
+                # Get word frequency to identify important terms
+                word_freq = Counter(tokens)
+                # Create phrases from consecutive words (bigrams)
+                phrases = [f"{tokens[i]} {tokens[i + 1]}" for i in range(len(tokens) - 1)]
+                # Identify potentially important terms (you might want to customize this)
+                important_terms = [word for word, freq in word_freq.items() if len(word) > 2]
+
+                params['body']['query']['hybrid']['queries'][0]['match_phrase']['text']['query'] = query_text
+                params['body']['query']['hybrid']['queries'][1]['match']['text']['query'] = " ".join(important_terms)
+                params['body']['query']['hybrid']['queries'][2]['neural']['passage_embedding']['query_text'] = query_text
+
+                queries = params['body']['query']['hybrid']['queries']
+                current_length = len(queries)
+                new_phrase_queries = [
+                    {
+                        "match_phrase": {
+                            "text": {
+                                "query": phrase,
+                                "boost": 1.5,
+                                "slop": 1
+                            }
+                        }
+                    } for phrase in phrases[:2]
+                ]
+
+                if current_length == 3:
+                    # If we have exactly 3 elements, append new ones (up to the limit of 5)
+                    queries.extend(new_phrase_queries)
+                else:
+                    # If we have more than 3 elements, remove excess elements and add new ones
+                    del queries[3:]  # Remove all elements starting from index 3
+                    queries.extend(new_phrase_queries)  # Add new phrase queries
+        return params
+
 class NeuralSemanticQueryParamSource(QueryParamSource):
     def params(self):
         params = self._params
@@ -120,6 +200,8 @@ class NeuralSemanticQueryParamSource(QueryParamSource):
 def register(registry):
     registry.register_param_source("neural-sparse-search-source", NeuralSparseQueryParamSource)
     registry.register_param_source("neural-hybrid-search-source", NeuralHybridQueryParamSource)
+    registry.register_param_source("neural-hybrid-search-bool-source", NeuralHybridQueryBoolParamSource)
+    registry.register_param_source("neural-hybrid-search-complex-source", NeuralHybridQueryComplexParamSource)
     registry.register_param_source("neural-semantic-search-source", NeuralSemanticQueryParamSource)
     registry.register_param_source("create-ingest-pipeline-source", ingest_pipeline_param_source)
 
