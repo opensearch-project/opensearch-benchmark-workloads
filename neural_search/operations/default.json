@@ -24,6 +24,9 @@
   "indices": ["{{ index_name }}"],
   "bulk-size": {{bulk_size | default(100)}},
   "ingest-percentage": {{ingest_percentage | default(100)}},
+  {%- if index_target_throughput is defined and index_target_throughput  %}
+  "target-throughput": {{ index_target_throughput | tojson }},
+  {%- endif %}
   "corpora": "{{ corpora_name }}"
 },
 {

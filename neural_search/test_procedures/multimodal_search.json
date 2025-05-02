@@ -1,0 +1,89 @@
+{
+  "name": "multimodal-search",
+  "description": "Indexes the corpus and then runs neural clause queries with Multimodal search.",
+  "default": false,
+  "schedule": [
+    {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+    {
+      "operation": "delete-ingest-pipeline"
+    },
+    {
+      "operation": "delete-bedrock-remote-ml-model"
+    },
+    {
+      "operation": "delete-bedrock-ml-connector"
+    },
+    {
+      "operation": "put-cluster-settings"
+    },
+    {
+      "operation": "create-bedrock-ml-connector"
+    },
+    {
+      "operation": "register-bedrock-remote-ml-model"
+    },
+    {
+      "operation": "deploy-ml-model"
+    },
+    {
+      "operation": "create-ingest-pipeline-multimodal"
+    },
+    {{ benchmark.collect(parts="common/create_index_and_ingest_document.json") }},
+    {{ benchmark.collect(parts="common/match_all_search.json") }},
+    {
+      "operation": "multimodal-search",
+      "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+      "iterations": {{iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(0) | tojson}},
+      "clients": {{ search_clients | default(1)}}
+    }
+  ]
+},
+{
+  "name": "multimodal-search-create-resources-and-index-document",
+  "description": "Create resourses (model, pipeline and index) for Multimodal search, then ingest the corpus",
+  "default": false,
+  "schedule": [
+    {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+    {
+      "operation": "delete-ingest-pipeline"
+    },
+    {
+      "operation": "delete-bedrock-remote-ml-model"
+    },
+    {
+      "operation": "delete-bedrock-ml-connector"
+    },
+    {
+      "operation": "put-cluster-settings"
+    },
+    {
+      "operation": "create-bedrock-ml-connector"
+    },
+    {
+      "operation": "register-bedrock-remote-ml-model"
+    },
+    {
+      "operation": "deploy-ml-model"
+    },
+    {
+      "operation": "create-ingest-pipeline-multimodal"
+    },
+    {{ benchmark.collect(parts="common/create_index_and_ingest_document.json") }}
+  ]
+},
+{
+  "name": "multimodal-search-query-only",
+  "description": "Runs neural clause queries with Multimodal search, applicable only when pipelines, model and index are created, and corpus is ingested.",
+  "default": false,
+  "schedule": [
+    {
+      "operation": "multimodal-search",
+      "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+      "iterations": {{iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(0) | tojson}},
+      "clients": {{ search_clients | default(1)}}
+    }
+  ]
+}
+

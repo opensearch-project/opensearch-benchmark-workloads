@@ -9,7 +9,7 @@ from collections import Counter
 
 from osbenchmark.workload.loader import Downloader
 from osbenchmark.workload.loader import Decompressor
-
+from osbenchmark import exceptions
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -21,6 +21,9 @@ def ingest_pipeline_param_source(workload, params, **kwargs):
     elif 'text_embedding' in processor:
         model_id = processor['text_embedding']['model_id']
         processor_name = 'text_embedding'
+    elif 'text_image_embedding' in processor:
+        model_id = processor['text_image_embedding']['model_id']
+        processor_name = 'text_image_embedding'
     else:
         raise Exception('Processor: {} is not supported'.format(processor))
 
@@ -51,15 +54,24 @@ class QueryParamSource:
         self._params['variable-queries'] = params.get("variable-queries", 0)
         self.infinite = True
 
+        self.dataset_name = self.get_dataset_name()
+        self.load_queries_file()
+
+    def get_dataset_name(self):
+        raise NotImplementedError("Subclasses must implement get_dataset_name()")
+
+    def load_queries_file(self):
         if self._params['variable-queries'] > 0:
             with open(script_dir + os.sep + 'workload_queries.json', 'r') as f:
-                d = json.loads(f.read())
-                source_file = d['source-file']
-                base_url = d['base-url']
-                compressed_bytes = d['compressed-bytes']
-                uncompressed_bytes = d['uncompressed-bytes']
-                compressed_path = script_dir + os.sep + source_file
-                uncompressed_path = script_dir + os.sep + Path(source_file).stem
+                data = json.load(f)
+                for item in data:
+                    if item['name'] == self.dataset_name:
+                        source_file = item['source-file']
+                        base_url = item['base-url']
+                        compressed_bytes = item['compressed-bytes']
+                        uncompressed_bytes = item['uncompressed-bytes']
+                        compressed_path = script_dir + os.sep + source_file
+                        uncompressed_path = script_dir + os.sep + Path(source_file).stem
             if not os.path.exists(compressed_path):
                 downloader = Downloader(False, False)
                 downloader.download(base_url, None, compressed_path, compressed_bytes)
@@ -71,6 +83,9 @@ class QueryParamSource:
         return self
 
 class NeuralSparseQueryParamSource(QueryParamSource):
+    def get_dataset_name(self):
+        return 'quora'
+
     def params(self):
         params = self._params
         with open('model_id.json', 'r') as f:
@@ -88,6 +103,9 @@ class NeuralSparseQueryParamSource(QueryParamSource):
         return params
 
 class NeuralHybridQueryParamSource(QueryParamSource):
+    def get_dataset_name(self):
+        return 'quora'
+
     def params(self):
         params = self._params
         with open('model_id.json', 'r') as f:
@@ -106,6 +124,9 @@ class NeuralHybridQueryParamSource(QueryParamSource):
         return params
 
 class NeuralHybridQueryBoolParamSource(QueryParamSource):
+    def get_dataset_name(self):
+        return 'quora'
+
     def params(self):
         params = self._params
         with open('model_id.json', 'r') as f:
@@ -125,6 +146,9 @@ class NeuralHybridQueryBoolParamSource(QueryParamSource):
 
 
 class NeuralHybridQueryComplexParamSource(QueryParamSource):
+    def get_dataset_name(self):
+        return 'quora'
+
     def params(self):
         params = self._params
         with open('model_id.json', 'r') as f:
@@ -182,6 +206,9 @@ class NeuralHybridQueryComplexParamSource(QueryParamSource):
         return params
 
 class NeuralSemanticQueryParamSource(QueryParamSource):
+    def get_dataset_name(self):
+        return 'quora'
+
     def params(self):
         params = self._params
         with open('model_id.json', 'r') as f:
@@ -197,11 +224,38 @@ class NeuralSemanticQueryParamSource(QueryParamSource):
                 params['body']['query']['neural']['passage_embedding']['query_text'] = query_text
         return params
 
+class NeuralMultimodalQueryParamSource(QueryParamSource):
+    def get_dataset_name(self):
+        return 'abo'
+
+    def params(self):
+        params = self._params
+        with open('model_id.json', 'r') as f:
+            d = json.loads(f.read())
+        params['body']['query']['neural']['vector_embedding']['model_id'] = d['model_id']
+
+        count = self._params.get("variable-queries", 1)
+
+        if count == 0:
+            raise exceptions.DataError("variable-queries parameter for multimodal search cannot be 0.")
+        if count > 0:
+            script_dir = os.path.dirname(os.path.realpath(__file__))
+            with open(script_dir + '/abo_queries.json', 'r') as f:
+                lines = f.read().splitlines()
+                line = random.choice(lines)
+                item = json.loads(line)
+                query_text = item['image_description']
+                query_image = item['image_binary']
+                params['body']['query']['neural']['vector_embedding']['query_text'] = query_text
+                params['body']['query']['neural']['vector_embedding']['query_image'] = query_image
+        return params
+
 def register(registry):
     registry.register_param_source("neural-sparse-search-source", NeuralSparseQueryParamSource)
     registry.register_param_source("neural-hybrid-search-source", NeuralHybridQueryParamSource)
     registry.register_param_source("neural-hybrid-search-bool-source", NeuralHybridQueryBoolParamSource)
     registry.register_param_source("neural-hybrid-search-complex-source", NeuralHybridQueryComplexParamSource)
     registry.register_param_source("neural-semantic-search-source", NeuralSemanticQueryParamSource)
+    registry.register_param_source("neural-multimodal-search-source", NeuralMultimodalQueryParamSource)
     registry.register_param_source("create-ingest-pipeline-source", ingest_pipeline_param_source)
 

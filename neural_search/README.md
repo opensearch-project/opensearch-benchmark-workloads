@@ -6,6 +6,26 @@ This workload is to benchmark performance of indexing and search for different s
 The Quora Question Pairs (QQP) dataset, released by Quora, is a collection of over 400,000 question pairs, each labeled to indicate whether the two questions are paraphrases of each other, used for research in natural language processing and machine learning.
 - Quora website: https://www.quora.com/q/quoradata/First-Quora-Dataset-Release-Question-Pairs
 - Dataset: https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/quora.zip
+- This dataset is used for benchmarking Semantic, Hybrid and Sparse search methods
+
+Amazon Berkeley Objects (ABO) dataset, owned by Amazon, is an open-licensed dataset of Amazon products with metadata, catalog images, and artist-created 3D models. ABO is a collection of 147,702 product listings with multilingual metadata and 398,212 unique catalog images
+- ABO website: https://amazon-berkeley-objects.s3.amazonaws.com/index.html
+- Dataset small image: https://amazon-berkeley-objects.s3.amazonaws.com/archives/abo-images-small.tar
+- Dataset description: https://amazon-berkeley-objects.s3.amazonaws.com/archives/abo-listings.tar
+- This dataset is used for benchmarking Multimodal search method
+
+### Additional Note for Multimodal search benchmark
+
+1. Currently, there's no [pretrained models](https://docs.opensearch.org/docs/latest/ml-commons-plugin/pretrained-models/) available for multimodal search, hence we will be using remote models
+2. This benchmark requires OpenSearch version 2.16 or higher, as the built-in function for creating connectors was only introduced in that version
+3. We pre-processed the ABO dataset by converting actual images (small ones) into base 64 encoding binaries, as the search method only accepts image binary as input
+4. By default, we utilize [Amazon Titan Multimodal Embeddings G1 model](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-multiemb-models.html) hosted on Bedrock to perform the benchmark, which requires create remote connector, register remote model and the following cluster setting:
+   1. `"plugins.ml_commons.trusted_connector_endpoints_regex": ["^https://bedrock-runtime\\..*[a-z0-9-]\\.amazonaws\\.com/.*$"]`
+5. If you want to use other remote model that host on other platform such as cohere, you will need to update the cluster setting by adding trusted endpoints and adjust the logic to create connectors, check this [link](https://docs.opensearch.org/docs/latest/ml-commons-plugin/remote-models/index/) for more details
+6. Since we use Amazon Bedrock model by default, and you want to use it as well, the following prerequisites need to meet in order to successfully running the benchmark:
+   1. Have a valid AWS account
+   2. Have proper access permissions for the model (which can be obtained through this [link](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html))
+   3. Generate AWS credentials and pass them as workload parameters, we will use the credentials to connect to the remote model
 
 ### Example document and query for Quora dataset
 ```json
@@ -29,6 +49,30 @@ The Quora Question Pairs (QQP) dataset, released by Quora, is a collection of ov
      }
    }
 ```
+
+### Example document and query for ABO dataset
+```json
+{
+    "_id": 1,
+    "main_image_id": "71dZhpsferL",
+    "image_description": "Amazon Brand - Solimo Designer Couples Sitting at Dark 3D Printed Hard Back Case Mobile Cover for Lenovo K4 Note",
+    "image_binary": "<base_64_binary>",
+    "image_path": "c2/c20aa6ca.jpg"
+}
+```
+```json
+"query": {
+      "neural": {
+        "vector_embedding": {
+          "query_text": "Amazon Brand - Solimo Designer Couples Sitting at Dark 3D Printed Hard Back Case Mobile Cover for Lenovo K4 Note",
+          "query_image": "<base_64_binary>",
+          "model_id": "",
+          "k": {{query_k | default(10)}}
+        }
+      }
+    }
+```
+
 ### Running a benchmark
 Before running a benchmark, ensure that the load generation host is able to access your cluster endpoint, which can be verified by a `curl $ENDPOINT` command.
 
@@ -69,11 +113,13 @@ The full list of tasks is provided below:
 - delete-normalization-search-pipeline (hybrid search only)
 - delete-ingest-pipeline
 - delete-ml-model
+- delete-bedrock-ml-connector (multimodal search only)
 - put-cluster-settings
+- create-bedrock-ml-connector (multimodal search only)
 - register-ml-model
 - deploy-ml-model
 - create-ingest-pipeline
-- create-normalization-search-pipeline (hybrid search only)
+- create-search-pipeline (hybrid search only)
 - create-index
 - check-cluster-health
 - index-append
@@ -90,6 +136,7 @@ The full list of tasks is provided below:
 
 This workload allows [specifying the following parameters](#specifying-workload-parameters) using the `--workload-params` option to OpenSearch Benchmark:
 
+* `access_key`: AWS credential access key
 * `allow_registering_model_via_url` (default: true): Whether allows user to register models using a URL
 * `bulk_indexing_clients` (default: 1): Number of clients that issue bulk indexing requests.
 * `bulk_size` (default: 100): Number of documents to be ingested in the bulk request.
@@ -98,6 +145,7 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `combination_technique` (default: arithmetic_mean): The technique for combining scores. Valid values are arithmetic_mean, geometric_mean, and harmonic_mean. Only applicable to Hybrid search with normalization-processor enabled
 * `combination_parameters_weights`: Specifies the weights to use for each query. Valid values are in the [0.0, 1.0] range and signify decimal percentages. The number of values in the weights array must equal the number of queries. 
   The sum of the values in the array must equal 1.0. Optional. If not provided, all queries are given equal weight. Only applicable to Hybrid search with normalization-processor enabled
+* `connector_name` (default: Amazon Bedrock Connector): Name of the remote connector
 * `default_ingest_pipeline` (default: nlp-default-ingest-pipeline): name of the ingest pipeline
 * `dimensions` (default: 768): Vector dimensions, needed to match the model.
 * `engine` (default:` lucene): The approximate k-NN library to use for indexing and search.
@@ -108,6 +156,7 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `index_body`: Body of the index setting, must pass as workload parameter
 * `index_knn`: Whether to create a vector index, required as parameter for all search methods EXCEPT sparse search
 * `index_name`: Name of the index, must pass as workload parameter
+* `index_target_throughput`: Target throughput for ingesting document
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
 * `iterations`:  Number of test iterations of each search client executes.
@@ -130,9 +179,12 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `query_cache_enabled` (default: false): Enables or disables the index query cache
 * `rank_constant` (default: 60): A constant added to each document’s rank before calculating the reciprocal score. Only applicable to Hybrid search with score-ranker-processor enabled
 * `refresh_interval` (default: "5s"): Interval to refresh the index in seconds
+* `region`: AWS region
 * `requests_cache_enabled` (default: false): Enables or disables the index request cache
 * `search_clients`: Number of clients that issue search requests.
 * `search_pipeline_processor`: Types of processors for hybrid search, available processors are normalization-processor and score-ranker-processor, if not defined, normalization-processor will be chosen
+* `secret_key`: AWS credential secret key
+* `session_token`: AWS credential session token
 * `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
 * `space_type` (default:` l2): The vector space used to calculate the distance between vectors.
 * `target_throughput` (default: default values for each operation): Number of requests per second, `""` for no limit.
@@ -605,11 +657,180 @@ Running semantic-search                                                        [
 [INFO] SUCCESS (took 682 seconds)
 ---------------------------------
 ```
+### Sample command and output for multimodal search
+
+```
+./opensearch-benchmark execute-test --pipeline=benchmark-only \
+--workload=neural_search \
+--workload-params=/path/to/opensearch-benchmark-workloads/neural_search/params/multimodal_search.json \
+--test-procedure=sparse-search --kill-running-processes
+
+   ____                  _____                      __       ____                  __                         __
+  / __ \____  ___  ____ / ___/___  ____ ___________/ /_     / __ )___  ____  _____/ /_  ____ ___  ____ ______/ /__
+ / / / / __ \/ _ \/ __ \\__ \/ _ \/ __ `/ ___/ ___/ __ \   / __  / _ \/ __ \/ ___/ __ \/ __ `__ \/ __ `/ ___/ //_/
+/ /_/ / /_/ /  __/ / / /__/ /  __/ /_/ / /  / /__/ / / /  / /_/ /  __/ / / / /__/ / / / / / / / / /_/ / /  / ,<
+\____/ .___/\___/_/ /_/____/\___/\__,_/_/   \___/_/ /_/  /_____/\___/_/ /_/\___/_/ /_/_/ /_/ /_/\__,_/_/  /_/|_|
+    /_/
+
+[INFO] [Test Execution ID]: be038fa4-1e74-411b-b655-628465d589f5
+[INFO] Executing test with workload [neural_search], test_procedure [multimodal-search] and provision_config_instance ['external'] with version [2.19.0].
+
+[WARNING] merges_total_time is 855783 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] merges_total_throttled_time is 779538 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] indexing_total_time is 47668 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] refresh_total_time is 7944 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+[WARNING] flush_total_time is 914 ms indicating that the cluster is not in a defined clean state. Recorded index time metrics may be misleading.
+Running delete-index                                                           [100% done]
+Running delete-ingest-pipeline                                                 [100% done]
+Running delete-bedrock-remote-ml-model                                         [100% done]
+Running delete-bedrock-ml-connector                                            [100% done]
+Running put-cluster-settings                                                   [100% done]
+Running create-bedrock-ml-connector                                            [100% done]
+Running register-bedrock-remote-ml-model                                       [100% done]
+Running deploy-ml-model                                                        [100% done]
+Running create-ingest-pipeline-multimodal                                      [100% done]
+Running create-index                                                           [100% done]
+Running check-cluster-health                                                   [100% done]
+Running index-append                                                           [100% done]
+Running refresh-after-index                                                    [100% done]
+Running force-merge                                                            [100% done]
+Running refresh-after-force-merge                                              [100% done]
+Running wait-until-merges-finish                                               [100% done]
+Running match-all                                                              [100% done]
+Running multimodal-search                                                      [100% done]
+
+------------------------------------------------------
+    _______             __   _____
+   / ____(_)___  ____ _/ /  / ___/_________  ________
+  / /_  / / __ \/ __ `/ /   \__ \/ ___/ __ \/ ___/ _ \
+ / __/ / / / / / /_/ / /   ___/ / /__/ /_/ / /  /  __/
+/_/   /_/_/ /_/\__,_/_/   /____/\___/\____/_/   \___/
+------------------------------------------------------
+            
+|                                                         Metric |                     Task |      Value |   Unit |
+|---------------------------------------------------------------:|-------------------------:|-----------:|-------:|
+|                     Cumulative indexing time of primary shards |                          |    0.78215 |    min |
+|             Min cumulative indexing time across primary shards |                          |          0 |    min |
+|          Median cumulative indexing time across primary shards |                          |          0 |    min |
+|             Max cumulative indexing time across primary shards |                          |   0.691817 |    min |
+|            Cumulative indexing throttle time of primary shards |                          |          0 |    min |
+|    Min cumulative indexing throttle time across primary shards |                          |          0 |    min |
+| Median cumulative indexing throttle time across primary shards |                          |          0 |    min |
+|    Max cumulative indexing throttle time across primary shards |                          |          0 |    min |
+|                        Cumulative merge time of primary shards |                          |    6.98543 |    min |
+|                       Cumulative merge count of primary shards |                          |         26 |        |
+|                Min cumulative merge time across primary shards |                          |          0 |    min |
+|             Median cumulative merge time across primary shards |                          |          0 |    min |
+|                Max cumulative merge time across primary shards |                          |    6.70265 |    min |
+|               Cumulative merge throttle time of primary shards |                          |    6.44245 |    min |
+|       Min cumulative merge throttle time across primary shards |                          |          0 |    min |
+|    Median cumulative merge throttle time across primary shards |                          |          0 |    min |
+|       Max cumulative merge throttle time across primary shards |                          |    6.17145 |    min |
+|                      Cumulative refresh time of primary shards |                          |   0.129633 |    min |
+|                     Cumulative refresh count of primary shards |                          |       1272 |        |
+|              Min cumulative refresh time across primary shards |                          |          0 |    min |
+|           Median cumulative refresh time across primary shards |                          |          0 |    min |
+|              Max cumulative refresh time across primary shards |                          |    0.09405 |    min |
+|                        Cumulative flush time of primary shards |                          |  0.0176667 |    min |
+|                       Cumulative flush count of primary shards |                          |         86 |        |
+|                Min cumulative flush time across primary shards |                          |          0 |    min |
+|             Median cumulative flush time across primary shards |                          |          0 |    min |
+|                Max cumulative flush time across primary shards |                          | 0.00693333 |    min |
+|                                        Total Young Gen GC time |                          |      4.658 |      s |
+|                                       Total Young Gen GC count |                          |       1192 |        |
+|                                          Total Old Gen GC time |                          |          0 |      s |
+|                                         Total Old Gen GC count |                          |          0 |        |
+|                                                     Store size |                          |    7.44656 |     GB |
+|                                                  Translog size |                          | 7.1926e-05 |     GB |
+|                                         Heap used for segments |                          |          0 |     MB |
+|                                       Heap used for doc values |                          |          0 |     MB |
+|                                            Heap used for terms |                          |          0 |     MB |
+|                                            Heap used for norms |                          |          0 |     MB |
+|                                           Heap used for points |                          |          0 |     MB |
+|                                    Heap used for stored fields |                          |          0 |     MB |
+|                                                  Segment count |                          |        227 |        |
+|                                                 Min Throughput |      delete-ml-connector |      45.45 |  ops/s |
+|                                                Mean Throughput |      delete-ml-connector |      45.45 |  ops/s |
+|                                              Median Throughput |      delete-ml-connector |      45.45 |  ops/s |
+|                                                 Max Throughput |      delete-ml-connector |      45.45 |  ops/s |
+|                                       100th percentile latency |      delete-ml-connector |    21.5289 |     ms |
+|                                  100th percentile service time |      delete-ml-connector |    21.5289 |     ms |
+|                                                     error rate |      delete-ml-connector |          0 |      % |
+|                                                 Min Throughput |      create-ml-connector |      12.32 |  ops/s |
+|                                                Mean Throughput |      create-ml-connector |      12.32 |  ops/s |
+|                                              Median Throughput |      create-ml-connector |      12.32 |  ops/s |
+|                                                 Max Throughput |      create-ml-connector |      12.32 |  ops/s |
+|                                       100th percentile latency |      create-ml-connector |    80.5653 |     ms |
+|                                  100th percentile service time |      create-ml-connector |    80.5653 |     ms |
+|                                                     error rate |      create-ml-connector |          0 |      % |
+|                                                 Min Throughput | register-remote-ml-model |        0.2 |  ops/s |
+|                                                Mean Throughput | register-remote-ml-model |        0.2 |  ops/s |
+|                                              Median Throughput | register-remote-ml-model |        0.2 |  ops/s |
+|                                                 Max Throughput | register-remote-ml-model |        0.2 |  ops/s |
+|                                       100th percentile latency | register-remote-ml-model |    5067.23 |     ms |
+|                                  100th percentile service time | register-remote-ml-model |    5067.23 |     ms |
+|                                                     error rate | register-remote-ml-model |          0 |      % |
+|                                                 Min Throughput |             index-append |     127.67 | docs/s |
+|                                                Mean Throughput |             index-append |     143.35 | docs/s |
+|                                              Median Throughput |             index-append |     143.03 | docs/s |
+|                                                 Max Throughput |             index-append |     146.72 | docs/s |
+|                                        50th percentile latency |             index-append |     683.31 |     ms |
+|                                        90th percentile latency |             index-append |    757.902 |     ms |
+|                                        99th percentile latency |             index-append |    909.862 |     ms |
+|                                      99.9th percentile latency |             index-append |    1444.81 |     ms |
+|                                       100th percentile latency |             index-append |    1499.53 |     ms |
+|                                   50th percentile service time |             index-append |     683.31 |     ms |
+|                                   90th percentile service time |             index-append |    757.902 |     ms |
+|                                   99th percentile service time |             index-append |    909.862 |     ms |
+|                                 99.9th percentile service time |             index-append |    1444.81 |     ms |
+|                                  100th percentile service time |             index-append |    1499.53 |     ms |
+|                                                     error rate |             index-append |          0 |      % |
+|                                                 Min Throughput | wait-until-merges-finish |      25.59 |  ops/s |
+|                                                Mean Throughput | wait-until-merges-finish |      25.59 |  ops/s |
+|                                              Median Throughput | wait-until-merges-finish |      25.59 |  ops/s |
+|                                                 Max Throughput | wait-until-merges-finish |      25.59 |  ops/s |
+|                                       100th percentile latency | wait-until-merges-finish |    38.6517 |     ms |
+|                                  100th percentile service time | wait-until-merges-finish |    38.6517 |     ms |
+|                                                     error rate | wait-until-merges-finish |          0 |      % |
+|                                                 Min Throughput |                match-all |      99.69 |  ops/s |
+|                                                Mean Throughput |                match-all |      99.76 |  ops/s |
+|                                              Median Throughput |                match-all |      99.77 |  ops/s |
+|                                                 Max Throughput |                match-all |      99.81 |  ops/s |
+|                                        50th percentile latency |                match-all |    6.52742 |     ms |
+|                                        90th percentile latency |                match-all |    7.42068 |     ms |
+|                                        99th percentile latency |                match-all |    10.7161 |     ms |
+|                                       100th percentile latency |                match-all |    13.9326 |     ms |
+|                                   50th percentile service time |                match-all |    5.90948 |     ms |
+|                                   90th percentile service time |                match-all |    6.71041 |     ms |
+|                                   99th percentile service time |                match-all |    9.36623 |     ms |
+|                                  100th percentile service time |                match-all |     11.778 |     ms |
+|                                                     error rate |                match-all |          0 |      % |
+|                                                 Min Throughput |        multimodal-search |       2.96 |  ops/s |
+|                                                Mean Throughput |        multimodal-search |       3.15 |  ops/s |
+|                                              Median Throughput |        multimodal-search |       3.15 |  ops/s |
+|                                                 Max Throughput |        multimodal-search |       3.31 |  ops/s |
+|                                        50th percentile latency |        multimodal-search |      32130 |     ms |
+|                                        90th percentile latency |        multimodal-search |    38269.2 |     ms |
+|                                        99th percentile latency |        multimodal-search |    39647.9 |     ms |
+|                                       100th percentile latency |        multimodal-search |      39785 |     ms |
+|                                   50th percentile service time |        multimodal-search |    229.561 |     ms |
+|                                   90th percentile service time |        multimodal-search |    267.099 |     ms |
+|                                   99th percentile service time |        multimodal-search |    494.745 |     ms |
+|                                  100th percentile service time |        multimodal-search |    496.515 |     ms |
+|                                                     error rate |        multimodal-search |          0 |      % |
+
+
+----------------------------------
+[INFO] SUCCESS (took 1058 seconds)
+----------------------------------
+```
 
 ### Gotchas
 1. The above benchmark is running against a cluster that has two data nodes (See Docker compose [detail](https://docs.opensearch.org/docs/latest/install-and-configure/install-opensearch/docker/#sample-docker-composeyml)). 
 If your cluster only have one data node, test procedures may stuck in `check-cluster-health` step, in that case, you should add a `number_of_replicas` parameter with value `0`
+2. For Multimodal test procedure, the performance also depend on the Bedrock model. Most common issue is requests are throttled by Bedrock, we can either request a service quota increase (check this [link](https://docs.aws.amazon.com/bedrock/latest/userguide/quotas.html) for details),
+or adjust the target-throughput (not ideal, as it makes the result look bad) 
 
 ### License
 
-- For quora dataset, we use the same license for the data as the original data: [CC-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/), also see the LICENSE.txt file within this workload for the license information
+- For quora and abo dataset, we use the same license for the data as the original data: [CC-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/), also see the LICENSE.txt file within this workload for the license information

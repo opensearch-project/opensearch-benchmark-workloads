@@ -6,6 +6,6 @@
   "variable_queries": 10000,
   "warmup_time_period": 5,
   "index_knn": true,
-  "k": 10,
-  "ingest_percentage": 10
+  "k": 100,
+  "ingest_percentage": 100
 }

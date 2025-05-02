@@ -1,0 +1,35 @@
+{
+  "settings": {
+    {%-if number_of_shards is defined %}
+    "index.number_of_shards": {{number_of_shards}},
+    {%- endif %}
+    {%-if number_of_replicas is defined %}
+    "index.number_of_replicas": {{number_of_replicas}},
+    {%- endif %}
+    "index.queries.cache.enabled": {{query_cache_enabled | default(false) | tojson}},
+    "index.requests.cache.enable": {{requests_cache_enabled | default(false) | tojson}},
+    "index.refresh_interval": "{{refresh_interval | default('5s')}}",
+    "index.translog.flush_threshold_size": "{{flush_threshold_size | default('1g')}}",
+    "index.knn": true,
+    "default_pipeline": "{{default_ingest_pipeline | default('nlp-default-ingest-pipeline')}}"
+  },
+  "mappings": {
+    "properties": {
+      "vector_embedding": {
+        "type": "knn_vector",
+        "dimension": {{dimensions | default(1024)}},
+        "method": {
+          "name": "{{method | default('hnsw')}}",
+          "engine": "{{engine | default('lucene')}}",
+          "parameters": {}
+        }
+      },
+      "image_description": {
+        "type": "text"
+      },
+      "image_binary": {
+        "type": "binary"
+      }
+    }
+  }
+}
