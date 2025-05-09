@@ -288,3 +288,13 @@
   "target-throughput": {{ target_throughput | default(2) | tojson }},
   "clients": {{ search_clients | default(1) }}
 }
+{% if distribution_version.split('.') | map('int') | list  >= "2.19.1".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %}
+,{
+  "operation": "cardinality-agg-high-2",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+}
+{% endif %}
+
