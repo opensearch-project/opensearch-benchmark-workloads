@@ -886,16 +886,32 @@
       "name": "cardinality-agg-high",
       "operation-type": "search",
       "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "aggs": {
+          "agent": {
+            "cardinality": {
+             "field": "agent.name"
+              {% if distribution_version.split('.') | map('int') | list  >= "2.19.1".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %
+              }, "execution_hint": "ordinals"
+              {% endif %}
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "cardinality-agg-high-2",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
       "request-timeout": 1800,
       "body": {
         "size": 0,
         "aggs": {
           "agent": {
             "cardinality": {
-             "field": "{{cardinality_agg_high_field | default('event.id')}}"
-              {% if distribution_version.split('.') | map('int') | list  >= "2.19.1".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %}
-              ,"execution_hint":"ordinals"
-              {% endif %}
+             "field": "event.id",
+             "execution_hint":"ordinals"
             }
           }
         }
