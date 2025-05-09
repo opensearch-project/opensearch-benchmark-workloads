@@ -1,0 +1,319 @@
+
+{
+  "name": "create-search-pipeline",
+  "operation-type": "create-search-pipeline",
+  "id": "nlp-search-pipeline",
+  "body": {
+    "description": "Post processor for hybrid search",
+    "phase_results_processors": [
+      {
+        {%- if search_pipeline_processor is defined and search_pipeline_processor == 'score-ranker-processor' %}
+          "score-ranker-processor": {
+            "combination": {
+              "technique": "rrf",
+              "rank_constant": {{ rank_constant | default(60)}}
+            }
+          }
+        {% else %}
+          "normalization-processor": {
+            "normalization": {
+              "technique": "{{ normalization_technique | default('min_max')}}"
+            },
+            "combination": {
+              {%- if combination_parameters_weights is defined and combination_parameters_weights %}
+                "parameters": {
+                  "weights": {{ combination_parameters_weights }}
+                },
+              {% endif %}
+
+              "technique": "{{ combination_technique | default('arithmetic_mean')}}"
+            }
+          }
+        {% endif %}
+      }
+    ]
+  }
+},
+{
+  "name": "delete-search-pipeline",
+  "operation-type": "delete-pipeline",
+  "id": "nlp-search-pipeline"
+},
+{
+  "name": "hybrid-search-with-search-pipeline",
+  "operation-type": "search",
+  "param-source": "neural-hybrid-search-source",
+  "index": "{{ index_name }}",
+  "request-params": {
+    "search_pipeline": "nlp-search-pipeline"
+  },
+  "variable-queries": {{variable_queries | default(0)}},
+  "body": {
+    "_source": {
+      "excludes": [
+        "passage_embedding"
+      ]
+    },
+    "size": {{hybrid_query_size | default(10)}},
+    "query": {
+      "hybrid": {
+        "queries": [
+          {
+            "match": {
+              "text": {
+                "query": "What are some of the best science projects?"
+              }
+            }
+          },
+          {
+            "neural": {
+              "passage_embedding": {
+                "query_text": "What are some of the best science projects?",
+                "model_id": "",
+                "k": {{ k | default(10)}}
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+},
+{
+  "name": "hybrid-search-bool",
+  "operation-type": "search",
+  "param-source": "neural-hybrid-search-bool-source",
+  "index": "{{ index_name }}",
+  "variable-queries": {{variable_queries | default(0)}},
+  "body": {
+    "_source": {
+      "excludes": [
+        "passage_embedding"
+      ]
+    },
+    "size": {{hybrid_query_size | default(10)}},
+    "query": {
+      "bool": {
+         "should": [
+           {
+             "match": {
+               "text": {
+                 "query": "What are some of the best science projects?"
+               }
+             }
+           },
+           {
+             "neural": {
+               "passage_embedding": {
+                 "query_text": "What are some of the best science projects?",
+                 "model_id": "",
+                 "k": {{ k | default(10)}}
+               }
+             }
+           }
+         ]
+       }
+    }
+  }
+},
+{
+  "name": "hybrid-search-complex-with-search-pipeline",
+  "operation-type": "search",
+  "param-source": "neural-hybrid-search-complex-source",
+  "index": "{{ index_name }}",
+  "request-params": {
+    "search_pipeline": "nlp-search-pipeline"
+  },
+  "variable-queries": {{variable_queries | default(0)}},
+  "body": {
+    "_source": {
+     "excludes": [
+       "passage_embedding"
+     ]
+    },
+    "size": {{hybrid_query_size | default(10)}},
+    "query": {
+      "hybrid": {
+        "queries": [
+         {
+           "match_phrase": {
+             "text": {
+               "query": "What are some of the best science projects?",
+               "boost": 3.0,
+               "slop": 2
+             }
+           }
+         },
+         {
+           "match": {
+             "text": {
+               "query": "What are some of the best science projects?",
+               "operator": "or",
+               "fuzziness": "AUTO",
+               "boost": 2.0
+             }
+           }
+         },
+         {
+           "neural": {
+             "passage_embedding": {
+               "query_text": "What are some of the best science projects?",
+               "model_id": "",
+               "k": {{ k | default(10)}}
+             }
+           }
+         }
+        ]
+      }
+    }
+  }
+},
+{
+  "name": "hybrid-search-complex-aggs-with-search-pipeline",
+  "operation-type": "search",
+  "param-source": "neural-hybrid-search-complex-source",
+  "index": "{{ index_name }}",
+  "request-params": {
+    "search_pipeline": "nlp-search-pipeline"
+  },
+  "variable-queries": {{variable_queries | default(0)}},
+  "body": {
+    "_source": {
+     "excludes": [
+       "passage_embedding"
+     ]
+    },
+    "size": {{hybrid_query_size | default(10)}},
+    "query": {
+      "hybrid": {
+        "queries": [
+         {
+           "match_phrase": {
+             "text": {
+               "query": "What are some of the best science projects?",
+               "boost": 3.0,
+               "slop": 2
+             }
+           }
+         },
+         {
+           "match": {
+             "text": {
+               "query": "What are some of the best science projects?",
+               "operator": "or",
+               "fuzziness": "AUTO",
+               "boost": 2.0
+             }
+           }
+         },
+         {
+           "neural": {
+             "passage_embedding": {
+               "query_text": "What are some of the best science projects?",
+               "model_id": "",
+               "k": {{ k | default(10)}}
+             }
+           }
+         }
+        ]
+      }
+    },
+    "aggs": {
+       "sample": {
+         "sampler": {
+           "shard_size": 1000
+         },
+         "aggs": {
+           "term_count": {
+             "terms": {
+               "field": "text",
+               "size": 10
+             }
+           }
+         }
+       },
+       "text_filters": {
+         "filters": {
+           "filters": {
+             "stock_related": {
+               "match": {
+                 "text": "stock"
+               }
+             },
+             "trading_related": {
+               "match": {
+                 "text": "trading"
+               }
+             }
+           }
+         }
+       }
+    }
+  }
+},
+{
+  "name": "hybrid-search-with-temporary-pipeline",
+  "operation-type": "search",
+  "param-source": "neural-hybrid-search-source",
+  "variable-queries": {{variable_queries | default(0)}},
+  "index": "{{ index_name }}",
+  "body": {
+    "_source": {
+      "excludes": [
+        "passage_embedding"
+      ]
+    },
+    "size": {{hybrid_query_size | default(10)}},
+    "query": {
+      "hybrid": {
+        "queries": [
+        {
+          "match": {
+            "text": {
+              "query": "What are some of the best science projects?"
+            }
+          }
+        },
+        {
+          "neural": {
+            "passage_embedding": {
+              "query_text": "What are some of the best science projects?",
+              "model_id": "",
+              "k": {{k | default(10)}}
+            }
+          }
+        }
+        ]
+      }
+    },
+    "search_pipeline": {
+      "phase_results_processors": [
+        {
+          {%- if search_pipeline_processor is defined and search_pipeline_processor == 'score-ranker-processor' %}
+            "score-ranker-processor": {
+              "combination": {
+                "technique": "rrf",
+                "rank_constant": {{ rank_constant | default(60)}}
+              }
+            }
+          {% else %}
+            "normalization-processor": {
+              "normalization": {
+                "technique": "{{ normalization_technique | default('min_max')}}"
+              },
+              "combination": {
+                {%- if combination_parameters_weights is defined and combination_parameters_weights %}
+                  "parameters": {
+                    "weights": {{ combination_parameters_weights }}
+                  },
+                {% endif %}
+
+                "technique": "{{ combination_technique | default('arithmetic_mean')}}"
+              }
+            }
+          {% endif %}
+        }
+      ]
+    }
+  }
+}

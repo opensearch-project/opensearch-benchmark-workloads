@@ -1,0 +1,95 @@
+{
+  "name": "delete-bedrock-remote-ml-model",
+  "operation-type": "delete-ml-model",
+  "model-name": "{{ model_name | default('amazon.titan-embed-image-v1')}}"
+},
+{
+  "name": "create-ingest-pipeline-multimodal",
+  "operation-type": "put-pipeline",
+  "param-source": "create-ingest-pipeline-source",
+  "id": "{{default_ingest_pipeline | default('nlp-default-ingest-pipeline')}}",
+  "body": {
+    "description": "An NLP ingest pipeline for multimodal",
+    "processors": [
+      {
+        "text_image_embedding": {
+          "model_id": "",
+          "embedding": "vector_embedding",
+          "field_map": {
+            "text": "image_description",
+            "image": "image_binary"
+          }
+        }
+      }
+    ]
+  }
+},
+{
+  "name": "multimodal-search",
+  "operation-type": "search",
+  "param-source": "neural-multimodal-search-source",
+  "variable-queries": {{variable_queries | default(1)}},
+  "index": "{{ index_name }}",
+  "body": {
+    "query": {
+      "neural": {
+        "vector_embedding": {
+          "query_text": "<query text>",
+          "query_image": "<image binary>",
+          "model_id": "",
+          "k": {{ k | default(10)}}
+        }
+      }
+    }
+  }
+},
+
+{
+   "name": "create-bedrock-ml-connector",
+   "operation-type": "create-ml-connector",
+   "body": {
+      "name": "{{ connector_name | default('Amazon Bedrock Connector') }}",
+      "description": "The connector to bedrock models",
+      "version": 1,
+      "protocol": "aws_sigv4",
+      "parameters": {
+          "region": "{{ region }}",
+          "service_name": "bedrock",
+          "model": "{{ model_name | default('amazon.titan-embed-image-v1') }}",
+          "input_docs_processed_step_size": 2
+      },
+      "credential": {
+          "access_key": "{{ access_key }}",
+          "secret_key": "{{ secret_key }}",
+          "session_token": "{{ session_token }}"
+      },
+      "actions": [
+          {
+              "action_type": "predict",
+              "method": "POST",
+              "url": "https://bedrock-runtime.${parameters.region}.amazonaws.com/model/${parameters.model}/invoke",
+              "headers": {
+                  "content-type": "application/json",
+                  "x-amz-content-sha256": "required"
+              },
+              "request_body": "{\"inputText\": \"${parameters.inputText:-null}\", \"inputImage\": \"${parameters.inputImage:-null}\"}",
+              "pre_process_function": "connector.pre_process.bedrock.multimodal_embedding",
+              "post_process_function": "connector.post_process.bedrock.embedding"
+          }
+      ]
+  }
+},
+{
+   "name": "delete-bedrock-ml-connector",
+   "operation-type": "delete-ml-connector",
+   "connector_name": "{{ connector_name | default('Amazon Bedrock Connector') }}"
+},
+{
+   "name": "register-bedrock-remote-ml-model",
+   "operation-type": "register-remote-ml-model",
+   "body": {
+      "name": "Bedrock multi-modal embedding model",
+      "function_name": "remote",
+      "description": "remote model for running neural multimodal search benchmark"
+   }
+}

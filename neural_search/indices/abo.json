@@ -10,33 +10,25 @@
     "index.requests.cache.enable": {{requests_cache_enabled | default(false) | tojson}},
     "index.refresh_interval": "{{refresh_interval | default('5s')}}",
     "index.translog.flush_threshold_size": "{{flush_threshold_size | default('1g')}}",
-    {%-if index_knn is defined %}
     "index.knn": true,
-    {%- endif %}
     "default_pipeline": "{{default_ingest_pipeline | default('nlp-default-ingest-pipeline')}}"
   },
   "mappings": {
     "properties": {
-      "id": {
-        "type": "text"
-      },
-      "passage_embedding": {
-        {%- if passage_embedding_type is defined and passage_embedding_type == 'rank_features' %}
-        "type": "rank_features"
-        {%- else %}
+      "vector_embedding": {
         "type": "knn_vector",
-        "dimension": {{dimensions | default(768)}},
+        "dimension": {{dimensions | default(1024)}},
         "method": {
-          "engine": "{{engine | default('lucene')}}",
-          "space_type": "{{space_type | default('l2')}}",
           "name": "{{method | default('hnsw')}}",
+          "engine": "{{engine | default('lucene')}}",
           "parameters": {}
         }
-        {%- endif %}
       },
-      "text": {
-        "type": "text",
-        "fielddata": true
+      "image_description": {
+        "type": "text"
+      },
+      "image_binary": {
+        "type": "binary"
       }
     }
   }

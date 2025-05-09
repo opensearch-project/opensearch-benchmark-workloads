@@ -1,2 +1,4 @@
 corpus.json.bz2
+documents.json.bz2
 queries.json.bz2
+abo_queries.json.bz2

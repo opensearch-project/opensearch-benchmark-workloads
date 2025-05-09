@@ -1,0 +1,15 @@
+{
+  "index_name": "abo",
+  "index_body": "indices/abo.json",
+  "corpora_name": "abo",
+  "ingest_percentage": 100,
+  "variable_queries": 1000,
+  "default_ingest_pipeline": "nlp-default-ingest-pipeline-multimodal",
+  "warmup_time_period": 5,
+  "index_target_throughput": 1,
+  "bulk_size": 5,
+  "region": "",
+  "access_key": "",
+  "secret_key": "",
+  "session_token": ""
+}

@@ -4,7 +4,7 @@
   "param-source": "create-ingest-pipeline-source",
   "id": "{{default_ingest_pipeline | default('nlp-default-ingest-pipeline')}}",
   "body": {
-    "description": "An NLP ingest pipeline",
+    "description": "An NLP ingest pipeline for sparse embedding",
     "processors": [
       {
         "sparse_encoding": {
@@ -12,7 +12,7 @@
           "prune_type": "{{prune_type | default('max_ratio')}}",
           "prune_ratio": {{prune_ratio | default(0.1)}},
           "field_map": {
-            "passage_text": "passage_embedding"
+            "text": "passage_embedding"
           }
         }
       }

@@ -21,6 +21,18 @@
           "uncompressed-bytes": 63335960
         }
       ]
+    },
+    {
+      "name": "abo",
+      "base-url": "https://github.com/weijia-aws/neural-search/releases/download/abo",
+      "documents": [
+        {
+          "source-file": "documents.json.bz2",
+          "document-count": 123511,
+          "compressed-bytes": 805130341,
+          "uncompressed-bytes": 1156323739
+        }
+      ]
     }
   ],
   "operations": [
