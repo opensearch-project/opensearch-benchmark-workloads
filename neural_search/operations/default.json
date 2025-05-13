@@ -19,6 +19,15 @@
   }
 },
 {
+  "name": "put-concurrent-segment-search-setting",
+  "operation-type": "put-settings",
+  "body": {
+    "transient": {
+        "search.concurrent_segment_search.enabled": "{{concurrent_segment_search_enabled | default('false')}}"
+    }
+  }
+},
+{
   "name": "index-append",
   "operation-type": "bulk",
   "indices": ["{{ index_name }}"],

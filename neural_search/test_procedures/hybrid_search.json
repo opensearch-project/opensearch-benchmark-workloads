@@ -17,6 +17,9 @@
       "operation": "put-cluster-settings"
     },
     {
+      "operation": "put-concurrent-segment-search-setting"
+    },
+    {
       "operation": "register-ml-model-sentence-transformer"
     },
     {
@@ -84,6 +87,9 @@
   "description": "Runs neural clause queries with Hybrid search, applicable only when pipelines, model and index are created, and corpus is ingested.",
   "default": false,
   "schedule": [
+    {
+      "operation": "put-concurrent-segment-search-setting"
+    },
     {
       "operation": "hybrid-search-with-search-pipeline",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},

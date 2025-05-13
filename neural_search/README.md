@@ -145,6 +145,7 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `combination_technique` (default: arithmetic_mean): The technique for combining scores. Valid values are arithmetic_mean, geometric_mean, and harmonic_mean. Only applicable to Hybrid search with normalization-processor enabled
 * `combination_parameters_weights`: Specifies the weights to use for each query. Valid values are in the [0.0, 1.0] range and signify decimal percentages. The number of values in the weights array must equal the number of queries. 
   The sum of the values in the array must equal 1.0. Optional. If not provided, all queries are given equal weight. Only applicable to Hybrid search with normalization-processor enabled
+* `concurrent_segment_search_enabled` (default: false): Whether use concurrent segment search to search segments in parallel during the query phase
 * `connector_name` (default: Amazon Bedrock Connector): Name of the remote connector
 * `default_ingest_pipeline` (default: nlp-default-ingest-pipeline): name of the ingest pipeline
 * `dimensions` (default: 768): Vector dimensions, needed to match the model.
@@ -238,6 +239,7 @@ Running delete-index                                                           [
 Running delete-ingest-pipeline                                                 [100% done]
 Running delete-ml-model-sparse                                                 [100% done]
 Running put-cluster-settings                                                   [100% done]
+Running put-concurrent-segment-search-setting                                  [100% done]
 Running register-ml-model-sparse                                               [100% done]
 Running deploy-ml-model                                                        [100% done]
 Running create-ingest-pipeline-sparse                                          [100% done]
@@ -383,6 +385,7 @@ Running delete-search-pipeline                                                 [
 Running delete-ingest-pipeline                                                 [100% done]
 Running delete-ml-model-sentence-transformer                                   [100% done]
 Running put-cluster-settings                                                   [100% done]
+Running put-concurrent-segment-search-setting                                  [100% done]
 Running register-ml-model-sentence-transformer                                 [100% done]
 Running deploy-ml-model                                                        [100% done]
 Running create-text-embedding-processor-ingest-pipeline                        [100% done]
@@ -542,6 +545,7 @@ Running delete-index                                                           [
 Running delete-ingest-pipeline                                                 [100% done]
 Running delete-ml-model-sentence-transformer                                   [100% done]
 Running put-cluster-settings                                                   [100% done]
+Running put-concurrent-segment-search-setting                                  [100% done]
 Running register-ml-model-sentence-transformer                                 [100% done]
 Running deploy-ml-model                                                        [100% done]
 Running create-text-embedding-processor-ingest-pipeline                        [100% done]
@@ -685,6 +689,7 @@ Running delete-ingest-pipeline                                                 [
 Running delete-bedrock-remote-ml-model                                         [100% done]
 Running delete-bedrock-ml-connector                                            [100% done]
 Running put-cluster-settings                                                   [100% done]
+Running put-concurrent-segment-search-setting                                  [100% done]
 Running create-bedrock-ml-connector                                            [100% done]
 Running register-bedrock-remote-ml-model                                       [100% done]
 Running deploy-ml-model                                                        [100% done]

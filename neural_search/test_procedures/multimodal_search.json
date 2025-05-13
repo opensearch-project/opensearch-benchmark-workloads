@@ -17,6 +17,9 @@
       "operation": "put-cluster-settings"
     },
     {
+      "operation": "put-concurrent-segment-search-setting"
+    },
+    {
       "operation": "create-bedrock-ml-connector"
     },
     {
@@ -77,6 +80,9 @@
   "description": "Runs neural clause queries with Multimodal search, applicable only when pipelines, model and index are created, and corpus is ingested.",
   "default": false,
   "schedule": [
+    {
+      "operation": "put-concurrent-segment-search-setting"
+    },
     {
       "operation": "multimodal-search",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
