@@ -23,7 +23,7 @@
   "operation-type": "put-settings",
   "body": {
     "transient": {
-        "search.concurrent_segment_search.enabled": "{{concurrent_segment_search_enabled | default('false')}}"
+        "search.concurrent_segment_search.enabled": "{{concurrent_segment_search_enabled}}"
     }
   }
 },

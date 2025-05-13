@@ -13,9 +13,11 @@
     {
       "operation": "put-cluster-settings"
     },
+    {%- if concurrent_segment_search_enabled is defined %}
     {
       "operation": "put-concurrent-segment-search-setting"
     },
+    {%- endif %}
     {
       "operation": "register-ml-model-sparse"
     },
