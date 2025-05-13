@@ -18,7 +18,7 @@
             "type": "keyword"
           },
         {%- endif %}
-        "target_field": {
+        "{{ target_field_name }}": {
           "type": "knn_vector",
           "dimension": {{ target_index_dimension }},
           {%- if mode is defined %}
