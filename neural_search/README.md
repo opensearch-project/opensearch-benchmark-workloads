@@ -16,13 +16,13 @@ Amazon Berkeley Objects (ABO) dataset, owned by Amazon, is an open-licensed data
 
 ### Additional Note for Multimodal search benchmark
 
-1. Currently, there's no [pretrained models](https://docs.opensearch.org/docs/latest/ml-commons-plugin/pretrained-models/) available for multimodal search, hence we will be using remote models
+1. Currently, there's no [pretrained model](https://docs.opensearch.org/docs/latest/ml-commons-plugin/pretrained-models/) available for multimodal search, hence we will be using remote models
 2. This benchmark requires OpenSearch version 2.16 or higher, as the built-in function for creating connectors was only introduced in that version
 3. We pre-processed the ABO dataset by converting actual images (small ones) into base 64 encoding binaries, as the search method only accepts image binary as input
 4. By default, we utilize [Amazon Titan Multimodal Embeddings G1 model](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-multiemb-models.html) hosted on Bedrock to perform the benchmark, which requires create remote connector, register remote model and the following cluster setting:
    1. `"plugins.ml_commons.trusted_connector_endpoints_regex": ["^https://bedrock-runtime\\..*[a-z0-9-]\\.amazonaws\\.com/.*$"]`
-5. If you want to use other remote model that host on other platform such as cohere, you will need to update the cluster setting by adding trusted endpoints and adjust the logic to create connectors, check this [link](https://docs.opensearch.org/docs/latest/ml-commons-plugin/remote-models/index/) for more details
-6. Since we use Amazon Bedrock model by default, and you want to use it as well, the following prerequisites need to meet in order to successfully running the benchmark:
+5. If you want to use other remote models that are hosted on other platforms such as cohere, you will need to update the cluster setting by adding trusted endpoints and adjust the logic to create connectors, check this [link](https://docs.opensearch.org/docs/latest/ml-commons-plugin/remote-models/index/) for more details
+6. This workload uses the Amazon Bedrock model by default. This model requires the following:
    1. Have a valid AWS account
    2. Have proper access permissions for the model (which can be obtained through this [link](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html))
    3. Generate AWS credentials and pass them as workload parameters, we will use the credentials to connect to the remote model
@@ -145,22 +145,22 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `combination_technique` (default: arithmetic_mean): The technique for combining scores. Valid values are arithmetic_mean, geometric_mean, and harmonic_mean. Only applicable to Hybrid search with normalization-processor enabled
 * `combination_parameters_weights`: Specifies the weights to use for each query. Valid values are in the [0.0, 1.0] range and signify decimal percentages. The number of values in the weights array must equal the number of queries. 
   The sum of the values in the array must equal 1.0. Optional. If not provided, all queries are given equal weight. Only applicable to Hybrid search with normalization-processor enabled
-* `concurrent_segment_search_enabled`: Whether use concurrent segment search to search segments in parallel during the query phase
+* `concurrent_segment_search_enabled`: Whether to use concurrent segment search to search segments in parallel during the query phase. Valid values are "true" and "false" string
 * `connector_name` (default: Amazon Bedrock Connector): Name of the remote connector
 * `default_ingest_pipeline` (default: nlp-default-ingest-pipeline): name of the ingest pipeline
 * `dimensions` (default: 768): Vector dimensions, needed to match the model.
 * `engine` (default:` lucene): The approximate k-NN library to use for indexing and search.
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
-* `flush_threshold_size` (default: "1g"): Size when reached to flush the translog
+* `flush_threshold_size` (default: "1g"): Size limit to flush the translog, when reached
 * `force_merge_max_num_segments` (default: unset): An integer specifying the max amount of segments the force-merge operation should use.
 * `hybrid_query_size` (default: 10): Size of Hybrid query
 * `index_body`: Body of the index setting, must pass as workload parameter
 * `index_knn`: Whether to create a vector index, required as parameter for all search methods EXCEPT sparse search
 * `index_name`: Name of the index, must pass as workload parameter
-* `index_target_throughput`: Target throughput for ingesting document
+* `index_target_throughput`: Ingestion target throughput
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
-* `iterations`:  Number of test iterations of each search client executes.
+* `iterations`:  Number of test iterations that each search client executes
 * `k`: The number of results returned by the k-NN search. Only one variable, either k, min_score, or max_distance, can be specified. If a variable is not specified, the default is k with a value of 10.
 * `max_distance`: The maximum distance threshold for the search results. Only one variable, either k, min_score, or max_distance, can be specified. 
 * `method` (default:` hnsw): K-NN search algorithm.
@@ -183,7 +183,7 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `region`: AWS region
 * `requests_cache_enabled` (default: false): Enables or disables the index request cache
 * `search_clients`: Number of clients that issue search requests.
-* `search_pipeline_processor`: Types of processors for hybrid search, available processors are normalization-processor and score-ranker-processor, if not defined, normalization-processor will be chosen
+* `search_pipeline_processor`: Types of processors for hybrid search. Available processors are normalization-processor and score-ranker-processor, if not defined, normalization-processor will be chosen
 * `secret_key`: AWS credential secret key
 * `session_token`: AWS credential session token
 * `source_enabled` (default: true): A boolean defining whether the `_source` field is stored in the index.
@@ -832,7 +832,7 @@ Running multimodal-search                                                      [
 
 ### Gotchas
 1. The above benchmark is running against a cluster that has two data nodes (See Docker compose [detail](https://docs.opensearch.org/docs/latest/install-and-configure/install-opensearch/docker/#sample-docker-composeyml)). 
-If your cluster only have one data node, test procedures may stuck in `check-cluster-health` step, in that case, you should add a `number_of_replicas` parameter with value `0`
+If your cluster only has a single data node, test procedures may get stuck in the `check-cluster-health` step. In that case, you should add a `number_of_replicas` parameter with value `0`
 2. For Multimodal test procedure, the performance also depend on the Bedrock model. Most common issue is requests are throttled by Bedrock, we can either request a service quota increase (check this [link](https://docs.aws.amazon.com/bedrock/latest/userguide/quotas.html) for details),
 or adjust the target-throughput (not ideal, as it makes the result look bad) 
 

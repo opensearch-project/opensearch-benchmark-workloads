@@ -70,9 +70,11 @@
   "description": "Runs neural clause queries with Semantic search, applicable only when pipelines, model and index are created, and corpus is ingested.",
   "default": false,
   "schedule": [
+    {%- if concurrent_segment_search_enabled is defined %}
     {
       "operation": "put-concurrent-segment-search-setting"
     },
+    {%- endif %}
     {
       "operation": "semantic-search",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},

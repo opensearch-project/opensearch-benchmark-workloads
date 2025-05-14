@@ -88,9 +88,11 @@ class NeuralSparseQueryParamSource(QueryParamSource):
 
     def params(self):
         params = self._params
+        neural_sparse_query = params['body']['query']['neural_sparse']['passage_embedding']
+
         with open('model_id.json', 'r') as f:
             d = json.loads(f.read())
-            params['body']['query']['neural_sparse']['passage_embedding']['model_id'] = d['model_id']
+            neural_sparse_query['model_id'] = d['model_id']
 
         count = self._params.get("variable-queries", 0)
         if count > 0:
@@ -99,7 +101,7 @@ class NeuralSparseQueryParamSource(QueryParamSource):
                 lines = f.read().splitlines()
                 line =random.choice(lines)
                 query_text = json.loads(line)['text']
-                params['body']['query']['neural_sparse']['passage_embedding']['query_text'] = query_text
+                neural_sparse_query['query_text'] = query_text
         return params
 
 class NeuralHybridQueryParamSource(QueryParamSource):
@@ -108,9 +110,11 @@ class NeuralHybridQueryParamSource(QueryParamSource):
 
     def params(self):
         params = self._params
+        hybrid_queries = params['body']['query']['hybrid']['queries']
+
         with open('model_id.json', 'r') as f:
             d = json.loads(f.read())
-            params['body']['query']['hybrid']['queries'][1]['neural']['passage_embedding']['model_id'] = d['model_id']
+            hybrid_queries[1]['neural']['passage_embedding']['model_id'] = d['model_id']
 
         count = self._params.get("variable-queries", 0)
         if count > 0:
@@ -119,8 +123,8 @@ class NeuralHybridQueryParamSource(QueryParamSource):
                 lines = f.read().splitlines()
                 line = random.choice(lines)
                 query_text = json.loads(line)['text']
-                params['body']['query']['hybrid']['queries'][0]['match']['text']['query'] = query_text
-                params['body']['query']['hybrid']['queries'][1]['neural']['passage_embedding']['query_text'] = query_text
+                hybrid_queries[0]['match']['text']['query'] = query_text
+                hybrid_queries[1]['neural']['passage_embedding']['query_text'] = query_text
         return params
 
 class NeuralHybridQueryBoolParamSource(QueryParamSource):
@@ -129,9 +133,11 @@ class NeuralHybridQueryBoolParamSource(QueryParamSource):
 
     def params(self):
         params = self._params
+        bool_should_query = params['body']['query']['bool']['should']
+
         with open('model_id.json', 'r') as f:
             d = json.loads(f.read())
-            params['body']['query']['bool']['should'][1]['neural']['passage_embedding']['model_id'] = d['model_id']
+            bool_should_query[1]['neural']['passage_embedding']['model_id'] = d['model_id']
 
         count = self._params.get("variable-queries", 0)
         if count > 0:
@@ -140,8 +146,8 @@ class NeuralHybridQueryBoolParamSource(QueryParamSource):
                 lines = f.read().splitlines()
                 line = random.choice(lines)
                 query_text = json.loads(line)['text']
-                params['body']['query']['bool']['should'][0]['match']['text']['query'] = query_text
-                params['body']['query']['bool']['should'][1]['neural']['passage_embedding']['query_text'] = query_text
+                bool_should_query[0]['match']['text']['query'] = query_text
+                bool_should_query[1]['neural']['passage_embedding']['query_text'] = query_text
         return params
 
 
@@ -151,13 +157,28 @@ class NeuralHybridQueryComplexParamSource(QueryParamSource):
 
     def params(self):
         params = self._params
+        hybrid_queries = params['body']['query']['hybrid']['queries']
+
         with open('model_id.json', 'r') as f:
             d = json.loads(f.read())
-            params['body']['query']['hybrid']['queries'][2]['neural']['passage_embedding']['model_id'] = d['model_id']
+            hybrid_queries[2]['neural']['passage_embedding']['model_id'] = d['model_id']
 
         def tokenize_query(query_text: str) -> List[str]:
-            # Convert to lowercase and split into tokens
-            # Remove special characters but keep alphanumeric and spaces
+            """
+            Tokenizes a query string into a list of individual words by converting to lowercase
+            and removing special characters.
+
+            Args:
+                query_text (str): The input text string to be tokenized.
+
+            Returns:
+                List[str]: A list of lowercase tokens containing only alphanumeric characters.
+
+            Note:
+                - Special characters are removed
+                - Text is converted to lowercase
+                - Only alphanumeric characters and spaces are retained
+            """
             clean_text = re.sub(r'[^a-zA-Z0-9\s]', '', query_text.lower())
             tokens = clean_text.split()
             return tokens
@@ -178,12 +199,11 @@ class NeuralHybridQueryComplexParamSource(QueryParamSource):
                 # Identify potentially important terms (you might want to customize this)
                 important_terms = [word for word, freq in word_freq.items() if len(word) > 2]
 
-                params['body']['query']['hybrid']['queries'][0]['match_phrase']['text']['query'] = query_text
-                params['body']['query']['hybrid']['queries'][1]['match']['text']['query'] = " ".join(important_terms)
-                params['body']['query']['hybrid']['queries'][2]['neural']['passage_embedding']['query_text'] = query_text
+                hybrid_queries[0]['match_phrase']['text']['query'] = query_text
+                hybrid_queries[1]['match']['text']['query'] = " ".join(important_terms)
+                hybrid_queries[2]['neural']['passage_embedding']['query_text'] = query_text
 
-                queries = params['body']['query']['hybrid']['queries']
-                current_length = len(queries)
+                current_length = len(hybrid_queries)
                 new_phrase_queries = [
                     {
                         "match_phrase": {
@@ -198,11 +218,11 @@ class NeuralHybridQueryComplexParamSource(QueryParamSource):
 
                 if current_length == 3:
                     # If we have exactly 3 elements, append new ones (up to the limit of 5)
-                    queries.extend(new_phrase_queries)
+                    hybrid_queries.extend(new_phrase_queries)
                 else:
                     # If we have more than 3 elements, remove excess elements and add new ones
-                    del queries[3:]  # Remove all elements starting from index 3
-                    queries.extend(new_phrase_queries)  # Add new phrase queries
+                    del hybrid_queries[3:]  # Remove all elements starting from index 3
+                    hybrid_queries.extend(new_phrase_queries)  # Add new phrase queries
         return params
 
 class NeuralSemanticQueryParamSource(QueryParamSource):
@@ -211,9 +231,11 @@ class NeuralSemanticQueryParamSource(QueryParamSource):
 
     def params(self):
         params = self._params
+        passage_embedding_query = params['body']['query']['neural']['passage_embedding']
+
         with open('model_id.json', 'r') as f:
             d = json.loads(f.read())
-            params['body']['query']['neural']['passage_embedding']['model_id'] = d['model_id']
+            passage_embedding_query['model_id'] = d['model_id']
         count = self._params.get("variable-queries", 0)
         if count > 0:
             script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -221,7 +243,7 @@ class NeuralSemanticQueryParamSource(QueryParamSource):
                 lines = f.read().splitlines()
                 line = random.choice(lines)
                 query_text = json.loads(line)['text']
-                params['body']['query']['neural']['passage_embedding']['query_text'] = query_text
+                passage_embedding_query['query_text'] = query_text
         return params
 
 class NeuralMultimodalQueryParamSource(QueryParamSource):
@@ -230,9 +252,11 @@ class NeuralMultimodalQueryParamSource(QueryParamSource):
 
     def params(self):
         params = self._params
+        vector_embedding_query = params['body']['query']['neural']['vector_embedding']
+
         with open('model_id.json', 'r') as f:
             d = json.loads(f.read())
-        params['body']['query']['neural']['vector_embedding']['model_id'] = d['model_id']
+        vector_embedding_query['model_id'] = d['model_id']
 
         count = self._params.get("variable-queries", 1)
 
@@ -246,8 +270,8 @@ class NeuralMultimodalQueryParamSource(QueryParamSource):
                 item = json.loads(line)
                 query_text = item['image_description']
                 query_image = item['image_binary']
-                params['body']['query']['neural']['vector_embedding']['query_text'] = query_text
-                params['body']['query']['neural']['vector_embedding']['query_image'] = query_image
+                vector_embedding_query['query_text'] = query_text
+                vector_embedding_query['query_image'] = query_image
         return params
 
 def register(registry):
