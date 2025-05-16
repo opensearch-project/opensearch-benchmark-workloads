@@ -10,6 +10,7 @@
       "retry-until-success": true
     }
   },
+{%- if concurrent_segment_search_enabled is defined %}  
   {
     "name": "set-concurent-segment-search-setting",
     "operation": {
@@ -21,6 +22,7 @@
       }
     }
   },
+{%- endif %}  
   {
     "name": "refresh-after-index",
     "operation": "refresh"

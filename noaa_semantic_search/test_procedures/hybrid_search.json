@@ -57,4 +57,14 @@
       "schedule": [
         {{ benchmark.collect(parts="semantic-search-common/search-with-sort.json") }}
       ]
+    },
+    {
+      "name": "hybrid-search-create-index-and-complex-queries",
+      "description": "Run hybrid search queries with multiple sub-queries, aggregations and sort.",
+      "default": false,
+      "schedule": [
+        {{ benchmark.collect(parts="semantic-search-common/create-index-ingest-docs.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/check-status-add-resources-no-index.json") }},
+        {{ benchmark.collect(parts="semantic-search-common/hybrid-search-complex-queries.json") }}
+      ]
     }

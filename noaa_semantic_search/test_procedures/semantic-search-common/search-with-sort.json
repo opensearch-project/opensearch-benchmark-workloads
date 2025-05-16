@@ -1,3 +1,4 @@
+{%- if concurrent_segment_search_enabled is defined %}
 {
   "name": "set-concurent-segment-search-setting",
   "operation": {
@@ -9,6 +10,7 @@
     }
   }
 },
+{%- endif %}
 {
   "operation": "bool-3-subqueries-no-sort",
   "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
