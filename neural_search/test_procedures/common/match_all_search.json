@@ -1,0 +1,7 @@
+{
+  "operation": "match-all",
+  "warmup-iterations": {{warmup_iterations | default(500) | tojson}},
+  "iterations": {{iterations | default(500) | tojson }},
+  "target-throughput": {{ target_throughput | default(100) | tojson}},
+  "clients": {{ search_clients | default(1) }}
+}

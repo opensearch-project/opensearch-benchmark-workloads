@@ -1,14 +1,14 @@
 {
-  "name": "sparse-search",
-  "description": "Creates model and pipelines, indexes the corpus and then runs queries with Neural Sparse Search.",
-  "default": true,
+  "name": "semantic-search",
+  "description": "Creates model and pipelines, indexes the corpus and then runs neural clause queries with Semantic search.",
+  "default": false,
   "schedule": [
     {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
     {
       "operation": "delete-ingest-pipeline"
     },
     {
-      "operation": "delete-ml-model-sparse"
+      "operation": "delete-ml-model-sentence-transformer"
     },
     {
       "operation": "put-cluster-settings"
@@ -19,18 +19,18 @@
     },
     {%- endif %}
     {
-      "operation": "register-ml-model-sparse"
+      "operation": "register-ml-model-sentence-transformer"
     },
     {
       "operation": "deploy-ml-model"
     },
     {
-      "operation": "create-ingest-pipeline-sparse"
+      "operation": "create-text-embedding-processor-ingest-pipeline"
     },
     {{ benchmark.collect(parts="common/create_index_and_ingest_document.json") }},
     {{ benchmark.collect(parts="common/match_all_search.json") }},
     {
-      "operation": "sparse-search",
+      "operation": "semantic-search",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
       "iterations": {{iterations | default(100) | tojson }},
       "target-throughput": {{ target_throughput | default(0) | tojson}},
@@ -39,8 +39,8 @@
   ]
 },
 {
-  "name": "sparse-search-create-resources-and-index-document",
-  "description": "Create resourses (model, pipeline and index) for Sparse search, then ingest the corpus",
+  "name": "semantic-search-create-resources-and-index-document",
+  "description": "Create resourses (model, pipeline and index) for Semantic search, then ingest the corpus",
   "default": false,
   "schedule": [
     {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
@@ -48,26 +48,26 @@
       "operation": "delete-ingest-pipeline"
     },
     {
-      "operation": "delete-ml-model-sparse"
+      "operation": "delete-ml-model-sentence-transformer"
     },
     {
       "operation": "put-cluster-settings"
     },
     {
-      "operation": "register-ml-model-sparse"
+      "operation": "register-ml-model-sentence-transformer"
     },
     {
       "operation": "deploy-ml-model"
     },
     {
-      "operation": "create-ingest-pipeline-sparse"
+      "operation": "create-text-embedding-processor-ingest-pipeline"
     },
     {{ benchmark.collect(parts="common/create_index_and_ingest_document.json") }}
   ]
 },
 {
-  "name": "sparse-search-query-only",
-  "description": "Runs neural clause queries with Sparse search, applicable only when pipelines, model and index are created, and corpus is ingested.",
+  "name": "semantic-search-query-only",
+  "description": "Runs neural clause queries with Semantic search, applicable only when pipelines, model and index are created, and corpus is ingested.",
   "default": false,
   "schedule": [
     {%- if concurrent_segment_search_enabled is defined %}
@@ -76,7 +76,7 @@
     },
     {%- endif %}
     {
-      "operation": "sparse-search",
+      "operation": "semantic-search",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
       "iterations": {{iterations | default(100) | tojson }},
       "target-throughput": {{ target_throughput | default(0) | tojson}},
@@ -84,3 +84,4 @@
     }
   ]
 }
+
