@@ -1,0 +1,30 @@
+{
+  "name": "semantic-search",
+  "operation-type": "search",
+  "variable-queries": {{variable_queries | default(0)}},
+  "param-source": "neural-semantic-search-source",
+  "index": "{{ index_name }}",
+  "body": {
+    "_source": {
+      "excludes": [
+        "passage_embedding"
+      ]
+    },
+    "query": {
+      "neural": {
+        "passage_embedding": {
+          {%- if k is defined and k %}
+            "k": {{ k }},
+          {%- elif min_score is defined and min_score %}
+            "min_score": {{ min_score }},
+          {%- elif max_distance is defined and max_distance %}
+            "max_distance": {{ max_distance }},
+          {%- endif %}
+
+          "query_text": "What are some of the best science projects?",
+          "model_id": ""
+        }
+      }
+    }
+  }
+}
