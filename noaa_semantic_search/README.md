@@ -122,8 +122,7 @@ Procedure name `search-profiling`.
 
 ### Complex Hybrid Queries
 
-The Complex Hybrid Queries procedure is used to run set of multiple search queries with complext hybrid query with multiple sub-queries, aggregations and sort. As part of this precedure
-we create an index and ingest documents, then run search queries.
+This procedure is used to run set of multiple search queries with complext hybrid query that has multiple sub-queries, aggregations and sort. As part of this procedure we create an index and ingest documents, then run search queries.
 Procedure name `hybrid-search-create-index-and-complex-queries`.
 
 #### Sample Output

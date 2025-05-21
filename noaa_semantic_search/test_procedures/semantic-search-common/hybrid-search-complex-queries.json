@@ -2,69 +2,69 @@
         "operation": "hybrid-query-only-range",
         "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
         "iterations": {{ test_iterations | default(100) | tojson }},
-        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "target-throughput": {{ target_throughput | default(0) | tojson }},
         "clients": {{ search_clients | default(1) }}
     },
     {
         "operation": "hybrid-query-only-range-large-subset",
         "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
         "iterations": {{ test_iterations | default(100) | tojson }},
-        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "target-throughput": {{ target_throughput | default(0) | tojson }},
         "clients": {{ search_clients | default(1) }}
     },
     {
         "operation": "hybrid-query-only-term-range-date",
         "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
         "iterations": {{ test_iterations | default(100) | tojson }},
-        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "target-throughput": {{ target_throughput | default(0) | tojson }},
         "clients": {{ search_clients | default(1) }}
     },
     {
         "operation": "aggs-query-min-avg-sum-hybrid",
         "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
         "iterations": {{ test_iterations | default(100) | tojson }},
-        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "target-throughput": {{ target_throughput | default(0) | tojson }},
         "clients": {{ search_clients | default(1) }}
     },        
     {
         "operation": "aggs-query-term-min-hybrid",
         "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
         "iterations": {{ test_iterations | default(100) | tojson }},
-        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "target-throughput": {{ target_throughput | default(0) | tojson }},
         "clients": {{ search_clients | default(1) }}
     },
     {
         "operation": "aggs-query-date-histo-geohash-grid-hybrid",
         "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
         "iterations": {{ test_iterations | default(100) | tojson }},
-        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "target-throughput": {{ target_throughput | default(0) | tojson }},
         "clients": {{ search_clients | default(1) }}
     },
     {
         "operation": "aggs-query-range-numeric-significant-terms-hybrid",
         "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
         "iterations": {{ test_iterations | default(100) | tojson }},
-        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "target-throughput": {{ target_throughput | default(0) | tojson }},
         "clients": {{ search_clients | default(1) }}
     },
     {
         "operation": "hybrid-query-3-subqueries-sort-by-score-search-after",
         "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
         "iterations": {{ test_iterations | default(100) | tojson }},
-        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "target-throughput": {{ target_throughput | default(0) | tojson }},
         "clients": {{ search_clients | default(1) }}
     },
     {
         "operation": "hybrid-query-3-subqueries-sort-by-two-fields",
         "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
         "iterations": {{ test_iterations | default(100) | tojson }},
-        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "target-throughput": {{ target_throughput | default(0) | tojson }},
         "clients": {{ search_clients | default(1) }}
     },
     {
         "operation": "hybrid-query-3-subqueries-sort-by-two-fields-search-after",
         "warmup-iterations": {{ warmup_iterations | default(25) | tojson }},
         "iterations": {{ test_iterations | default(100) | tojson }},
-        "target-throughput": {{ target_throughput | default(2) | tojson }},
+        "target-throughput": {{ target_throughput | default(0) | tojson }},
         "clients": {{ search_clients | default(1) }}
     }            
