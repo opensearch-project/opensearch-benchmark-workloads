@@ -24,7 +24,7 @@
     },
     {
       "name": "abo",
-      "base-url": "https://github.com/weijia-aws/neural-search/releases/download/abo",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/neural_search",
       "documents": [
         {
           "source-file": "documents.json.bz2",
