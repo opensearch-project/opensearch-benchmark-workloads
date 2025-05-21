@@ -8,7 +8,7 @@
   },
   {
     "name": "abo",
-    "base-url": "https://github.com/weijia-aws/neural-search/releases/download/abo",
+    "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/neural_search",
     "source-file": "abo_queries.json.bz2",
     "compressed-bytes": 6335918,
     "uncompressed-bytes": 9109124
