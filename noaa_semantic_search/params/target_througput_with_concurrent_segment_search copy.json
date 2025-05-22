@@ -4,5 +4,5 @@
      "max_num_segments" :8,
      "concurrent_segment_search_enabled": "true",
      "search_clients" : 8,
-     "target_throughput": 0
+     "target_throughput": 25
 }
