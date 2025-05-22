@@ -42,7 +42,7 @@ This workload allows the following parameters to be specified using `--workload-
 * `cluster_health` (default: "green"): The minimum required cluster health.
 * `target_throughput` (default: default values for each operation): Number of requests per second, `none` for no limit.
 * `search_clients`: Number of clients that issues search requests.
-* `concurrent_segment_search_enabled` (default: "false"): Setting enables or disables consurrent segment search feature for the cluster. Setting is avaliable starting from version 2.12.
+* `concurrent_segment_search_enabled` (default: version dependent, "false" for 2.x or "true" for 3.x): Setting enables or disables consurrent segment search feature for the cluster. Setting is avaliable starting from version 2.12.
 
 ### Running a benchmark
 
@@ -119,6 +119,11 @@ Procedure name `hybrid-search-sorting`.
 
 The Profiling of Hybrid Query with Aggregations procedure is used to run small set of hybrid queries with aggregations to collect runtime metrics thaty can be used for analysis like profiling or debug. It does not create index or ingestg documents.
 Procedure name `search-profiling`.
+
+### Complex Hybrid Queries
+
+This procedure is used to run set of multiple search queries with complext hybrid query that has multiple sub-queries, aggregations and sort. As part of this procedure we create an index and ingest documents, then run search queries.
+Procedure name `hybrid-search-create-index-and-complex-queries`.
 
 #### Sample Output
 
