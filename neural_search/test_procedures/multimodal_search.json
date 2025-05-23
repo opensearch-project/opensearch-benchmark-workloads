@@ -1,14 +1,17 @@
 {
-  "name": "sparse-search",
-  "description": "Creates model and pipelines, indexes the corpus and then runs queries with Neural Sparse Search.",
-  "default": true,
+  "name": "multimodal-search",
+  "description": "Indexes the corpus and then runs neural clause queries with Multimodal search.",
+  "default": false,
   "schedule": [
     {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
     {
       "operation": "delete-ingest-pipeline"
     },
     {
-      "operation": "delete-ml-model-sparse"
+      "operation": "delete-bedrock-remote-ml-model"
+    },
+    {
+      "operation": "delete-bedrock-ml-connector"
     },
     {
       "operation": "put-cluster-settings"
@@ -19,18 +22,21 @@
     },
     {%- endif %}
     {
-      "operation": "register-ml-model-sparse"
+      "operation": "create-bedrock-ml-connector"
+    },
+    {
+      "operation": "register-bedrock-remote-ml-model"
     },
     {
       "operation": "deploy-ml-model"
     },
     {
-      "operation": "create-ingest-pipeline-sparse"
+      "operation": "create-ingest-pipeline-multimodal"
     },
     {{ benchmark.collect(parts="common/create_index_and_ingest_document.json") }},
     {{ benchmark.collect(parts="common/match_all_search.json") }},
     {
-      "operation": "sparse-search",
+      "operation": "multimodal-search",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
       "iterations": {{iterations | default(100) | tojson }},
       "target-throughput": {{ target_throughput | default(0) | tojson}},
@@ -39,8 +45,8 @@
   ]
 },
 {
-  "name": "sparse-search-create-resources-and-index-document",
-  "description": "Create resourses (model, pipeline and index) for Sparse search, then ingest the corpus",
+  "name": "multimodal-search-create-resources-and-index-document",
+  "description": "Create resourses (model, pipeline and index) for Multimodal search, then ingest the corpus",
   "default": false,
   "schedule": [
     {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
@@ -48,26 +54,32 @@
       "operation": "delete-ingest-pipeline"
     },
     {
-      "operation": "delete-ml-model-sparse"
+      "operation": "delete-bedrock-remote-ml-model"
+    },
+    {
+      "operation": "delete-bedrock-ml-connector"
     },
     {
       "operation": "put-cluster-settings"
     },
     {
-      "operation": "register-ml-model-sparse"
+      "operation": "create-bedrock-ml-connector"
+    },
+    {
+      "operation": "register-bedrock-remote-ml-model"
     },
     {
       "operation": "deploy-ml-model"
     },
     {
-      "operation": "create-ingest-pipeline-sparse"
+      "operation": "create-ingest-pipeline-multimodal"
     },
     {{ benchmark.collect(parts="common/create_index_and_ingest_document.json") }}
   ]
 },
 {
-  "name": "sparse-search-query-only",
-  "description": "Runs neural clause queries with Sparse search, applicable only when pipelines, model and index are created, and corpus is ingested.",
+  "name": "multimodal-search-query-only",
+  "description": "Runs neural clause queries with Multimodal search, applicable only when pipelines, model and index are created, and corpus is ingested.",
   "default": false,
   "schedule": [
     {%- if concurrent_segment_search_enabled is defined %}
@@ -76,7 +88,7 @@
     },
     {%- endif %}
     {
-      "operation": "sparse-search",
+      "operation": "multimodal-search",
       "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
       "iterations": {{iterations | default(100) | tojson }},
       "target-throughput": {{ target_throughput | default(0) | tojson}},
@@ -84,3 +96,4 @@
     }
   ]
 }
+

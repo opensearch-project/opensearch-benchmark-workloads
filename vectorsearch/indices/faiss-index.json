@@ -11,6 +11,12 @@
         {%- if derived_source_enabled is defined and derived_source_enabled %}
         ,"knn.derived_source.enabled": true
         {%- endif %}
+        {%- if remote_index_build_enabled is defined and remote_index_build_enabled %}
+        ,"knn.remote_index_build.enabled": true
+        {%- endif %}
+        {%- if remote_index_build_enabled is defined and remote_index_build_enabled and remote_index_build_size_threshold is defined %}
+        ,"knn.remote_index_build.size_threshold": "{{ remote_index_build_size_threshold }}"
+        {%- endif %}
       }
     },
     "mappings": {
@@ -21,7 +27,7 @@
             "type": "keyword"
           },
         {%- endif %}
-        "target_field": {
+        "{{ target_field_name }}": {
           "type": "knn_vector",
           "dimension": {{ target_index_dimension }},
           {%- if mode is defined %}

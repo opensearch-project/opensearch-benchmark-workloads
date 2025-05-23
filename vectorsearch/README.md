@@ -106,6 +106,8 @@ This workload allows the following parameters to be specified using `--workload-
 | target_throughput                       | Target throughput for each query operation in requests per second (default 10)                                                       |
 | time_period                             | The period of time dedicated for the benchmark execution in seconds (default 900)                                                    |
 | derived_source_enabled                  | Whether or not derived source feature should be enabled on the index (default null, pass in either true or false)                    |
+| remote_index_build_enabled              | Whether or not remote index build feature should be enabled on the index (default false, pass in either true or false)               |
+| remote_index_build_size_threshold       | If remote_index_build_enabled, indicates the size threshold above which remote vector builds will be enabled (default 50mb)          |
 
 
 
