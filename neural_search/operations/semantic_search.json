@@ -2,29 +2,52 @@
   "name": "semantic-search",
   "operation-type": "search",
   "variable-queries": {{variable_queries | default(0)}},
-  "param-source": "neural-semantic-search-source",
+  "param-source": "neural-search-source",
+  "nested":"{{nested}}",
   "index": "{{ index_name }}",
   "body": {
     "_source": {
-      "excludes": [
-        "passage_embedding"
+      "includes": [
+        "text"
       ]
     },
     "query": {
-      "neural": {
-        "passage_embedding": {
-          {%- if k is defined and k %}
-            "k": {{ k }},
-          {%- elif min_score is defined and min_score %}
-            "min_score": {{ min_score }},
-          {%- elif max_distance is defined and max_distance %}
-            "max_distance": {{ max_distance }},
-          {%- endif %}
+      {%- if nested is defined and nested == true  %}
+        "nested": {
+          "path": "passage_chunk_embedding",
+          "query": {
+            "neural": {
+              "passage_chunk_embedding.knn": {
+                {%- if k is defined and k %}
+                  "k": {{ k }},
+                {%- elif min_score is defined and min_score %}
+                  "min_score": {{ min_score }},
+                {%- elif max_distance is defined and max_distance %}
+                  "max_distance": {{ max_distance }},
+                {%- endif %}
 
-          "query_text": "What are some of the best science projects?",
-          "model_id": ""
+                "query_text": "What are some of the best science projects?",
+                "model_id": ""
+              }
+            }
+          }
         }
-      }
+      {% else %}
+        "neural": {
+          "passage_embedding": {
+            {%- if k is defined and k %}
+              "k": {{ k }},
+            {%- elif min_score is defined and min_score %}
+              "min_score": {{ min_score }},
+            {%- elif max_distance is defined and max_distance %}
+              "max_distance": {{ max_distance }},
+            {%- endif %}
+
+            "query_text": "What are some of the best science projects?",
+            "model_id": ""
+          }
+        }
+      {% endif %}
     }
   }
 }

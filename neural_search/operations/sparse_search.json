@@ -6,16 +6,39 @@
   "body": {
     "description": "An NLP ingest pipeline for sparse embedding",
     "processors": [
-      {
-        "sparse_encoding": {
-          "model_id": "",
-          "prune_type": "{{prune_type | default('max_ratio')}}",
-          "prune_ratio": {{prune_ratio | default(0.1)}},
-          "field_map": {
-            "text": "passage_embedding"
+      {%- if nested is defined and nested == true  %}
+          {
+            "text_chunking": {
+              "algorithm": {
+                "fixed_token_length": {}
+              },
+              "field_map": {
+                "text": "passage_chunk"
+              }
+            }
+          },
+          {
+            "sparse_encoding": {
+              "model_id": "",
+              "prune_type": "{{prune_type | default('max_ratio')}}",
+              "prune_ratio": {{prune_ratio | default(0.1)}},
+              "field_map": {
+                "passage_chunk": "passage_chunk_embedding"
+              }
+            }
+          }
+      {% else %}
+        {
+          "sparse_encoding": {
+            "model_id": "",
+            "prune_type": "{{prune_type | default('max_ratio')}}",
+            "prune_ratio": {{prune_ratio | default(0.1)}},
+            "field_map": {
+              "text": "passage_embedding"
+            }
           }
         }
-      }
+      {% endif %}
     ]
   }
 },
@@ -35,22 +58,37 @@
 {
   "name": "sparse-search",
   "operation-type": "search",
-  "param-source": "neural-sparse-search-source",
+  "param-source": "neural-search-source",
+  "nested":"{{nested}}",
   "variable-queries": {{variable_queries | default(0)}},
   "index": "{{ index_name }}",
   "body": {
    "_source": {
-     "excludes": [
-       "passage_embedding"
+      "includes": [
+        "text"
       ]
    },
    "query": {
-     "neural_sparse": {
-       "passage_embedding": {
-         "query_text": "What are some of the best science projects?",
-         "model_id": ""
+     {%- if nested is defined and nested == true  %}
+       "nested": {
+         "path": "passage_chunk_embedding",
+         "query": {
+           "neural_sparse": {
+             "passage_chunk_embedding.sparse_encoding": {
+               "query_text": "What are some of the best science projects?",
+               "model_id": ""
+             }
+           }
+         }
        }
-     }
+     {% else %}
+       "neural_sparse": {
+         "passage_embedding": {
+           "query_text": "What are some of the best science projects?",
+           "model_id": ""
+         }
+       }
+     {% endif %}
    }
   }
 }

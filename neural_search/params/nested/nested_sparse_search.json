@@ -1,0 +1,11 @@
+{
+  "passage_embedding_type": "rank_features",
+  "index_name": "quora-nested-sparse-embedding",
+  "index_body": "indices/nested/nested_quora.json",
+  "corpora_name": "quora",
+  "ingest_percentage": 100,
+  "variable_queries": 10000,
+  "warmup_time_period": 100,
+  "default_ingest_pipeline": "nlp-default-ingest-pipeline-sparse",
+  "nested": true
+}
