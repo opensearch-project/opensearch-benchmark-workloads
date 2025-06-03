@@ -1,0 +1,38 @@
+name: OSB Workloads Format Linter
+on: [pull_request]
+
+jobs:
+  jinja2-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          git clone https://github.com/aristanetworks/j2lint.git && cd j2lint
+          python3 -m pip install -e .
+          j2lint --version
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v39
+        with:
+          files: |
+            **.json
+
+      - name: Run J2lint on changed JSON files in a pull-request
+        if: github.event_name == 'pull_request'
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            if [[ $file == *.json ]]; then
+              echo "Checking $file"
+              j2lint "$GITHUB_WORKSPACE/$file" --extensions json --json
+            fi
+          done
