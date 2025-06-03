@@ -1,0 +1,93 @@
+{
+  "name": "neural-search-with-semantic-field",
+  "description": "Creates model, indexes the corpus and then runs neural queries against the semantic field.",
+  "default": false,
+  "schedule": [
+    {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+    {
+      "operation": "put-cluster-settings"
+    },
+    {%- if concurrent_segment_search_enabled is defined %}
+    {
+      "operation": "put-concurrent-segment-search-setting"
+    },
+    {%- endif %}
+    {%- if model_type is defined and model_type == "dense" %}
+    {{ benchmark.collect(parts="common/register_and_deploy_dense_model.json") }},
+    {%- else %}
+    {{ benchmark.collect(parts="common/register_and_deploy_sparse_model.json") }},
+    {%- endif %}
+    {{ benchmark.collect(parts="common/create_index_and_ingest_document.json") }},
+    {{ benchmark.collect(parts="common/match_all_search.json") }},
+    {
+      "operation": "neural-search-semantic-field",
+      "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+      "iterations": {{iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(0) | tojson}},
+      "clients": {{ search_clients | default(1)}}
+    }
+  ]
+},
+{
+  "name": "neural-search-with-semantic-field-deploy-model-and-index-only",
+  "description": "Creates model and indexes the corpus for the semantic field.",
+  "default": false,
+  "schedule": [
+    {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+    {
+      "operation": "put-cluster-settings"
+    },
+    {%- if model_type is defined and model_type == "dense" %}
+    {{ benchmark.collect(parts="common/register_and_deploy_dense_model.json") }},
+    {%- else %}
+    {{ benchmark.collect(parts="common/register_and_deploy_sparse_model.json") }},
+    {%- endif %}
+    {{ benchmark.collect(parts="common/create_index_and_ingest_document.json") }}
+  ]
+},
+{
+  "name": "neural-search-with-semantic-field-search-only",
+  "description": "Run neural queries against the semantic field.",
+  "default": false,
+  "schedule": [
+    {%- if concurrent_segment_search_enabled is defined %}
+    {
+      "operation": "put-concurrent-segment-search-setting"
+    },
+    {%- endif %}
+    {
+      "operation": "neural-search-semantic-field",
+      "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+      "iterations": {{iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(0) | tojson}},
+      "clients": {{ search_clients | default(1)}}
+    }
+  ]
+},
+{
+  "name": "neural-search-with-semantic-field-deploy-model-and-search-only",
+  "description": "Deploy the model and then run neural queries against the semantic field.",
+  "default": false,
+  "schedule": [
+    {
+      "operation": "put-cluster-settings"
+    },
+    {%- if concurrent_segment_search_enabled is defined %}
+    {
+      "operation": "put-concurrent-segment-search-setting"
+    },
+    {%- endif %}
+    {%- if model_type is defined and model_type == "dense" %}
+    {{ benchmark.collect(parts="common/register_and_deploy_dense_model.json") }},
+    {%- else %}
+    {{ benchmark.collect(parts="common/register_and_deploy_sparse_model.json") }},
+    {%- endif %}
+    {
+      "operation": "neural-search-semantic-field",
+      "warmup-iterations": {{warmup_iterations | default(100) | tojson}},
+      "iterations": {{iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(0) | tojson}},
+      "clients": {{ search_clients | default(1)}}
+    }
+  ]
+}

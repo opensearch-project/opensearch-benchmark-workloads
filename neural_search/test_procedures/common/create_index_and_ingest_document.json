@@ -1,4 +1,10 @@
+{%- if use_semantic_field is defined and use_semantic_field == true %}
+{
+  "operation": "create-index-with-semantic-field"
+},
+{%- else %}
 {{ benchmark.collect(parts="../../../common_operations/create_index.json") }},
+{%- endif %}
 {{ benchmark.collect(parts="../../../common_operations/check_cluster_health.json") }},
 {{ benchmark.collect(parts="../../../common_operations/index_append.json") }},
 {{ benchmark.collect(parts="../../../common_operations/force_merge.json") }}
