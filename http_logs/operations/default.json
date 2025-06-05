@@ -1,51 +1,51 @@
     {
       "name": "index-append",
       "operation-type": "bulk",
-      "bulk-size": {{bulk_size | default(5000)}},
-      "ingest-percentage": {{ingest_percentage | default(100)}},
+      "bulk-size": {{ bulk_size | default(5000) }},
+      "ingest-percentage": {{ ingest_percentage | default(100) }},
       "corpora": "http_logs"
     },
     {
       "name": "index-append-with-ingest-baseline-pipeline",
       "operation-type": "bulk",
-      "bulk-size": {{bulk_size | default(5000)}},
-      "ingest-percentage": {{ingest_percentage | default(100)}},
+      "bulk-size": {{ bulk_size | default(5000) }},
+      "ingest-percentage": {{ ingest_percentage | default(100) }},
       "pipeline": "http-log-baseline-pipeline",
       "corpora": "http_logs"
     },
     {
       "name": "index-append-with-ingest-grok-pipeline",
       "operation-type": "bulk",
-      "bulk-size": {{bulk_size | default(5000)}},
-      "ingest-percentage": {{ingest_percentage | default(100)}},
+      "bulk-size": {{ bulk_size | default(5000) }},
+      "ingest-percentage": {{ ingest_percentage | default(100) }},
       "pipeline": "http-log-grok-pipeline",
       "corpora": "http_logs_unparsed"
     },
     {
       "name": "index-append-with-ingest-geoip-pipeline",
       "operation-type": "bulk",
-      "bulk-size": {{bulk_size | default(5000)}},
-      "ingest-percentage": {{ingest_percentage | default(100)}},
+      "bulk-size": {{ bulk_size | default(5000) }},
+      "ingest-percentage": {{ ingest_percentage | default(100) }},
       "pipeline": "http-log-geoip-pipeline",
       "corpora": "http_logs"
     },
     {
       "name": "index-append-with-timestamp-pipeline",
       "operation-type": "bulk",
-      "bulk-size": {{bulk_size | default(5000)}},
-      "ingest-percentage": {{ingest_percentage | default(100)}},
+      "bulk-size": {{ bulk_size | default(5000) }},
+      "ingest-percentage": {{ ingest_percentage | default(100) }},
       "pipeline": "timestamp-pipeline",
       "corpora": "http_logs_unparsed"
     },
     {
       "name": "update",
       "operation-type": "bulk",
-      "bulk-size": {{bulk_size | default(5000)}},
-      "ingest-percentage": {{ingest_percentage | default(100)}},
-      "conflicts": "{{conflicts | default('random')}}",
-      "on-conflict": "{{on_conflict | default('update')}}",
-      "conflict-probability": {{conflict_probability | default(25)}},
-      "recency": {{recency | default(0)}},
+      "bulk-size": {{ bulk_size | default(5000) }},
+      "ingest-percentage": {{ ingest_percentage | default(100) }},
+      "conflicts": "{{ conflicts | default('random') }}",
+      "on-conflict": "{{ on_conflict | default('update') }}",
+      "conflict-probability": {{ conflict_probability | default(25) }},
+      "recency": {{ recency | default(0) }},
       "corpora": "http_logs"
     },
     {
@@ -125,7 +125,7 @@
         "query": {
           "range": {
             "@timestamp": {
-              "gte": "now-{{'15-05-1998' | days_ago(now)}}d/d",
+              "gte": "now-{{ '15-05-1998' | days_ago(now) }}d/d",
               "lt": "now/d"
             }
           }
@@ -474,7 +474,10 @@
               "field": "status",
               "target_field": "status_{{ i }}"
             }
-          }{% if not loop.last %},{% endif %}
+          }
+          {%     if not loop.first %}
+          ,
+          {%     endif %}
           {% endfor %}
         ]
       }

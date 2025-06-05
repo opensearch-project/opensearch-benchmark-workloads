@@ -1,18 +1,18 @@
     {
       "name": "index-append",
       "operation-type": "bulk",
-      "bulk-size": {{bulk_size | default(500)}},
-      "ingest-percentage": {{ingest_percentage | default(100)}}
+      "bulk-size": {{ bulk_size | default(500) }},
+      "ingest-percentage": {{ ingest_percentage | default(100) }}
     },
     {
       "name": "index-update",
       "operation-type": "bulk",
-      "bulk-size": {{bulk_size | default(500)}},
-      "ingest-percentage": {{ingest_percentage | default(100)}},
-      "conflicts": "{{conflicts | default('random')}}",
-      "on-conflict": "{{on_conflict | default('index')}}",
-      "conflict-probability": {{conflict_probability | default(25)}},
-      "recency": {{recency | default(0)}}
+      "bulk-size": {{ bulk_size | default(500) }},
+      "ingest-percentage": {{ ingest_percentage | default(100) }},
+      "conflicts": "{{ conflicts | default('random') }}",
+      "on-conflict": "{{ on_conflict | default('index') }}",
+      "conflict-probability": {{ conflict_probability | default(25) }},
+      "recency": {{ recency | default(0) }}
     },
     {
       "name": "match-all",
@@ -102,7 +102,7 @@
     {
       "name": "asc_sort_timestamp",
       "operation-type": "search",
-      "index": "{{index_name | default('pmc')}}",
+      "index": "{{ index_name | default('pmc') }}",
       "body": {
         "query": {
           "match_all": {}
@@ -115,7 +115,7 @@
     {
       "name": "desc_sort_timestamp",
       "operation-type": "search",
-      "index": "{{index_name | default('pmc')}}",
+      "index": "{{ index_name | default('pmc') }}",
       "body": {
         "query": {
           "match_all": {}
@@ -128,7 +128,7 @@
     {
       "name": "asc_sort_pmid",
       "operation-type": "search",
-      "index": "{{index_name | default('pmc')}}",
+      "index": "{{ index_name | default('pmc') }}",
       "body": {
         "query": {
           "match_all": {}
@@ -141,7 +141,7 @@
     {
       "name": "desc_sort_pmid",
       "operation-type": "search",
-      "index": "{{index_name | default('pmc')}}",
+      "index": "{{ index_name | default('pmc') }}",
       "body": {
         "query": {
           "match_all": {}

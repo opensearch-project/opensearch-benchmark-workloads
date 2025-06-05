@@ -399,13 +399,13 @@
         {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
         {% endwith %}
         {
-        "operation": "create-http-log-{{ingest_pipeline | default('baseline')}}-pipeline"
+        "operation": "create-http-log-{{ ingest_pipeline | default('baseline') }}-pipeline"
         },
         {
-          "operation": "index-append-with-ingest-{{ingest_pipeline | default('baseline')}}-pipeline",
+          "operation": "index-append-with-ingest-{{ ingest_pipeline | default('baseline') }}-pipeline",
           "warmup-time-period": 240,
-          "clients": {{bulk_indexing_clients | default(8)}},
-          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+          "clients": {{ bulk_indexing_clients | default(8) }},
+          "ignore-response-error-level": "{{ error_level | default('non-fatal') }}"
         },
         {
           "name": "refresh-after-index",
@@ -429,8 +429,8 @@
         {
           "operation": "update",
           "warmup-time-period": 240,
-          "clients": {{bulk_indexing_clients | default(8)}},
-          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+          "clients": {{ bulk_indexing_clients | default(8) }},
+          "ignore-response-error-level": "{{ error_level | default('non-fatal') }}"
         },
         {
           "name": "refresh-after-index",
@@ -496,7 +496,7 @@
         {
           "operation": "index-append",
           "warmup-time-period": 240,
-          "clients": {{bulk_indexing_clients | default(8)}}
+          "clients": {{ bulk_indexing_clients | default(8) }}
         },
         {
           "name": "refresh-after-index",
