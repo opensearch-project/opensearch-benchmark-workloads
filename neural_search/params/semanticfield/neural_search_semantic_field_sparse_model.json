@@ -1,0 +1,10 @@
+{
+  "index_name": "quora-semantic-field-sparse-embedding",
+  "index_body": "indices/semanticfield/quora_semantic_field.json",
+  "corpora_name": "quora",
+  "use_semantic_field": true,
+  "ingest_percentage": 100,
+  "variable_queries": 10000,
+  "warmup_time_period": 5,
+  "model_type": "sparse"
+}

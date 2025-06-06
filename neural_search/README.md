@@ -131,7 +131,8 @@ The full list of tasks is provided below:
 - <search_method_name>-search (e.g. sparse-search, semantic-search excluding hybrid search)
 - hybrid-search-with-search-pipeline (hybrid search only)
 - hybrid-search-with-temporary-pipeline (hybrid search only, note that the temporary pipeline is created during search, so not necessary to explicitly create it)
- 
+- neural-search-with-semantic-field
+
 ### Parameters
 
 This workload allows [specifying the following parameters](#specifying-workload-parameters) using the `--workload-params` option to OpenSearch Benchmark:
@@ -192,6 +193,10 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `variable_queries` (default: 10000) Number of variable queries will be used for the search task, 0 means fixed query.
 * `warmup_iterations`: Number of Warmup iteration of each search client executes.
 * `warmup-time-period` (default: 120): Amount of time, in seconds, to warm up the benchmark candidate
+* `nested` (default: false): A boolean defining whether we should use nested embedding for semantic search and sparse search.
+* `chunking` (default: false): Used for neural query semantic fields. A boolean defining whether we should enable the auto chunking for semantic fields.
+* `use_semantic_field` (default: false): Used for neural query semantic fields. A boolean defining whether we should create the index with a semantic field.
+* `model_type` : Used for neural query semantic fields. A string(sparse or dense) defining what model we should deploy for the semantic field.
 
 ### Specifying Workload Parameters
 
