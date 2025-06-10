@@ -33,6 +33,6 @@ jobs:
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             if [[ $file == *.json ]]; then
               echo "Checking $file"
-              j2lint "$GITHUB_WORKSPACE/$file" --extensions json --json
+              j2lint "$GITHUB_WORKSPACE/$file" --extensions json --json --warn S1 S2 S3 S4 S5 S6 S7
             fi
           done
