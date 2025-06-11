@@ -131,7 +131,8 @@ The full list of tasks is provided below:
 - <search_method_name>-search (e.g. sparse-search, semantic-search excluding hybrid search)
 - hybrid-search-with-search-pipeline (hybrid search only)
 - hybrid-search-with-temporary-pipeline (hybrid search only, note that the temporary pipeline is created during search, so not necessary to explicitly create it)
- 
+- neural-search-with-semantic-field
+
 ### Parameters
 
 This workload allows [specifying the following parameters](#specifying-workload-parameters) using the `--workload-params` option to OpenSearch Benchmark:
@@ -161,10 +162,10 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `index_settings`: A list of index settings. Index settings defined elsewhere (e.g. `number_of_replicas`) need to be overridden explicitly.
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
 * `iterations`:  Number of test iterations that each search client executes
-* `k`: The number of results returned by the k-NN search. Only one variable, either k, min_score, or max_distance, can be specified. If a variable is not specified, the default is k with a value of 10.
-* `max_distance`: The maximum distance threshold for the search results. Only one variable, either k, min_score, or max_distance, can be specified. 
+* `k`: Specifies the number of results to return from the k-NN search. Only one of k, min_score, or max_distance can be set. If k is provided, it takes precedence. If not, min_score is used if defined; otherwise, max_distance is considered. If none are specified, the default behavior is to use k = 10.
+* `max_distance`: The maximum distance threshold for the search results. Only one of k, min_score, or max_distance can be set. If k is provided, it takes precedence. If not, min_score is used if defined; otherwise, max_distance is considered. If none are specified, the default behavior is to use k = 10.
+* `min_score`: The minimum score threshold for the search results. Only one of k, min_score, or max_distance can be set. If k is provided, it takes precedence. If not, min_score is used if defined; otherwise, max_distance is considered. If none are specified, the default behavior is to use k = 10.
 * `method` (default:` hnsw): K-NN search algorithm.
-* `min_score`: The minimum score threshold for the search results. Only one variable, either k, min_score, or max_distance, can be specified
 * `model_config_file` (default: ""): Config file for the model
 * `model_format` (default: TORCH_SCRIPT): Model format.
 * `model_name` (default: amazon/neural-sparse/opensearch-neural-sparse-encoding-v2-distill): OpenSearch-provided pretrained model name.
@@ -192,6 +193,10 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `variable_queries` (default: 10000) Number of variable queries will be used for the search task, 0 means fixed query.
 * `warmup_iterations`: Number of Warmup iteration of each search client executes.
 * `warmup-time-period` (default: 120): Amount of time, in seconds, to warm up the benchmark candidate
+* `nested` (default: false): A boolean defining whether we should use nested embedding for semantic search and sparse search.
+* `chunking` (default: false): A boolean defining whether we should enable the auto chunking for semantic fields. Used for neural query semantic fields. 
+* `use_semantic_field` (default: false): A boolean defining whether we should create the index with a semantic field. Used for neural query semantic fields. 
+* `model_type` (default: sparse): A string(sparse or dense) defining what model we should deploy for the semantic field. Used for neural query semantic fields. 
 
 ### Specifying Workload Parameters
 
