@@ -1,0 +1,29 @@
+{
+  "settings": {
+    {%-if number_of_shards is defined %}
+    "index.number_of_shards": {{number_of_shards}},
+    {%- endif %}
+    {%-if number_of_replicas is defined %}
+    "index.number_of_replicas": {{number_of_replicas}},
+    {%- endif %}
+    {%-if index_knn is defined %}
+    "index.knn": true,
+    {%- endif %}
+    "index.queries.cache.enabled": {{query_cache_enabled | default(false) | tojson}},
+    "index.requests.cache.enable": {{requests_cache_enabled | default(false) | tojson}},
+    "index.refresh_interval": "{{refresh_interval | default('5s')}}",
+    "index.translog.flush_threshold_size": "{{flush_threshold_size | default('1g')}}"
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "text"
+      },
+      "text": {
+        "type": "semantic",
+        "model_id": "",
+        "chunking": {{chunking | default(false) | tojson}}
+      }
+    }
+  }
+}
