@@ -1,0 +1,9 @@
+{
+  "operation": "delete-ml-model-sparse"
+},
+{
+  "operation": "register-ml-model-sparse"
+},
+{
+  "operation": "deploy-ml-model"
+}

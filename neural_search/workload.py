@@ -11,29 +11,69 @@ from osbenchmark.workload.loader import Downloader
 from osbenchmark.workload.loader import Decompressor
 from osbenchmark import exceptions
 
+from nyc_taxis.workload import total_amount_source
+
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
-def ingest_pipeline_param_source(workload, params, **kwargs):
-    processor = params['body']['processors'][0]
-    if 'sparse_encoding' in processor:
-        model_id = processor['sparse_encoding']['model_id']
-        processor_name = 'sparse_encoding'
-    elif 'text_embedding' in processor:
-        model_id = processor['text_embedding']['model_id']
-        processor_name = 'text_embedding'
-    elif 'text_image_embedding' in processor:
-        model_id = processor['text_image_embedding']['model_id']
-        processor_name = 'text_image_embedding'
-    else:
-        raise Exception('Processor: {} is not supported'.format(processor))
+def get_by_path(data: dict, path: str, default=None):
+    """
+    Safely retrieve a value from a nested dictionary using dot-separated path.
 
-    if not model_id:
-        # We don't have to manually provide the model_id.json file, it will be created during register-ml-model operation.
-        # See the logic in OSB: https://github.com/opensearch-project/opensearch-benchmark/blob/main/osbenchmark/worker_coordinator/runner.py#L2741
-        with open('model_id.json') as f:
-            d = json.loads(f.read())
-            model_id = d['model_id']
-            processor[processor_name]['model_id'] = model_id
+    :param data: The dictionary to traverse (e.g., params).
+    :param path: Dot-separated path string (e.g., "body.query.neural.passage_embedding").
+    :param default: Default value to return if any part of the path is missing.
+    :return: The value at the specified path, or default if not found.
+    """
+    keys = path.split(".")
+    for key in keys:
+        if isinstance(data, dict) and key in data:
+            data = data[key]
+        else:
+            if default is not None:
+                return default
+            else:
+                raise KeyError(f"Key '{key}' not found in {data} in path '{path}'")
+    return data
+
+def inject_model_id(params: dict, model_id_file: str = "model_id.json"):
+    """
+    Injects model_id from file into the given nested path + '.model_id'.
+
+    :param params: The dictionary to modify.
+    :param model_id_file: File containing a JSON object with 'model_id'.
+    """
+    with open(model_id_file, "r") as f:
+        model_id = json.load(f).get("model_id")
+    params["model_id"] = model_id
+
+def inject_query_text(params: dict):
+    """
+    Injects a random 'query_text' from 'queries.json' in the script directory
+    into params at '.query_text'.
+    """
+    queries_file = os.path.join(script_dir, "queries.json")
+    with open(queries_file, "r") as f:
+        lines = f.read().splitlines()
+        random_line = random.choice(lines)
+        query_obj = json.loads(random_line)
+        params['query_text'] = query_obj.get("text")
+
+
+def ingest_pipeline_param_source(workload, params, **kwargs):
+    supported_processors = ['sparse_encoding', 'text_embedding', 'text_image_embedding']
+    processors = params['body'].get('processors', [])
+
+    found_supported_processor = False
+
+    for processor in processors:
+        for name in supported_processors:
+            if name in processor:
+                found_supported_processor = True
+                inject_model_id(processor[name])
+
+    if not found_supported_processor:
+        raise ValueError(f"No supported processor types found in: {processors}")
+
     return params
 
 class QueryParamSource:
@@ -82,26 +122,47 @@ class QueryParamSource:
     def partition(self, partition_index, total_partitions):
         return self
 
-class NeuralSparseQueryParamSource(QueryParamSource):
+
+class NeuralQueryParamSource(QueryParamSource):
     def get_dataset_name(self):
         return 'quora'
 
     def params(self):
         params = self._params
-        neural_sparse_query = params['body']['query']['neural_sparse']['passage_embedding']
+        is_query_semantic_field = params.get('is_query_semantic_field', False)
+        if is_query_semantic_field is True:
+            embedding_query = get_by_path(params, "body.query.neural.text")
+        else:
+            search_operation_name = params.get('name', None)
+            if search_operation_name == "semantic-search":
+                query_name = "neural"
+            elif search_operation_name == "sparse-search":
+                query_name = "neural_sparse"
+            else:
+                raise KeyError(
+                    f"Unsupported search operation name: '{search_operation_name}' in NeuralQueryParamSource.")
 
-        with open('model_id.json', 'r') as f:
-            d = json.loads(f.read())
-            neural_sparse_query['model_id'] = d['model_id']
+            nested = params.get('nested', 'False')
+            if nested == 'True':
+                path_to_neural_query = f"body.query.nested.query.{query_name}"
+                if query_name == "neural":
+                    embedding_field = 'passage_chunk_embedding.knn'
+                else:
+                    embedding_field = 'passage_chunk_embedding.sparse_encoding'
+            else:
+                path_to_neural_query = f"body.query.{query_name}"
+                embedding_field = "passage_embedding"
+            neural_query = get_by_path(params, path_to_neural_query)
+            try:
+                embedding_query = neural_query[embedding_field]
+            except KeyError:
+                raise KeyError(f"Key '{embedding_field}' not found in {neural_query}")
 
-        count = self._params.get("variable-queries", 0)
-        if count > 0:
-            script_dir = os.path.dirname(os.path.realpath(__file__))
-            with open(script_dir + '/queries.json', 'r') as f:
-                lines = f.read().splitlines()
-                line =random.choice(lines)
-                query_text = json.loads(line)['text']
-                neural_sparse_query['query_text'] = query_text
+            inject_model_id(embedding_query)
+
+        if params.get("variable-queries", 0) > 0:
+            inject_query_text(embedding_query)
+
         return params
 
 class NeuralHybridQueryParamSource(QueryParamSource):
@@ -225,27 +286,6 @@ class NeuralHybridQueryComplexParamSource(QueryParamSource):
                     hybrid_queries.extend(new_phrase_queries)  # Add new phrase queries
         return params
 
-class NeuralSemanticQueryParamSource(QueryParamSource):
-    def get_dataset_name(self):
-        return 'quora'
-
-    def params(self):
-        params = self._params
-        passage_embedding_query = params['body']['query']['neural']['passage_embedding']
-
-        with open('model_id.json', 'r') as f:
-            d = json.loads(f.read())
-            passage_embedding_query['model_id'] = d['model_id']
-        count = self._params.get("variable-queries", 0)
-        if count > 0:
-            script_dir = os.path.dirname(os.path.realpath(__file__))
-            with open(script_dir + '/queries.json', 'r') as f:
-                lines = f.read().splitlines()
-                line = random.choice(lines)
-                query_text = json.loads(line)['text']
-                passage_embedding_query['query_text'] = query_text
-        return params
-
 class NeuralMultimodalQueryParamSource(QueryParamSource):
     def get_dataset_name(self):
         return 'abo'
@@ -274,12 +314,32 @@ class NeuralMultimodalQueryParamSource(QueryParamSource):
                 vector_embedding_query['query_image'] = query_image
         return params
 
+class CreateIndexWithSemanticFieldParamSource:
+    def __init__(self, workload, params, **kwargs):
+        self.infinite = True
+        self.index_name = workload.indices[0].name
+        self.index_body  = workload.indices[0].body
+
+    def partition(self, partition_index, total_partitions):
+        return self
+
+    def params(self):
+        path_to_semantic_field = "mappings.properties.text"
+        semantic_field = get_by_path(self.index_body, path_to_semantic_field)
+        inject_model_id(semantic_field)
+
+        return {
+            "indices": [
+                [self.index_name, self.index_body]
+            ]
+        }
+
 def register(registry):
-    registry.register_param_source("neural-sparse-search-source", NeuralSparseQueryParamSource)
+    registry.register_param_source("neural-search-source", NeuralQueryParamSource)
     registry.register_param_source("neural-hybrid-search-source", NeuralHybridQueryParamSource)
     registry.register_param_source("neural-hybrid-search-bool-source", NeuralHybridQueryBoolParamSource)
     registry.register_param_source("neural-hybrid-search-complex-source", NeuralHybridQueryComplexParamSource)
-    registry.register_param_source("neural-semantic-search-source", NeuralSemanticQueryParamSource)
     registry.register_param_source("neural-multimodal-search-source", NeuralMultimodalQueryParamSource)
     registry.register_param_source("create-ingest-pipeline-source", ingest_pipeline_param_source)
+    registry.register_param_source("create-index-with-semantic-field-source", CreateIndexWithSemanticFieldParamSource)
 

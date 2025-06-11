@@ -1,0 +1,9 @@
+{
+  "operation": "delete-ml-model-sentence-transformer"
+},
+{
+  "operation": "register-ml-model-sentence-transformer"
+},
+{
+  "operation": "deploy-ml-model"
+}
