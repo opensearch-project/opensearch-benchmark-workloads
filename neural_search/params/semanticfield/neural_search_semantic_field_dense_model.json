@@ -1,0 +1,12 @@
+{
+  "index_name": "quora-semantic-field-dense-embedding",
+  "index_body": "indices/semanticfield/quora_semantic_field.json",
+  "corpora_name": "quora",
+  "use_semantic_field": true,
+  "variable_queries": 10000,
+  "warmup_time_period": 5,
+  "ingest_percentage": 100,
+  "model_type": "dense",
+  "index_knn": true,
+  "k": 100
+}
