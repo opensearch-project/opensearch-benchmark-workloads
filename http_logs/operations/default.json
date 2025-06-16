@@ -290,6 +290,21 @@
       }
     },
     {
+      "name": "range_size",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "query": {
+          "range": {
+            "size": {
+              "gte": 20,
+              "lte": 200
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "desc_sort_timestamp",
       "operation-type": "search",
       "index": "logs-*",
@@ -542,6 +557,44 @@
               "target_field": "status_code"
             }
           }
+        ]
+      }
+    },
+    {
+      "name": "range_with_desc_sort",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "size": 100,
+        "query": {
+          "range": {
+            "size": {
+              "gte": 10,
+              "lte": 200
+            }
+          }
+        },
+        "sort": [
+          { "size": "desc" }
+        ]
+      }
+    },
+    {
+      "name": "range_with_asc_sort",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "size": 100,
+        "query": {
+          "range": {
+            "size": {
+              "gte": 10,
+              "lte": 200
+            }
+          }
+        },
+        "sort": [
+          { "size": "asc" }
         ]
       }
     }

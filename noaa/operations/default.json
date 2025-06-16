@@ -1363,4 +1363,28 @@
           }
         }
       }
+    },
+    {
+      "name": "asc_sort_awnd",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_all": {}
+        },
+        "sort": [
+          { "AWND": "asc" }
+        ]
+      }
+    },
+    {
+      "name": "desc_sort_awnd",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_all": {}
+        },
+        "sort": [
+          { "AWND": "desc" }
+        ]
+      }
     }
