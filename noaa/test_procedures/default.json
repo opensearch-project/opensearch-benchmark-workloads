@@ -75,6 +75,20 @@
           "iterations": {{ range_field_disjunction_big_range_small_term_query_iterations or iterations | default(500) | tojson }},
           "target-throughput": {{ range_field_disjunction_big_range_small_term_query_target_throughput or target_throughput | default(6) | tojson }},
           "clients": {{ range_field_disjunction_big_range_small_term_query_search_clients or search_clients | default(1) }}
+        },
+        {
+          "operation": "asc_sort_awnd",
+          "warmup-iterations": {{ asc_sort_awnd_warmup_iterations or warmup_iterations | default(10) | tojson }},
+          "iterations": {{ asc_sort_awnd_iterations or iterations | default(50) | tojson }},
+          "target-throughput": {{ asc_sort_awnd_target_throughput or target_throughput | default(2) | tojson }},
+          "clients": {{ asc_sort_awnd_search_clients or search_clients | default(1) }}
+        },
+        {
+          "operation": "desc_sort_awnd",
+          "warmup-iterations": {{ desc_sort_awnd_warmup_iterations or warmup_iterations | default(10) | tojson }},
+          "iterations": {{ desc_sort_awnd_iterations or iterations | default(50) | tojson }},
+          "target-throughput": {{ desc_sort_awnd_target_throughput or target_throughput | default(2) | tojson }},
+          "clients": {{ desc_sort_awnd_search_clients or search_clients | default(1) }}
         }
       ]
     },
