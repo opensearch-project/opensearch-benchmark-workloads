@@ -290,6 +290,21 @@
       }
     },
     {
+      "name": "range_size",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "query": {
+          "range": {
+            "size": {
+              "gte": 20,
+              "lte": 200
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "desc_sort_timestamp",
       "operation-type": "search",
       "index": "logs-*",
@@ -546,69 +561,7 @@
       }
     },
     {
-      "name": "range_status",
-      "operation-type": "search",
-      "index": "logs-*",
-      "body": {
-        "query": {
-          "range": {
-            "status": {
-              "gte": 20,
-              "lte": 200
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "desc_sort_status",
-      "operation-type": "search",
-      "index": "logs-*",
-      "body": {
-        "track_total_hits": false,
-        "query": {
-          "match_all": {}
-        },
-        "sort": [
-          {
-            "status": "desc"
-          }
-        ]
-      }
-    },
-    {
-      "name": "asc_sort_status",
-      "operation-type": "search",
-      "index": "logs-*",
-      "body": {
-        "track_total_hits": false,
-        "query": {
-          "match_all": {}
-        },
-        "sort": [
-          {
-            "status": "asc"
-          }
-        ]
-      }
-    },
-    {
-      "name": "range_size",
-      "operation-type": "search",
-      "index": "logs-*",
-      "body": {
-        "query": {
-          "range": {
-            "size": {
-              "gte": 20,
-              "lte": 200
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "range_size_desc_sort",
+      "name": "range_with_desc_sort",
       "operation-type": "search",
       "index": "logs-*",
       "body": {
@@ -616,7 +569,7 @@
         "query": {
           "range": {
             "size": {
-              "gte": 20,
+              "gte": 10,
               "lte": 200
             }
           }
@@ -627,7 +580,7 @@
       }
     },
     {
-      "name": "range_size_asc_sort",
+      "name": "range_with_asc_sort",
       "operation-type": "search",
       "index": "logs-*",
       "body": {
@@ -635,7 +588,7 @@
         "query": {
           "range": {
             "size": {
-              "gte": 20,
+              "gte": 10,
               "lte": 200
             }
           }
