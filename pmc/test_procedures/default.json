@@ -70,6 +70,34 @@
           "iterations": {{ scroll_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ scroll_target_throughput or target_throughput | default(0.5) | tojson }},
           "clients": {{ scroll_search_clients or search_clients | default(1) }}
+        },
+        {
+          "operation": "desc_sort_timestamp",
+          "warmup-iterations": {{ desc_sort_timestamp_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ desc_sort_timestamp_iterations or iterations | default(200) | tojson }},
+          "target-throughput": {{ default_target_throughput or target_throughput | default(20) | tojson }},
+          "clients": {{ default_search_clients or search_clients | default(1) }}
+        },
+        {
+          "operation": "asc_sort_timestamp",
+          "warmup-iterations": {{ asc_sort_timestamp_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ asc_sort_timestamp_iterations or iterations | default(200) | tojson }},
+          "target-throughput": {{ default_target_throughput or target_throughput | default(20) | tojson }},
+          "clients": {{ default_search_clients or search_clients | default(1) }}
+        },
+        {
+          "operation": "desc_sort_pmid",
+          "warmup-iterations": {{ desc_sort_pmid_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ desc_sort_pmid_iterations or iterations | default(200) | tojson }},
+          "target-throughput": {{ default_target_throughput or target_throughput | default(20) | tojson }},
+          "clients": {{ default_search_clients or search_clients | default(1) }}
+        },
+        {
+          "operation": "asc_sort_pmid",
+          "warmup-iterations": {{ asc_sort_pmid_warmup_iterations or warmup_iterations | default(500) | tojson }},
+          "iterations": {{ asc_sort_pmid_iterations or iterations | default(200) | tojson }},
+          "target-throughput": {{ default_target_throughput or target_throughput | default(20) | tojson }},
+          "clients": {{ default_search_clients or search_clients | default(1) }}
         }
       ]
     },
