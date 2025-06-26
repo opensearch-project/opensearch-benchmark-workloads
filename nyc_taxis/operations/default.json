@@ -352,4 +352,30 @@
           {"tip_amount" : "asc"}
         ]
       }
+    },
+    {
+      "name": "desc_sort_passenger_count",
+      "operation-type": "search",
+      "index": "nyc_taxis",
+      "body": {
+        "query": {
+          "match_all": {}
+        },
+        "sort" : [
+          {"passenger_count" : "desc"}
+        ]
+      }
+    },
+    {
+      "name": "asc_sort_passenger_count",
+      "operation-type": "search",
+      "index": "nyc_taxis",
+      "body": {
+        "query": {
+          "match_all": {}
+        },
+        "sort" : [
+          {"passenger_count" : "asc"}
+        ]
+      }
     }
