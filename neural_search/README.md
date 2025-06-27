@@ -154,7 +154,7 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
 * `flush_threshold_size` (default: "1g"): Size limit to flush the translog, when reached
 * `force_merge_max_num_segments` (default: unset): An integer specifying the max amount of segments the force-merge operation should use.
-* `hybrid_query_size` (default: 10): Size of Hybrid query
+* `query_size` (default: 10): Size of the query, see https://docs.opensearch.org/docs/latest/vector-search/vector-search-techniques/approximate-knn#the-number-of-returned-results
 * `index_body`: Body of the index setting, must pass as workload parameter
 * `index_knn`: Whether to create a vector index, required as parameter for all search methods EXCEPT sparse search
 * `index_name`: Name of the index, must pass as workload parameter

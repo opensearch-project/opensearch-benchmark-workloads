@@ -68,6 +68,7 @@
         "text"
       ]
    },
+   "size": {{query_size | default(10)}},
    "query": {
      {%- if nested is defined and nested == true  %}
        "nested": {
