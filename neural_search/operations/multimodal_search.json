@@ -31,6 +31,7 @@
   "variable-queries": {{variable_queries | default(1)}},
   "index": "{{ index_name }}",
   "body": {
+    "size": {{query_size | default(10)}},
     "query": {
       "neural": {
         "vector_embedding": {
