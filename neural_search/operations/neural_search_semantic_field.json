@@ -17,6 +17,7 @@
         "text"
       ]
     },
+    "size": {{query_size | default(10)}},
     "query": {
       "neural": {
         "text": {
