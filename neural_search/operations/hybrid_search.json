@@ -54,7 +54,7 @@
         "passage_embedding"
       ]
     },
-    "size": {{hybrid_query_size | default(10)}},
+    "size": {{query_size | default(10)}},
     "query": {
       "hybrid": {
         "queries": [
@@ -91,7 +91,7 @@
         "passage_embedding"
       ]
     },
-    "size": {{hybrid_query_size | default(10)}},
+    "size": {{query_size | default(10)}},
     "query": {
       "bool": {
          "should": [
@@ -131,7 +131,7 @@
        "passage_embedding"
      ]
     },
-    "size": {{hybrid_query_size | default(10)}},
+    "size": {{query_size | default(10)}},
     "query": {
       "hybrid": {
         "queries": [
@@ -183,7 +183,7 @@
        "passage_embedding"
      ]
     },
-    "size": {{hybrid_query_size | default(10)}},
+    "size": {{query_size | default(10)}},
     "query": {
       "hybrid": {
         "queries": [
@@ -263,7 +263,7 @@
         "passage_embedding"
       ]
     },
-    "size": {{hybrid_query_size | default(10)}},
+    "size": {{query_size | default(10)}},
     "query": {
       "hybrid": {
         "queries": [
