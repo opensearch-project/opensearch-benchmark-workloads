@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "description": "ClickBench workload based on ClickHouse hits dataset for web analytics benchmarking",
+  "indices": [
+    {
+      "name": "{{ index_name | default('clickbench') }}",
+      "body": "{{ index_body | default('index.json') }}"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "clickbench",
+      "base-url": "https://datasets.clickhouse.com/hits_compatible",
+      "documents": [
+        {
+          "source-file": "hits.json.gz",
+          "compressed-bytes": 23728268670,
+          "document-count": 99997497,
+          "uncompressed-bytes": 232733025002
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ benchmark.collect(parts="operations/*.json") }}
+  ],
+  "test_procedures": [
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  ]
+}
