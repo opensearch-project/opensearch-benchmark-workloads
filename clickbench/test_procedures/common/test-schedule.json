@@ -1,0 +1,14 @@
+{
+  "operation": "q01-count-all",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q02-count-adv-engine",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+}
