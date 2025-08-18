@@ -36,7 +36,32 @@ Before using this repository, ensure you have the following installed:
 
 - [OpenSearch](https://opensearch.org) (v2.11 or later)
 - [OpenSearch Benchmark](https://opensearch.org/docs/latest/benchmark) (v1.2 or later)
+- [OpenSearch SQL Plugin](https://opensearch.org/docs/latest/search-plugins/sql/index/) (required for PPL operations)
 
+
+### PPL Operations Support
+
+This workload includes PPL (Piped Processing Language) operations that provide an alternative query interface to OpenSearch. PPL operations are available in the `operations/ppl.json` file and include:
+
+- **ppl-default**: Basic PPL query with head operation
+- **ppl-term**: Term filtering using PPL where clause
+- **ppl-range**: Range filtering with timestamp conditions
+- **ppl-*-sort-***: Various sorting operations (ascending/descending, with/without shortcuts)
+- **ppl-date-histogram-***: Date histogram aggregations (hourly/minute intervals)
+- **ppl-composite-***: Composite aggregations for terms and date histograms
+- **ppl-keyword-***: Keyword-based operations and aggregations
+- **ppl-query-string-***: Query string operations with filtering and sorting
+- **ppl-range-***: Range queries with various conditions and sorting
+- **ppl-sort-***: Sorting operations on different field types
+- **ppl-terms-***: Terms aggregations for statistical analysis
+
+To use PPL operations, run the workload with the `ppl` test procedure:
+
+```bash
+osb execute-test --workload=big5 --test-procedure=ppl
+```
+
+This will execute all PPL operations including basic queries, sorting, aggregations, and range operations using the PPL syntax instead of the standard OpenSearch Query DSL.
 
 ### Parameters
 

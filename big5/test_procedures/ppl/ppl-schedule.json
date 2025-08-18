@@ -1,0 +1,287 @@
+{
+  "operation": "ppl-default",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-term",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-range",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-asc-sort-timestamp-can-match-shortcut",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-asc-sort-timestamp-no-can-match-shortcut",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-asc-sort-timestamp",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-asc-sort-with-after-timestamp",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-composite-date-histogram-daily",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-composite-terms-keyword",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-composite-terms",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-date-histogram-hourly-agg",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-date-histogram-minute-agg",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-desc-sort-timestamp-can-match-shortcut",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-desc-sort-timestamp-no-can-match-shortcut",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-desc-sort-timestamp",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-desc-sort-with-after-timestamp",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-keyword-in-range",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-keyword-terms-low-cardinality",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-keyword-terms",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-multi-terms-keyword",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-query-string-on-message-filtered-sorted-num",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-query-string-on-message-filtered",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-query-string-on-message",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-range-auto-date-histo-with-metrics",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-range-auto-date-histo",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-range-field-conjunction-big-range-big-term-query",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-range-field-conjunction-small-range-big-term-query",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-range-field-conjunction-small-range-small-term-query",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-range-field-disjunction-big-range-small-term-query",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-range-numeric",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-range-with-asc-sort",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-range-with-desc-sort",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-scroll",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-sort-keyword-can-match-shortcut",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-sort-keyword-no-can-match-shortcut",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-sort-numeric-asc-with-match",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-sort-numeric-asc",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-sort-numeric-desc-with-match",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-sort-numeric-desc",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-terms-significant-1",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "ppl-terms-significant-2",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+}
