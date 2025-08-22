@@ -10,7 +10,7 @@
   "corpora": [
     {
       "name": "clickbench",
-      "base-url": "https://datasets.clickhouse.com/hits_compatible",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/clickbench",
       "documents": [
         {
           "source-file": "hits.json.gz",
