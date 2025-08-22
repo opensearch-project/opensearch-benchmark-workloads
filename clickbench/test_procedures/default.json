@@ -1,0 +1,22 @@
+{
+  "name": "clickbench",
+  "description": "Indexes the ClickBench dataset and runs OpenSearch PPL queries to benchmark analytical use case performance",
+  "default": true,
+  "schedule": [
+    {% with default_index_settings={}, index_name="clickbench" %}
+    {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+    {% endwith %}
+    {{ benchmark.collect(parts="common/clickbench-schedule.json") }}
+  ]
+},
+{
+  "name": "test",
+  "description": "Lightweight test procedure for validating ClickBench workload setup and basic functionality",
+  "default": false,
+  "schedule": [
+    {% with default_index_settings={}, index_name="clickbench" %}
+    {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+    {% endwith %}
+    {{ benchmark.collect(parts="common/test-schedule.json") }}
+  ]
+}

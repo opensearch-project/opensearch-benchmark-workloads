@@ -1,0 +1,393 @@
+    {
+      "name": "index-append",
+      "operation-type": "bulk",
+      "bulk-size": {{bulk_size | default(5000)}},
+      "ingest-percentage": {{ingest_percentage | default(100)}}
+    },
+    {
+      "name": "q01-count-all",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats count()"
+      }
+    },
+    {
+      "name": "q02-count-adv-engine",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where AdvEngineID!=0 | stats count()"
+      }
+    },
+    {
+      "name": "q03-sum-count-avg",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats sum(AdvEngineID), count(), avg(ResolutionWidth)"
+      }
+    },
+    {
+      "name": "q04-avg-userid",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats avg(UserID)"
+      }
+    },
+    {
+      "name": "q05-distinct-userid",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats dc(UserID)"
+      }
+    },
+    {
+      "name": "q06-distinct-searchphrase",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats dc(SearchPhrase)"
+      }
+    },
+    {
+      "name": "q07-min-max-eventdate",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats min(EventDate), max(EventDate)"
+      }
+    },
+    {
+      "name": "q08-group-by-adv-engine",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where AdvEngineID!=0 | stats count() by AdvEngineID | sort - `count()`"
+      }
+    },
+    {
+      "name": "q09-region-users",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats dc(UserID) as u by RegionID | sort -u | head 10"
+      }
+    },
+    {
+      "name": "q10-region-stats",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats sum(AdvEngineID), count() as c, avg(ResolutionWidth), dc(UserID) by RegionID | sort - c | head 10"
+      }
+    },
+    {
+      "name": "q11-mobile-phone-model",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where MobilePhoneModel != '' | stats dc(UserID) as u by MobilePhoneModel | sort - u | head 10"
+      }
+    },
+    {
+      "name": "q12-mobile-phone-stats",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where MobilePhoneModel != '' | stats dc(UserID) as u by MobilePhone, MobilePhoneModel | sort - u | head 10"
+      }
+    },
+    {
+      "name": "q13-search-phrase-count",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where SearchPhrase != '' | stats count() as c by SearchPhrase | sort - c | head 10"
+      }
+    },
+    {
+      "name": "q14-search-phrase-users",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where SearchPhrase != '' | stats dc(UserID) as u by SearchPhrase | sort - u | head 10"
+      }
+    },
+    {
+      "name": "q15-search-engine-phrase",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where SearchPhrase != '' | stats count() as c by SearchEngineID, SearchPhrase | sort - c | head 10"
+      }
+    },
+    {
+      "name": "q16-user-activity",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats count() by UserID | sort - `count()` | head 10"
+      }
+    },
+    {
+      "name": "q17-user-search-activity",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats count() by UserID, SearchPhrase | sort - `count()` | head 10"
+      }
+    },
+    {
+      "name": "q18-user-search-limit",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats count() by UserID, SearchPhrase | head 10"
+      }
+    },
+    {
+      "name": "q19-user-minute-search",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | eval m = extract(minute from EventTime) | stats count() by UserID, m, SearchPhrase | sort - `count()` | head 10"
+      }
+    },
+    {
+      "name": "q20-specific-user",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where UserID = 435090932899640449 | fields UserID"
+      }
+    },
+    {
+      "name": "q21-google-urls",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where like(URL, '%google%') | stats count()"
+      }
+    },
+    {
+      "name": "q22-google-search-phrases",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where like(URL, '%google%') and SearchPhrase != '' | stats count() as c by SearchPhrase | sort - c | head 10"
+      }
+    },
+    {
+      "name": "q23-google-title-search",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where like(Title, '%Google%') and not like(URL, '%.google.%') and SearchPhrase != '' | stats count() as c, dc(UserID) by SearchPhrase | sort - c | head 10"
+      }
+    },
+    {
+      "name": "q24-google-urls-sorted",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where like(URL, '%google%') | sort EventTime | head 10"
+      }
+    },
+    {
+      "name": "q25-search-phrases-by-time",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where SearchPhrase != '' | sort EventTime | fields SearchPhrase | head 10"
+      }
+    },
+    {
+      "name": "q26-search-phrases-sorted",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where SearchPhrase != '' | fields SearchPhrase | sort SearchPhrase | head 10"
+      }
+    },
+    {
+      "name": "q27-search-phrases-multi-sort",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where SearchPhrase != '' | sort EventTime, SearchPhrase | fields SearchPhrase | head 10"
+      }
+    },
+    {
+      "name": "q28-counter-url-length",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where URL != '' | stats avg(length(URL)) as l, count() as c by CounterID | where c > 100000 | sort - l | head 25"
+      }
+    },
+    {
+      "name": "q29-referer-analysis",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | Referer != '' | eval k = regexp_replace(Referer, '^https?://(?:www\\.)?([^/]+)/.*$', '\\1') | stats avg(length(Referer)) as l, count() as c, min(Referer) by k | where c > 100000 | sort - l | head 25"
+      }
+    },
+    {
+      "name": "q30-resolution-width-sums",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats sum(ResolutionWidth), sum(ResolutionWidth+1), sum(ResolutionWidth+2), sum(ResolutionWidth+3), sum(ResolutionWidth+4), sum(ResolutionWidth+5), sum(ResolutionWidth+6), sum(ResolutionWidth+7), sum(ResolutionWidth+8), sum(ResolutionWidth+9)"
+      }
+    },
+    {
+      "name": "q31-search-engine-client-stats",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where SearchPhrase != '' | stats count() as c, sum(IsRefresh), avg(ResolutionWidth) by SearchEngineID, ClientIP | sort - c | head 10"
+      }
+    },
+    {
+      "name": "q32-watch-client-stats",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where SearchPhrase != '' | stats count() as c, sum(IsRefresh), avg(ResolutionWidth) by WatchID, ClientIP | sort - c | head 10"
+      }
+    },
+    {
+      "name": "q33-watch-client-all",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats count() as c, sum(IsRefresh), avg(ResolutionWidth) by WatchID, ClientIP | sort - c | head 10"
+      }
+    },
+    {
+      "name": "q34-url-popularity",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | stats count() as c by URL | sort - c | head 10"
+      }
+    },
+    {
+      "name": "q35-url-with-constant",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | eval const = 1 | stats count() as c by const, URL | sort - c | head 10"
+      }
+    },
+    {
+      "name": "q36-client-ip-variations",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | eval `ClientIP - 1` = ClientIP - 1, `ClientIP - 2` = ClientIP - 2, `ClientIP - 3` = ClientIP - 3 | stats count() as c by ClientIP, `ClientIP - 1`, `ClientIP - 2`, `ClientIP - 3` | sort - c | head 10"
+      }
+    },
+    {
+      "name": "q37-counter-62-urls",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where CounterID = 62 and EventDate >= '2013-07-01 00:00:00' and EventDate <= '2013-07-31 00:00:00' and DontCountHits = 0 and IsRefresh = 0 and URL != '' | stats count() as PageViews by URL | sort - PageViews | head 10"
+      }
+    },
+    {
+      "name": "q38-counter-62-titles",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where CounterID = 62 and EventDate >= '2013-07-01 00:00:00' and EventDate <= '2013-07-31 00:00:00' and DontCountHits = 0 and IsRefresh = 0 and Title != '' | stats count() as PageViews by Title | sort - PageViews | head 10"
+      }
+    },
+    {
+      "name": "q39-counter-62-links",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where CounterID = 62 and EventDate >= '2013-07-01 00:00:00' and EventDate <= '2013-07-31 00:00:00' and IsRefresh = 0 and IsLink != 0 and IsDownload = 0 | stats count() as PageViews by URL | sort - PageViews | head 10 from 1000"
+      }
+    },
+    {
+      "name": "q40-traffic-source-analysis",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where CounterID = 62 and EventDate >= '2013-07-01 00:00:00' and EventDate <= '2013-07-31 00:00:00' and IsRefresh = 0 | eval Src=case(SearchEngineID = 0 and AdvEngineID = 0, Referer else ''), Dst=URL | stats count() as PageViews by TraficSourceID, SearchEngineID, AdvEngineID, Src, Dst | sort - PageViews | head 10 from 1000"
+      }
+    },
+    {
+      "name": "q41-url-hash-date",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where CounterID = 62 and EventDate >= '2013-07-01 00:00:00' and EventDate <= '2013-07-31 00:00:00' and IsRefresh = 0 and TraficSourceID in (-1, 6) and RefererHash = 3594120000172545465 | stats count() as PageViews by URLHash, EventDate | sort - PageViews | head 10 from 100"
+      }
+    },
+    {
+      "name": "q42-window-client-dimensions",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where CounterID = 62 and EventDate >= '2013-07-01 00:00:00' and EventDate <= '2013-07-31 00:00:00' and IsRefresh = 0 and DontCountHits = 0 and URLHash = 2868770270353813622 | stats count() as PageViews by WindowClientWidth, WindowClientHeight | sort - PageViews | head 10 from 10000"
+      }
+    },
+    {
+      "name": "q43-hourly-pageviews",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('clickbench')}} | where CounterID = 62 and EventDate >= '2013-07-01 00:00:00' and EventDate <= '2013-07-15 00:00:00' and IsRefresh = 0 and DontCountHits = 0 | eval M = date_format(EventTime, '%Y-%m-%d %H:00:00') | stats count() as PageViews by M | sort M | head 10 from 1000"
+      }
+    }
