@@ -36,7 +36,56 @@ Before using this repository, ensure you have the following installed:
 
 - [OpenSearch](https://opensearch.org) (v2.11 or later)
 - [OpenSearch Benchmark](https://opensearch.org/docs/latest/benchmark) (v1.2 or later)
+- [OpenSearch SQL Plugin](https://opensearch.org/docs/latest/search-plugins/sql/index/) (required for PPL operations)
 
+
+### PPL Operations Support
+
+This workload includes PPL (Piped Processing Language) operations that provide an alternative query interface to OpenSearch. PPL operations are available in the `operations/ppl.json` file and include:
+
+- **ppl-default**: Basic PPL query with head operation
+- **ppl-term**: Term filtering using PPL where clause
+- **ppl-range**: Range filtering with timestamp conditions
+- **ppl-*-sort-***: Various sorting operations (ascending/descending, with/without shortcuts)
+- **ppl-date-histogram-***: Date histogram aggregations (hourly/minute intervals)
+- **ppl-composite-***: Composite aggregations for terms and date histograms
+- **ppl-keyword-***: Keyword-based operations and aggregations
+- **ppl-query-string-***: Query string operations with filtering and sorting
+- **ppl-range-***: Range queries with various conditions and sorting
+- **ppl-sort-***: Sorting operations on different field types
+- **ppl-terms-***: Terms aggregations for statistical analysis
+
+To use PPL operations, run the workload with the `ppl` test procedure:
+
+```bash
+osb execute-test --workload=big5 --test-procedure=ppl
+```
+
+This will execute all PPL operations including basic queries, sorting, aggregations, and range operations using the PPL syntax instead of the standard OpenSearch Query DSL.
+
+#### PPL Operations Troubleshooting
+
+If your cluster doesn't have the SQL plugin installed, all PPL operations will fail with the following error:
+
+```
+[ERROR] no handler found for uri [/_plugins/_ppl] and method [POST] ({'error': 'no handler found for uri [/_plugins/_ppl] and method [POST]'})
+```
+
+To resolve this issue, **install the OpenSearch SQL Plugin** on your cluster (required for PPL operations).
+
+#### Enabling Calcite for PPL Operations
+
+By default, Calcite is disabled. To enable it for PPL operations, use the following command:
+
+```bash
+curl -XPUT "http://localhost:9200/_cluster/settings" \
+-H "Content-Type: application/json" \
+-d'{
+  "persistent": {
+    "plugins.calcite.enabled": true
+  }
+}'
+```
 
 ### Parameters
 
@@ -122,6 +171,12 @@ The document schema can be found in the `index.json` file.  An example document 
 
 ### Sample Run Output
 
+#### Default Test Procedure
+
+```bash
+osb execute-test --workload=big5
+```
+
 ```
    ____                  _____                      __       ____                  __                         __
   / __ \____  ___  ____ / ___/___  ____ ___________/ /_     / __ )___  ____  _____/ /_  ____ ___  ____ ______/ /__
@@ -178,6 +233,68 @@ Running range_field_conjunction_small_range_small_term_query                   [
 Running range_field_conjunction_small_range_big_term_query                     [100% done]
 Running range-auto-date-histo                                                  [100% done]
 Running range-auto-date-histo-with-metrics                                     [100% done]
+
+------------------------------------------------------
+```
+
+#### PPL Test Procedure
+
+```bash
+osb execute-test --workload=big5 --test-procedure=ppl
+```
+
+```
+[INFO] Executing test with workload [big5], test_procedure [ppl] and provision_config_instance ['external'] with version [3.0.0].
+
+Running delete-index                                                           [100% done]
+Running create-index                                                           [100% done]
+Running check-cluster-health                                                   [100% done]
+Running index-append                                                           [100% done]
+Running refresh-after-index                                                    [100% done]
+Running force-merge                                                            [100% done]
+Running refresh-after-force-merge                                              [100% done]
+Running wait-until-merges-finish                                               [100% done]
+Running ppl-default                                                            [100% done]
+Running ppl-term                                                               [100% done]
+Running ppl-range                                                              [100% done]
+Running ppl-asc-sort-timestamp-can-match-shortcut                              [100% done]
+Running ppl-asc-sort-timestamp-no-can-match-shortcut                           [100% done]
+Running ppl-asc-sort-timestamp                                                 [100% done]
+Running ppl-asc-sort-with-after-timestamp                                      [100% done]
+Running ppl-composite-date-histogram-daily                                     [100% done]
+Running ppl-composite-terms-keyword                                            [100% done]
+Running ppl-composite-terms                                                    [100% done]
+Running ppl-date-histogram-hourly-agg                                          [100% done]
+Running ppl-date-histogram-minute-agg                                          [100% done]
+Running ppl-desc-sort-timestamp-can-match-shortcut                             [100% done]
+Running ppl-desc-sort-timestamp-no-can-match-shortcut                          [100% done]
+Running ppl-desc-sort-timestamp                                                [100% done]
+Running ppl-desc-sort-with-after-timestamp                                     [100% done]
+Running ppl-keyword-in-range                                                   [100% done]
+Running ppl-keyword-terms-low-cardinality                                      [100% done]
+Running ppl-keyword-terms                                                      [100% done]
+Running ppl-multi-terms-keyword                                                [100% done]
+Running ppl-query-string-on-message                                            [100% done]
+Running ppl-query-string-on-message-filtered                                   [100% done]
+Running ppl-query-string-on-message-filtered-sorted-num                        [100% done]
+Running ppl-range-auto-date-histo                                              [100% done]
+Running ppl-range-auto-date-histo-with-metrics                                 [100% done]
+Running ppl-range-field-conjunction-big-range-big-term-query                   [100% done]
+Running ppl-range-field-conjunction-small-range-big-term-query                 [100% done]
+Running ppl-range-field-conjunction-small-range-small-term-query               [100% done]
+Running ppl-range-field-disjunction-big-range-small-term-query                 [100% done]
+Running ppl-range-numeric                                                      [100% done]
+Running ppl-range-with-asc-sort                                                [100% done]
+Running ppl-range-with-desc-sort                                               [100% done]
+Running ppl-scroll                                                             [100% done]
+Running ppl-sort-keyword-can-match-shortcut                                    [100% done]
+Running ppl-sort-keyword-no-can-match-shortcut                                 [100% done]
+Running ppl-sort-numeric-asc                                                   [100% done]
+Running ppl-sort-numeric-asc-with-match                                        [100% done]
+Running ppl-sort-numeric-desc                                                  [100% done]
+Running ppl-sort-numeric-desc-with-match                                       [100% done]
+Running ppl-terms-significant-1                                                [100% done]
+Running ppl-terms-significant-2                                                [100% done]
 
 ------------------------------------------------------
 ```
