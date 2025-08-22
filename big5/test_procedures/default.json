@@ -20,11 +20,23 @@
 },
 {
   "name": "ppl",
+  "description": "Indexes the whole document corpus using OpenSearch default settings and runs PPL (Piped Processing Language) queries. Requires the SQL plugin to be installed.",
   "default": false,
   "schedule": [
     {% with default_index_settings={}, index_name="big5" %}
     {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
     {% endwith %}
     {{ benchmark.collect(parts="ppl/ppl-schedule.json") }}
+  ]
+},
+{
+  "name": "ppl-test",
+  "description": "Indexes the whole document corpus and runs a single PPL query to test SQL plugin availability.",
+  "default": false,
+  "schedule": [
+    {% with default_index_settings={}, index_name="big5" %}
+    {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+    {% endwith %}
+    {{ benchmark.collect(parts="ppl/ppl-test-schedule.json") }}
   ]
 }
