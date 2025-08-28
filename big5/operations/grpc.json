@@ -1,0 +1,31 @@
+    {
+      "name": "grpc-index-append",
+      "operation-type": "bulk",
+      "bulk-size": {{bulk_size | default(500)}},
+      "ingest-percentage": {{ingest_percentage | default(100)}}
+    },
+    {
+      "name": "grpc-match-all",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "query": {
+          "match_all": {}
+        }
+      }
+    },
+    {
+      "name": "grpc-term",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "request-timeout": 7200,
+      "body": {
+        "query": {
+          "term": {
+            "log.file.path": {
+              "value": "/var/log/messages/birdknight"
+            }
+          }
+        }
+      }
+    }
