@@ -6,7 +6,7 @@
     },
     {
       "name": "grpc-match-all",
-      "operation-type": "search",
+      "operation-type": "proto-search",
       "index": "{{index_name | default('big5')}}",
       "body": {
         "query": {
@@ -16,7 +16,7 @@
     },
     {
       "name": "grpc-term",
-      "operation-type": "search",
+      "operation-type": "proto-search",
       "index": "{{index_name | default('big5')}}",
       "request-timeout": 7200,
       "body": {

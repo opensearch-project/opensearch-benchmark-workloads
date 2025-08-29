@@ -55,6 +55,7 @@
     }
 },
 {
+  "name": "grpc-match-all",
   "operation": "grpc-match-all",
   "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
   "iterations": {{ test_iterations | default(100) | tojson }},
@@ -63,7 +64,7 @@
 },
 {
   "name": "grpc-term",
-  "operation": "term",
+  "operation": "grpc-term",
   "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
   "iterations": {{ test_iterations | default(100) | tojson }},
   "target-throughput": {{ target_throughput | default(2) | tojson }},
