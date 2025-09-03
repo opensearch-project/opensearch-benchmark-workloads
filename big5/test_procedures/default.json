@@ -1,6 +1,6 @@
 {
   "name": "big5",
-  "default": false,
+  "default": true,
   "schedule": [
     {% with default_index_settings={}, index_name="big5" %}
     {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
@@ -10,7 +10,7 @@
 },
 {
   "name": "grpc-big5",
-  "default": true,
+  "default": false,
   "schedule": [
     {% with default_index_settings={}, index_name="big5" %}
     {{ benchmark.collect(parts="grpc/grpc-schedule.json") }}
