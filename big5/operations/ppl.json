@@ -76,7 +76,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-02 00:00:00' and `@timestamp` < '2023-01-03 00:00:00' | stats count() by `process.name`, `cloud.region`, `aws.cloudwatch.log_stream` | sort - `process.name`, + `cloud.region`, + `aws.cloudwatch.log_stream`"
+        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-02 00:00:00' and `@timestamp` < '2023-01-02 10:00:00' | stats count() by `process.name`, `cloud.region`, `aws.cloudwatch.log_stream` | sort - `process.name`, + `cloud.region`, + `aws.cloudwatch.log_stream` | head 10"
       }
     },
     {
@@ -85,7 +85,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-02 00:00:00' and `@timestamp` < '2023-01-03 00:00:00' | stats count() by `process.name`, `cloud.region` | sort - `process.name`, + `cloud.region`"
+        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-02 00:00:00' and `@timestamp` < '2023-01-02 10:00:00' | stats count() by `process.name`, `cloud.region` | sort - `process.name`, + `cloud.region` | head 10"
       }
     },
     {
@@ -157,7 +157,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} | stats count() as country by `aws.cloudwatch.log_stream` | sort - country | head 100"
+        "query": "source = {{index_name | default('big5')}} | stats count() as country by `aws.cloudwatch.log_stream` | sort - country | head 50"
       }
     },
     {
@@ -175,7 +175,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2022-12-30 00:00:00' and `@timestamp` < '2023-01-01 03:00:00' | stats count() by `process.name`, `event.id`, `cloud.region` | sort - `count()`"
+        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-05 00:00:00' and `@timestamp` < '2023-01-05 05:00:00' | stats count() by `process.name`, `cloud.region` | sort - `count()`"
       }
     },
     {
@@ -184,7 +184,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} query_string(['message'], 'shield AND carp AND shark') | where `@timestamp` >= '2023-01-01 00:00:00' and `@timestamp` < '2023-01-03 00:00:00' | sort - `metrics.size` | head 10"
+        "query": "source = {{index_name | default('big5')}} query_string(['message'], 'monkey jackal bear') | where `@timestamp` >= '2023-01-03 00:00:00' and `@timestamp` < '2023-01-03 10:00:00' | sort + `@timestamp` | head 10"
       }
     },
     {
@@ -193,7 +193,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} query_string(['message'], 'shield carp shark', default_operator='AND') | where `@timestamp` >= '2023-01-01 00:00:00' and `@timestamp` < '2023-01-03 00:00:00' | head 10"
+        "query": "source = {{index_name | default('big5')}} query_string(['message'], 'monkey jackal bear') | where `@timestamp` >= '2023-01-03 00:00:00' and `@timestamp` < '2023-01-03 10:00:00' | head 10"
       }
     },
     {
@@ -202,7 +202,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} query_string(['message'], 'shield AND carp AND shark') | head 10"
+        "query": "source = {{index_name | default('big5')}} query_string(['message'], 'monkey jackal bear') | head 10"
       }
     },
     {
@@ -229,7 +229,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} | where `process.name` = 'systemd' and `metrics.size` >= 1 and `metrics.size` <= 1000 | head 10"
+        "query": "source = {{index_name | default('big5')}} | where `process.name` = 'systemd' and `metrics.size` >= 1 and `metrics.size` <= 100 | head 10"
       }
     },
     {
@@ -238,7 +238,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} | where `metrics.size` >= 1 and `metrics.size` <= 42 | head 10"
+        "query": "source = {{index_name | default('big5')}} | where `metrics.size` >= 20 and `metrics.size` <= 30 | head 10"
       }
     },
     {
@@ -247,7 +247,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} | where `aws.cloudwatch.log_stream` = 'indigodagger' or (`metrics.size` >= 1 and `metrics.size` <= 30) | head 10"
+        "query": "source = {{index_name | default('big5')}} | where `aws.cloudwatch.log_stream` = 'indigodagger' or (`metrics.size` >= 10 and `metrics.size` <= 20) | head 10"
       }
     },
     {
@@ -256,7 +256,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} | where `aws.cloudwatch.log_stream` = 'indigodagger' or (`metrics.size` >= 1 and `metrics.size` <= 1000) | head 10"
+        "query": "source = {{index_name | default('big5')}} | where `aws.cloudwatch.log_stream` = 'indigodagger' or (`metrics.size` >= 1 and `metrics.size` <= 100) | head 10"
       }
     },
     {
@@ -265,7 +265,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} | where `metrics.size` >= 1 and `metrics.size` <= 1000 | head 10"
+        "query": "source = {{index_name | default('big5')}} | where `metrics.size` >= 20 and `metrics.size` <= 200 | head 10"
       }
     },
     {
