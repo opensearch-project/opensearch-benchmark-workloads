@@ -181,6 +181,13 @@
           "iterations": {{ asc_sort_with_after_geonameid_iterations or iterations | default(100) | tojson }},
           "target-throughput": {{ asc_sort_with_after_geonameid_target_throughput or target_throughput | default(6) | tojson }},
           "clients": {{ asc_sort_with_after_geonameid_search_clients or search_clients | default(1) }}
+        },
+        {
+          "operation": "numeric-term-cardinality-agg-high",
+          "warmup-iterations": {{ numeric_term_cardinality_agg_high_warmup_iterations or warmup_iterations | default(200) | tojson }},
+          "iterations": {{ numeric_term_cardinality_agg_high_iterations or iterations | default(100) | tojson }},
+          "target-throughput": {{ numeric_term_cardinality_agg_high_target_throughput or target_throughput | default(2) | tojson }},
+          "clients": {{ numeric_term_cardinality_agg_high_search_clients or search_clients | default(1) }}
         }
       ]
     },
