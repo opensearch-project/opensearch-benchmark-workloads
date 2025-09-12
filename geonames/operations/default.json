@@ -438,4 +438,19 @@
           }
         }
       }
+    },
+    {
+      "name": "numeric-term-cardinality-agg-high",
+      "operation-type": "search",
+      "body": {
+        "size": 0,
+        "aggs": {
+          "geonameids": {
+            "terms": {
+              "field": "geonameid",
+              "size": 50000
+            }
+          }
+        }
+      }
     }
