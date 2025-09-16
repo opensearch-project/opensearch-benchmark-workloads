@@ -19,4 +19,26 @@
     {% endwith %}
     {{ benchmark.collect(parts="common/test-schedule.json") }}
   ]
+},
+{
+  "name": "dsl-clickbench",
+  "description": "Indexes the whole document corpus using OpenSearch default settings and runs DSL (Domain-Specific Language) queries. The DSL queries were converted from PPL via OpenSearch's _plugins/_sql/_explain API.",
+  "default": false,
+  "schedule": [
+    {% with default_index_settings={}, index_name="clickbench" %}
+    {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+    {% endwith %}
+    {{ benchmark.collect(parts="common/dsl-clickbench-schedule.json") }}
+  ]
+},
+{
+  "name": "dsl-clickbench-test",
+  "description": "Lightweight test procedure for validating ClickBench workload setup and basic functionality. Runs DSL (Domain-Specific Language) queries. The DSL queries were converted from PPL via OpenSearch's _plugins/_sql/_explain API.",
+  "default": false,
+  "schedule": [
+    {% with default_index_settings={}, index_name="clickbench" %}
+    {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+    {% endwith %}
+    {{ benchmark.collect(parts="common/dsl-clickbench-test-schedule.json") }}
+  ]
 }
