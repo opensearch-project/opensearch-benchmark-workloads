@@ -11,4 +11,284 @@
   "iterations": 1,
   "target-throughput": 1,
   "clients": 1
+},
+{
+  "operation": "q03-sum-count-avg",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q04-avg-userid",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q05-distinct-userid",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q06-distinct-searchphrase",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q07-min-max-eventdate",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q08-group-by-adv-engine",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q09-region-users",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q10-region-stats",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q11-mobile-phone-model",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q12-mobile-phone-stats",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q13-search-phrase-count",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q14-search-phrase-users",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q15-search-engine-phrase",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q16-user-activity",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q17-user-search-activity",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q18-user-search-limit",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q19-user-minute-search",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q20-specific-user",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q21-google-urls",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q22-google-search-phrases",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q23-google-title-search",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q24-google-urls-sorted",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q25-search-phrases-by-time",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q26-search-phrases-sorted",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q27-search-phrases-multi-sort",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q28-counter-url-length",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q30-resolution-width-sums",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q31-search-engine-client-stats",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q32-watch-client-stats",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q33-watch-client-all",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q34-url-popularity",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q35-url-with-constant",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q36-client-ip-variations",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q37-counter-62-urls",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q38-counter-62-titles",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q39-counter-62-links",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q40-traffic-source-analysis",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q41-url-hash-date",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q42-window-client-dimensions",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "q43-hourly-pageviews",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
 }

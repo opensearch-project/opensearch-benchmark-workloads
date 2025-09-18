@@ -10,7 +10,7 @@
   ]
 },
 {
-  "name": "test",
+  "name": "clickbench-test",
   "description": "Lightweight test procedure for validating ClickBench workload setup and basic functionality",
   "default": false,
   "schedule": [

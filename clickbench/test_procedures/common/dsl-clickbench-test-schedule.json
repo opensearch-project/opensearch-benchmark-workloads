@@ -12,3 +12,283 @@
   "target-throughput": 1,
   "clients": 1
 },
+{
+  "operation": "dsl-q03-sum-count-avg",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q04-avg-userid",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q05-distinct-userid",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q06-distinct-searchphrase",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q07-min-max-eventdate",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q08-group-by-adv-engine",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q09-region-users",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q10-region-stats",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q11-mobile-phone-model",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q12-mobile-phone-stats",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q13-search-phrase-count",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q14-search-phrase-users",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q15-search-engine-phrase",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q16-user-activity",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q17-user-search-activity",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q18-user-search-limit",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q19-user-minute-search",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q20-specific-user",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q21-google-urls",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q22-google-search-phrases",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q23-google-title-search",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q24-google-urls-sorted",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q25-search-phrases-by-time",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q26-search-phrases-sorted",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q27-search-phrases-multi-sort",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q28-counter-url-length",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q30-resolution-width-sums",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q31-search-engine-client-stats",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q32-watch-client-stats",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q33-watch-client-all",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q34-url-popularity",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q35-url-with-constant",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q36-client-ip-variations",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q37-counter-62-urls",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q38-counter-62-titles",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q39-counter-62-links",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q40-traffic-source-analysis",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q41-url-hash-date",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q42-window-client-dimensions",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q43-hourly-pageviews",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+}
