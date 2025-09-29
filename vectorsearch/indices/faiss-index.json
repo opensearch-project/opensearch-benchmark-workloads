@@ -2,6 +2,9 @@
     "settings": {
       "index": {
         "knn": true
+        {%- if memory_optimized_search_enabled is defined and memory_optimized_search_enabled %}
+        ,"knn.memory_optimized_search": true
+        {%- endif %}
         {%- if target_index_primary_shards is defined and target_index_primary_shards %}
         ,"number_of_shards": {{ target_index_primary_shards }}
         {%- endif %}
