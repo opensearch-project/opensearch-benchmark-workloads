@@ -9,6 +9,15 @@
   ]
 },
 {
+  "name": "grpc-big5",
+  "default": false,
+  "schedule": [
+    {% with default_index_settings={}, index_name="big5" %}
+    {{ benchmark.collect(parts="grpc/grpc-schedule.json") }}
+    {% endwith %}
+  ]
+},
+{
   "name": "test",
   "default": false,
   "schedule": [
