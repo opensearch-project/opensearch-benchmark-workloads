@@ -7,7 +7,7 @@ This workload is based on the ClickHouse ClickBench dataset, which contains web 
 The dataset contains approximately 100 million records of web analytics events with the following key fields:
 - **EventTime/EventDate**: Timestamp fields for time-based queries
 - **CounterID**: Website counter identifier
-- **UserID**: Unique user identifier  
+- **UserID**: Unique user identifier
 - **URL/Referer**: Page URLs and referrer information
 - **RegionID**: Geographic region data
 - **SearchPhrase**: Search query terms
@@ -80,6 +80,12 @@ This workload supports the following parameters:
 * `test_iterations` (default: 100): Test iterations
 * `ingest_percentage` (default: 100): Percentage of data to ingest
 
+## Test Procedures
+* `clickbench` (default): Indexes the ClickBench dataset and runs OpenSearch PPL queries to benchmark analytical use case performance
+* `clickbench-test`: Lightweight test procedure for validating ClickBench workload setup and basic functionality
+* `dsl-clickbench`: Indexes the whole document corpus using OpenSearch default settings and runs DSL (Domain-Specific Language) queries. The DSL queries were converted from PPL via OpenSearch's _plugins/_sql/_explain API.
+* `dsl-clickbench-test`: Lightweight test procedure for validating ClickBench workload setup and basic functionality. Runs DSL (Domain-Specific Language) queries. The DSL queries were converted from PPL via OpenSearch's _plugins/_sql/_explain API.
+
 ## Usage
 
 ```bash
@@ -89,9 +95,9 @@ opensearch-benchmark execute-test --workload=clickbench --target-hosts=localhost
 ## License & Attribution
 
 ### Dataset License
-**Source**: ClickHouse hits dataset from Yandex.Metrica  
-**Original Source**: https://datasets.clickhouse.com/hits_compatible/hits.json.gz  
-**License**: CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0)  
+**Source**: ClickHouse hits dataset from Yandex.Metrica
+**Original Source**: https://datasets.clickhouse.com/hits_compatible/hits.json.gz
+**License**: CC BY-NC-SA 4.0 (Creative Commons Attribution-NonCommercial-ShareAlike 4.0)
 **Copyright**: © Yandex LLC
 
 ### Changes Made
@@ -101,7 +107,7 @@ opensearch-benchmark execute-test --workload=clickbench --target-hosts=localhost
 - Added benchmark-specific parameters and configurations
 
 ### Usage Guidelines
-**Non-Commercial Use**: Research, education, personal projects, open source development  
+**Non-Commercial Use**: Research, education, personal projects, open source development
 **Attribution Required**: When publishing benchmark results, include:
 - Credit to original ClickHouse/Yandex.Metrica dataset
 - Link to this workload and original dataset source
@@ -111,5 +117,5 @@ opensearch-benchmark execute-test --workload=clickbench --target-hosts=localhost
 **Commercial Use**: Contact Yandex LLC for commercial licensing or use synthetic data with same schema
 
 ### Workload Configuration License
-**License**: Apache 2.0  
+**License**: Apache 2.0
 **Applies to**: JSON configurations, mappings, operations, and benchmark setup code created for this workload

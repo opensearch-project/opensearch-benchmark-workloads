@@ -1,0 +1,294 @@
+{
+  "operation": "dsl-q01-count-all",
+  "warmup-iterations": {{ dsl_q01_count_all_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q01_count_all_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q01_count_all_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q01_count_all_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q02-count-adv-engine",
+  "warmup-iterations": {{ dsl_q02_count_adv_engine_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q02_count_adv_engine_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q02_count_adv_engine_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q02_count_adv_engine_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q03-sum-count-avg",
+  "warmup-iterations": {{ dsl_q03_sum_count_avg_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q03_sum_count_avg_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q03_sum_count_avg_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q03_sum_count_avg_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q04-avg-userid",
+  "warmup-iterations": {{ dsl_q04_avg_userid_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q04_avg_userid_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q04_avg_userid_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q04_avg_userid_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q05-distinct-userid",
+  "warmup-iterations": {{ dsl_q05_distinct_userid_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q05_distinct_userid_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q05_distinct_userid_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q05_distinct_userid_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q06-distinct-searchphrase",
+  "warmup-iterations": {{ dsl_q06_distinct_searchphrase_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q06_distinct_searchphrase_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q06_distinct_searchphrase_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q06_distinct_searchphrase_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q07-min-max-eventdate",
+  "warmup-iterations": {{ dsl_q07_min_max_eventdate_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q07_min_max_eventdate_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q07_min_max_eventdate_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q07_min_max_eventdate_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q08-group-by-adv-engine",
+  "warmup-iterations": {{ dsl_q08_group_by_adv_engine_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q08_group_by_adv_engine_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q08_group_by_adv_engine_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q08_group_by_adv_engine_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q09-region-users",
+  "warmup-iterations": {{ dsl_q09_region_users_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q09_region_users_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q09_region_users_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q09_region_users_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q10-region-stats",
+  "warmup-iterations": {{ dsl_q10_region_stats_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q10_region_stats_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q10_region_stats_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q10_region_stats_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q11-mobile-phone-model",
+  "warmup-iterations": {{ dsl_q11_mobile_phone_model_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q11_mobile_phone_model_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q11_mobile_phone_model_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q11_mobile_phone_model_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q12-mobile-phone-stats",
+  "warmup-iterations": {{ dsl_q12_mobile_phone_stats_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q12_mobile_phone_stats_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q12_mobile_phone_stats_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q12_mobile_phone_stats_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q13-search-phrase-count",
+  "warmup-iterations": {{ dsl_q13_search_phrase_count_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q13_search_phrase_count_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q13_search_phrase_count_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q13_search_phrase_count_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q14-search-phrase-users",
+  "warmup-iterations": {{ dsl_q14_search_phrase_users_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q14_search_phrase_users_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q14_search_phrase_users_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q14_search_phrase_users_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q15-search-engine-phrase",
+  "warmup-iterations": {{ dsl_q15_search_engine_phrase_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q15_search_engine_phrase_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q15_search_engine_phrase_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q15_search_engine_phrase_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q16-user-activity",
+  "warmup-iterations": {{ dsl_q16_user_activity_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q16_user_activity_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q16_user_activity_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q16_user_activity_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q17-user-search-activity",
+  "warmup-iterations": {{ dsl_q17_user_search_activity_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q17_user_search_activity_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q17_user_search_activity_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q17_user_search_activity_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q18-user-search-limit",
+  "warmup-iterations": {{ dsl_q18_user_search_limit_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q18_user_search_limit_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q18_user_search_limit_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q18_user_search_limit_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q19-user-minute-search",
+  "warmup-iterations": {{ dsl_q19_user_minute_search_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q19_user_minute_search_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q19_user_minute_search_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q19_user_minute_search_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q20-specific-user",
+  "warmup-iterations": {{ dsl_q20_specific_user_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q20_specific_user_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q20_specific_user_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q20_specific_user_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q21-google-urls",
+  "warmup-iterations": {{ dsl_q21_google_urls_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q21_google_urls_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q21_google_urls_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q21_google_urls_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q22-google-search-phrases",
+  "warmup-iterations": {{ dsl_q22_google_search_phrases_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q22_google_search_phrases_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q22_google_search_phrases_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q22_google_search_phrases_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q23-google-title-search",
+  "warmup-iterations": {{ dsl_q23_google_title_search_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q23_google_title_search_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q23_google_title_search_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q23_google_title_search_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q24-google-urls-sorted",
+  "warmup-iterations": {{ dsl_q24_google_urls_sorted_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q24_google_urls_sorted_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q24_google_urls_sorted_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q24_google_urls_sorted_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q25-search-phrases-by-time",
+  "warmup-iterations": {{ dsl_q25_search_phrases_by_time_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q25_search_phrases_by_time_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q25_search_phrases_by_time_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q25_search_phrases_by_time_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q26-search-phrases-sorted",
+  "warmup-iterations": {{ dsl_q26_search_phrases_sorted_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q26_search_phrases_sorted_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q26_search_phrases_sorted_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q26_search_phrases_sorted_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q27-search-phrases-multi-sort",
+  "warmup-iterations": {{ dsl_q27_search_phrases_multi_sort_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q27_search_phrases_multi_sort_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q27_search_phrases_multi_sort_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q27_search_phrases_multi_sort_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q28-counter-url-length",
+  "warmup-iterations": {{ dsl_q28_counter_url_length_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q28_counter_url_length_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q28_counter_url_length_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q28_counter_url_length_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q30-resolution-width-sums",
+  "warmup-iterations": {{ dsl_q30_resolution_width_sums_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q30_resolution_width_sums_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q30_resolution_width_sums_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q30_resolution_width_sums_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q31-search-engine-client-stats",
+  "warmup-iterations": {{ dsl_q31_search_engine_client_stats_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q31_search_engine_client_stats_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q31_search_engine_client_stats_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q31_search_engine_client_stats_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q32-watch-client-stats",
+  "warmup-iterations": {{ dsl_q32_watch_client_stats_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q32_watch_client_stats_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q32_watch_client_stats_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q32_watch_client_stats_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q33-watch-client-all",
+  "warmup-iterations": {{ dsl_q33_watch_client_all_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q33_watch_client_all_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q33_watch_client_all_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q33_watch_client_all_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q34-url-popularity",
+  "warmup-iterations": {{ dsl_q34_url_popularity_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q34_url_popularity_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q34_url_popularity_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q34_url_popularity_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q35-url-with-constant",
+  "warmup-iterations": {{ dsl_q35_url_with_constant_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q35_url_with_constant_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q35_url_with_constant_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q35_url_with_constant_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q36-client-ip-variations",
+  "warmup-iterations": {{ dsl_q36_client_ip_variations_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q36_client_ip_variations_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q36_client_ip_variations_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q36_client_ip_variations_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q37-counter-62-urls",
+  "warmup-iterations": {{ dsl_q37_counter_62_urls_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q37_counter_62_urls_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q37_counter_62_urls_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q37_counter_62_urls_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q38-counter-62-titles",
+  "warmup-iterations": {{ dsl_q38_counter_62_titles_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q38_counter_62_titles_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q38_counter_62_titles_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q38_counter_62_titles_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q39-counter-62-links",
+  "warmup-iterations": {{ dsl_q39_counter_62_links_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q39_counter_62_links_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q39_counter_62_links_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q39_counter_62_links_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q40-traffic-source-analysis",
+  "warmup-iterations": {{ dsl_q40_traffic_source_analysis_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q40_traffic_source_analysis_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q40_traffic_source_analysis_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q40_traffic_source_analysis_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q41-url-hash-date",
+  "warmup-iterations": {{ dsl_q41_url_hash_date_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q41_url_hash_date_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q41_url_hash_date_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q41_url_hash_date_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q42-window-client-dimensions",
+  "warmup-iterations": {{ dsl_q42_window_client_dimensions_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q42_window_client_dimensions_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q42_window_client_dimensions_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q42_window_client_dimensions_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q43-hourly-pageviews",
+  "warmup-iterations": {{ dsl_q43_hourly_pageviews_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q43_hourly_pageviews_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q43_hourly_pageviews_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q43_hourly_pageviews_clients or search_clients | default(1) }}
+}
