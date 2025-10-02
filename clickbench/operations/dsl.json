@@ -1138,7 +1138,7 @@
             ]
         }
     },
-    {
+  {
       "name": "dsl-q25-search-phrases-by-time",
       "operation-type": "raw-request",
       "path": "/_search",
