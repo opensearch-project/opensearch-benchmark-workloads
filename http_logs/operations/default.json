@@ -225,6 +225,53 @@
       }
     },
     {
+      "name": "hourly_agg_with_filter",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "query": {
+          "term": {
+            "status": 200
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "by_hour": {
+            "date_histogram": {
+              "field": "@timestamp",
+              "calendar_interval": "hour"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "hourly_agg_with_filter_and_metrics",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "query": {
+          "term": {
+            "status": 200
+          }
+        },
+        "size": 0,
+        "aggs": {
+          "by_hour": {
+            "date_histogram": {
+              "field": "@timestamp",
+              "calendar_interval": "hour"
+            }
+          },
+          "size_stats": {
+            "stats": {
+              "field": "size"
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "multi_term_agg",
       "operation-type": "search",
       "index": "logs-*",
