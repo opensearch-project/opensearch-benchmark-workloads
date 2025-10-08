@@ -52,6 +52,20 @@
           "clients": {{ hourly_agg_search_clients or search_clients | default(1) }}
         },
         {
+          "operation": "hourly_agg_with_filter",
+          "warmup-iterations": {{ hourly_agg_with_filter_warmup_iterations or warmup_iterations | default(50) | tojson }},
+          "iterations": {{ hourly_agg_with_filter_iterations or iterations | default(100) | tojson }},
+          "target-throughput": {{ hourly_agg_with_filter_target_throughput or target_throughput | default(0.2) | tojson }},
+          "clients": {{ hourly_agg_with_filter_search_clients or search_clients | default(1) }}
+        },
+        {
+          "operation": "hourly_agg_with_filter_and_metrics",
+          "warmup-iterations": {{ hourly_agg_with_filter_and_metrics_warmup_iterations or warmup_iterations | default(50) | tojson }},
+          "iterations": {{ hourly_agg_with_filter_and_metrics_iterations or iterations | default(100) | tojson }},
+          "target-throughput": {{ hourly_agg_with_filter_and_metrics_target_throughput or target_throughput | default(0.2) | tojson }},
+          "clients": {{ hourly_agg_with_filter_and_metrics_search_clients or search_clients | default(1) }}
+        },
+        {
           "operation": "multi_term_agg",
           "warmup-iterations": {{ multi_term_agg_warmup_iterations or warmup_iterations | default(50) | tojson }},
           "iterations": {{ multi_term_agg_iterations or iterations | default(100) | tojson }},
