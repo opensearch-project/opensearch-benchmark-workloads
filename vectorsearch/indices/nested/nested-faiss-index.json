@@ -11,6 +11,9 @@
         {%- if derived_source_enabled is defined and derived_source_enabled %}
         ,"knn.derived_source.enabled": true
         {%- endif %}
+        {%- if approximate_graph_build_threshold is defined%}
+        ,"knn.advanced.approximate_threshold": {{ approximate_graph_build_threshold }}
+        {%- endif %}
       }
     },
     "mappings": {
