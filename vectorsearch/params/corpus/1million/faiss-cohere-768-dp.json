@@ -5,6 +5,7 @@
     "target_index_primary_shards": 3,
     "target_index_dimension": 768,
     "target_index_space_type": "innerproduct",
+    "approximate_graph_build_threshold": 0,
     
     "target_index_bulk_size": 100,
     "target_index_bulk_index_data_set_format": "hdf5",
