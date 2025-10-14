@@ -17,6 +17,9 @@
         {%- if remote_index_build_enabled is defined and remote_index_build_enabled and remote_index_build_size_threshold is defined %}
         ,"knn.remote_index_build.size_threshold": "{{ remote_index_build_size_threshold }}"
         {%- endif %}
+        {%- if approximate_graph_build_threshold is defined%}
+        ,"knn.advanced.approximate_threshold": {{ approximate_graph_build_threshold }}
+        {%- endif %}
       }
     },
     "mappings": {
