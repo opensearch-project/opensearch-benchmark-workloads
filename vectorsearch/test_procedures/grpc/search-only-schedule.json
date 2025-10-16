@@ -8,7 +8,9 @@
         "name": "grpc-prod-queries",
         "operation-type": "proto-vector-search",
         "index": "{{ target_index_name | default('target_index') }}",
-        "detailed-results": true,
+        "detailed-results": false,
+        "calculate-recall": false,
+        "response-compression-enabled": false,
         {% if query_k is defined %}
         "k": {{ query_k }},
         {% endif %}
