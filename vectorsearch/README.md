@@ -51,7 +51,7 @@ for more details.
 
 ### gRPC No Train Test
 
-The No Train Test procedure with search components executed with gRPC/protobuf over the `transport-grpc` plugin. To utilize this procedure ensure the `transport-grpc` plugin is [installed and enabled](https://github.com/opensearch-project/OpenSearch/tree/main/modules/transport-grpc#readme) on your cluster. Specify the this workload with `--test-procedure="grpc-no-train-test"`, and provide the gRPC transport endpoint with `--grpc-target-hosts=<host:port>`.
+The No Train Test procedure with search components executed with gRPC/protobuf over the `transport-grpc` plugin. To utilize this procedure ensure the `transport-grpc` plugin is [installed and enabled](https://github.com/opensearch-project/OpenSearch/tree/main/modules/transport-grpc#readme) on your cluster. Specify the this procedure with `--test-procedure="grpc-no-train-test"`, and provide the gRPC transport endpoint with `--grpc-target-hosts=<host:port>`.
 
 ### No Train Test Index Only
 This procedure is used to index only vector search index which requires no training. This will be useful if
