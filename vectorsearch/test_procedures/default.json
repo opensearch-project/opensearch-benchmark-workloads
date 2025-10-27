@@ -9,6 +9,16 @@
     ]
 },
 {
+    "name": "grpc-no-train-test",
+    "description": "no-train-test operations with knn query over gRPC/protobuf.",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="common/index-only-schedule.json") }},
+       {{ benchmark.collect(parts="common/force-merge-schedule.json") }},
+       {{ benchmark.collect(parts="grpc/search-only-schedule.json") }}
+    ]
+},
+{
     "name": "no-train-test-index-only",
     "description": "Perform only indexing operation for vector search",
     "default": false,
