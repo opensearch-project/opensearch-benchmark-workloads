@@ -87,6 +87,18 @@ curl -XPUT "http://localhost:9200/_cluster/settings" \
 }'
 ```
 
+### gRPC Operations Support
+
+Limited gRPC support is provided for the big5 workload over an protobuf/gRPC transport. gRPC operations can be found in `operations/grpc.json` with new operations added as support is expanded for gRPC APIs in OpenSearch. All supported big5 operations can be run with the `big5/test_procedures/grpc/grpc-schedule.json` (`--test-procedure="grpc-big5"`). To benchmark with the gRPC transport ensure the `transport-grpc` plugin is installed on the cluster and enabled in settings. See the `transport-grpc` [README.md](https://github.com/opensearch-project/OpenSearch/tree/main/modules/transport-grpc#readme) for guidance on enabling and using this transport. Note that the gRPC transport starts on a seperate endpoint from the default REST API, specify this endpoint with `--grpc-target-hosts=<host:port>`. 
+
+### gRPC Operations Support
+
+This workload includes limited gRPC/protobuf support for big5 operations. that provide an alternative query interface to OpenSearch. Find supported gRPC operations in `operations/grpc.json`.
+
+- **grpc-index-append**: Bulk ingestion of big5 index
+- **grpc-match-all**: Match all query.
+- **grpc-term**: Simple term query on `log.file.path`.
+
 ### Parameters
 
 This workload allows the following parameters to be specified using `--workload-params`:
@@ -296,6 +308,34 @@ Running ppl-sort-numeric-desc-with-match                                       [
 Running ppl-terms-significant-1                                                [100% done]
 Running ppl-terms-significant-2                                                [100% done]
 
+------------------------------------------------------
+```
+
+#### gRPC Test Procedure
+
+```bash
+opensearch-benchmark run \
+    --pipeline=benchmark-only \
+    --workload-path="big5" \
+    --test-procedure="grpc-big5" \
+    --target-host=http://localhost:9200 \
+    --grpc-target-hosts=http://localhost:9400
+```
+
+```
+[INFO] [Test Run ID]: 8a193e44-6a36-4dff-a516-5bc07c10d382
+[INFO] Running test with workload [big5], test_procedure [grpc-big5] and cluster_config ['external'] with version [3.4.0-SNAPSHOT].
+
+Running delete-index                                                           [100% done]
+Running create-index                                                           [100% done]
+Running check-cluster-health                                                   [100% done]
+Running grpc-index-append                                                      [100% done]
+Running refresh-after-index                                                    [100% done]
+Running force-merge                                                            [100% done]
+Running refresh-after-force-merge                                              [100% done]
+Running wait-until-merges-finish                                               [100% done]
+Running grpc-match-all                                                         [100% done]
+Running grpc-term                                                              [100% done]
 ------------------------------------------------------
 ```
 
