@@ -229,7 +229,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} | stats {% if distribution_version.split('.') | map('int') | list >= \"3.3.0\".split('.') | map('int') | list %}bucket_nullable = false {% endif %}dc(`agent.name`)"
+        "query": "source = {{index_name | default('big5')}} | stats {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}bucket_nullable = false {% endif %}dc(`agent.name`)"
       }
     },
     {
@@ -238,7 +238,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} | stats {% if distribution_version.split('.') | map('int') | list >= \"3.3.0\".split('.') | map('int') | list %}bucket_nullable = false {% endif %}dc(`event.id`)"
+        "query": "source = {{index_name | default('big5')}} | stats {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}bucket_nullable = false {% endif %}dc(`event.id`)"
       }
     },
     {
@@ -247,7 +247,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} | stats {% if distribution_version.split('.') | map('int') | list >= \"3.4.0\".split('.') | map('int') | list %}bucket_nullable = false {% endif %}dc(`cloud.region`)"
+        "query": "source = {{index_name | default('big5')}} | stats {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}bucket_nullable = false {% endif %}dc(`cloud.region`)"
       }
     },
     {
