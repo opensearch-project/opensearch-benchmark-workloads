@@ -31,7 +31,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} match(`process.name`, 'kernel') | sort + `@timestamp` | head 10"
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | sort + `@timestamp` | head 10"
       }
     },
     {
@@ -40,7 +40,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} match(`process.name`, 'kernel') | sort + `@timestamp` | head 10"
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | sort + `@timestamp` | head 10"
       }
     },
     {
@@ -112,7 +112,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} match(`process.name`, 'kernel') | sort - `@timestamp` | head 10"
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | sort - `@timestamp` | head 10"
       }
     },
     {
@@ -121,7 +121,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} match(`process.name`, 'kernel') | sort - `@timestamp` | head 10"
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | sort - `@timestamp` | head 10"
       }
     },
     {
@@ -148,7 +148,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} match(`process.name`, 'kernel') | where `@timestamp` >= '2023-01-01 00:00:00' and `@timestamp` < '2023-01-03 00:00:00' | head 10"
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | where `@timestamp` >= '2023-01-01 00:00:00' and `@timestamp` < '2023-01-03 00:00:00' | head 10"
       }
     },
     {
@@ -184,7 +184,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} query_string(['message'], 'monkey jackal bear') | where `@timestamp` >= '2023-01-03 00:00:00' and `@timestamp` < '2023-01-03 10:00:00' | sort + `@timestamp` | head 10"
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}| where query_string(['message'], 'monkey jackal bear') and `@timestamp` >= '2023-01-03 00:00:00' and `@timestamp` < '2023-01-03 10:00:00'{% else %}query_string(['message'], 'monkey jackal bear') | where `@timestamp` >= '2023-01-03 00:00:00' and `@timestamp` < '2023-01-03 10:00:00'{% endif %} | sort + `@timestamp` | head 10"
       }
     },
     {
@@ -193,7 +193,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} query_string(['message'], 'monkey jackal bear') | where `@timestamp` >= '2023-01-03 00:00:00' and `@timestamp` < '2023-01-03 10:00:00' | head 10"
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}| where query_string(['message'], 'monkey jackal bear') and `@timestamp` >= '2023-01-03 00:00:00' and `@timestamp` < '2023-01-03 10:00:00'{% else %}query_string(['message'], 'monkey jackal bear') | where `@timestamp` >= '2023-01-03 00:00:00' and `@timestamp` < '2023-01-03 10:00:00'{% endif %} | head 10"
       }
     },
     {
@@ -202,7 +202,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} query_string(['message'], 'monkey jackal bear') | head 10"
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}| where query_string(['message'], 'monkey jackal bear'){% else %}query_string(['message'], 'monkey jackal bear'){% endif %} | head 10"
       }
     },
     {
@@ -346,7 +346,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} match(`process.name`, 'kernel') | sort + `@timestamp` | head 10"
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | sort + `@timestamp` | head 10"
       }
     },
     {
@@ -355,7 +355,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} match(`process.name`, 'kernel') | sort + `@timestamp` | head 10"
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | sort + `@timestamp` | head 10"
       }
     },
     {
@@ -364,7 +364,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} match(`log.file.path`, '/var/log/messages/solarshark') | sort + `metrics.size` | head 10"
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}log.file.path=\"/var/log/messages/solarshark\"{% else %}match(`log.file.path`, '/var/log/messages/solarshark'){% endif %} | sort + `metrics.size` | head 10"
       }
     },
     {
@@ -382,7 +382,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('big5')}} match(`log.file.path`, '/var/log/messages/solarshark') | sort - `metrics.size` | head 10"
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}log.file.path=\"/var/log/messages/solarshark\"{% else %}match(`log.file.path`, '/var/log/messages/solarshark'){% endif %} | sort - `metrics.size` | head 10"
       }
     },
     {
