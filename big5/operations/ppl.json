@@ -1,0 +1,414 @@
+    {
+      "name": "ppl-default",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | head 10"
+      }
+    },
+    {
+      "name": "ppl-term",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `log.file.path` = '/var/log/messages/birdknight' | head 10"
+      }
+    },
+    {
+      "name": "ppl-range",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-01 00:00:00' and `@timestamp` < '2023-01-03 00:00:00' | head 10"
+      }
+    },
+    {
+      "name": "ppl-asc-sort-timestamp-can-match-shortcut",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | sort + `@timestamp` | head 10"
+      }
+    },
+    {
+      "name": "ppl-asc-sort-timestamp-no-can-match-shortcut",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | sort + `@timestamp` | head 10"
+      }
+    },
+    {
+      "name": "ppl-asc-sort-timestamp",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | sort + `@timestamp` | head 10"
+      }
+    },
+    {
+      "name": "ppl-asc-sort-with-after-timestamp",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | sort + `@timestamp` | head 10"
+      }
+    },
+    {
+      "name": "ppl-composite-date-histogram-daily",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2022-12-30 00:00:00' and `@timestamp` < '2023-01-07 12:00:00' | stats count() by span(`@timestamp`, 1d)"
+      }
+    },
+    {
+      "name": "ppl-composite-terms-keyword",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-02 00:00:00' and `@timestamp` < '2023-01-02 10:00:00' | stats {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}bucket_nullable = false {% endif %}count() by `process.name`, `cloud.region`, `aws.cloudwatch.log_stream` | sort - `process.name`, + `cloud.region`, + `aws.cloudwatch.log_stream` | head 10"
+      }
+    },
+    {
+      "name": "ppl-composite-terms",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-02 00:00:00' and `@timestamp` < '2023-01-02 10:00:00' | stats {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}bucket_nullable = false {% endif %}count() by `process.name`, `cloud.region` | sort - `process.name`, + `cloud.region` | head 10"
+      }
+    },
+    {
+      "name": "ppl-date-histogram-hourly-agg",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | stats count() by span(`@timestamp`, 1h)"
+      }
+    },
+    {
+      "name": "ppl-date-histogram-minute-agg",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-01 00:00:00' and `@timestamp` < '2023-01-03 00:00:00' | stats count() by span(`@timestamp`, 1m)"
+      }
+    },
+    {
+      "name": "ppl-desc-sort-timestamp-can-match-shortcut",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | sort - `@timestamp` | head 10"
+      }
+    },
+    {
+      "name": "ppl-desc-sort-timestamp-no-can-match-shortcut",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | sort - `@timestamp` | head 10"
+      }
+    },
+    {
+      "name": "ppl-desc-sort-timestamp",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | sort - `@timestamp` | head 10"
+      }
+    },
+    {
+      "name": "ppl-desc-sort-with-after-timestamp",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | sort - `@timestamp` | head 10"
+      }
+    },
+    {
+      "name": "ppl-keyword-in-range",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | where `@timestamp` >= '2023-01-01 00:00:00' and `@timestamp` < '2023-01-03 00:00:00' | head 10"
+      }
+    },
+    {
+      "name": "ppl-keyword-terms-low-cardinality",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | stats {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}bucket_nullable = false {% endif %}count() as country by `aws.cloudwatch.log_stream` | sort - country | head 50"
+      }
+    },
+    {
+      "name": "ppl-keyword-terms",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | stats {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}bucket_nullable = false {% endif %}count() as station by `aws.cloudwatch.log_stream` | sort - station | head 500"
+      }
+    },
+    {
+      "name": "ppl-multi-terms-keyword",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-05 00:00:00' and `@timestamp` < '2023-01-05 05:00:00' | stats {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}bucket_nullable = false {% endif %}count() by `process.name`, `cloud.region` | sort - `count()` | head 10"
+      }
+    },
+    {
+      "name": "ppl-query-string-on-message-filtered-sorted-num",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where query_string(['message'], 'monkey jackal bear') and `@timestamp` >= '2023-01-03 00:00:00' and `@timestamp` < '2023-01-03 10:00:00' | sort + `@timestamp` | head 10"
+      }
+    },
+    {
+      "name": "ppl-query-string-on-message-filtered",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where query_string(['message'], 'monkey jackal bear') and `@timestamp` >= '2023-01-03 00:00:00' and `@timestamp` < '2023-01-03 10:00:00' | head 10"
+      }
+    },
+    {
+      "name": "ppl-query-string-on-message",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}| where query_string(['message'], 'monkey jackal bear'){% else %}query_string(['message'], 'monkey jackal bear'){% endif %} | head 10"
+      }
+    },
+    {
+      "name": "ppl-range-auto-date-histo-with-metrics",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | eval range_bucket = case(`metrics.size` < -10, 'range_1', `metrics.size` >= -10 and `metrics.size` < 10, 'range_2', `metrics.size` >= 10 and `metrics.size` < 100, 'range_3', `metrics.size` >= 100 and `metrics.size` < 1000, 'range_4', `metrics.size` >= 1000 and `metrics.size` < 2000, 'range_5', `metrics.size` >= 2000, 'range_6') | {% if distribution_version.split('.') | map('int') | list >= '3.4.0'.split('.') | map('int') | list %}bin `@timestamp` bins=10 | stats min(`metrics.tmin`) as tmin, avg(`metrics.size`) as tavg, max(`metrics.size`) as tmax by range_bucket, `@timestamp`{% else %}stats min(`metrics.tmin`) as tmin, avg(`metrics.size`) as tavg, max(`metrics.size`) as tmax by range_bucket, span(`@timestamp`, 1h) as auto_span | sort + range_bucket, + auto_span{% endif %}"
+      }
+    },
+    {
+      "name": "ppl-range-auto-date-histo",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | eval range_bucket = case(`metrics.size` < -10, 'range_1', `metrics.size` >= -10 and `metrics.size` < 10, 'range_2', `metrics.size` >= 10 and `metrics.size` < 100, 'range_3', `metrics.size` >= 100 and `metrics.size` < 1000, 'range_4', `metrics.size` >= 1000 and `metrics.size` < 2000, 'range_5', `metrics.size` >= 2000, 'range_6') | {% if distribution_version.split('.') | map('int') | list >= '3.4.0'.split('.') | map('int') | list %}bin `@timestamp` bins=20 | stats count() by range_bucket, `@timestamp`{% else %}stats count() by range_bucket, span(`@timestamp`, 1h) as auto_span | sort + range_bucket, + auto_span{% endif %}"
+      }
+    },
+    {
+      "name": "ppl-cardinality-agg-high",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | stats {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}bucket_nullable = false {% endif %}dc(`agent.name`)"
+      }
+    },
+    {
+      "name": "ppl-cardinality-agg-high-2",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | stats {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}bucket_nullable = false {% endif %}dc(`event.id`)"
+      }
+    },
+    {
+      "name": "ppl-cardinality-agg-low",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | stats {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}bucket_nullable = false {% endif %}dc(`cloud.region`)"
+      }
+    },
+    {
+      "name": "ppl-range-agg-1",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | eval range_bucket = case(`metrics.size` < -10, 'range_1', `metrics.size` >= -10 and `metrics.size` < 10, 'range_2', `metrics.size` >= 10 and `metrics.size` < 100, 'range_3', `metrics.size` >= 100 and `metrics.size` < 1000, 'range_4', `metrics.size` >= 1000 and `metrics.size` < 2000, 'range_5', `metrics.size` >= 2000, 'range_6') | stats count() by range_bucket"
+      }
+    },
+    {
+      "name": "ppl-range-agg-2",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | eval range_bucket = case(`metrics.size` < 100, 'range_1', `metrics.size` >= 100 and `metrics.size` < 1000, 'range_2', `metrics.size` >= 1000 and `metrics.size` < 2000, 'range_3', `metrics.size` >= 2000, 'range_4') | stats count() by range_bucket"
+      }
+    },
+    {
+      "name": "ppl-range-field-conjunction-big-range-big-term-query",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `process.name` = 'systemd' and `metrics.size` >= 1 and `metrics.size` <= 100 | head 10"
+      }
+    },
+    {
+      "name": "ppl-range-field-conjunction-small-range-big-term-query",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `metrics.size` >= 20 and `metrics.size` <= 30 | head 10"
+      }
+    },
+    {
+      "name": "ppl-range-field-conjunction-small-range-small-term-query",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `aws.cloudwatch.log_stream` = 'indigodagger' or (`metrics.size` >= 10 and `metrics.size` <= 20) | head 10"
+      }
+    },
+    {
+      "name": "ppl-range-field-disjunction-big-range-small-term-query",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `aws.cloudwatch.log_stream` = 'indigodagger' or (`metrics.size` >= 1 and `metrics.size` <= 100) | head 10"
+      }
+    },
+    {
+      "name": "ppl-range-numeric",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `metrics.size` >= 20 and `metrics.size` <= 200 | head 10"
+      }
+    },
+    {
+      "name": "ppl-range-with-asc-sort",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-01 00:00:00' and `@timestamp` <= '2023-01-13 00:00:00' | sort + `@timestamp` | head 10"
+      }
+    },
+    {
+      "name": "ppl-range-with-desc-sort",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-01 00:00:00' and `@timestamp` <= '2023-01-13 00:00:00' | sort - `@timestamp` | head 10"
+      }
+    },
+    {
+      "name": "ppl-scroll",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | head 10"
+      }
+    },
+    {
+      "name": "ppl-sort-keyword-can-match-shortcut",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | sort + `meta.file` | head 10"
+      }
+    },
+    {
+      "name": "ppl-sort-keyword-no-can-match-shortcut",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}process.name=kernel{% else %}match(`process.name`, 'kernel'){% endif %} | sort + `meta.file` | head 10"
+      }
+    },
+    {
+      "name": "ppl-sort-numeric-asc-with-match",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}log.file.path=\"/var/log/messages/solarshark\"{% else %}match(`log.file.path`, '/var/log/messages/solarshark'){% endif %} | sort + `metrics.size` | head 10"
+      }
+    },
+    {
+      "name": "ppl-sort-numeric-asc",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | sort + `metrics.size` | head 10"
+      }
+    },
+    {
+      "name": "ppl-sort-numeric-desc-with-match",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} {% if distribution_version.split('.') | map('int') | list >= '3.3.0'.split('.') | map('int') | list %}log.file.path=\"/var/log/messages/solarshark\"{% else %}match(`log.file.path`, '/var/log/messages/solarshark'){% endif %} | sort - `metrics.size` | head 10"
+      }
+    },
+    {
+      "name": "ppl-sort-numeric-desc",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | sort - `metrics.size` | head 10"
+      }
+    },
+    {
+      "name": "ppl-terms-significant-1",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-01 00:00:00' and `@timestamp` < '2023-01-03 00:00:00' | stats count() by `aws.cloudwatch.log_stream`, `process.name` | head 10"
+      }
+    },
+    {
+      "name": "ppl-terms-significant-2",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('big5')}} | where `@timestamp` >= '2023-01-01 00:00:00' and `@timestamp` < '2023-01-03 00:00:00' | stats count() by `process.name`, `aws.cloudwatch.log_stream` | head 10"
+      }
+    }
