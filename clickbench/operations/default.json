@@ -5,6 +5,12 @@
       "ingest-percentage": {{ingest_percentage | default(100)}}
     },
     {
+      "name": "flush-index",
+      "operation-type": "raw-request",
+      "path": "/{{ index_name | default('clickbench') }}/_flush",
+      "method": "POST"
+    },
+    {
       "name": "q01-count-all",
       "operation-type": "raw-request",
       "path": "/_plugins/_ppl",

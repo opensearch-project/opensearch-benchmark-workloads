@@ -41,4 +41,25 @@
     {% endwith %}
     {{ benchmark.collect(parts="common/dsl-clickbench-test-schedule.json") }}
   ]
-}
+},
+{
+  "name": "datafusion-ppl",
+  "description": "Indexes the ClickBench dataset and runs OpenSearch PPL queries to benchmark analytical use case performance. Specific to the datafusion branch.",
+  "default": true,
+  "schedule": [
+    {% with default_index_settings={}, index_name="clickbench" %}
+    {{ benchmark.collect(parts="../../common_operations/delete_index.json") }},
+    {{ benchmark.collect(parts="../../common_operations/create_index.json") }},
+    {{ benchmark.collect(parts="../../common_operations/check_cluster_health.json") }},
+    {{ benchmark.collect(parts="../../common_operations/index_append.json") }},
+    {% endwith %}
+    {
+      "operation": "flush-index",
+      "warmup-iterations": {{ flush_index_warmup_iterations or warmup_iterations | default(1) | tojson }},
+      "iterations": {{ flush_index_iterations or test_iterations | default(1) | tojson }},
+      "target-throughput": {{ flush_index_target_throughput or target_throughput | default(1) | tojson }},
+      "clients": {{ flush_index_clients or search_clients | default(1) }}
+    },
+    {{ benchmark.collect(parts="common/mustang-clickbench-schedule.json") }}
+  ]
+},
