@@ -1,0 +1,6 @@
+    {
+      "name": "grpc-index-append",
+      "operation-type": "proto-bulk",
+      "bulk-size": {{bulk_size | default(500)}},
+      "ingest-percentage": {{ingest_percentage | default(100)}}
+    }
