@@ -83,13 +83,6 @@
   "clients": {{ q33_watch_client_all_clients or search_clients | default(1) }}
 },
 {
-  "operation": "q34-url-popularity",
-  "warmup-iterations": {{ q34_url_popularity_warmup_iterations or warmup_iterations | default(100) | tojson }},
-  "iterations": {{ q34_url_popularity_iterations or test_iterations | default(100) | tojson }},
-  "target-throughput": {{ q34_url_popularity_target_throughput or target_throughput | default(2) | tojson }},
-  "clients": {{ q34_url_popularity_clients or search_clients | default(1) }}
-},
-{
   "operation": "q35-url-with-constant",
   "warmup-iterations": {{ q35_url_with_constant_warmup_iterations or warmup_iterations | default(100) | tojson }},
   "iterations": {{ q35_url_with_constant_iterations or test_iterations | default(100) | tojson }},
