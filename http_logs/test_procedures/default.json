@@ -350,6 +350,15 @@
       ]
     },
     {
+      "name": "grpc-append-no-conflicts-index-only",
+      "description": "Index only workload over the gRPC transport. Introduced OpenSearch >= 3.3.",
+      "schedule": [
+        {% with default_index_settings={}, index_name="logs-*" %}
+        {{ benchmark.collect(parts="../../common_operations/grpc_workload_setup.json") }}
+        {% endwith %}
+      ]
+    },
+    {
       "name": "append-sorted-no-conflicts",
       "description": "Indexes the whole document corpus in an index sorted by timestamp field in descending order (most recent first) and using a setup that will lead to a larger indexing throughput than the default settings. Document ids are unique so all index operations are append only.",
       "schedule": [
@@ -619,14 +628,5 @@
           "target-throughput": {{ range_with_asc_sort_target_throughput or target_throughput | default(2) | tojson }},
           "clients": {{ range_with_asc_sort_search_clients or search_clients | default(1) }}
         }
-      ]
-    },
-    {
-      "name": "grpc-append-index-only",
-      "description": "Index only workload over the gRPC transport.",
-      "schedule": [
-        {% with default_index_settings={}, index_name="logs-*" %}
-        {{ benchmark.collect(parts="../../common_operations/grpc_workload_setup.json") }},
-        {% endwith %}
       ]
     }
