@@ -626,7 +626,7 @@
       "description": "Index only workload over the gRPC transport.",
       "schedule": [
         {% with default_index_settings={}, index_name="logs-*" %}
-        {{ benchmark.collect(parts="grpc/grpc-schedule.json") }}
+        {{ benchmark.collect(parts="../../common_operations/grpc_workload_setup.json") }},
         {% endwith %}
       ]
     }
