@@ -1,13 +1,12 @@
-
 {% if distribution_version is not defined %}
   {% set distribution_version = "2.11.0" %}
+  {% set unknown_distribution = "True" %}
   {% set match_only_text = "match_only_text" %}
 {% elif distribution_version.split('.') | map('int') | list  >= "2.12.0".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %}
   {% set match_only_text = "match_only_text" %}
 {% else %}
   {% set match_only_text = "text" %}
 {% endif %}
-
 
 {
   "settings": {
