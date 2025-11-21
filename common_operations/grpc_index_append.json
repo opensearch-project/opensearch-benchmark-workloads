@@ -1,4 +1,4 @@
-{% if distribution_version is not defined or distribution_version_unknown %}
+{% if distribution_version_unknown is defined %}
   {% set distribution_version = "3.3.0" %}
 {% endif %}
 
@@ -19,5 +19,5 @@
         "operation": "refresh"
     }
 {% else %}
-    {{ raise('Distribution version ' ~ distribution_version ~ ' is not supported. gRPC introduced in 3.3.0') }}
+    {% include 'error: gRPC ' ~ distribution_version ~ ' is not supported in versions < 3.3.0' %}
 {% endif %}
