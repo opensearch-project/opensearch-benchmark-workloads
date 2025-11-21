@@ -1,8 +1,12 @@
-{% if distribution_version is not defined %}
+{% if distribution_version is not defined or distribution_version_unknown %}
   {% set distribution_version = "3.3.0" %}
 {% endif %}
 
-{% if distribution_version.split('.') | map('int') | list  >= "3.3.0".split('.') | map('int') | list and distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %}
+{%- set version_parts = distribution_version.split('.') | map('int') | list %}
+{%- set min_version = "3.3.0".split('.') | map('int') | list %}
+{%- set max_version = "6.0.0".split('.') | map('int') | list %}
+
+{%- if version_parts >= min_version and version_parts < max_version %}
     {
         "name": "grpc-index-append",
         "operation": "grpc-index-append",
@@ -14,4 +18,6 @@
         "name": "refresh-after-index",
         "operation": "refresh"
     }
+{% else %}
+    {{ raise('Distribution version ' ~ distribution_version ~ ' is not supported. gRPC introduced in 3.3.0') }}
 {% endif %}
