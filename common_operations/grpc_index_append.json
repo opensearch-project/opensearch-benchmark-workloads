@@ -1,0 +1,19 @@
+{%- set version_parts = distribution_version.split('.') | map('int') | list %}
+{%- set min_version = "3.3.0".split('.') | map('int') | list %}
+{%- set max_version = "6.0.0".split('.') | map('int') | list %}
+
+{%- if version_parts >= min_version and version_parts < max_version or unknown_distribution is defined %}
+    {
+        "name": "grpc-index-append",
+        "operation": "grpc-index-append",
+        "warmup-time-period": {{ warmup_time_period | default(120) | tojson }},
+        "clients": {{bulk_indexing_clients | default(8)}},
+        "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+    },
+    {
+        "name": "refresh-after-index",
+        "operation": "refresh"
+    }
+{% else %}
+    {% include 'error: Distribution version is ' ~ distribution_version ~ ' - gRPC is not supported in versions < 3.3.0' %}
+{% endif %}

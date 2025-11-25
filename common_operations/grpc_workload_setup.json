@@ -1,0 +1,17 @@
+{% if use_snapshot %}
+  {% with 
+  snapshot_repo=snapshot_repo,
+  snapshot_name=snapshot_name,
+  snapshot_indices=snapshot_indices,
+  snapshot_rename_pattern=snapshot_rename_pattern,
+  snapshot_rename_replacement=snapshot_rename_replacement
+  %}
+    {{ benchmark.collect(parts="restore_snapshot.json") }}
+  {% endwith %}
+{% else %}
+  {{ benchmark.collect(parts="delete_index.json") }},
+  {{ benchmark.collect(parts="create_index.json") }},
+  {{ benchmark.collect(parts="check_cluster_health.json") }},
+  {{ benchmark.collect(parts="grpc_index_append.json") }},
+  {{ benchmark.collect(parts="force_merge.json") }}
+{% endif %}
