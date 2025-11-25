@@ -244,6 +244,7 @@ Running range_field_disjunction_big_range_small_term_query                     [
 Running range_field_conjunction_small_range_small_term_query                   [100% done]
 Running range_field_conjunction_small_range_big_term_query                     [100% done]
 Running range-auto-date-histo                                                  [100% done]
+Running range-with-metrics                                                     [100% done]
 Running range-auto-date-histo-with-metrics                                     [100% done]
 
 ------------------------------------------------------
