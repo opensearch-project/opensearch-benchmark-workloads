@@ -596,6 +596,73 @@
       }
     },
     {
+      "name": "range-with-metrics",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "request-timeout": 7200,
+      "body": {
+        "size": 0,
+        "aggs": {
+          "tmax": {
+            "range": {
+              "field": "metrics.size",
+              "ranges": [
+                {
+                  "to": -10
+                },
+                {
+                  "from": -10,
+                  "to": 10
+                },
+                {
+                  "from": 10,
+                  "to": 100
+                },
+                {
+                  "from": 100,
+                  "to": 1000
+                },
+                {
+                  "from": 1000,
+                  "to": 2000
+                },
+                {
+                  "from": 2000
+                }
+              ]
+            },
+            "aggs": {
+              "tsum": {
+                "sum": {
+                  "field": "metrics.size"
+                }
+              },
+              "tmin": {
+                "min": {
+                  "field": "metrics.tmin"
+                }
+              },
+              "tavg": {
+                "avg": {
+                  "field": "metrics.size"
+                }
+              },
+              "tmax": {
+                "max": {
+                  "field": "metrics.size"
+                }
+              }
+              "tstats": {
+                "stats": {
+                  "field": "metrics.size"
+                }
+              },
+            }
+          }
+        }
+      }
+    }
+    {
       "name": "range-auto-date-histo-with-metrics",
       "operation-type": "search",
       "index": "{{index_name | default('big5')}}",
