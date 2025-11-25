@@ -49,12 +49,12 @@
           "max": {
             "field": "metrics.size"
           }
-        }
+        },
         "tstats": {
           "stats": {
             "field": "metrics.size"
           }
-        },
+        }
       }
     }
   }

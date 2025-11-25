@@ -651,17 +651,17 @@
                 "max": {
                   "field": "metrics.size"
                 }
-              }
+              },
               "tstats": {
                 "stats": {
                   "field": "metrics.size"
                 }
-              },
+              }
             }
           }
         }
       }
-    }
+    },
     {
       "name": "range-auto-date-histo-with-metrics",
       "operation-type": "search",
