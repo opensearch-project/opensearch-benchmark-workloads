@@ -1023,4 +1023,34 @@
           { "@timestamp": "desc" }
         ]
       }
+    },
+    {
+      "name": "field-collapsing-high-cardinality",
+      "operation-type": "search",
+      "index": "{{ index_name | default('big5') }}",
+      "body": {
+        "query": {
+          "match": {
+            "message": "50-136-239-27"
+          }
+        },
+        "collapse": {
+          "field": "host.name"
+        }
+      }
+    },
+    {
+      "name": "field-collapsing-low-cardinality",
+      "operation-type": "search",
+      "index": "{{ index_name | default('big5') }}",
+      "body": {
+        "query": {
+          "match": {
+            "message": "50-136-239-27"
+          }
+        },
+        "collapse": {
+          "field": "process.name"
+        }
+      }
     }
