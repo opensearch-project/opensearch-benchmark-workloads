@@ -261,6 +261,13 @@
   "clients": {{ search_clients | default(1) }}
 },
 {
+  "operation": "metrics-agg-no-range",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
   "operation": "range-auto-date-histo-with-metrics",
   "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
   "iterations": {{ test_iterations | default(100) | tojson }},
@@ -283,6 +290,34 @@
 },
 {
   "operation": "cardinality-agg-low",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "bool-must-double-phrase",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "span-near-query",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "bool-must-match-message",
+  "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+  "iterations": {{ test_iterations | default(100) | tojson }},
+  "target-throughput": {{ target_throughput | default(2) | tojson }},
+  "clients": {{ search_clients | default(1) }}
+},
+{
+  "operation": "bool-should-match-med",
   "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
   "iterations": {{ test_iterations | default(100) | tojson }},
   "target-throughput": {{ target_throughput | default(2) | tojson }},
