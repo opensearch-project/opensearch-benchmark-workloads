@@ -1017,6 +1017,27 @@
       }
     },
     {
+      "name": "intervals-ordered-message",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": false,
+        "query": {
+          "intervals": {
+            "message": {
+              "all_of": {
+                "ordered": true,
+                "intervals": [
+                  { "match": { "query": "monkey" } },
+                  { "match": { "query": "rabbit" } }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "bool-must-match-message",
       "operation-type": "search",
       "index": "{{index_name | default('big5')}}",
