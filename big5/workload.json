@@ -1,6 +1,6 @@
-
 {% if distribution_version is not defined %}
   {% set distribution_version = "2.11.0" %}
+  {% set unknown_distribution = "True" %}
 {% endif %}
 
 {
