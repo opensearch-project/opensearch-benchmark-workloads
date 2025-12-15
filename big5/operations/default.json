@@ -501,6 +501,24 @@
       }
     },
     {
+      "name": "field_conjunction_big_range_big_term_query",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "query": {
+          "bool": {
+            "must": [
+              {
+                "term": {
+                  "process.name": "systemd"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
       "name": "range_field_disjunction_big_range_small_term_query",
       "operation-type": "search",
       "index": "{{index_name | default('big5')}}",
@@ -684,6 +702,22 @@
               }
             }
           }
+        }
+      }
+    },
+    {
+      "name": "metrics-agg-no-range",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "track_total_hits": false,
+        "aggs": {
+          "tsum": { "sum": { "field": "metrics.size" } },
+          "tmin": { "min": { "field": "metrics.tmin" } },
+          "tavg": { "avg": { "field": "metrics.size" } },
+          "tmax": { "max": { "field": "metrics.size" } },
+          "tstats": { "stats": { "field": "metrics.size" } }
         }
       }
     },
@@ -970,6 +1004,109 @@
             "cardinality": {
               "field": "cloud.region"
             }
+          }
+        }
+      }
+    },
+    {
+      "name": "bool-must-double-phrase",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "query": {
+          "bool": {
+            "must": [
+              { "match_phrase": { "message": "monkey monkey" } },
+              { "match_phrase": { "message": "jackal" } }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "span-near-query",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": false,
+        "query": {
+          "span_near": {
+            "clauses": [
+              { "span_term": { "message": "monkey" } },
+              { "span_term": { "message": "jackal" } }
+            ],
+            "slop": 10,
+            "in_order": false
+          }
+        }
+      }
+    },
+    {
+      "name": "intervals-ordered-message",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": false,
+        "query": {
+          "intervals": {
+            "message": {
+              "all_of": {
+                "ordered": true,
+                "intervals": [
+                  { "match": { "query": "monkey" } },
+                  { "match": { "query": "rabbit" } }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "bool-must-match-message",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": false,
+        "query": {
+          "bool": {
+            "must": [
+              { "match": { "message": "monkey" } },
+              { "match": { "message": "rabbit" } }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "bool-should-match-med",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": false,
+        "query": {
+          "bool": {
+            "should": [
+              { "match": { "message": "monkey" } },
+              { "match": { "message": "spirit" } }
+            ],
+            "minimum_should_match": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "bool-must-term-keyword",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": false,
+        "query": {
+          "bool": {
+            "must": [
+              { "term": { "message": "monkey" } },
+              { "term": { "message": "spirit" } }
+            ]
           }
         }
       }
