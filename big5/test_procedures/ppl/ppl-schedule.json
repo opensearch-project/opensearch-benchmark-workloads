@@ -47,6 +47,7 @@
   "target-throughput": {{ ppl_asc_sort_with_after_timestamp_target_throughput or target_throughput | default(2) | tojson }},
   "clients": {{ ppl_asc_sort_with_after_timestamp_clients or search_clients | default(1) }}
 },
+{% if calcite_enabled | default(false) %}
 {
   "operation": "ppl-composite-date-histogram-daily",
   "warmup-iterations": {{ ppl_composite_date_histogram_daily_warmup_iterations or warmup_iterations | default(200) | tojson }},
@@ -54,6 +55,7 @@
   "target-throughput": {{ ppl_composite_date_histogram_daily_target_throughput or target_throughput | default(2) | tojson }},
   "clients": {{ ppl_composite_date_histogram_daily_clients or search_clients | default(1) }}
 },
+{% endif %}
 {
   "operation": "ppl-composite-terms-keyword",
   "warmup-iterations": {{ ppl_composite_terms_keyword_warmup_iterations or warmup_iterations | default(200) | tojson }},
@@ -68,6 +70,7 @@
   "target-throughput": {{ ppl_composite_terms_target_throughput or target_throughput | default(2) | tojson }},
   "clients": {{ ppl_composite_terms_clients or search_clients | default(1) }}
 },
+{% if calcite_enabled | default(false) %}
 {
   "operation": "ppl-date-histogram-hourly-agg",
   "warmup-iterations": {{ ppl_date_histogram_hourly_agg_warmup_iterations or warmup_iterations | default(200) | tojson }},
@@ -75,6 +78,8 @@
   "target-throughput": {{ ppl_date_histogram_hourly_agg_target_throughput or target_throughput | default(2) | tojson }},
   "clients": {{ ppl_date_histogram_hourly_agg_clients or search_clients | default(1) }}
 },
+{% endif %}
+{% if calcite_enabled | default(false) %}
 {
   "operation": "ppl-date-histogram-minute-agg",
   "warmup-iterations": {{ ppl_date_histogram_minute_agg_warmup_iterations or warmup_iterations | default(200) | tojson }},
@@ -82,6 +87,7 @@
   "target-throughput": {{ ppl_date_histogram_minute_agg_target_throughput or target_throughput | default(2) | tojson }},
   "clients": {{ ppl_date_histogram_minute_agg_clients or search_clients | default(1) }}
 },
+{% endif %}
 {
   "operation": "ppl-desc-sort-timestamp-can-match-shortcut",
   "warmup-iterations": {{ ppl_desc_sort_timestamp_can_match_shortcut_warmup_iterations or warmup_iterations | default(200) | tojson }},
@@ -159,6 +165,7 @@
   "target-throughput": {{ ppl_query_string_on_message_target_throughput or target_throughput | default(2) | tojson }},
   "clients": {{ ppl_query_string_on_message_clients or search_clients | default(1) }}
 },
+{% if calcite_enabled | default(false) %}
 {
   "operation": "ppl-range-auto-date-histo-with-metrics",
   "warmup-iterations": {{ ppl_range_auto_date_histo_with_metrics_warmup_iterations or warmup_iterations | default(200) | tojson }},
@@ -173,6 +180,7 @@
   "target-throughput": {{ ppl_range_auto_date_histo_target_throughput or target_throughput | default(2) | tojson }},
   "clients": {{ ppl_range_auto_date_histo_clients or search_clients | default(1) }}
 },
+{% endif %}
 {
   "operation": "ppl-cardinality-agg-high",
   "warmup-iterations": {{ ppl_cardinality_agg_high_warmup_iterations or warmup_iterations | default(200) | tojson }},
