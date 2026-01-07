@@ -48,4 +48,15 @@
     {% endwith %}
     {{ benchmark.collect(parts="ppl/ppl-test-schedule.json") }}
   ]
+},
+{
+  "name": "ppl-calcite-disabled",
+  "description": "Indexes the whole document corpus and runs PPL queries without histogram operations (for use when Calcite is disabled in version 3.2.0). Requires the SQL plugin to be installed.",
+  "default": false,
+  "schedule": [
+    {% with default_index_settings={}, index_name="big5" %}
+    {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+    {% endwith %}
+    {{ benchmark.collect(parts="ppl/ppl-schedule-no-histogram.json") }}
+  ]
 }
