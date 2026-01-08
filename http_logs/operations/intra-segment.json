@@ -1,0 +1,445 @@
+    {
+      "name": "intra-cardinality-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "size": 0,
+        "track_total_hits": false,
+        "aggs": {
+          "unique_clients": {
+            "cardinality": {
+              "field": "clientip"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-cardinality-agg-with-total-hits",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "unique_clients": {
+            "cardinality": {
+              "field": "clientip"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-multi-cardinality-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "size": 0,
+        "aggs": {
+          "clientip_cardinality": { "cardinality": { "field": "clientip" } },
+          "status_cardinality": { "cardinality": { "field": "status" } },
+          "size_cardinality": { "cardinality": { "field": "size" } }
+        }
+      }
+    },
+    {
+      "name": "intra-span-near-query",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "query": {
+          "span_near": {
+            "clauses": [
+              { "span_term": { "request": "images" } },
+              { "span_term": { "request": "french" } }
+            ],
+            "slop": 10,
+            "in_order": false
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-intervals-ordered-query",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "query": {
+          "intervals": {
+            "request": {
+              "all_of": {
+                "ordered": true,
+                "intervals": [
+                  { "match": { "query": "french" } },
+                  { "match": { "query": "images" } }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-bool-must-double-phrase",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "query": {
+          "bool": {
+            "must": [
+              { "match_phrase": { "request": "french images" } },
+              { "match_phrase": { "request": "HTTP" } }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-bool-must-match",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "query": {
+          "bool": {
+            "must": [
+              { "match": { "request": "french" } },
+              { "match": { "request": "images" } }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-bool-should-match",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": false,
+        "query": {
+          "bool": {
+            "should": [
+              { "match": { "clientip": "129.0.0.0" } },
+              { "match": { "clientip": "10.0.0.1" } }
+            ],
+            "minimum_should_match": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-query-string",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "query": {
+          "query_string": {
+            "query": "request: french images GET"
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-stats-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "aggs": {
+          "size_stats": {
+            "stats": { "field": "size" }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-sum-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "aggs": {
+          "size_stats": {
+            "sum": { "field": "size" }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-percentiles-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "size_percentiles": {
+            "percentiles": { "field": "size" }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-extended-stats-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": false,
+        "aggs": {
+          "size_extended": {
+            "extended_stats": { "field": "size" }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-multi-metrics-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": false,
+        "aggs": {
+          "tsum": { "sum": { "field": "size" } },
+          "tmin": { "min": { "field": "size" } },
+          "tavg": { "avg": { "field": "size" } },
+          "tmax": { "max": { "field": "size" } },
+          "tstats": { "stats": { "field": "size" } }
+        }
+      }
+    },
+    {
+      "name": "intra-value-count-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "count_values": {
+            "value_count": { "field": "size" }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-percentile-ranks-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "size_ranks": {
+            "percentile_ranks": {
+              "field": "size",
+              "values": [100, 500, 1000]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-matrix-stats-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "matrix": {
+            "matrix_stats": {
+              "fields": ["size", "status"]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-terms-top-hits-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "by_status": {
+            "terms": { "field": "status", "size": 5 },
+            "aggs": {
+              "top_docs": { "top_hits": { "size": 3 } }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-match-top-hits-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "query": { "match": { "request": "french images" } },
+        "aggs": {
+          "top_docs": { "top_hits": { "size": 3 } }
+        }
+      }
+    },
+    {
+      "name": "intra-terms-significant-terms-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "by_status": {
+            "terms": { "field": "status", "size": 5 },
+            "aggs": {
+              "significant_ips": {
+                "significant_terms": { "field": "clientip" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-significant-terms-agg",
+      "operation-type": "search",
+      "index": "logs-181998",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "significant_status": {
+            "significant_terms": { "field": "status", "size": 5 }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-match-significant-terms-agg",
+      "operation-type": "search",
+      "index": "logs-181998",
+      "body": {
+        "track_total_hits": true,
+        "query": {
+          "match": { "request": "french" }
+        },
+        "aggs": {
+          "significant_status": {
+            "significant_terms": { "field": "status", "size": 5 }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-multi-terms-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": false,
+        "aggs": {
+          "a": {
+            "multi_terms": {
+              "terms": [
+                { "field": "status" },
+                { "field": "clientip" }
+              ],
+              "size": 10
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-histogram-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "a": {
+            "histogram": {
+              "field": "size",
+              "interval": 100
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-filter-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "a": {
+            "filter": { "term": { "status": 200 } }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-filters-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "a": {
+            "filters": {
+              "filters": {
+                "ok": { "term": { "status": 200 } },
+                "error": { "term": { "status": 500 } }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-adjacency-matrix-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": false,
+        "aggs": {
+          "a": {
+            "adjacency_matrix": {
+              "filters": {
+                "ok": { "term": { "status": 200 } },
+                "not_found": { "term": { "status": 404 } },
+                "large": { "range": { "size": { "gte": 1000 } } }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-global-agg-with-query",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "query": { "match": { "request": "french" } },
+        "aggs": {
+          "filtered_avg": { "avg": { "field": "size" } },
+          "all_docs": {
+            "global": {},
+            "aggs": {
+              "total_avg": { "avg": { "field": "size" } }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-global-agg",
+      "operation-type": "search",
+      "index": "logs-*",
+      "body": {
+        "track_total_hits": false,
+        "aggs": {
+          "all_docs": {
+            "global": {},
+            "aggs": {
+              "total_avg": { "avg": { "field": "size" } }
+            }
+          }
+        }
+      }
+    }
