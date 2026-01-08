@@ -1,0 +1,543 @@
+    {
+      "name": "intra-metrics-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "track_total_hits": false,
+        "aggs": {
+          "tsum": { "sum": { "field": "metrics.size" } },
+          "tmin": { "min": { "field": "metrics.tmin" } },
+          "tavg": { "avg": { "field": "metrics.size" } },
+          "tmax": { "max": { "field": "metrics.size" } },
+          "tstats": { "stats": { "field": "metrics.size" } }
+        }
+      }
+    },
+    {
+      "name": "intra-bool-must-double-phrase",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "query": {
+          "bool": {
+            "must": [
+              { "match_phrase": { "message": "monkey monkey" } },
+              { "match_phrase": { "message": "jackal" } }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-span-near-query",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": false,
+        "query": {
+          "span_near": {
+            "clauses": [
+              { "span_term": { "message": "monkey" } },
+              { "span_term": { "message": "jackal" } }
+            ],
+            "slop": 10,
+            "in_order": false
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-intervals-ordered-message",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": false,
+        "query": {
+          "intervals": {
+            "message": {
+              "all_of": {
+                "ordered": true,
+                "intervals": [
+                  { "match": { "query": "monkey" } },
+                  { "match": { "query": "rabbit" } }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-bool-must-match-message",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": false,
+        "query": {
+          "bool": {
+            "must": [
+              { "match": { "message": "monkey" } },
+              { "match": { "message": "rabbit" } }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-bool-should-match-med",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": false,
+        "query": {
+          "bool": {
+            "should": [
+              { "match": { "message": "monkey" } },
+              { "match": { "message": "spirit" } }
+            ],
+            "minimum_should_match": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-bool-must-term-keyword",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": false,
+        "query": {
+          "bool": {
+            "must": [
+              { "term": { "message": "monkey" } },
+              { "term": { "message": "spirit" } }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-query-string-on-message",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "query": {
+          "query_string": {
+            "query": "message: monkey jackal bear"
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-metrics-stats-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "aggs": {
+          "metrics_stats": {
+            "stats": {
+              "field": "metrics.size"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-sum-agg-with-total-hits",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "tsum": {
+            "sum": {
+              "field": "metrics.size"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-percentiles-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "aggs": {
+          "size_percentiles": {
+            "percentiles": {
+              "field": "metrics.size"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-extended-stats-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "size_extended": {
+            "extended_stats": {
+              "field": "metrics.size"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-value-count-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "track_total_hits": false,
+        "aggs": {
+          "count_values": {
+            "value_count": {
+              "field": "metrics.size"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-percentile-ranks-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "track_total_hits": false,
+        "aggs": {
+          "size_ranks": {
+            "percentile_ranks": {
+              "field": "metrics.size",
+              "values": [100, 500, 1000]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-matrix-stats-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "track_total_hits": true,
+        "aggs": {
+          "matrix": {
+            "matrix_stats": {
+              "fields": ["metrics.size", "metrics.tmin"]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-terms-top-hits-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "track_total_hits": false,
+        "aggs": {
+          "by_region": {
+            "terms": {
+              "field": "cloud.region",
+              "size": 5
+            },
+            "aggs": {
+              "top_docs": {
+                "top_hits": {
+                  "size": 3
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-significant-terms-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "query": {
+          "match": {
+            "cloud.region": "us-east-1"
+          }
+        },
+        "aggs": {
+          "significant_hosts": {
+            "significant_terms": {
+              "field": "host.name",
+              "size": 10
+            },
+            "aggs": {
+              "avg_size": {
+                "avg": {
+                  "field": "metrics.size"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-terms-stats-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "track_total_hits": false,
+        "aggs": {
+          "by_region": {
+            "terms": {
+              "field": "cloud.region",
+              "size": 5
+            },
+            "aggs": {
+              "size_stats": {
+                "stats": {
+                  "field": "metrics.size"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-multi-terms-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "track_total_hits": false,
+        "aggs": {
+          "a": {
+            "multi_terms": {
+              "terms": [
+                { "field": "process.name" },
+                { "field": "cloud.region" }
+              ],
+              "size": 10
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-histogram-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "track_total_hits": false,
+        "aggs": {
+          "a": {
+            "histogram": {
+              "field": "metrics.size",
+              "interval": 100
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-filter-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "track_total_hits": false,
+        "aggs": {
+          "a": {
+            "filter": {
+              "term": { "cloud.region": "us-east-1" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-filters-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "track_total_hits": false,
+        "aggs": {
+          "a": {
+            "filters": {
+              "filters": {
+                "east": { "term": { "cloud.region": "us-east-1" } },
+                "west": { "term": { "cloud.region": "us-west-2" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-adjacency-matrix-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "track_total_hits": false,
+        "aggs": {
+          "a": {
+            "adjacency_matrix": {
+              "filters": {
+                "east": { "term": { "cloud.region": "us-east-1" } },
+                "west": { "term": { "cloud.region": "us-west-2" } },
+                "kernel": { "term": { "process.name": "kernel" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-global-agg-with-query",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "query": {
+          "match": { "message": "monkey" }
+        },
+        "aggs": {
+          "filtered_avg": {
+            "avg": { "field": "metrics.size" }
+          },
+          "all_docs": {
+            "global": {},
+            "aggs": {
+              "total_avg": {
+                "avg": { "field": "metrics.size" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-global-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "aggs": {
+          "all_docs": {
+            "global": {},
+            "aggs": {
+              "total_avg": {
+                "avg": { "field": "metrics.size" }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-post-filter-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "track_total_hits": true,
+        "query": {
+          "bool": {
+            "must": [
+              { "match": { "message": "monkey" } }
+            ]
+          }
+        },
+        "post_filter": {
+          "term": {
+            "cloud.region": "us-east-1"
+          }
+        },
+        "aggs": {
+          "by_region": {
+            "terms": {
+              "field": "cloud.region",
+              "size": 5
+            },
+            "aggs": {
+              "avg_size": {
+                "avg": {
+                  "field": "metrics.size"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-min-score-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "min_score": 0.5,
+        "query": {
+          "bool": {
+            "must": [
+              { "match": { "message": "monkey" } }
+            ]
+          }
+        },
+        "aggs": {
+          "avg_size": {
+            "avg": {
+              "field": "metrics.size"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "intra-search-after-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 3,
+        "sort": [{ "metrics.size": "desc" }],
+        "search_after": [9999],
+        "query": {
+          "bool": {
+            "must": [{ "match": { "message": "monkey" } }]
+          }
+        },
+        "aggs": {
+          "avg_size": { "avg": { "field": "metrics.size" } }
+        }
+      }
+    },
+    {
+      "name": "intra-span-near-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "query": {
+          "span_near": {
+            "clauses": [
+              { "span_term": { "message": "monkey" } },
+              { "span_term": { "message": "jackal" } }
+            ],
+            "slop": 10,
+            "in_order": false
+          }
+        },
+        "aggs": {
+          "avg_size": { "avg": { "field": "metrics.size" } }
+        }
+      }
+    }

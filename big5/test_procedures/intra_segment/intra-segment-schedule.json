@@ -1,0 +1,210 @@
+    {
+      "operation": "intra-metrics-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-bool-must-double-phrase",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-span-near-query",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-intervals-ordered-message",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-bool-must-match-message",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-bool-should-match-med",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-bool-must-term-keyword",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-query-string-on-message",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-metrics-stats-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-sum-agg-with-total-hits",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-percentiles-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-extended-stats-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-value-count-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-percentile-ranks-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-matrix-stats-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-terms-top-hits-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-cardinality-agg-high",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-significant-terms-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-terms-stats-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-multi-terms-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-histogram-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-filter-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-filters-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-adjacency-matrix-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-global-agg-with-query",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-global-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-post-filter-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-min-score-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-search-after-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    },
+    {
+      "operation": "intra-span-near-agg",
+      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
+      "iterations": {{ test_iterations | default(100) | tojson }},
+      "target-throughput": {{ target_throughput | default(2) | tojson }},
+      "clients": {{ search_clients | default(1) }}
+    }
