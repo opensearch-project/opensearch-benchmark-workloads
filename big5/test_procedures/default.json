@@ -35,7 +35,8 @@
     {% with default_index_settings={}, index_name="big5" %}
     {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
     {% endwith %}
-    {{ benchmark.collect(parts="ppl/ppl-schedule.json") }}
+    {{ benchmark.collect(parts="ppl/ppl-schedule.json") }},
+    {{ benchmark.collect(parts="ppl/ppl-schedule-histogram-only.json") }}
   ]
 },
 {
@@ -57,6 +58,6 @@
     {% with default_index_settings={}, index_name="big5" %}
     {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
     {% endwith %}
-    {{ benchmark.collect(parts="ppl/ppl-schedule-no-histogram.json") }}
+    {{ benchmark.collect(parts="ppl/ppl-schedule.json") }}
   ]
 }

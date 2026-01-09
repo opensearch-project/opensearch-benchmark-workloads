@@ -48,13 +48,6 @@
   "clients": {{ ppl_asc_sort_with_after_timestamp_clients or search_clients | default(1) }}
 },
 {
-  "operation": "ppl-composite-date-histogram-daily",
-  "warmup-iterations": {{ ppl_composite_date_histogram_daily_warmup_iterations or warmup_iterations | default(200) | tojson }},
-  "iterations": {{ ppl_composite_date_histogram_daily_iterations or test_iterations | default(100) | tojson }},
-  "target-throughput": {{ ppl_composite_date_histogram_daily_target_throughput or target_throughput | default(2) | tojson }},
-  "clients": {{ ppl_composite_date_histogram_daily_clients or search_clients | default(1) }}
-},
-{
   "operation": "ppl-composite-terms-keyword",
   "warmup-iterations": {{ ppl_composite_terms_keyword_warmup_iterations or warmup_iterations | default(200) | tojson }},
   "iterations": {{ ppl_composite_terms_keyword_iterations or test_iterations | default(100) | tojson }},
@@ -67,20 +60,6 @@
   "iterations": {{ ppl_composite_terms_iterations or test_iterations | default(100) | tojson }},
   "target-throughput": {{ ppl_composite_terms_target_throughput or target_throughput | default(2) | tojson }},
   "clients": {{ ppl_composite_terms_clients or search_clients | default(1) }}
-},
-{
-  "operation": "ppl-date-histogram-hourly-agg",
-  "warmup-iterations": {{ ppl_date_histogram_hourly_agg_warmup_iterations or warmup_iterations | default(200) | tojson }},
-  "iterations": {{ ppl_date_histogram_hourly_agg_iterations or test_iterations | default(100) | tojson }},
-  "target-throughput": {{ ppl_date_histogram_hourly_agg_target_throughput or target_throughput | default(2) | tojson }},
-  "clients": {{ ppl_date_histogram_hourly_agg_clients or search_clients | default(1) }}
-},
-{
-  "operation": "ppl-date-histogram-minute-agg",
-  "warmup-iterations": {{ ppl_date_histogram_minute_agg_warmup_iterations or warmup_iterations | default(200) | tojson }},
-  "iterations": {{ ppl_date_histogram_minute_agg_iterations or test_iterations | default(100) | tojson }},
-  "target-throughput": {{ ppl_date_histogram_minute_agg_target_throughput or target_throughput | default(2) | tojson }},
-  "clients": {{ ppl_date_histogram_minute_agg_clients or search_clients | default(1) }}
 },
 {
   "operation": "ppl-desc-sort-timestamp-can-match-shortcut",
@@ -158,20 +137,6 @@
   "iterations": {{ ppl_query_string_on_message_iterations or test_iterations | default(100) | tojson }},
   "target-throughput": {{ ppl_query_string_on_message_target_throughput or target_throughput | default(2) | tojson }},
   "clients": {{ ppl_query_string_on_message_clients or search_clients | default(1) }}
-},
-{
-  "operation": "ppl-range-auto-date-histo-with-metrics",
-  "warmup-iterations": {{ ppl_range_auto_date_histo_with_metrics_warmup_iterations or warmup_iterations | default(200) | tojson }},
-  "iterations": {{ ppl_range_auto_date_histo_with_metrics_iterations or test_iterations | default(100) | tojson }},
-  "target-throughput": {{ ppl_range_auto_date_histo_with_metrics_target_throughput or target_throughput | default(2) | tojson }},
-  "clients": {{ ppl_range_auto_date_histo_with_metrics_clients or search_clients | default(1) }}
-},
-{
-  "operation": "ppl-range-auto-date-histo",
-  "warmup-iterations": {{ ppl_range_auto_date_histo_warmup_iterations or warmup_iterations | default(200) | tojson }},
-  "iterations": {{ ppl_range_auto_date_histo_iterations or test_iterations | default(100) | tojson }},
-  "target-throughput": {{ ppl_range_auto_date_histo_target_throughput or target_throughput | default(2) | tojson }},
-  "clients": {{ ppl_range_auto_date_histo_clients or search_clients | default(1) }}
 },
 {
   "operation": "ppl-cardinality-agg-high",
