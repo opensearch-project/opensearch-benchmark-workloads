@@ -261,6 +261,21 @@
       }
     },
     {
+      "name": "intra-cardinality-agg",
+      "operation-type": "search",
+      "index": "{{index_name | default('big5')}}",
+      "body": {
+        "size": 0,
+        "aggs": {
+          "agent": {
+            "cardinality": {
+              "field": "agent.name"
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "intra-significant-terms-agg",
       "operation-type": "search",
       "index": "{{index_name | default('big5')}}",
