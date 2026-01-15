@@ -1,0 +1,271 @@
+    {
+      "name": "search-longevity-test",
+      "description": "Indexes half the data for NYC Taxis, then concurrently queries OpenSearch while indexing again.",
+      "default": false,
+      "schedule": [
+        {
+          "operation": {
+            "operation-type": "put-settings",
+            "body": {
+              "transient": {
+                "search.default_search_timeout": "{{default_search_timeout | default(-1)}}"
+              }
+            }
+          }
+        },
+        {
+          "operation": "delete-index"
+        },
+        {
+          "operation": {
+            "operation-type": "create-index",
+            "settings": {{index_settings | default({}) | tojson}}
+          }
+        },
+        {
+          "name": "check-cluster-health",
+          "operation": {
+            "operation-type": "cluster-health",
+            "index": "nyc_taxis",
+            "request-params": {
+              "wait_for_status": "{{cluster_health | default('green')}}",
+              "wait_for_no_relocating_shards": "true"
+            },
+            "retry-until-success": true
+          }
+        },
+        {
+          "name": "initial-index-append",
+          "operation": {
+            "operation-type": "bulk",
+            "bulk-size": {{bulk_size | default(10000)}},
+            "ingest-percentage": 50
+          },
+          "warmup-time-period": 30,
+          "clients": {{bulk_indexing_clients | default(8)}},
+          "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+        },
+        {
+          "name": "refresh-after-index",
+          "operation": "refresh"
+        },
+        {
+          "operation": {
+            "operation-type": "force-merge",
+{%- if force_merge_max_num_segments is defined %}
+            "max-num-segments": {{ force_merge_max_num_segments | tojson }},
+{%- endif %}
+            "request-timeout": 7200
+          }
+        },
+        {
+          "name": "refresh-after-force-merge",
+          "operation": "refresh"
+        },
+        {
+          "name": "wait-until-merges-finish",
+          "operation": {
+            "operation-type": "index-stats",
+            "index": "_all",
+            "condition": {
+              "path": "_all.total.merges.current",
+              "expected-value": 0
+            },
+            "retry-until-success": true,
+            "include-in-reporting": false
+          }
+        },
+        {
+          "parallel": {
+            "tasks": [
+              {
+                "name": "concurrent-index-append",
+                "operation": {
+                  "operation-type": "bulk",
+                  "bulk-size": {{bulk_size | default(10000)}},
+                  "ingest-percentage": 50
+                },
+                "clients": {{bulk_indexing_clients | default(8)}},
+                "ignore-response-error-level": "{{error_level | default('non-fatal')}}"
+              },
+              {
+                "operation": "default",
+                "time-period": {{ default_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ default_target_throughput or target_throughput | default(3) | tojson }},
+                "clients": {{ default_search_clients or search_clients | default(1) }}
+              },
+              {
+                "operation": "range",
+                "time-period": {{ range_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ range_target_throughput or target_throughput | default(0.7) | tojson }},
+                "clients": {{ range_search_clients or search_clients | default(1) }}
+              },
+              {
+                "operation": "distance_amount_agg",
+                "time-period": {{ distance_amount_agg_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ distance_amount_agg_target_throughput or target_throughput | default(2) | tojson }},
+                "clients": {{ distance_amount_agg_search_clients or search_clients | default(1) }}
+              },
+              {
+                "operation": "autohisto_agg",
+                "time-period": {{ autohisto_agg_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ autohisto_agg_target_throughput or target_throughput | default(1.5) | tojson }},
+                "clients": {{ autohisto_agg_search_clients or search_clients | default(1) }}
+              },
+              {
+                "operation": "date_histogram_agg",
+                "time-period": {{ date_histogram_agg_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ date_histogram_agg_target_throughput or target_throughput | default(1.5) | tojson }},
+                "clients": {{ date_histogram_agg_search_clients or search_clients | default(1) }}
+              },
+              {
+                "operation": "desc_sort_tip_amount",
+                "time-period": {{ desc_sort_tip_amount_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ desc_sort_tip_amount_target_throughput or target_throughput | default(0.5) | tojson }},
+                "clients": {{ desc_sort_tip_amount_search_clients or search_clients | default(1) }}
+              },
+              {
+                "operation": "asc_sort_tip_amount",
+                "time-period": {{ asc_sort_tip_amount_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ asc_sort_tip_amount_target_throughput or target_throughput | default(0.5) | tojson }},
+                "clients": {{ asc_sort_tip_amount_search_clients or search_clients | default(1) }}
+              },
+              {
+                "name": "segment-stats-loop",
+                "operation": {
+                  "operation-type": "raw-request",
+                  "method": "GET",
+                  "path": "/_stats",
+                  "request-timeout": 60
+                },
+                "clients": 5,
+                "target-interval": 1,
+                "time-period": {{ default_time_period or time_period | default(300) | tojson }}
+              },
+              {
+                "name": "refresh-loop",
+                "operation": {
+                  "operation-type": "raw-request",
+                  "method": "POST",
+                  "path": "/nyc_taxis/_refresh",
+                  "request-timeout": 60
+                },
+                "clients": 1,
+                "target-interval": 1,
+                "time-period": {{ default_time_period or time_period | default(300) | tojson }}
+              }
+            ]
+          }
+        }
+      ]
+    },
+{
+      "name": "indexing-search-longevity-test",
+      "description": "Indexes half the data for NYC Taxis, then concurrently queries OpenSearch while indexing again.",
+      "default": false,
+      "schedule": [
+        {
+          "operation": "delete-index"
+        },
+        {
+          "operation": {
+            "operation-type": "create-index",
+            "settings": {{index_settings | default({}) | tojson}}
+          }
+        },
+        {
+          "name": "check-cluster-health",
+          "operation": {
+            "operation-type": "cluster-health",
+            "index": "nyc_taxis",
+            "request-params": {
+              "wait_for_status": "{{cluster_health | default('green')}}",
+              "wait_for_no_relocating_shards": "true"
+            },
+            "retry-until-success": true
+          }
+        },
+        {
+          "parallel": {
+            "tasks": [
+              {
+                "name": "index-append",
+                "operation": {
+                  "operation-type": "bulk",
+                  "bulk-size": {{bulk_size | default(10000)}},
+                  "looped": true
+                },
+                "clients": {{bulk_indexing_clients | default(8)}},
+                "time-period": {{ default_time_period or time_period | default(300) | tojson }}
+              },
+              {
+                "operation": "default",
+                "time-period": {{ default_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ default_target_throughput or target_throughput | default(3) | tojson }},
+                "clients": {{ default_search_clients or search_clients | default(1) }}
+              },
+              {
+                "operation": "range",
+                "time-period": {{ range_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ range_target_throughput or target_throughput | default(0.7) | tojson }},
+                "clients": {{ range_search_clients or search_clients | default(1) }}
+              },
+              {
+                "operation": "distance_amount_agg",
+                "time-period": {{ distance_amount_agg_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ distance_amount_agg_target_throughput or target_throughput | default(2) | tojson }},
+                "clients": {{ distance_amount_agg_search_clients or search_clients | default(1) }}
+              },
+              {
+                "operation": "autohisto_agg",
+                "time-period": {{ autohisto_agg_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ autohisto_agg_target_throughput or target_throughput | default(1.5) | tojson }},
+                "clients": {{ autohisto_agg_search_clients or search_clients | default(1) }}
+              },
+              {
+                "operation": "date_histogram_agg",
+                "time-period": {{ date_histogram_agg_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ date_histogram_agg_target_throughput or target_throughput | default(1.5) | tojson }},
+                "clients": {{ date_histogram_agg_search_clients or search_clients | default(1) }}
+              },
+              {
+                "operation": "desc_sort_tip_amount",
+                "time-period": {{ desc_sort_tip_amount_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ desc_sort_tip_amount_target_throughput or target_throughput | default(0.5) | tojson }},
+                "clients": {{ desc_sort_tip_amount_search_clients or search_clients | default(1) }}
+              },
+              {
+                "operation": "asc_sort_tip_amount",
+                "time-period": {{ asc_sort_tip_amount_time_period or time_period | default(300) | tojson }},
+                "target-throughput": {{ asc_sort_tip_amount_target_throughput or target_throughput | default(0.5) | tojson }},
+                "clients": {{ asc_sort_tip_amount_search_clients or search_clients | default(1) }}
+              },
+              {
+                "name": "segment-stats-loop",
+                "operation": {
+                  "operation-type": "raw-request",
+                  "method": "GET",
+                  "path": "/_stats",
+                  "request-timeout": 60
+                },
+                "clients": 5,
+                "target-interval": 1,
+                "time-period": {{ default_time_period or time_period | default(300) | tojson }}
+              },
+              {
+                "name": "refresh-loop",
+                "operation": {
+                  "operation-type": "raw-request",
+                  "method": "POST",
+                  "path": "/nyc_taxis/_refresh",
+                  "request-timeout": 60
+                },
+                "clients": 1,
+                "target-interval": 1,
+                "time-period": {{ default_time_period or time_period | default(300) | tojson }}
+              }
+            ]
+          }
+        }
+      ]
+ }
