@@ -101,12 +101,15 @@ This runs all 50 PPL operations including histogram queries.
 ```bash
 osb execute-test --workload=big5 --test-procedure=ppl-calcite-disabled
 ```
-This runs 45 PPL operations, excluding the following histogram queries that require Calcite support:
+This runs 42 PPL operations, excluding the following queries that require Calcite support:
 - `ppl-composite-date-histogram-daily`
 - `ppl-date-histogram-hourly-agg`
 - `ppl-date-histogram-minute-agg`
 - `ppl-range-auto-date-histo-with-metrics`
 - `ppl-range-auto-date-histo`
+- `ppl-range-agg-1`
+- `ppl-range-agg-2`
+- `ppl-cardinality-agg-high-2`
 
 ### gRPC Operations Support
 

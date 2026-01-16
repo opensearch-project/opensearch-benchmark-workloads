@@ -146,32 +146,11 @@
   "clients": {{ ppl_cardinality_agg_high_clients or search_clients | default(1) }}
 },
 {
-  "operation": "ppl-cardinality-agg-high-2",
-  "warmup-iterations": {{ ppl_cardinality_agg_high_2_warmup_iterations or warmup_iterations | default(200) | tojson }},
-  "iterations": {{ ppl_cardinality_agg_high_2_iterations or test_iterations | default(100) | tojson }},
-  "target-throughput": {{ ppl_cardinality_agg_high_2_target_throughput or target_throughput | default(2) | tojson }},
-  "clients": {{ ppl_cardinality_agg_high_2_clients or search_clients | default(1) }}
-},
-{
   "operation": "ppl-cardinality-agg-low",
   "warmup-iterations": {{ ppl_cardinality_agg_low_warmup_iterations or warmup_iterations | default(200) | tojson }},
   "iterations": {{ ppl_cardinality_agg_low_iterations or test_iterations | default(100) | tojson }},
   "target-throughput": {{ ppl_cardinality_agg_low_target_throughput or target_throughput | default(2) | tojson }},
   "clients": {{ ppl_cardinality_agg_low_clients or search_clients | default(1) }}
-},
-{
-  "operation": "ppl-range-agg-1",
-  "warmup-iterations": {{ ppl_range_agg_1_warmup_iterations or warmup_iterations | default(200) | tojson }},
-  "iterations": {{ ppl_range_agg_1_iterations or test_iterations | default(100) | tojson }},
-  "target-throughput": {{ ppl_range_agg_1_target_throughput or target_throughput | default(2) | tojson }},
-  "clients": {{ ppl_range_agg_1_clients or search_clients | default(1) }}
-},
-{
-  "operation": "ppl-range-agg-2",
-  "warmup-iterations": {{ ppl_range_agg_2_warmup_iterations or warmup_iterations | default(200) | tojson }},
-  "iterations": {{ ppl_range_agg_2_iterations or test_iterations | default(100) | tojson }},
-  "target-throughput": {{ ppl_range_agg_2_target_throughput or target_throughput | default(2) | tojson }},
-  "clients": {{ ppl_range_agg_2_clients or search_clients | default(1) }}
 },
 {
   "operation": "ppl-range-field-conjunction-big-range-big-term-query",
