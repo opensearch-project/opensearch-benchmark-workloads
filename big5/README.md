@@ -87,6 +87,30 @@ curl -XPUT "http://localhost:9200/_cluster/settings" \
 }'
 ```
 
+#### PPL Test Procedures for Version 3.2.0
+
+For OpenSearch version 3.2.0, two test procedures are available depending on whether Calcite is enabled:
+
+**When Calcite is enabled:**
+```bash
+osb execute-test --workload=big5 --test-procedure=ppl
+```
+This runs all 50 PPL operations including histogram queries.
+
+**When Calcite is disabled:**
+```bash
+osb execute-test --workload=big5 --test-procedure=ppl-calcite-disabled
+```
+This runs 42 PPL operations, excluding the following queries that require Calcite support:
+- `ppl-composite-date-histogram-daily`
+- `ppl-date-histogram-hourly-agg`
+- `ppl-date-histogram-minute-agg`
+- `ppl-range-auto-date-histo-with-metrics`
+- `ppl-range-auto-date-histo`
+- `ppl-range-agg-1`
+- `ppl-range-agg-2`
+- `ppl-cardinality-agg-high-2`
+
 ### gRPC Operations Support
 
 Limited gRPC support is provided for the big5 workload over an protobuf/gRPC transport. gRPC operations can be found in `operations/grpc.json` with new operations added as support is expanded for gRPC APIs in OpenSearch. All supported big5 operations can be run with the `big5/test_procedures/grpc/grpc-schedule.json` (`--test-procedure="grpc-big5"`). To benchmark with the gRPC transport ensure the `transport-grpc` plugin is installed on the cluster and enabled in settings. See the `transport-grpc` [README.md](https://github.com/opensearch-project/OpenSearch/tree/main/modules/transport-grpc#readme) for guidance on enabling and using this transport. Note that the gRPC transport starts on a seperate endpoint from the default REST API, specify this endpoint with `--grpc-target-hosts=<host:port>`. 
