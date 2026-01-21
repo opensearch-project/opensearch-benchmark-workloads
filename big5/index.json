@@ -21,9 +21,13 @@
     "index.codec": "best_compression",
     "index.translog.sync_interval": "30s",
     "index.translog.durability": {{index_translog_durability | default("async") | tojson}},
+    {% if index_sort | default(false) %}
+    "index.sort.field": "@timestamp",
+    "index.sort.order": "asc",
+    {% endif %}
     "index.query.default_field": [
       "message"
-    ]
+    ],
   },
   "mappings": {
     {% if distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %}
