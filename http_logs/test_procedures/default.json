@@ -629,4 +629,15 @@
           "clients": {{ range_with_asc_sort_search_clients or search_clients | default(1) }}
         }
       ]
+    },
+    {
+      "name": "intra-segment",
+      "description": "Runs intra-segment search queries for testing concurrent segment search",
+      "default": false,
+      "schedule": [
+        {% with default_index_settings={}, index_name="logs-181998" %}
+        {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+        {% endwith %}
+        {{ benchmark.collect(parts="intra_segment/intra-segment-schedule.json") }}
+      ]
     }

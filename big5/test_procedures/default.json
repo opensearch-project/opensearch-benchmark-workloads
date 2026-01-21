@@ -61,4 +61,15 @@
     {% endwith %}
     {{ benchmark.collect(parts="ppl/ppl-schedule.json") }}
   ]
+},
+{
+  "name": "intra-segment",
+  "description": "Runs intra-segment search queries for testing concurrent segment search",
+  "default": false,
+  "schedule": [
+    {% with default_index_settings={}, index_name="big5" %}
+    {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+    {% endwith %}
+    {{ benchmark.collect(parts="intra_segment/intra-segment-schedule.json") }}
+  ]
 }
