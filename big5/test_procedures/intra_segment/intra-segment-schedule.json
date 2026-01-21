@@ -41,13 +41,6 @@
       "clients": {{ search_clients | default(1) }}
     },
     {
-      "operation": "intra-bool-must-term-keyword",
-      "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
-      "iterations": {{ test_iterations | default(100) | tojson }},
-      "target-throughput": {{ target_throughput | default(2) | tojson }},
-      "clients": {{ search_clients | default(1) }}
-    },
-    {
       "operation": "intra-query-string-on-message",
       "warmup-iterations": {{ warmup_iterations | default(200) | tojson }},
       "iterations": {{ test_iterations | default(100) | tojson }},
