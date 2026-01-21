@@ -4,6 +4,10 @@
     "index.number_of_replicas": {{ number_of_replicas | default(0) }},
     "index.queries.cache.enabled": {{query_cache_enabled | default(false) | tojson}},
     "index.requests.cache.enable": {{requests_cache_enabled | default(false) | tojson}}
+    {% if index_sort | default(false) %}
+    ,"index.sort.field": "@timestamp",
+    "index.sort.order": "asc"
+    {% endif %}
   },
   "mappings": {
     "dynamic": "strict",
