@@ -64,7 +64,7 @@
 },
 {
   "name": "intra-segment",
-  "description": "Runs intra-segment search queries for testing concurrent segment search",
+  "description": "Runs search queries for testing intra-segment search",
   "default": false,
   "schedule": [
     {% with default_index_settings={}, index_name="big5" %}
