@@ -6,7 +6,7 @@
     {% with default_index_settings={}, index_name="clickbench" %}
     {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
     {% endwith %}
-    {{ benchmark.collect(parts="common/clickbench-schedule.json") }}
+    {{ benchmark.collect(parts="ppl/clickbench-schedule.json") }}
   ]
 },
 {
@@ -17,7 +17,7 @@
     {% with default_index_settings={}, index_name="clickbench" %}
     {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
     {% endwith %}
-    {{ benchmark.collect(parts="common/test-schedule.json") }}
+    {{ benchmark.collect(parts="ppl/test-schedule.json") }}
   ]
 },
 {
@@ -28,7 +28,7 @@
     {% with default_index_settings={}, index_name="clickbench" %}
     {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
     {% endwith %}
-    {{ benchmark.collect(parts="common/dsl-clickbench-schedule.json") }}
+    {{ benchmark.collect(parts="dsl/dsl-clickbench-schedule.json") }}
   ]
 },
 {
@@ -39,7 +39,7 @@
     {% with default_index_settings={}, index_name="clickbench" %}
     {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
     {% endwith %}
-    {{ benchmark.collect(parts="common/dsl-clickbench-test-schedule.json") }}
+    {{ benchmark.collect(parts="dsl/dsl-clickbench-test-schedule.json") }}
   ]
 },
 {
@@ -60,6 +60,6 @@
       "target-throughput": {{ flush_index_target_throughput or target_throughput | default(1) | tojson }},
       "clients": {{ flush_index_clients or search_clients | default(1) }}
     },
-    {{ benchmark.collect(parts="common/mustang-clickbench-schedule.json") }}
+    {{ benchmark.collect(parts="ppl/mustang-clickbench-schedule.json") }}
   ]
 }
