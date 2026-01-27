@@ -1,0 +1,23 @@
+{
+    "name" : "refresh-target-index-before-search",
+    "operation" : "refresh-target-index"
+},
+{
+  "operation": {
+    "name": "random-vector-search",
+    "operation-type": "search",
+    "param-source": "random-vector-search-param-source",
+    "dims": {{ target_index_dimension | default(768) | int }},
+    "k": {{ query_k }},
+    "body": {{ query_body | default ({}) | tojson }},
+    "field" : "{{ target_field_name | default('target_field') }}"
+    {% if hnsw_ef_search is defined %}
+    ,"ef_search": {{ hnsw_ef_search }}
+    {% endif %}
+    ,"index_name": "{{ target_index_name | default('target_index') }}",
+    "detailed-results": true
+  },
+  "clients": {{ search_clients | default(1)}},
+  "iterations": {{search_iterations | default(1000)}},
+  "warmup-iterations": {{warmup_search_iterations | default(0)}}
+}
