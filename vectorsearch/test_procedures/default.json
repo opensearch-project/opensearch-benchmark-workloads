@@ -70,4 +70,48 @@
         {{ benchmark.collect(parts="common/force-merge-schedule.json") }},
         {{ benchmark.collect(parts="common/search-only-schedule.json") }}
     ]
+},
+{
+    "name": "random-vector-index-merge-search",
+    "description": "Index and search using vectors generated randomly",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="common/random-index-only-schedule.json") }},
+       {{ benchmark.collect(parts="common/force-merge-schedule.json") }},
+       {{ benchmark.collect(parts="common/random-search-only-schedule.json") }}
+    ]
+},
+{
+    "name": "random-vector-index-search",
+    "description": "Index and search using vectors generated randomly",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="common/random-index-only-schedule.json") }},
+       {{ benchmark.collect(parts="common/random-search-only-schedule.json") }}
+    ]
+},
+{
+    "name": "random-vector-index-only",
+    "description": "Index and search using vectors generated randomly",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="common/random-index-only-schedule.json") }}
+    ]
+},
+{
+    "name": "random-vector-index-with-merge-only",
+    "description": "Index and merge using vectors generated randomly",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="common/random-index-only-schedule.json") }},
+       {{ benchmark.collect(parts="common/force-merge-schedule.json") }}
+    ]
+},
+{
+    "name": "random-vector-search-only",
+    "description": "Search using vectors generated randomly",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="common/random-search-only-schedule.json") }}
+    ]
 }

@@ -24,6 +24,11 @@
             "type": "keyword"
           },
         {%- endif %}
+        {% if target_index_partition_metadata is defined and target_index_partition_metadata %}
+          "partition_id": {
+            "type": "integer"
+          },
+        {%- endif %}
         "{{ target_field_name }}": {
           "type": "knn_vector",
           "dimension": {{ target_index_dimension }},
