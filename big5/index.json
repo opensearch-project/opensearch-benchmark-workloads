@@ -26,7 +26,7 @@
     {% endif %}
     "index.query.default_field": [
       "message"
-    ],
+    ]
   },
   "mappings": {
     {% if distribution_version.split('.') | map('int') | list  < "6.0.0".split('.') | map('int') | list %}
