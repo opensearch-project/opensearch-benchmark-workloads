@@ -1,0 +1,201 @@
+name: Test Modified Workloads
+on:
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  detect-workloads:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.filter.outputs.matrix }}
+      has_workloads: ${{ steps.filter.outputs.has_workloads }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v46
+
+      - name: Detect modified workloads
+        id: filter
+        run: |
+          SKIP_WORKLOADS="neural_search treccovid_semantic_search noaa_semantic_search vectorsearch"
+          ALL_CHANGED="${{ steps.changed-files.outputs.all_changed_files }}"
+
+          # Collect unique top-level directories from changed paths
+          dirs=()
+          common_changed=false
+          for f in $ALL_CHANGED; do
+            top_dir="${f%%/*}"
+            # Skip .github, root-level files (no slash in path)
+            if [[ "$top_dir" == ".github" ]]; then
+              continue
+            fi
+            if [[ "$f" != */* ]]; then
+              continue
+            fi
+            if [[ "$top_dir" == "common_operations" ]]; then
+              common_changed=true
+              continue
+            fi
+            dirs+=("$top_dir")
+          done
+
+          # Deduplicate
+          workloads=($(printf '%s\n' "${dirs[@]}" | sort -u))
+
+          # If common_operations changed, add all valid workloads
+          if $common_changed; then
+            for d in */workload.json; do
+              w="${d%/workload.json}"
+              workloads+=("$w")
+            done
+            workloads=($(printf '%s\n' "${workloads[@]}" | sort -u))
+          fi
+
+          # Filter to directories that contain workload.json and are not skipped
+          filtered=()
+          for w in "${workloads[@]}"; do
+            if [[ ! -f "$w/workload.json" ]]; then
+              echo "Skipping $w (no workload.json)"
+              continue
+            fi
+            skip=false
+            for s in $SKIP_WORKLOADS; do
+              if [[ "$w" == "$s" ]]; then
+                skip=true
+                break
+              fi
+            done
+            if $skip; then
+              echo "Skipping $w (in skip list)"
+              continue
+            fi
+            filtered+=("$w")
+          done
+
+          # Build JSON matrix
+          if [[ ${#filtered[@]} -eq 0 ]]; then
+            echo "matrix=[]" >> "$GITHUB_OUTPUT"
+            echo "has_workloads=false" >> "$GITHUB_OUTPUT"
+            echo "No workloads to test."
+          else
+            json=$(printf '%s\n' "${filtered[@]}" | jq -R . | jq -sc .)
+            echo "matrix=$json" >> "$GITHUB_OUTPUT"
+            echo "has_workloads=true" >> "$GITHUB_OUTPUT"
+            echo "Workloads to test: ${filtered[*]}"
+          fi
+
+  test-workload:
+    needs: detect-workloads
+    if: needs.detect-workloads.outputs.has_workloads == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        workload: ${{ fromJson(needs.detect-workloads.outputs.matrix) }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Resolve OpenSearch version
+        id: version
+        run: |
+          BASE_BRANCH="${{ github.event.pull_request.base.ref }}"
+          case "$BASE_BRANCH" in
+            main)  TAG="latest" ;;
+            1)     TAG="1.3.19" ;;
+            2)     TAG="2.19.0" ;;
+            3)     TAG="3.0.0" ;;
+            [0-9]*) TAG="${BASE_BRANCH}.0.0" ;;
+            *)     TAG="latest" ;;
+          esac
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Using OpenSearch image tag: $TAG"
+
+      - name: Start OpenSearch
+        run: |
+          docker run -d --name opensearch \
+            -p 9200:9200 -p 9600:9600 \
+            -e "discovery.type=single-node" \
+            -e "DISABLE_INSTALL_DEMO_CONFIG=true" \
+            -e "DISABLE_SECURITY_PLUGIN=true" \
+            -e "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" \
+            opensearchproject/opensearch:${{ steps.version.outputs.tag }}
+
+      - name: Wait for OpenSearch
+        run: |
+          echo "Waiting for OpenSearch to be ready..."
+          for i in $(seq 1 30); do
+            if curl -s http://localhost:9200 | grep -q '"cluster_name"'; then
+              echo "OpenSearch is ready."
+              exit 0
+            fi
+            echo "Attempt $i/30 - waiting 5s..."
+            sleep 5
+          done
+          echo "OpenSearch failed to start within 150 seconds."
+          docker logs opensearch
+          exit 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install opensearch-benchmark
+        run: pip install opensearch-benchmark
+
+      - name: List workload details
+        run: |
+          opensearch-benchmark list workloads \
+            --workload-path="${GITHUB_WORKSPACE}/${{ matrix.workload }}"
+
+      - name: Run workload in test-mode
+        run: |
+          opensearch-benchmark execute-test \
+            --pipeline=benchmark-only \
+            --target-hosts=127.0.0.1:9200 \
+            --workload-path="${GITHUB_WORKSPACE}/${{ matrix.workload }}" \
+            --test-mode \
+            --kill-running-processes \
+            --on-error=abort
+
+      - name: Dump OpenSearch logs on failure
+        if: failure()
+        run: docker logs opensearch
+
+      - name: Upload OSB logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: osb-logs-${{ matrix.workload }}
+          path: ~/.benchmark/logs/
+
+  workload-test-status:
+    if: always()
+    needs: [detect-workloads, test-workload]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check results
+        run: |
+          detect="${{ needs.detect-workloads.result }}"
+          test="${{ needs.test-workload.result }}"
+
+          echo "detect-workloads: $detect"
+          echo "test-workload: $test"
+
+          if [[ "$detect" != "success" ]]; then
+            echo "detect-workloads did not succeed."
+            exit 1
+          fi
+
+          # test-workload is skipped when no workloads are modified — that's OK
+          if [[ "$test" == "skipped" || "$test" == "success" ]]; then
+            echo "All checks passed."
+            exit 0
+          fi
+
+          echo "test-workload failed."
+          exit 1
