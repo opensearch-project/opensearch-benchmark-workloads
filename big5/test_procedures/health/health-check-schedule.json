@@ -1,0 +1,9 @@
+{
+  "operation": {
+    "name": "cluster-health-check",
+    "operation-type": "cluster-health"
+  },
+  "clients": 1,
+  "target-throughput": 0.1,
+  "time-period": 1200
+}
