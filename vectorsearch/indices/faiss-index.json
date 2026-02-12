@@ -2,8 +2,8 @@
     "settings": {
       "index": {
         "knn": true
-        {%- if memory_optimized_search_enabled is defined and memory_optimized_search_enabled %}
-        ,"knn.memory_optimized_search": true
+        {%- if memory_optimized_search_enabled is defined %}
+        ,"knn.memory_optimized_search": {{ memory_optimized_search_enabled | tojson }}
         {%- endif %}
         {%- if target_index_primary_shards is defined and target_index_primary_shards %}
         ,"number_of_shards": {{ target_index_primary_shards }}
@@ -11,11 +11,11 @@
         {%- if target_index_replica_shards is defined %}
         ,"number_of_replicas": {{ target_index_replica_shards }}
         {%- endif %}
-        {%- if derived_source_enabled is defined and derived_source_enabled %}
-        ,"knn.derived_source.enabled": true
+        {%- if derived_source_enabled is defined %}
+        ,"knn.derived_source.enabled": {{ derived_source_enabled | tojson }}
         {%- endif %}
-        {%- if remote_index_build_enabled is defined and remote_index_build_enabled %}
-        ,"knn.remote_index_build.enabled": true
+        {%- if remote_index_build_enabled is defined %}
+        ,"knn.remote_index_build.enabled": {{ remote_index_build_enabled | tojson }}
         {%- endif %}
         {%- if remote_index_build_enabled is defined and remote_index_build_enabled and remote_index_build_size_threshold is defined %}
         ,"knn.remote_index_build.size_threshold": "{{ remote_index_build_size_threshold }}"
