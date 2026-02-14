@@ -8,7 +8,7 @@
     "operation-type": "search",
     "param-source": "random-vector-search-param-source",
     "dims": {{ target_index_dimension | default(768) | int }},
-    "k": {{ query_k }},
+    "k": {{ query_k | default(100) | int }},
     "body": {{ query_body | default ({}) | tojson }},
     "field" : "{{ target_field_name | default('target_field') }}"
     {% if hnsw_ef_search is defined %}
