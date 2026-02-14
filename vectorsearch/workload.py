@@ -59,6 +59,7 @@ class RandomSearchParamSource(ParamSource):
         self._top_k = params.get("k", 100)
         self._field = params.get("field", "target_field")
         self._query_body = params.get("body", {})
+        self._detailed_results = params.get("detailed-results", False)
 
     def partition(self, partition_index, total_partitions):
         return self
@@ -67,7 +68,7 @@ class RandomSearchParamSource(ParamSource):
         query_vec = np.random.rand(self._dims).tolist()
         query = self.generate_knn_query(query_vec)
         query.update(self._query_body)
-        return {"index": self._index_name, "cache": self._cache, "size": self._top_k, "body": query}
+        return {"index": self._index_name, "cache": self._cache, "size": self._top_k, "body": query, "detailed-results": self._detailed_results}
 
     def generate_knn_query(self, query_vector):
         return {
