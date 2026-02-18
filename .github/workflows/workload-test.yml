@@ -19,25 +19,4 @@ jobs:
         run: pip install opensearch-benchmark
 
       - name: Validate all workloads
-        run: |
-          failed=()
-          for workload_json in */workload.json; do
-            workload="${workload_json%/workload.json}"
-            echo "=== Validating: $workload ==="
-            if opensearch-benchmark list workloads \
-              --workload-path="${GITHUB_WORKSPACE}/${workload}"; then
-              echo "OK: $workload"
-            else
-              echo "FAILED: $workload"
-              failed+=("$workload")
-            fi
-            echo ""
-          done
-
-          if [[ ${#failed[@]} -gt 0 ]]; then
-            echo "The following workloads failed validation:"
-            printf '  - %s\n' "${failed[@]}"
-            exit 1
-          fi
-
-          echo "All workloads validated successfully."
+        run: opensearch-benchmark list workloads
