@@ -114,4 +114,15 @@
     "schedule": [
        {{ benchmark.collect(parts="common/random-search-only-schedule.json") }}
     ]
+},
+{
+    "name": "no-train-test-multisegment-queries",
+    "description": "Index vector search which does not use an algorithm that requires training. Includes two rounds of queries: one with multiple segments and one with force merged segments.",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="common/index-only-schedule.json") }},
+       {{ benchmark.collect(parts="common/search-only-premerge-schedule.json") }},
+       {{ benchmark.collect(parts="common/force-merge-schedule.json") }},
+       {{ benchmark.collect(parts="common/search-only-schedule.json") }}
+    ]
 }
