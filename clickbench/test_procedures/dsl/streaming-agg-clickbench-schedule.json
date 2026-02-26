@@ -1,0 +1,63 @@
+{
+  "operation": "dsl-q13-search-phrase-count",
+  "warmup-iterations": {{ dsl_q13_search_phrase_count_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q13_search_phrase_count_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q13_search_phrase_count_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q13_search_phrase_count_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q16-user-activity",
+  "warmup-iterations": {{ dsl_q16_user_activity_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q16_user_activity_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q16_user_activity_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q16_user_activity_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q22-google-search-phrases",
+  "warmup-iterations": {{ dsl_q22_google_search_phrases_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q22_google_search_phrases_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q22_google_search_phrases_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q22_google_search_phrases_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q34-url-popularity",
+  "warmup-iterations": {{ dsl_q34_url_popularity_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q34_url_popularity_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q34_url_popularity_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q34_url_popularity_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q35-url-with-constant",
+  "warmup-iterations": {{ dsl_q35_url_with_constant_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q35_url_with_constant_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q35_url_with_constant_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q35_url_with_constant_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q36-client-ip-variations",
+  "warmup-iterations": {{ dsl_q36_client_ip_variations_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q36_client_ip_variations_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q36_client_ip_variations_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q36_client_ip_variations_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q37-counter-62-urls",
+  "warmup-iterations": {{ dsl_q37_counter_62_urls_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q37_counter_62_urls_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q37_counter_62_urls_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q37_counter_62_urls_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q38-counter-62-titles",
+  "warmup-iterations": {{ dsl_q38_counter_62_titles_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q38_counter_62_titles_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q38_counter_62_titles_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q38_counter_62_titles_clients or search_clients | default(1) }}
+},
+{
+  "operation": "dsl-q39-counter-62-links",
+  "warmup-iterations": {{ dsl_q39_counter_62_links_warmup_iterations or warmup_iterations | default(100) | tojson }},
+  "iterations": {{ dsl_q39_counter_62_links_iterations or test_iterations | default(100) | tojson }},
+  "target-throughput": {{ dsl_q39_counter_62_links_target_throughput or target_throughput | default(2) | tojson }},
+  "clients": {{ dsl_q39_counter_62_links_clients or search_clients | default(1) }}
+}
