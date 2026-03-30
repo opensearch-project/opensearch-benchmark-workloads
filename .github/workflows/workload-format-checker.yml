@@ -19,6 +19,7 @@ jobs:
           git clone https://github.com/aristanetworks/j2lint.git && cd j2lint
           python3 -m pip install -e .
           j2lint --version
+          python3 -m pip install pandas
 
       - name: Get changed files
         id: changed-files
