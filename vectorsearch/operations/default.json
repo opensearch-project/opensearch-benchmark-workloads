@@ -28,4 +28,14 @@
 {
     "name": "delete-model",
     "operation-type": "delete-knn-model"   
+},
+{
+  "name": "update-cluster-settings-for-knn-prefetch",
+  "operation-type": "put-settings",
+  "body": {
+    "persistent": {
+      "knn.feature.prefetch.enabled": "{{ knn_prefetch_enabled | default('false') }}"
+    }
+  },
+  "include-in-reporting": true
 }
