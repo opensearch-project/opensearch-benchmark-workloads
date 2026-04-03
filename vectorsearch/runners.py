@@ -7,8 +7,9 @@
 import logging
 
 from opensearchpy.exceptions import ConnectionTimeout
-from osbenchmark.worker_coordinator.runner import Retry, Runner
-from osbenchmark.client import RequestContextHolder
+from osbenchmark.worker_coordinator.runners.base import Runner
+from osbenchmark.worker_coordinator.runners.opensearch import Retry
+from osbenchmark.context import RequestContextHolder
 
 from osbenchmark.utils.parse import parse_int_parameter, parse_string_parameter
 
