@@ -4,6 +4,6 @@ def put_settings(es, params):
 
 def register(registry):
     try:
-        from osbenchmark.worker_coordinator.runners.opensearch import PutSettings
+        from osbenchmark.worker_coordinator.runner import PutSettings
     except ImportError:
         registry.register_runner("put-settings", put_settings)
