@@ -291,4 +291,18 @@
   "iterations": 1,
   "target-throughput": 1,
   "clients": 1
+},
+{
+  "operation": "dsl-q44-multi-range-no-sort",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
+},
+{
+  "operation": "dsl-q45-multi-range-with-sort",
+  "warmup-iterations": 1,
+  "iterations": 1,
+  "target-throughput": 1,
+  "clients": 1
 }
