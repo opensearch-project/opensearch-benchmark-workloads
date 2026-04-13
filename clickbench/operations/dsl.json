@@ -2700,4 +2700,48 @@
                 }
             }
         }
+    },
+    {
+        "name": "dsl-q44-multi-range-no-sort",
+        "operation-type": "raw-request",
+        "path": "/_search",
+        "method": "POST",
+        "body": {
+            "from": 0,
+            "size": 0,
+            "timeout": "1m",
+            "query": {
+                "bool": {
+                    "filter": [
+                        { "range": { "RegionID": { "from": 200, "to": 300, "include_lower": true, "include_upper": true, "boost": 1.0 } } },
+                        { "range": { "ResolutionWidth": { "from": 1200, "to": 1400, "include_lower": true, "include_upper": true, "boost": 1.0 } } },
+                        { "range": { "ClientIP": { "from": 500000000, "to": 1500000000, "include_lower": true, "include_upper": true, "boost": 1.0 } } },
+                        { "range": { "ResolutionHeight": { "from": 700, "to": 900, "include_lower": true, "include_upper": true, "boost": 1.0 } } },
+                        { "range": { "Age": { "from": 20, "to": 40, "include_lower": true, "include_upper": true, "boost": 1.0 } } }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "name": "dsl-q45-multi-range-with-sort",
+        "operation-type": "raw-request",
+        "path": "/_search",
+        "method": "POST",
+        "body": {
+            "from": 0,
+            "size": 0,
+            "timeout": "1m",
+            "query": {
+                "bool": {
+                    "filter": [
+                        { "range": { "CounterID": { "from": 50, "to": 100, "include_lower": true, "include_upper": true, "boost": 1.0 } } },
+                        { "range": { "RegionID": { "from": 200, "to": 300, "include_lower": true, "include_upper": true, "boost": 1.0 } } },
+                        { "range": { "ResolutionWidth": { "from": 1200, "to": 1400, "include_lower": true, "include_upper": true, "boost": 1.0 } } },
+                        { "range": { "ClientIP": { "from": 500000000, "to": 1500000000, "include_lower": true, "include_upper": true, "boost": 1.0 } } },
+                        { "range": { "ResolutionHeight": { "from": 700, "to": 900, "include_lower": true, "include_upper": true, "boost": 1.0 } } }
+                    ]
+                }
+            }
+        }
     }
