@@ -23,7 +23,8 @@
     "query_k": 100,
     "query_body": {
          "docvalue_fields" : ["_id"],
-         "stored_fields" : "_none_"
+         "stored_fields" : "_none_",
+         "_source": false
     },
 
     "query_data_set_format": "hdf5",
