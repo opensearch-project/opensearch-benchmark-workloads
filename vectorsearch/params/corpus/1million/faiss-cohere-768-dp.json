@@ -5,13 +5,12 @@
     "target_index_primary_shards": 3,
     "target_index_dimension": 768,
     "target_index_space_type": "innerproduct",
-    "approximate_graph_build_threshold": 0,
-    
+
     "target_index_bulk_size": 100,
     "target_index_bulk_index_data_set_format": "hdf5",
     "target_index_bulk_index_data_set_corpus": "cohere-1m",
     "target_index_bulk_indexing_clients": 10,
-    
+
     "target_index_max_num_segments": 1,
     "hnsw_ef_search": 256,
     "hnsw_ef_construction": 256,
@@ -19,7 +18,8 @@
     "query_k": 100,
     "query_body": {
          "docvalue_fields" : ["_id"],
-         "stored_fields" : "_none_"
+         "stored_fields" : "_none_",
+         "_source": false
     },
 
     "query_data_set_format": "hdf5",
