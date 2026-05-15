@@ -32,6 +32,12 @@
         "{{ target_field_name }}": {
           "type": "knn_vector",
           "dimension": {{ target_index_dimension }},
+          {%- if mode is defined %}
+          "mode": "{{ mode }}",
+          {%- endif %}
+          {%- if compression_level is defined %}
+          "compression_level": "{{ compression_level }}",
+          {%- endif %}
           "method": {
             "name": "hnsw",
             "space_type": "{{ target_index_space_type }}",

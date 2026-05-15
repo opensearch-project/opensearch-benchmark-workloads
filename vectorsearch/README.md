@@ -114,6 +114,9 @@ This workload allows the following parameters to be specified using `--workload-
 | remote_index_build_size_threshold       | If remote_index_build_enabled, indicates the size threshold above which remote vector builds will be enabled (default 50mb)          |
 | memory_optimized_search_enabled         | Whether to enable memory optimized search on the index. (default false, pass in either true or fals)                                 |
 | knn_prefetch_enabled                    | Enable disable the prefetch based on the value. (default is false)                                                                   |
+| mode                                    | Vector workload index mode. Set to `on_disk` to enable disk-based features like rescoring with `oversample_factor`. |
+| compression_level                       | Compression level for disk-based vector indices. Use with `mode=on_disk`. |
+| oversample_factor                       | Oversample factor for rescoring in disk-based vector search. Retrieves (k × oversample_factor) candidates and rescores to return top k results. Higher values typically improve recall but may affect latency; optimal value depends on dataset characteristics. Applicable only when `mode=on_disk`. |
 
 
 
