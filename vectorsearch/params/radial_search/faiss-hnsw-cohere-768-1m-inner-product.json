@@ -16,7 +16,7 @@
     "hnsw_ef_search": 256,
     "hnsw_ef_construction": 256,
     "target_index_num_vectors": 1000000,
-    "query_max_distance": -160.0,
+    "query_max_distance": "<your-threshold>",
     "query_body": {
          "docvalue_fields" : ["_id"],
          "stored_fields" : "_none_",
