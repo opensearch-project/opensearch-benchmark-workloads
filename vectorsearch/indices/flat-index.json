@@ -31,17 +31,12 @@
           "type": "knn_vector",
           "dimension": {{ target_index_dimension | default(768) }},
           "mode": "on_disk",
-          "compression_level": "32x",
           "method": {
             "name": "hnsw",
             "space_type": "{{ target_index_space_type }}",
-            "engine": "lucene",
             "parameters": {
               "encoder": {
-                "name": "sq",
-                "parameters": {
-                  "bits": 1
-                }
+                "name": "flat"
               }
             }
           }
