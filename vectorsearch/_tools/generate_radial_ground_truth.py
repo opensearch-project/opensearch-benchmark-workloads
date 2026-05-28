@@ -38,6 +38,7 @@ import sys
 
 
 def calculate_distances(query, corpus, space_type):
+    """Compute raw distances from a single query to all corpus vectors."""
     if space_type == "l2":
         return np.sum((corpus - query) ** 2, axis=1)
     elif space_type == "innerproduct":
@@ -50,7 +51,8 @@ def calculate_distances(query, corpus, space_type):
         raise ValueError(f"Unsupported space type: {space_type}")
 
 
-def calculate_scores(distances, space_type):
+def convert_distances_to_scores(distances, space_type):
+    """Convert raw distances to OpenSearch scores (higher = more similar)."""
     if space_type == "l2":
         return 1 / (1 + distances)
     elif space_type == "innerproduct":
@@ -62,11 +64,17 @@ def calculate_scores(distances, space_type):
 
 
 def distance_to_score(threshold, space_type):
-    return float(calculate_scores(np.array([threshold]), space_type)[0])
+    return float(convert_distances_to_scores(np.array([threshold]), space_type)[0])
 
 
 def probe_threshold(input_path, space_type):
+    """Estimate a reasonable distance threshold by looking at k=100 neighbor distances.
+
+    Uses the median distance to the 100th nearest neighbor across queries as the
+    auto-threshold. This gives ~100 neighbors per query on average.
+    """
     with h5py.File(input_path, "r") as f:
+        # Fast path: some ann-benchmarks datasets include precomputed k=100 distances
         if "distances" in f:
             distances_k100 = f["distances"][:]
             radii_at_k100 = distances_k100[:, -1]
@@ -75,6 +83,7 @@ def probe_threshold(input_path, space_type):
                   f"median={np.median(radii_at_k100):.4f}, "
                   f"max={radii_at_k100.max():.4f}")
             return np.median(radii_at_k100)
+        # Fallback: compute distance to k=100th neighbor from a sample of queries
         elif "neighbors" in f:
             print("No 'distances' key found. Computing distances from neighbors...")
             train_ds = f["train"]
@@ -102,6 +111,7 @@ def probe_threshold(input_path, space_type):
 
 
 def generate_ground_truth(input_path, output_path, space_type, threshold, max_length=10000):
+    """Brute-force compute all neighbors within distance threshold for each query."""
     score_threshold = distance_to_score(threshold, space_type)
 
     with h5py.File(input_path, "r") as f_in:
@@ -117,17 +127,24 @@ def generate_ground_truth(input_path, output_path, space_type, threshold, max_le
         print(f"  min_score threshold: {score_threshold}")
         print(f"  Space type: {space_type}")
 
+        # Process corpus in chunks to avoid OOM on large datasets.
+        # h5py loads entire slices into memory, so for 10M vectors (10M × 768 × float32 ≈ 29GB)
+        # we read 1M at a time (~3GB per chunk) instead of all at once.
         corpus_chunk_size = min(num_corpus, 1_000_000)
+        # Fixed-width array padded with -1 for HDF5 storage (variable-length not supported)
         padded_data = np.full((num_queries, max_length), -1, dtype=np.int64)
         neighbor_counts = []
 
         for i in range(num_queries):
             all_distances = np.empty(num_corpus, dtype=np.float32)
+
+            # Compute distances in chunks to keep peak memory usage bounded
             for chunk_start in range(0, num_corpus, corpus_chunk_size):
                 chunk_end = min(chunk_start + corpus_chunk_size, num_corpus)
                 corpus_chunk = f_in["train"][chunk_start:chunk_end]
                 all_distances[chunk_start:chunk_end] = calculate_distances(test[i], corpus_chunk, space_type)
 
+            # Filter to vectors within threshold, sort by distance (closest first)
             within_threshold = np.where(all_distances <= threshold)[0]
             sorted_ids = within_threshold[np.argsort(all_distances[within_threshold])][:max_length]
 
