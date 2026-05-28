@@ -18,6 +18,7 @@
     "target_index_num_vectors": 1000000,
     "query_max_distance": "<your-threshold>",
     "query_body": {
+         "size": 10000,
          "docvalue_fields" : ["_id"],
          "stored_fields" : "_none_",
          "_source": false
