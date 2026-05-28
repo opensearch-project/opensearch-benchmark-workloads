@@ -17,6 +17,9 @@
         {%- if remote_index_build_enabled is defined and remote_index_build_enabled and remote_index_build_size_threshold is defined %}
         ,"knn.remote_index_build.size_threshold": "{{ remote_index_build_size_threshold }}"
         {%- endif %}
+        {%- if hnsw_ef_search is defined and hnsw_ef_search %}
+        ,"knn.algo_param.ef_search": {{ hnsw_ef_search }}
+        {%- endif %}
       }
     },
     "mappings": {
@@ -37,6 +40,9 @@
             "space_type": "{{ target_index_space_type }}",
             "engine": "lucene",
             "parameters": {
+              {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
+              "ef_construction": {{ hnsw_ef_construction }},
+              {%- endif %}
               "encoder": {
                 "name": "sq",
                 "parameters": {
