@@ -166,16 +166,14 @@ def generate_ground_truth(input_path, output_path, space_type, threshold, max_le
             for key in copied_keys:
                 f_in.copy(key, f_out)
 
-        f_out.create_dataset("max_distance_neighbors", data=padded_data)
-        f_out.create_dataset("min_score_neighbors", data=padded_data)
+        f_out.create_dataset("radial_neighbors", data=padded_data)
 
         f_out.attrs["max_distance_threshold"] = threshold
         f_out.attrs["min_score_threshold"] = score_threshold
         f_out.attrs["space_type"] = space_type
 
         print(f"\nWrote to {output_path}:")
-        print(f"  - max_distance_neighbors (threshold: {threshold})")
-        print(f"  - min_score_neighbors (threshold: {score_threshold})")
+        print(f"  - radial_neighbors (max_distance: {threshold}, min_score: {score_threshold})")
         print(f"  - Copied: {copied_keys}")
 
 
