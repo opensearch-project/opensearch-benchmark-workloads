@@ -176,4 +176,64 @@
        {{ benchmark.collect(parts="common/update-prefetch-schedule.json") }},
        {{ benchmark.collect(parts="common/random-search-only-schedule.json") }}
     ]
+},
+{
+    "name": "grpc-no-train-test-index-only",
+    "description": "Vector index-only via gRPC with JSON documents",
+    "default": false,
+    "schedule": [
+        {
+          "operation": {
+            "name": "delete-target-index",
+            "operation-type": "delete-index",
+            "only-if-exists": true,
+            "index": "{{ target_index_name | default('target_index') }}"
+          }
+        },
+        {
+          "operation": {
+            "name": "create-target-index",
+            "operation-type": "create-index",
+            "index": "{{ target_index_name | default('target_index') }}"
+          }
+        },
+        {
+          "operation": "grpc-vector-bulk",
+          "clients": {{ target_index_bulk_indexing_clients | default(1)}}
+        },
+        {
+          "name": "refresh-target-index",
+          "operation": "refresh-target-index"
+        }
+    ]
+},
+{
+    "name": "grpc-cbor-no-train-test-index-only",
+    "description": "Vector index-only via gRPC with CBOR documents",
+    "default": false,
+    "schedule": [
+        {
+          "operation": {
+            "name": "delete-target-index",
+            "operation-type": "delete-index",
+            "only-if-exists": true,
+            "index": "{{ target_index_name | default('target_index') }}"
+          }
+        },
+        {
+          "operation": {
+            "name": "create-target-index",
+            "operation-type": "create-index",
+            "index": "{{ target_index_name | default('target_index') }}"
+          }
+        },
+        {
+          "operation": "grpc-cbor-vector-bulk",
+          "clients": {{ target_index_bulk_indexing_clients | default(1)}}
+        },
+        {
+          "name": "refresh-target-index",
+          "operation": "refresh-target-index"
+        }
+    ]
 }
