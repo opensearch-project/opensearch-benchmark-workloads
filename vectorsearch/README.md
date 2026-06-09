@@ -658,7 +658,28 @@ Currently, there is only one custom runner defined in [runners.py](runners.py).
 
 ### Running a Random Dataset benchmark
 
-The vectorsearch workload supports generating random vectors for benchmarking without requiring external datasets. This is useful for quick performance testing and development.
+The vectorsearch workload supports generating vectors for benchmarking without requiring external datasets. This is useful for quick performance testing and development.
+
+#### Vector Generation
+
+Vectors are generated using `sklearn.datasets.make_blobs` which produces Gaussian clustered data rather than 
+uniform random vectors. This is important because:
+
+- **Uniform random vectors** are approximately equidistant in high-dimensional space, creating no natural 
+  neighborhoods. This results in worst-case behavior for graph-based ANN algorithms (like HNSW) and produces 
+  recall/latency numbers that are not representative of real-world workloads.
+- **Clustered vectors (make_blobs)** have realistic neighborhood structure similar to real embeddings (text, image), 
+  allowing HNSW to build efficient navigable graphs and producing meaningful benchmark results.
+
+Cluster centers are generated once with a fixed seed and shared across all parallel indexing clients, ensuring 
+consistent global cluster structure regardless of the number of processes.
+
+Default configuration:
+- `num_centers=2000` — With ~800K-1.5M docs per segment, this gives 400-750 vectors per cluster per segment, 
+  well above HNSW's M parameter for strong intra-cluster connectivity.
+- `cluster_std=0.5` — Controls the spread of points around each center. At 0.5, clusters have clear structure 
+  with slight overlap at boundaries, producing realistic transitions between neighborhoods without creating 
+  overly isolated islands that could degrade cross-cluster search.
 
 #### Available Test Procedures
 
@@ -723,6 +744,9 @@ The default values here will ingest 1M docs of 768D and will run 1K queries usin
     "hnsw_ef_search": 100,
     "hnsw_ef_construction": 100,
 
+    "num_centers": 2000,
+    "cluster_std": 0.5,
+
     "query_k": 100,
     "query_body": {
          "docvalue_fields" : ["_id"],
@@ -738,6 +762,8 @@ The default values here will ingest 1M docs of 768D and will run 1K queries usin
 - `target_index_bulk_size` - Number of documents per bulk request
 - `target_index_bulk_indexing_clients` - Number of concurrent indexing clients
 - `index_iterations` - Number of indexing iterations
+- `num_centers` - Number of Gaussian cluster centers for vector generation (default: 2000). Choose based on total docs per segment to ensure sufficient vectors per cluster (aim for >> M parameter of HNSW)
+- `cluster_std` - Standard deviation of points around cluster centers (default: 0.5). Lower values = tighter, more separated clusters. Higher values = more overlap (approaches uniform random above ~5.0)
 - `query_k` - Number of nearest neighbors to retrieve
 - `query_iterations` - Number of search queries to execute
 - `search_clients` - Number of clients that will executing the 
