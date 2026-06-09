@@ -1,0 +1,10 @@
+{
+  "query": {
+    "match": {
+      "message": "50-136-239-27"
+    }
+  },
+  "collapse": {
+    "field": "process.name"
+  }
+}
