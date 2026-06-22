@@ -8,7 +8,6 @@ from .runners import register as register_runners
 from osbenchmark.workload.params import ParamSource
 import random
 import numpy as np
-from sklearn.datasets import make_blobs
 import logging
 
 
@@ -74,13 +73,16 @@ class RandomBulkParamSource(ParamSource):
         self._num_centers = params.get("num_centers", 2000)
         self._cluster_std = params.get("cluster_std", 0.5)
         self._centers = _get_cluster_centers(self._dims, self._num_centers)
+        # Imported lazily so workload load (e.g. `osb list workloads`) does not require scikit-learn.
+        from sklearn.datasets import make_blobs
+        self._make_blobs = make_blobs
 
     def partition(self, partition_index, total_partitions):
         return self
 
     def params(self):
         bulk_data = []
-        vectors, _ = make_blobs(
+        vectors, _ = self._make_blobs(
             n_samples=self._bulk_size,
             n_features=self._dims,
             centers=self._centers,
@@ -116,13 +118,16 @@ class RandomSearchParamSource(ParamSource):
         self._num_centers = params.get("num_centers", 2000)
         self._cluster_std = params.get("cluster_std", 0.5)
         self._centers = _get_cluster_centers(self._dims, self._num_centers)
+        # Imported lazily so workload load (e.g. `osb list workloads`) does not require scikit-learn.
+        from sklearn.datasets import make_blobs
+        self._make_blobs = make_blobs
 
     def partition(self, partition_index, total_partitions):
         return self
 
     def params(self):
         # Generate query vector from the same cluster distribution
-        query_vec, _ = make_blobs(
+        query_vec, _ = self._make_blobs(
             n_samples=1,
             n_features=self._dims,
             centers=self._centers,
