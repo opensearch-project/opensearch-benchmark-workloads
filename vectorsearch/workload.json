@@ -65,6 +65,7 @@
     {
       "name": "cohere-10m-radial",
       "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "target-index": "{{ target_index_name }}",
       "documents": [
         {
           "source-file": "cohere-10m-radial.hdf5.bz2",
