@@ -2744,4 +2744,81 @@
                 }
             }
         }
+    },
+    {
+        "name": "dsl-streaming-nested-string-terms",
+        "operation-type": "raw-request",
+        "path": "/_search",
+        "method": "POST",
+        "body": {
+            "from": 0,
+            "size": 0,
+            "timeout": "1m",
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "exists": {
+                                "field": "SearchPhrase"
+                            }
+                        },
+                        {
+                            "exists": {
+                                "field": "URL"
+                            }
+                        }
+                    ],
+                    "must_not": [
+                        {
+                            "term": {
+                                "SearchPhrase": ""
+                            }
+                        },
+                        {
+                            "term": {
+                                "URL": ""
+                            }
+                        }
+                    ]
+                }
+            },
+            "aggregations": {
+                "SearchPhrase": {
+                    "terms": {
+                        "field": "SearchPhrase",
+                        "size": 10,
+                        "min_doc_count": 1,
+                        "shard_min_doc_count": 0,
+                        "show_term_doc_count_error": false,
+                        "order": [
+                            {
+                                "_count": "desc"
+                            },
+                            {
+                                "_key": "asc"
+                            }
+                        ]
+                    },
+                    "aggregations": {
+                        "URL": {
+                            "terms": {
+                                "field": "URL",
+                                "size": 10,
+                                "min_doc_count": 1,
+                                "shard_min_doc_count": 0,
+                                "show_term_doc_count_error": false,
+                                "order": [
+                                    {
+                                        "_count": "desc"
+                                    },
+                                    {
+                                        "_key": "asc"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
