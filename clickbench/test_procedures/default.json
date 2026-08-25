@@ -65,11 +65,11 @@
 },
 {
   "name": "streaming-agg-clickbench",
-  "description": "Indexes the ClickBench dataset and runs streaming-eligible DSL aggregation queries.",
+  "description": "Prepares the ClickBench dataset and runs streaming-eligible DSL aggregation queries.",
   "default": false,
   "schedule": [
     {% with default_index_settings={}, index_name="clickbench" %}
-    {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+    {{ benchmark.collect(parts="common/streaming-agg-workload-setup.json") }},
     {% endwith %}
     {{ benchmark.collect(parts="dsl/streaming-agg-clickbench-schedule.json") }}
   ]
