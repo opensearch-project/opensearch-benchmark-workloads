@@ -62,4 +62,15 @@
     },
     {{ benchmark.collect(parts="ppl/mustang-clickbench-schedule.json") }}
   ]
+},
+{
+  "name": "streaming-agg-clickbench",
+  "description": "Indexes the ClickBench dataset and runs streaming-eligible DSL aggregation queries.",
+  "default": false,
+  "schedule": [
+    {% with default_index_settings={}, index_name="clickbench" %}
+    {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+    {% endwith %}
+    {{ benchmark.collect(parts="dsl/streaming-agg-clickbench-schedule.json") }}
+  ]
 }
