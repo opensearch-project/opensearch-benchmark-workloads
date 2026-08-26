@@ -20,7 +20,6 @@
   "corpora": [
     {
       "name": "linestrings",
-      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/geoshape",
       "target-index": "osmlinestrings",
       "documents": [
         {
@@ -33,7 +32,6 @@
     },
     {
       "name": "multilinestrings",
-      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/geoshape",
       "target-index": "osmmultilinestrings",
       "documents": [
         {
@@ -46,7 +44,6 @@
     },
     {
       "name": "polygons",
-      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/geoshape",
       "target-index": "osmpolygons",
       "documents": [
         {

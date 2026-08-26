@@ -1,5 +1,11 @@
 ## Geoshape workload
 
+> **⚠️ Corpus not currently available for download.**
+> The hosted data corpus for this workload has been removed pending a data-license review.
+> To run this workload, please obtain the source data yourself from the original source (https://wiki.openstreetmap.org/wiki/Planet.osm)
+> and ingest it into your OpenSearch cluster (or provide it locally via `--offline` with a populated data directory).
+
+
 This workload is based on [PlanetOSM](http://wiki.openstreetmap.org/wiki/Planet.osm) data.
 
 ### Example Document

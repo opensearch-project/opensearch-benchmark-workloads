@@ -1,5 +1,11 @@
 ## HTTP logs workload
 
+> **⚠️ Corpus not currently available for download.**
+> The hosted data corpus for this workload has been removed pending a data-license review.
+> To run this workload, please obtain the source data yourself from the original source (https://ita.ee.lbl.gov/html/contrib/WorldCup.html)
+> and ingest it into your OpenSearch cluster (or provide it locally via `--offline` with a populated data directory).
+
+
 This workload is based on [Web server logs from the 1998 Football world cup](http://ita.ee.lbl.gov/html/contrib/WorldCup.html).
 
 Modifications:

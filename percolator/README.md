@@ -1,5 +1,11 @@
 ## Percolator workload
 
+> **⚠️ Corpus not currently available for download.**
+> The hosted data corpus for this workload has been removed pending a data-license review.
+> To run this workload, please obtain the source data yourself from the original source (the AOL query dataset (2006))
+> and ingest it into your OpenSearch cluster (or provide it locally via `--offline` with a populated data directory).
+
+
 The queries.json.bz2 file contains list of ES queries that has been randomly generated from the AOL query dataset published in 2006. Only specific queries have been selected and the rest of the file contains dummy queries. Only the query attribute is copied from the AOL query dataset, the rest of the attributes are not in this file.
 
 ### Example Document

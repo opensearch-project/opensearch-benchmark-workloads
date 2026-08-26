@@ -12,7 +12,6 @@
   "corpora": [
     {
       "name": "geopoint",
-      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/geopoint",
       "documents": [
         {
           "source-file": "documents.json.bz2",

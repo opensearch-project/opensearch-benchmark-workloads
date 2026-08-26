@@ -12,7 +12,6 @@
   "corpora": [
     {
       "name": "percolator",
-      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/percolator",
       "documents": [
         {
           "source-file": "queries-2.json.bz2",

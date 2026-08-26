@@ -1,5 +1,11 @@
 # ClickBench OpenSearch Benchmark Workload
 
+> **⚠️ Corpus not currently available for download.**
+> The hosted data corpus for this workload has been removed pending a data-license review.
+> To run this workload, please obtain the source data yourself from the original source (https://datasets.clickhouse.com/hits_compatible/hits.json.gz)
+> and ingest it into your OpenSearch cluster (or provide it locally via `--offline` with a populated data directory).
+
+
 This workload is based on the ClickHouse ClickBench dataset, which contains web analytics data from Yandex.Metrica. It's designed to benchmark OpenSearch performance using PPL (Piped Processing Language) queries that cover typical web analytics operations including aggregations, filtering, sorting, and complex analytical queries.
 
 ## Dataset
