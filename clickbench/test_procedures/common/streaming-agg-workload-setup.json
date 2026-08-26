@@ -1,0 +1,5 @@
+{% if use_snapshot %}
+  {{ benchmark.collect(parts="snapshot-ops.json") }}
+{% else %}
+  {{ benchmark.collect(parts="../../../common_operations/workload_setup.json") }}
+{% endif %}

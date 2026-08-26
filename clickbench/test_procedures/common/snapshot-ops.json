@@ -1,0 +1,81 @@
+{
+  "operation": "delete-index"
+},
+{
+  "name": "register-snapshot-repository",
+  "operation": {
+    "operation-type": "create-snapshot-repository",
+    "repository": {{ snapshot_repo | default(snapshot_repo_name) | default('test-snapshot-repo') | tojson }},
+    "body": {
+      "type": "s3",
+      "settings": {
+        "bucket": {{ snapshot_bucket_name | default('test-snapshot-bucket') | tojson }},
+        "region": {{ snapshot_region | default('us-east-1') | tojson }},
+        "base_path": {{ snapshot_base_path | default('test-base-path') | tojson }}
+      }
+    }
+  }
+},
+{
+  "name": "restore-from-snapshot",
+  "operation": {
+    "operation-type": "restore-snapshot",
+    "repository": {{ snapshot_repo | default(snapshot_repo_name) | default('test-snapshot-repo') | tojson }},
+    "snapshot": {{ snapshot_name | default('test-snapshot') | tojson }},
+    "body": {
+      "index_settings": {
+        "index.number_of_replicas": {{ number_of_replicas | default(0) }}
+      }
+    },
+    "wait-for-completion": false
+  }
+},
+{
+  "name": "wait-for-snapshot-recovery",
+  "operation": {
+    "operation-type": "wait-for-recovery",
+    "request-timeout": 7200,
+    "index": "clickbench"
+  }
+},
+{
+  "name": "check-cluster-health",
+  "operation": {
+    "operation-type": "cluster-health",
+    "index": "clickbench",
+    "request-params": {
+      "wait_for_status": "{{ cluster_health | default('green') }}",
+      "wait_for_no_relocating_shards": "true"
+    },
+    "retry-until-success": true
+  }
+},
+{
+  "name": "refresh-after-index",
+  "operation": "refresh"
+},
+{
+  "operation": {
+    "operation-type": "force-merge",
+    "request-timeout": 7200{% if max_num_segments is defined %},
+    "max-num-segments": {{ max_num_segments | tojson }}
+    {% endif %}
+  }
+},
+{
+  "name": "refresh-after-force-merge",
+  "operation": "refresh"
+},
+{
+  "name": "wait-until-merges-finish",
+  "operation": {
+    "operation-type": "index-stats",
+    "index": "_all",
+    "condition": {
+      "path": "_all.total.merges.current",
+      "expected-value": 0
+    },
+    "retry-until-success": true,
+    "include-in-reporting": false
+  }
+}
