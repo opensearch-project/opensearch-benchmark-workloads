@@ -104,6 +104,9 @@ This workload allows the following parameters to be specified using `--workload-
 | query_data_set_format                   | Format of vector data set for queries                                                                                                |
 | query_data_set_path                     | Path to vector data set for queries                                                                                                  |
 | query_count                             | Number of queries for search operation                                                                                               |
+| filter_type                             | Type of filter to apply to the query: `efficient` (inside the knn clause), `post_filter`, `boolean`, or `script` (exact script-score search over filtered docs) |
+| filter_body                             | Body of the filter query (e.g. a term query on a filter field)                                                                       |
+| filter_percentage                       | Filter selectivity suffix for per-percentage ground truth datasets (e.g. `10pct` reads `neighbors_10pct`); must match the field used in filter_body |
 | query_body                              | Json properties that will be merged with search body                                                                                 |
 | search_clients                          | Number of clients to use for running queries                                                                                         |
 | repetitions                             | Number of repetitions until the data set is exhausted (default 1)                                                                    |
