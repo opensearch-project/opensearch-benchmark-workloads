@@ -1,0 +1,132 @@
+{
+  "operation": "q01-pricing-summary",
+  "warmup-iterations": {{ q01_pricing_summary_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q01_pricing_summary_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q01_pricing_summary_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q02-minimum-cost-supplier",
+  "warmup-iterations": {{ q02_minimum_cost_supplier_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q02_minimum_cost_supplier_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q02_minimum_cost_supplier_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q03-shipping-priority",
+  "warmup-iterations": {{ q03_shipping_priority_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q03_shipping_priority_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q03_shipping_priority_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q04-order-priority-checking",
+  "warmup-iterations": {{ q04_order_priority_checking_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q04_order_priority_checking_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q04_order_priority_checking_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q05-local-supplier-volume",
+  "warmup-iterations": {{ q05_local_supplier_volume_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q05_local_supplier_volume_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q05_local_supplier_volume_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q06-forecasting-revenue-change",
+  "warmup-iterations": {{ q06_forecasting_revenue_change_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q06_forecasting_revenue_change_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q06_forecasting_revenue_change_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q07-volume-shipping",
+  "warmup-iterations": {{ q07_volume_shipping_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q07_volume_shipping_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q07_volume_shipping_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q08-national-market-share",
+  "warmup-iterations": {{ q08_national_market_share_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q08_national_market_share_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q08_national_market_share_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q09-product-type-profit-measure",
+  "warmup-iterations": {{ q09_product_type_profit_measure_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q09_product_type_profit_measure_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q09_product_type_profit_measure_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q10-returned-item-reporting",
+  "warmup-iterations": {{ q10_returned_item_reporting_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q10_returned_item_reporting_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q10_returned_item_reporting_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q11-important-stock-identification",
+  "warmup-iterations": {{ q11_important_stock_identification_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q11_important_stock_identification_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q11_important_stock_identification_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q12-shipping-modes-and-order-priority",
+  "warmup-iterations": {{ q12_shipping_modes_and_order_priority_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q12_shipping_modes_and_order_priority_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q12_shipping_modes_and_order_priority_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q13-customer-distribution",
+  "warmup-iterations": {{ q13_customer_distribution_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q13_customer_distribution_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q13_customer_distribution_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q14-promotion-effect",
+  "warmup-iterations": {{ q14_promotion_effect_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q14_promotion_effect_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q14_promotion_effect_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q15-top-supplier",
+  "warmup-iterations": {{ q15_top_supplier_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q15_top_supplier_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q15_top_supplier_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q16-parts-supplier-relationship",
+  "warmup-iterations": {{ q16_parts_supplier_relationship_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q16_parts_supplier_relationship_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q16_parts_supplier_relationship_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q17-small-quantity-order-revenue",
+  "warmup-iterations": {{ q17_small_quantity_order_revenue_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q17_small_quantity_order_revenue_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q17_small_quantity_order_revenue_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q18-large-volume-customer",
+  "warmup-iterations": {{ q18_large_volume_customer_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q18_large_volume_customer_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q18_large_volume_customer_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q19-discounted-revenue",
+  "warmup-iterations": {{ q19_discounted_revenue_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q19_discounted_revenue_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q19_discounted_revenue_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q20-potential-part-promotion",
+  "warmup-iterations": {{ q20_potential_part_promotion_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q20_potential_part_promotion_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q20_potential_part_promotion_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q21-suppliers-who-kept-orders-waiting",
+  "warmup-iterations": {{ q21_suppliers_who_kept_orders_waiting_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q21_suppliers_who_kept_orders_waiting_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q21_suppliers_who_kept_orders_waiting_clients or search_clients | default(1) }}
+},
+{
+  "operation": "q22-global-sales-opportunity",
+  "warmup-iterations": {{ q22_global_sales_opportunity_warmup_iterations or warmup_iterations | default(1) | tojson }},
+  "iterations": {{ q22_global_sales_opportunity_iterations or test_iterations | default(3) | tojson }},
+  "clients": {{ q22_global_sales_opportunity_clients or search_clients | default(1) }}
+}

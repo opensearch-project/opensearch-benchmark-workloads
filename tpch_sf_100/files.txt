@@ -1,0 +1,8 @@
+lineitem.json.gz
+orders.json.gz
+partsupp.json.gz
+part.json.gz
+customer.json.gz
+supplier.json.gz
+nation.json.gz
+region.json.gz

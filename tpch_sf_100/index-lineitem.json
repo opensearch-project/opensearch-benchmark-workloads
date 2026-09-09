@@ -1,0 +1,67 @@
+{
+  "settings": {
+    "index.number_of_shards": {{ lineitem_shards | default(32) }},
+    "index.number_of_replicas": {{ number_of_replicas | default(0) }},
+    "index.codec": "best_compression",
+    "index.translog.durability": {{ index_translog_durability | default("async") | tojson }}
+    {%- if parquet_enabled_index | default(true) %}
+    ,"index.pluggable.dataformat.enabled": true
+    ,"index.pluggable.dataformat": "composite"
+    ,"index.composite.primary_data_format": "parquet"
+    ,"index.composite.secondary_data_formats": ["lucene"]
+    {%- endif %}
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "l_orderkey": {
+        "type": "long"
+      },
+      "l_partkey": {
+        "type": "long"
+      },
+      "l_suppkey": {
+        "type": "long"
+      },
+      "l_linenumber": {
+        "type": "integer"
+      },
+      "l_quantity": {
+        "type": "double"
+      },
+      "l_extendedprice": {
+        "type": "double"
+      },
+      "l_discount": {
+        "type": "double"
+      },
+      "l_tax": {
+        "type": "double"
+      },
+      "l_returnflag": {
+        "type": "keyword"
+      },
+      "l_linestatus": {
+        "type": "keyword"
+      },
+      "l_shipdate": {
+        "type": "date"
+      },
+      "l_commitdate": {
+        "type": "date"
+      },
+      "l_receiptdate": {
+        "type": "date"
+      },
+      "l_shipinstruct": {
+        "type": "keyword"
+      },
+      "l_shipmode": {
+        "type": "keyword"
+      },
+      "l_comment": {
+        "type": "text"
+      }
+    }
+  }
+}
