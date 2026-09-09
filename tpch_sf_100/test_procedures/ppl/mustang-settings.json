@@ -1,0 +1,13 @@
+{
+  "operation": {
+    "operation-type": "put-settings",
+    "body": {
+      "transient": {
+        "analytics.mpp.enabled": "{{ mpp_enabled | default('true') }}",
+        "analytics.planner.prefer_metadata_driver": "{{ prefer_metadata_driver | default('false') }}",
+        "cluster.routing.rebalance.enable": "{{ rebalance_enable | default('none') }}",
+        "native.allocator.pool.query.max": "{{ arrow_query_pool_max | default(2147483648) }}"
+      }
+    }
+  }
+}
