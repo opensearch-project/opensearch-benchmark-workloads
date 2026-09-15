@@ -2,17 +2,17 @@
     "name": "delete-index-faiss-fp32",
     "operation-type": "delete-index",
     "only-if-exists": true,
-    "index": "{{ target_index_name | default('target_index') }}"
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}"
 },
 {
     "name": "create-index-faiss-fp32",
     "operation-type": "create-index",
-    "index": "{{ target_index_name | default('target_index') }}"
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}"
 },
 {
     "name": "custom-vector-bulk-faiss-fp32",
     "operation-type": "bulk-vector-data-set",
-    "index": "{{ target_index_name | default('target_index') }}",
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}",
     "field": "{{ target_field_name | default('target_field') }}",
     "bulk_size": {{ target_index_bulk_size | default(500) }},
     "data_set_format": "{{ target_index_bulk_index_data_set_format | default('hdf5') }}",
@@ -25,13 +25,13 @@
     "name": "refresh-index-faiss-fp32",
     "operation-type": "refresh",
     "retries": 100,
-    "index": "{{ target_index_name | default('target_index') }}"
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}"
 },
 {
     "name": "force-merge-faiss-fp32",
     "operation-type": "force-merge",
     "request-timeout": {{ target_index_force_merge_timeout | default(7200) }},
-    "index": "{{ target_index_name | default('target_index') }}",
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}",
     "mode": "polling",
     "max-num-segments": {{ target_index_max_num_segments | default(1) }},
     "include-in-results_publishing": true
@@ -39,13 +39,13 @@
 {
     "name": "warmup-indices-faiss-fp32",
     "operation-type": "warmup-knn-indices",
-    "index": "{{ target_index_name | default('target_index') }}",
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}",
     "include-in-results_publishing": true
 },
 {
     "name": "prod-queries-faiss-fp32",
     "operation-type": "vector-search",
-    "index": "{{ target_index_name | default('target_index') }}",
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}",
     "detailed-results": true,
     "k": {{ query_k | default(100) }},
     "field": "{{ target_field_name | default('target_field') }}",
@@ -63,12 +63,12 @@
 {
     "name": "radial-queries-faiss-max-distance",
     "operation-type": "vector-search",
-    "index": "{{ target_index_name | default('target_index') }}",
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}",
     "detailed-results": true,
     {% if radial_per_query is defined %}
     "radial_search_type": "max_distance",
     "k": {{ radial_query_k | default(query_k | default(100)) }},
-    "target_index_body": "{{ target_index_body }}",
+    "target_index_body": "{{ faiss_fp32_index_body | default('indices/faiss-index.json') }}",
     {% elif radial_max_distance is defined %}
     "max_distance": {{ radial_max_distance }},
     {% endif %}
@@ -87,12 +87,12 @@
 {
     "name": "radial-queries-faiss-min-score",
     "operation-type": "vector-search",
-    "index": "{{ target_index_name | default('target_index') }}",
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}",
     "detailed-results": true,
     {% if radial_per_query is defined %}
     "radial_search_type": "min_score",
     "k": {{ radial_query_k | default(query_k | default(100)) }},
-    "target_index_body": "{{ target_index_body }}",
+    "target_index_body": "{{ faiss_fp32_index_body | default('indices/faiss-index.json') }}",
     {% elif radial_min_score is defined %}
     "min_score": {{ radial_min_score }},
     {% endif %}
@@ -174,17 +174,17 @@
     "name": "delete-index-lucene-fp32",
     "operation-type": "delete-index",
     "only-if-exists": true,
-    "index": "{{ lucene_index_name | default('lucene_index') }}"
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}"
 },
 {
     "name": "create-index-lucene-fp32",
     "operation-type": "create-index",
-    "index": "{{ lucene_index_name | default('lucene_index') }}"
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}"
 },
 {
     "name": "custom-vector-bulk-lucene-fp32",
     "operation-type": "bulk-vector-data-set",
-    "index": "{{ lucene_index_name | default('lucene_index') }}",
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}",
     "field": "{{ target_field_name | default('target_field') }}",
     "bulk_size": {{ target_index_bulk_size | default(500) }},
     "data_set_format": "{{ target_index_bulk_index_data_set_format | default('hdf5') }}",
@@ -197,13 +197,13 @@
     "name": "refresh-index-lucene-fp32",
     "operation-type": "refresh",
     "retries": 100,
-    "index": "{{ lucene_index_name | default('lucene_index') }}"
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}"
 },
 {
     "name": "force-merge-lucene-fp32",
     "operation-type": "force-merge",
     "request-timeout": {{ target_index_force_merge_timeout | default(7200) }},
-    "index": "{{ lucene_index_name | default('lucene_index') }}",
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}",
     "mode": "polling",
     "max-num-segments": {{ target_index_max_num_segments | default(1) }},
     "include-in-results_publishing": true
@@ -211,13 +211,13 @@
 {
     "name": "warmup-indices-lucene-fp32",
     "operation-type": "warmup-knn-indices",
-    "index": "{{ lucene_index_name | default('lucene_index') }}",
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}",
     "include-in-results_publishing": true
 },
 {
     "name": "prod-queries-lucene-fp32",
     "operation-type": "vector-search",
-    "index": "{{ lucene_index_name | default('lucene_index') }}",
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}",
     "detailed-results": true,
     "k": {{ query_k | default(100) }},
     "field": "{{ target_field_name | default('target_field') }}",
@@ -235,12 +235,12 @@
 {
     "name": "radial-queries-lucene-max-distance",
     "operation-type": "vector-search",
-    "index": "{{ lucene_index_name | default('lucene_index') }}",
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}",
     "detailed-results": true,
     {% if radial_per_query is defined %}
     "radial_search_type": "max_distance",
     "k": {{ radial_query_k | default(query_k | default(100)) }},
-    "target_index_body": "{{ lucene_index_body | default('indices/lucene-index.json') }}",
+    "target_index_body": "{{ lucene_fp32_index_body | default('indices/lucene-index.json') }}",
     {% elif lucene_radial_max_distance is defined %}
     "max_distance": {{ lucene_radial_max_distance }},
     {% endif %}
@@ -259,12 +259,12 @@
 {
     "name": "radial-queries-lucene-min-score",
     "operation-type": "vector-search",
-    "index": "{{ lucene_index_name | default('lucene_index') }}",
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}",
     "detailed-results": true,
     {% if radial_per_query is defined %}
     "radial_search_type": "min_score",
     "k": {{ radial_query_k | default(query_k | default(100)) }},
-    "target_index_body": "{{ lucene_index_body | default('indices/lucene-index.json') }}",
+    "target_index_body": "{{ lucene_fp32_index_body | default('indices/lucene-index.json') }}",
     {% elif radial_min_score is defined %}
     "min_score": {{ radial_min_score }},
     {% endif %}

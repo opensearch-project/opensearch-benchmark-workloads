@@ -73,10 +73,10 @@ This procedure (`combined-engine-test`) covers several engine/encoding configura
 cluster in one invocation, with distinct per-phase operation names so each phase's metrics can be
 compared independently. Phases, in order:
 
-1. **faiss fp32 top-k** — create `target_index`, bulk ingest, force-merge, warmup, `prod-queries-faiss-fp32`
+1. **faiss fp32 top-k** — create `faiss_fp32_index`, bulk ingest, force-merge, warmup, `prod-queries-faiss-fp32`
 2. **faiss fp32 radial** — `radial-queries-faiss-max-distance`, `radial-queries-faiss-min-score` against the phase-1 index
 3. **faiss SQ top-k** — delete the fp32 index, then create `faiss_sq_index`, ingest, merge, `prod-queries-faiss-sq`
-4. **lucene fp32 top-k** — delete the SQ index, then create `lucene_index`, ingest, merge, `prod-queries-lucene-fp32`
+4. **lucene fp32 top-k** — delete the SQ index, then create `lucene_fp32_index`, ingest, merge, `prod-queries-lucene-fp32`
 5. **lucene fp32 radial** — `radial-queries-lucene-max-distance`, `radial-queries-lucene-min-score`
 6. **lucene SQ top-k** — delete the lucene index, then create `lucene_sq_index`, ingest, merge, `prod-queries-lucene-sq`
 

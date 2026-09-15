@@ -1,25 +1,25 @@
 {
-    "target_index_name": "target_index",
     "target_field_name": "target_field",
-    "target_index_body": "indices/faiss-index.json",
-    "faiss_sq_index_name": "faiss_sq_index",
-    "faiss_sq_index_body": "indices/faiss-sq-index.json",
-    "lucene_index_name": "lucene_index",
-    "lucene_index_body": "indices/lucene-index.json",
-    "lucene_sq_index_name": "lucene_sq_index",
-    "lucene_sq_index_body": "indices/lucene-sq-index.json",
-    "target_index_primary_shards": 1,
-    "target_index_replica_shards": 0,
     "target_index_dimension": 768,
     "target_index_space_type": "innerproduct",
+    "target_index_primary_shards": 1,
+    "target_index_replica_shards": 0,
     "id_field_name": "_id",
+    "hnsw_ef_search": 256,
+    "hnsw_ef_construction": 256,
     "target_index_bulk_size": 100,
     "target_index_bulk_index_data_set_format": "hdf5",
     "target_index_bulk_index_data_set_corpus": "cohere-100k",
     "target_index_bulk_indexing_clients": 10,
     "target_index_max_num_segments": 1,
-    "hnsw_ef_search": 256,
-    "hnsw_ef_construction": 256,
+    "faiss_fp32_index_name": "faiss_fp32_index",
+    "faiss_fp32_index_body": "indices/faiss-index.json",
+    "faiss_sq_index_name": "faiss_sq_index",
+    "faiss_sq_index_body": "indices/faiss-sq-index.json",
+    "lucene_fp32_index_name": "lucene_fp32_index",
+    "lucene_fp32_index_body": "indices/lucene-index.json",
+    "lucene_sq_index_name": "lucene_sq_index",
+    "lucene_sq_index_body": "indices/lucene-sq-index.json",
     "query_k": 100,
     "query_body": {
         "docvalue_fields": [
@@ -35,5 +35,13 @@
     "radial_per_query": true,
     "radial_query_k": 100,
     "radial_neighbors_data_set_corpus": "cohere-100k-radial",
+    "radial_query_body": {
+        "size": 1000,
+        "docvalue_fields": [
+            "_id"
+        ],
+        "stored_fields": "_none_",
+        "_source": false
+    },
     "radial_query_count": 10000
 }

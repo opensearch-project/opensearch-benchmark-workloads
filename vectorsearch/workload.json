@@ -12,12 +12,16 @@
             "body": "{{ train_index_body }}"
         },
         {
+            "name": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}",
+            "body": "{{ faiss_fp32_index_body | default('indices/faiss-index.json') }}"
+        },
+        {
             "name": "{{ faiss_sq_index_name | default('faiss_sq_index') }}",
             "body": "{{ faiss_sq_index_body | default('indices/faiss-sq-index.json') }}"
         },
         {
-            "name": "{{ lucene_index_name | default('lucene_index') }}",
-            "body": "{{ lucene_index_body | default('indices/lucene-index.json') }}"
+            "name": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}",
+            "body": "{{ lucene_fp32_index_body | default('indices/lucene-index.json') }}"
         },
         {
             "name": "{{ lucene_sq_index_name | default('lucene_sq_index') }}",
