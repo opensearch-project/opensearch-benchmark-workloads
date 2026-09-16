@@ -1,0 +1,147 @@
+{
+    "name": "combined-engine-test",
+    "description": "Multi-engine and multi-encoding coverage in one run against the same cluster: faiss fp32 (top-k + radial), faiss SQ (top-k), lucene fp32 (top-k + radial), and lucene SQ (top-k). Each phase uses distinct operation names so per-operation metrics can be compared independently; select subsets of tasks with --include-tasks/--exclude-tasks.",
+    "default": false,
+    "schedule": [
+        {
+            "operation": "delete-index-faiss-fp32"
+        },
+        {
+            "operation": "create-index-faiss-fp32"
+        },
+        {
+            "operation": "custom-vector-bulk-faiss-fp32",
+            "clients": {{ target_index_bulk_indexing_clients | default(1) }}
+        },
+        {
+            "name": "refresh-index-faiss-fp32-before-force-merge",
+            "operation": "refresh-index-faiss-fp32"
+        },
+        {
+            "operation": "force-merge-faiss-fp32"
+        },
+        {
+            "name": "refresh-index-faiss-fp32-after-force-merge",
+            "operation": "refresh-index-faiss-fp32"
+        },
+        {
+            "operation": "warmup-indices-faiss-fp32"
+        },
+        {
+            "operation": "prod-queries-faiss-fp32",
+            "clients": {{ search_clients | default(1) }}
+        },
+        {
+            "operation": "radial-queries-faiss-max-distance",
+            "clients": {{ search_clients | default(1) }}
+        },
+        {
+            "operation": "radial-queries-faiss-min-score",
+            "clients": {{ search_clients | default(1) }}
+        },
+        {
+            "name": "delete-index-faiss-fp32-before-faiss-sq",
+            "operation": "delete-index-faiss-fp32"
+        },
+        {
+            "operation": "delete-index-faiss-sq"
+        },
+        {
+            "operation": "create-index-faiss-sq"
+        },
+        {
+            "operation": "custom-vector-bulk-faiss-sq",
+            "clients": {{ target_index_bulk_indexing_clients | default(1) }}
+        },
+        {
+            "name": "refresh-index-faiss-sq-before-force-merge",
+            "operation": "refresh-index-faiss-sq"
+        },
+        {
+            "operation": "force-merge-faiss-sq"
+        },
+        {
+            "name": "refresh-index-faiss-sq-after-force-merge",
+            "operation": "refresh-index-faiss-sq"
+        },
+        {
+            "operation": "warmup-indices-faiss-sq"
+        },
+        {
+            "operation": "prod-queries-faiss-sq",
+            "clients": {{ search_clients | default(1) }}
+        },
+        {
+            "name": "delete-index-faiss-sq-before-lucene-fp32",
+            "operation": "delete-index-faiss-sq"
+        },
+        {
+            "operation": "delete-index-lucene-fp32"
+        },
+        {
+            "operation": "create-index-lucene-fp32"
+        },
+        {
+            "operation": "custom-vector-bulk-lucene-fp32",
+            "clients": {{ target_index_bulk_indexing_clients | default(1) }}
+        },
+        {
+            "name": "refresh-index-lucene-fp32-before-force-merge",
+            "operation": "refresh-index-lucene-fp32"
+        },
+        {
+            "operation": "force-merge-lucene-fp32"
+        },
+        {
+            "name": "refresh-index-lucene-fp32-after-force-merge",
+            "operation": "refresh-index-lucene-fp32"
+        },
+        {
+            "operation": "warmup-indices-lucene-fp32"
+        },
+        {
+            "operation": "prod-queries-lucene-fp32",
+            "clients": {{ search_clients | default(1) }}
+        },
+        {
+            "operation": "radial-queries-lucene-max-distance",
+            "clients": {{ search_clients | default(1) }}
+        },
+        {
+            "operation": "radial-queries-lucene-min-score",
+            "clients": {{ search_clients | default(1) }}
+        },
+        {
+            "name": "delete-index-lucene-fp32-before-lucene-sq",
+            "operation": "delete-index-lucene-fp32"
+        },
+        {
+            "operation": "delete-index-lucene-sq"
+        },
+        {
+            "operation": "create-index-lucene-sq"
+        },
+        {
+            "operation": "custom-vector-bulk-lucene-sq",
+            "clients": {{ target_index_bulk_indexing_clients | default(1) }}
+        },
+        {
+            "name": "refresh-index-lucene-sq-before-force-merge",
+            "operation": "refresh-index-lucene-sq"
+        },
+        {
+            "operation": "force-merge-lucene-sq"
+        },
+        {
+            "name": "refresh-index-lucene-sq-after-force-merge",
+            "operation": "refresh-index-lucene-sq"
+        },
+        {
+            "operation": "warmup-indices-lucene-sq"
+        },
+        {
+            "operation": "prod-queries-lucene-sq",
+            "clients": {{ search_clients | default(1) }}
+        }
+    ]
+}
