@@ -13,7 +13,7 @@ OpenSearch.
 Before running a benchmark, ensure that the load generation host is able to access your cluster endpoint and that the 
 appropriate dataset is available on the host.
 
-Currently, we support 4 test procedures for the vector search workload. The default procedure is named no-train-test and does not include the steps required to train the model being used.
+Currently, we support the following test procedures for the vector search workload. The default procedure is named no-train-test and does not include the steps required to train the model being used.
 This test procedures will index a data set of vectors into an OpenSearch cluster and then run a set of queries against the generated index. 
 
 Due to the number of parameters this workload offers, it's recommended to create a parameter file that specifies the desired workload 
@@ -66,6 +66,34 @@ force merge occasionally based on user's requirement.
 This procedure is used to benchmark previously indexed vector search index. This will be useful if you want
 to benchmark large vector search index without indexing everytime since load time is substantial for a large dataset.
 This also contains warmup operation to avoid cold start problem during vector search.
+
+### Combined Engine Test
+
+This procedure (`combined-engine-test`) covers several engine/encoding configurations against the same
+cluster in one invocation, with distinct per-phase operation names so each phase's metrics can be
+compared independently. Phases, in order:
+
+1. **faiss fp32 top-k** — create `faiss_fp32_index`, bulk ingest, force-merge, warmup, `prod-queries-faiss-fp32`
+2. **faiss fp32 radial** — `radial-queries-faiss-max-distance`, `radial-queries-faiss-min-score` against the phase-1 index
+3. **faiss SQ top-k** — delete the fp32 index, then create `faiss_sq_index`, ingest, merge, `prod-queries-faiss-sq`
+4. **lucene fp32 top-k** — delete the SQ index, then create `lucene_fp32_index`, ingest, merge, `prod-queries-lucene-fp32`
+5. **lucene fp32 radial** — `radial-queries-lucene-max-distance`, `radial-queries-lucene-min-score`
+6. **lucene SQ top-k** — delete the lucene index, then create `lucene_sq_index`, ingest, merge, `prod-queries-lucene-sq`
+
+All tasks are always defined; use `--include-tasks`/`--exclude-tasks` to run a subset.
+
+Radial tasks support two modes:
+
+- **Fixed threshold**: set `radial_max_distance`, `lucene_radial_max_distance` (engines use opposite sign
+  conventions for inner product), and `radial_min_score`. Ground truth is read from the `radial_neighbors`
+  dataset of the corpus given by `radial_neighbors_data_set_corpus`/`radial_neighbors_data_set_path`.
+- **Per-query threshold** (requires OSB with `radial_search_type` support): set `radial_per_query` and
+  optionally `radial_query_k`. Each query's threshold is read from the engine-specific threshold datasets
+  (`faiss_max_distance`, `lucene_max_distance`, `faiss_min_score`, `lucene_min_score`) of the same corpus.
+
+The SQ index bodies (`indices/faiss-sq-index.json`, `indices/lucene-sq-index.json`) define quantization
+through the `compression_level` mapping parameter (default `32x`, i.e. 1-bit); set
+`faiss_sq_compression_level` / `lucene_sq_compression_level` to benchmark other compression levels.
 
 ### No Train Test AOSS
 
