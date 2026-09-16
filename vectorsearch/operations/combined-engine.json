@@ -1,0 +1,345 @@
+{
+    "name": "delete-index-faiss-fp32",
+    "operation-type": "delete-index",
+    "only-if-exists": true,
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}"
+},
+{
+    "name": "create-index-faiss-fp32",
+    "operation-type": "create-index",
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}"
+},
+{
+    "name": "custom-vector-bulk-faiss-fp32",
+    "operation-type": "bulk-vector-data-set",
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}",
+    "field": "{{ target_field_name | default('target_field') }}",
+    "bulk_size": {{ target_index_bulk_size | default(500) }},
+    "data_set_format": "{{ target_index_bulk_index_data_set_format | default('hdf5') }}",
+    "data_set_path": "{{ target_index_bulk_index_data_set_path }}",
+    "data_set_corpus": "{{ target_index_bulk_index_data_set_corpus }}",
+    "num_vectors": {{ target_index_num_vectors | default(-1) }},
+    "id-field-name": "{{ id_field_name }}"
+},
+{
+    "name": "refresh-index-faiss-fp32",
+    "operation-type": "refresh",
+    "retries": 100,
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}"
+},
+{
+    "name": "force-merge-faiss-fp32",
+    "operation-type": "force-merge",
+    "request-timeout": {{ target_index_force_merge_timeout | default(7200) }},
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}",
+    "mode": "polling",
+    "max-num-segments": {{ target_index_max_num_segments | default(1) }},
+    "include-in-results_publishing": true
+},
+{
+    "name": "warmup-indices-faiss-fp32",
+    "operation-type": "warmup-knn-indices",
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}",
+    "include-in-results_publishing": true
+},
+{
+    "name": "prod-queries-faiss-fp32",
+    "operation-type": "vector-search",
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}",
+    "detailed-results": true,
+    "k": {{ query_k | default(100) }},
+    "field": "{{ target_field_name | default('target_field') }}",
+    "data_set_format": "{{ query_data_set_format | default('hdf5') }}",
+    "data_set_path": "{{ query_data_set_path }}",
+    "data_set_corpus": "{{ query_data_set_corpus }}",
+    "neighbors_data_set_path": "{{ neighbors_data_set_path }}",
+    "neighbors_data_set_corpus": "{{ neighbors_data_set_corpus }}",
+    "neighbors_data_set_format": "{{ neighbors_data_set_format | default('hdf5') }}",
+    "num_vectors": {{ query_count | default(-1) }},
+    "id-field-name": "{{ id_field_name }}",
+    "body": {{ query_body | default({}) | tojson }},
+    "repetitions": {{ number_of_repetitions | default(1) }}
+},
+{
+    "name": "radial-queries-faiss-max-distance",
+    "operation-type": "vector-search",
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}",
+    "detailed-results": true,
+    {% if radial_per_query is defined %}
+    "radial_search_type": "max_distance",
+    "k": {{ radial_query_k | default(query_k | default(100)) }},
+    "target_index_body": "{{ faiss_fp32_index_body | default('indices/faiss-index.json') }}",
+    {% elif radial_max_distance is defined %}
+    "max_distance": {{ radial_max_distance }},
+    {% endif %}
+    "field": "{{ target_field_name | default('target_field') }}",
+    "data_set_format": "{{ query_data_set_format | default('hdf5') }}",
+    "data_set_path": "{{ query_data_set_path }}",
+    "data_set_corpus": "{{ query_data_set_corpus }}",
+    "neighbors_data_set_path": "{{ radial_neighbors_data_set_path }}",
+    "neighbors_data_set_corpus": "{{ radial_neighbors_data_set_corpus }}",
+    "neighbors_data_set_format": "{{ neighbors_data_set_format | default('hdf5') }}",
+    "num_vectors": {{ radial_query_count | default(query_count | default(-1)) }},
+    "id-field-name": "{{ id_field_name }}",
+    "body": {{ radial_query_body | default({} if radial_per_query is defined else {"size": radial_query_size | default(1000)}) | tojson }},
+    "repetitions": {{ number_of_repetitions | default(1) }}
+},
+{
+    "name": "radial-queries-faiss-min-score",
+    "operation-type": "vector-search",
+    "index": "{{ faiss_fp32_index_name | default('faiss_fp32_index') }}",
+    "detailed-results": true,
+    {% if radial_per_query is defined %}
+    "radial_search_type": "min_score",
+    "k": {{ radial_query_k | default(query_k | default(100)) }},
+    "target_index_body": "{{ faiss_fp32_index_body | default('indices/faiss-index.json') }}",
+    {% elif radial_min_score is defined %}
+    "min_score": {{ radial_min_score }},
+    {% endif %}
+    "field": "{{ target_field_name | default('target_field') }}",
+    "data_set_format": "{{ query_data_set_format | default('hdf5') }}",
+    "data_set_path": "{{ query_data_set_path }}",
+    "data_set_corpus": "{{ query_data_set_corpus }}",
+    "neighbors_data_set_path": "{{ radial_neighbors_data_set_path }}",
+    "neighbors_data_set_corpus": "{{ radial_neighbors_data_set_corpus }}",
+    "neighbors_data_set_format": "{{ neighbors_data_set_format | default('hdf5') }}",
+    "num_vectors": {{ radial_query_count | default(query_count | default(-1)) }},
+    "id-field-name": "{{ id_field_name }}",
+    "body": {{ radial_query_body | default({} if radial_per_query is defined else {"size": radial_query_size | default(1000)}) | tojson }},
+    "repetitions": {{ number_of_repetitions | default(1) }}
+},
+{
+    "name": "delete-index-faiss-sq",
+    "operation-type": "delete-index",
+    "only-if-exists": true,
+    "index": "{{ faiss_sq_index_name | default('faiss_sq_index') }}"
+},
+{
+    "name": "create-index-faiss-sq",
+    "operation-type": "create-index",
+    "index": "{{ faiss_sq_index_name | default('faiss_sq_index') }}"
+},
+{
+    "name": "custom-vector-bulk-faiss-sq",
+    "operation-type": "bulk-vector-data-set",
+    "index": "{{ faiss_sq_index_name | default('faiss_sq_index') }}",
+    "field": "{{ target_field_name | default('target_field') }}",
+    "bulk_size": {{ target_index_bulk_size | default(500) }},
+    "data_set_format": "{{ target_index_bulk_index_data_set_format | default('hdf5') }}",
+    "data_set_path": "{{ target_index_bulk_index_data_set_path }}",
+    "data_set_corpus": "{{ target_index_bulk_index_data_set_corpus }}",
+    "num_vectors": {{ target_index_num_vectors | default(-1) }},
+    "id-field-name": "{{ id_field_name }}"
+},
+{
+    "name": "refresh-index-faiss-sq",
+    "operation-type": "refresh",
+    "retries": 100,
+    "index": "{{ faiss_sq_index_name | default('faiss_sq_index') }}"
+},
+{
+    "name": "force-merge-faiss-sq",
+    "operation-type": "force-merge",
+    "request-timeout": {{ target_index_force_merge_timeout | default(7200) }},
+    "index": "{{ faiss_sq_index_name | default('faiss_sq_index') }}",
+    "mode": "polling",
+    "max-num-segments": {{ target_index_max_num_segments | default(1) }},
+    "include-in-results_publishing": true
+},
+{
+    "name": "warmup-indices-faiss-sq",
+    "operation-type": "warmup-knn-indices",
+    "index": "{{ faiss_sq_index_name | default('faiss_sq_index') }}",
+    "include-in-results_publishing": true
+},
+{
+    "name": "prod-queries-faiss-sq",
+    "operation-type": "vector-search",
+    "index": "{{ faiss_sq_index_name | default('faiss_sq_index') }}",
+    "detailed-results": true,
+    "k": {{ query_k | default(100) }},
+    "field": "{{ target_field_name | default('target_field') }}",
+    "data_set_format": "{{ query_data_set_format | default('hdf5') }}",
+    "data_set_path": "{{ query_data_set_path }}",
+    "data_set_corpus": "{{ query_data_set_corpus }}",
+    "neighbors_data_set_path": "{{ neighbors_data_set_path }}",
+    "neighbors_data_set_corpus": "{{ neighbors_data_set_corpus }}",
+    "neighbors_data_set_format": "{{ neighbors_data_set_format | default('hdf5') }}",
+    "num_vectors": {{ faiss_sq_query_count | default(query_count | default(-1)) }},
+    "id-field-name": "{{ id_field_name }}",
+    "body": {{ query_body | default({}) | tojson }},
+    "repetitions": {{ number_of_repetitions | default(1) }}
+},
+{
+    "name": "delete-index-lucene-fp32",
+    "operation-type": "delete-index",
+    "only-if-exists": true,
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}"
+},
+{
+    "name": "create-index-lucene-fp32",
+    "operation-type": "create-index",
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}"
+},
+{
+    "name": "custom-vector-bulk-lucene-fp32",
+    "operation-type": "bulk-vector-data-set",
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}",
+    "field": "{{ target_field_name | default('target_field') }}",
+    "bulk_size": {{ target_index_bulk_size | default(500) }},
+    "data_set_format": "{{ target_index_bulk_index_data_set_format | default('hdf5') }}",
+    "data_set_path": "{{ target_index_bulk_index_data_set_path }}",
+    "data_set_corpus": "{{ target_index_bulk_index_data_set_corpus }}",
+    "num_vectors": {{ target_index_num_vectors | default(-1) }},
+    "id-field-name": "{{ id_field_name }}"
+},
+{
+    "name": "refresh-index-lucene-fp32",
+    "operation-type": "refresh",
+    "retries": 100,
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}"
+},
+{
+    "name": "force-merge-lucene-fp32",
+    "operation-type": "force-merge",
+    "request-timeout": {{ target_index_force_merge_timeout | default(7200) }},
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}",
+    "mode": "polling",
+    "max-num-segments": {{ target_index_max_num_segments | default(1) }},
+    "include-in-results_publishing": true
+},
+{
+    "name": "warmup-indices-lucene-fp32",
+    "operation-type": "warmup-knn-indices",
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}",
+    "include-in-results_publishing": true
+},
+{
+    "name": "prod-queries-lucene-fp32",
+    "operation-type": "vector-search",
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}",
+    "detailed-results": true,
+    "k": {{ query_k | default(100) }},
+    "field": "{{ target_field_name | default('target_field') }}",
+    "data_set_format": "{{ query_data_set_format | default('hdf5') }}",
+    "data_set_path": "{{ query_data_set_path }}",
+    "data_set_corpus": "{{ query_data_set_corpus }}",
+    "neighbors_data_set_path": "{{ neighbors_data_set_path }}",
+    "neighbors_data_set_corpus": "{{ neighbors_data_set_corpus }}",
+    "neighbors_data_set_format": "{{ neighbors_data_set_format | default('hdf5') }}",
+    "num_vectors": {{ lucene_query_count | default(query_count | default(-1)) }},
+    "id-field-name": "{{ id_field_name }}",
+    "body": {{ query_body | default({}) | tojson }},
+    "repetitions": {{ number_of_repetitions | default(1) }}
+},
+{
+    "name": "radial-queries-lucene-max-distance",
+    "operation-type": "vector-search",
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}",
+    "detailed-results": true,
+    {% if radial_per_query is defined %}
+    "radial_search_type": "max_distance",
+    "k": {{ radial_query_k | default(query_k | default(100)) }},
+    "target_index_body": "{{ lucene_fp32_index_body | default('indices/lucene-index.json') }}",
+    {% elif lucene_radial_max_distance is defined %}
+    "max_distance": {{ lucene_radial_max_distance }},
+    {% endif %}
+    "field": "{{ target_field_name | default('target_field') }}",
+    "data_set_format": "{{ query_data_set_format | default('hdf5') }}",
+    "data_set_path": "{{ query_data_set_path }}",
+    "data_set_corpus": "{{ query_data_set_corpus }}",
+    "neighbors_data_set_path": "{{ radial_neighbors_data_set_path }}",
+    "neighbors_data_set_corpus": "{{ radial_neighbors_data_set_corpus }}",
+    "neighbors_data_set_format": "{{ neighbors_data_set_format | default('hdf5') }}",
+    "num_vectors": {{ lucene_radial_query_count | default(radial_query_count | default(query_count | default(-1))) }},
+    "id-field-name": "{{ id_field_name }}",
+    "body": {{ radial_query_body | default({} if radial_per_query is defined else {"size": radial_query_size | default(1000)}) | tojson }},
+    "repetitions": {{ number_of_repetitions | default(1) }}
+},
+{
+    "name": "radial-queries-lucene-min-score",
+    "operation-type": "vector-search",
+    "index": "{{ lucene_fp32_index_name | default('lucene_fp32_index') }}",
+    "detailed-results": true,
+    {% if radial_per_query is defined %}
+    "radial_search_type": "min_score",
+    "k": {{ radial_query_k | default(query_k | default(100)) }},
+    "target_index_body": "{{ lucene_fp32_index_body | default('indices/lucene-index.json') }}",
+    {% elif radial_min_score is defined %}
+    "min_score": {{ radial_min_score }},
+    {% endif %}
+    "field": "{{ target_field_name | default('target_field') }}",
+    "data_set_format": "{{ query_data_set_format | default('hdf5') }}",
+    "data_set_path": "{{ query_data_set_path }}",
+    "data_set_corpus": "{{ query_data_set_corpus }}",
+    "neighbors_data_set_path": "{{ radial_neighbors_data_set_path }}",
+    "neighbors_data_set_corpus": "{{ radial_neighbors_data_set_corpus }}",
+    "neighbors_data_set_format": "{{ neighbors_data_set_format | default('hdf5') }}",
+    "num_vectors": {{ lucene_radial_query_count | default(radial_query_count | default(query_count | default(-1))) }},
+    "id-field-name": "{{ id_field_name }}",
+    "body": {{ radial_query_body | default({} if radial_per_query is defined else {"size": radial_query_size | default(1000)}) | tojson }},
+    "repetitions": {{ number_of_repetitions | default(1) }}
+}
+,
+{
+    "name": "delete-index-lucene-sq",
+    "operation-type": "delete-index",
+    "only-if-exists": true,
+    "index": "{{ lucene_sq_index_name | default('lucene_sq_index') }}"
+},
+{
+    "name": "create-index-lucene-sq",
+    "operation-type": "create-index",
+    "index": "{{ lucene_sq_index_name | default('lucene_sq_index') }}"
+},
+{
+    "name": "custom-vector-bulk-lucene-sq",
+    "operation-type": "bulk-vector-data-set",
+    "index": "{{ lucene_sq_index_name | default('lucene_sq_index') }}",
+    "field": "{{ target_field_name | default('target_field') }}",
+    "bulk_size": {{ target_index_bulk_size | default(500) }},
+    "data_set_format": "{{ target_index_bulk_index_data_set_format | default('hdf5') }}",
+    "data_set_path": "{{ target_index_bulk_index_data_set_path }}",
+    "data_set_corpus": "{{ target_index_bulk_index_data_set_corpus }}",
+    "num_vectors": {{ target_index_num_vectors | default(-1) }},
+    "id-field-name": "{{ id_field_name }}"
+},
+{
+    "name": "refresh-index-lucene-sq",
+    "operation-type": "refresh",
+    "retries": 100,
+    "index": "{{ lucene_sq_index_name | default('lucene_sq_index') }}"
+},
+{
+    "name": "force-merge-lucene-sq",
+    "operation-type": "force-merge",
+    "request-timeout": {{ target_index_force_merge_timeout | default(7200) }},
+    "index": "{{ lucene_sq_index_name | default('lucene_sq_index') }}",
+    "mode": "polling",
+    "max-num-segments": {{ target_index_max_num_segments | default(1) }},
+    "include-in-results_publishing": true
+},
+{
+    "name": "warmup-indices-lucene-sq",
+    "operation-type": "warmup-knn-indices",
+    "index": "{{ lucene_sq_index_name | default('lucene_sq_index') }}",
+    "include-in-results_publishing": true
+},
+{
+    "name": "prod-queries-lucene-sq",
+    "operation-type": "vector-search",
+    "index": "{{ lucene_sq_index_name | default('lucene_sq_index') }}",
+    "detailed-results": true,
+    "k": {{ query_k | default(100) }},
+    "field": "{{ target_field_name | default('target_field') }}",
+    "data_set_format": "{{ query_data_set_format | default('hdf5') }}",
+    "data_set_path": "{{ query_data_set_path }}",
+    "data_set_corpus": "{{ query_data_set_corpus }}",
+    "neighbors_data_set_path": "{{ neighbors_data_set_path }}",
+    "neighbors_data_set_corpus": "{{ neighbors_data_set_corpus }}",
+    "neighbors_data_set_format": "{{ neighbors_data_set_format | default('hdf5') }}",
+    "num_vectors": {{ lucene_sq_query_count | default(query_count | default(-1)) }},
+    "id-field-name": "{{ id_field_name }}",
+    "body": {{ query_body | default({}) | tojson }},
+    "repetitions": {{ number_of_repetitions | default(1) }}
+}
