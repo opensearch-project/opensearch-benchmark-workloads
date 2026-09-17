@@ -2,21 +2,16 @@
     "name" : "warmup-indices",
     "operation" : "warmup-indices",
     "index": "{{ target_index_name | default('target_index') }}"
-},
+}
+{%- for pct in filter_percentages | default([]) %},
 {
     "operation": {
-        "name": "prod-queries",
+        "name": "prod-queries-{{ pct }}",
         "operation-type": "vector-search",
         "index": "{{ target_index_name | default('target_index') }}",
         "detailed-results": true,
         {% if query_k is defined %}
         "k": {{ query_k }},
-        {% endif %}
-        {% if query_max_distance is defined %}
-        "max_distance": {{ query_max_distance }},
-        {% endif %}
-        {% if query_min_score is defined %}
-        "min_score": {{ query_min_score }},
         {% endif %}
         {% if radial_search_type is defined %}
         "radial_search_type": "{{ radial_search_type }}",
@@ -34,12 +29,11 @@
         "num_vectors" : {{ query_count | default(-1) }},
         "id-field-name": "{{ id_field_name }}",
         "body": {{ query_body | default ({}) | tojson }},
-        "filter_body": {{ filter_body | default ({}) | tojson }},
-        "filter_type": {{filter_type  | default ({}) | tojson }},
-        {% if filter_percentage is defined %}
-        "filter_percentage": "{{ filter_percentage }}",
-        {% endif %}
+        "filter_body": {"term": {"filter{{ pct }}": "true"}},
+        "filter_type": {{ filter_type | default ({}) | tojson }},
+        "filter_percentage": "{{ pct }}",
         "repetitions": {{ number_of_repetitions | default(1)}}
     },
     "clients": {{ search_clients | default(1)}}
 }
+{%- endfor %}

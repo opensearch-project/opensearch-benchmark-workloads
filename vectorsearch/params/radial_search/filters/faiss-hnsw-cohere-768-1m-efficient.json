@@ -1,0 +1,50 @@
+{
+    "target_index_name": "target_index",
+    "target_field_name": "target_field",
+    "target_index_body": "indices/filters/faiss-index-filter-percentage.json",
+    "target_index_primary_shards": 2,
+    "target_index_dimension": 768,
+    "target_index_space_type": "innerproduct",
+    "target_index_bulk_size": 100,
+    "target_index_bulk_index_data_set_format": "hdf5",
+    "target_index_bulk_index_data_set_corpus": "cohere-1m-radial-filter-percentage",
+    "target_index_bulk_indexing_clients": 10,
+    "target_dataset_filter_attributes": [
+        "filter01pct",
+        "filter1pct",
+        "filter5pct",
+        "filter10pct",
+        "filter25pct",
+        "filter50pct",
+        "filter75pct",
+        "filter90pct",
+        "filter99pct"
+    ],
+    "target_index_max_num_segments": 1,
+    "target_index_force_merge_timeout": 600.0,
+    "hnsw_ef_search": 256,
+    "hnsw_ef_construction": 256,
+    "target_index_num_vectors": 1000000,
+    "radial_search_type": "max_distance",
+    "query_k": 100,
+    "query_body": {
+        "size": 100,
+        "docvalue_fields": [
+            "_id"
+        ],
+        "stored_fields": "_none_",
+        "_source": false
+    },
+    "filter_type": "efficient",
+    "filter_percentage": "10pct",
+    "filter_body": {
+        "term": {
+            "filter10pct": "true"
+        }
+    },
+    "query_data_set_format": "hdf5",
+    "query_data_set_corpus": "cohere-1m-radial-filter-percentage",
+    "neighbors_data_set_corpus": "cohere-1m-radial-filter-percentage",
+    "neighbors_data_set_format": "hdf5",
+    "query_count": 10000
+}
