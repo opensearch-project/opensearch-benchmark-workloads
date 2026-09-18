@@ -1568,9 +1568,805 @@
                         "field": "ResolutionWidth"
                     }
                 },
-                "sum(ResolutionWidth+1)_COUNT": {
-                    "value_count": {
-                        "field": "ResolutionWidth"
+                "sum(ResolutionWidth+1)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 1",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+2)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 2",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+3)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 3",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+4)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 4",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+5)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 5",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+6)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 6",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+7)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 7",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+8)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 8",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+9)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 9",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+10)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 10",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+11)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 11",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+12)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 12",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+13)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 13",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+14)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 14",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+15)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 15",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+16)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 16",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+17)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 17",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+18)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 18",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+19)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 19",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+20)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 20",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+21)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 21",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+22)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 22",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+23)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 23",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+24)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 24",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+25)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 25",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+26)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 26",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+27)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 27",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+28)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 28",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+29)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 29",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+30)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 30",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+31)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 31",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+32)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 32",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+33)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 33",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+34)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 34",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+35)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 35",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+36)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 36",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+37)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 37",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+38)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 38",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+39)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 39",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+40)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 40",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+41)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 41",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+42)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 42",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+43)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 43",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+44)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 44",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+45)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 45",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+46)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 46",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+47)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 47",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+48)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 48",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+49)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 49",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+50)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 50",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+51)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 51",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+52)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 52",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+53)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 53",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+54)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 54",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+55)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 55",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+56)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 56",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+57)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 57",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+58)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 58",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+59)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 59",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+60)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 60",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+61)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 61",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+62)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 62",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+63)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 63",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+64)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 64",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+65)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 65",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+66)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 66",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+67)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 67",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+68)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 68",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+69)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 69",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+70)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 70",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+71)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 71",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+72)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 72",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+73)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 73",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+74)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 74",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+75)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 75",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+76)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 76",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+77)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 77",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+78)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 78",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+79)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 79",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+80)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 80",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+81)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 81",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+82)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 82",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+83)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 83",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+84)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 84",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+85)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 85",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+86)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 86",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+87)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 87",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+88)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 88",
+                            "lang": "painless"
+                        }
+                    }
+                },
+                "sum(ResolutionWidth+89)": {
+                    "sum": {
+                        "field": "ResolutionWidth",
+                        "script": {
+                            "source": "_value + 89",
+                            "lang": "painless"
+                        }
                     }
                 }
             }
