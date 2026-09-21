@@ -33,7 +33,7 @@
           "mode": "on_disk",
           "method": {
             "name": "hnsw",
-            "space_type": "{{ target_index_space_type }}",
+            "space_type": {{ target_index_space_type | default('l2') | tojson }},
             "parameters": {
               "encoder": {
                 "name": "flat"

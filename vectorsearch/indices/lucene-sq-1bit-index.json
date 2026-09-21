@@ -37,7 +37,7 @@
           "compression_level": "32x",
           "method": {
             "name": "hnsw",
-            "space_type": "{{ target_index_space_type }}",
+            "space_type": {{ target_index_space_type | default('l2') | tojson }},
             "engine": "lucene",
             "parameters": {
               {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}

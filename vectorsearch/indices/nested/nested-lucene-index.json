@@ -30,10 +30,10 @@
           "properties": {
             "{{ target_field_name.split('.')[1] }}": {
               "type": "knn_vector",
-              "dimension": {{ target_index_dimension }},
+              "dimension": {{ target_index_dimension | default(768) }},
               "method": {
                 "name": "hnsw",
-                "space_type": "{{ target_index_space_type }}",
+                "space_type": {{ target_index_space_type | default('l2') | tojson }},
                 "engine": "lucene",
                 "parameters": {
                     {%- if hnsw_ef_construction is defined and hnsw_ef_construction %}
