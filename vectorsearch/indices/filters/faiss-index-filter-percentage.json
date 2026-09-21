@@ -26,7 +26,7 @@
         {%- endif %}
         "{{ target_field_name }}": {
           "type": "knn_vector",
-          "dimension": {{ target_index_dimension }},
+          "dimension": {{ target_index_dimension | default(768) }},
           {%- if train_model_id is defined %}
           "model_id": "{{ train_model_id }}"
           {%- else %}

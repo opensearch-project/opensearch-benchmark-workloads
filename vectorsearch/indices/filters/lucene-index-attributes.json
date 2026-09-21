@@ -26,7 +26,7 @@
         {%- endif %}
         "target_field": {
           "type": "knn_vector",
-          "dimension": {{ target_index_dimension }},
+          "dimension": {{ target_index_dimension | default(768) }},
           "method": {
             "name": "hnsw",
             "space_type": "{{ target_index_space_type }}",

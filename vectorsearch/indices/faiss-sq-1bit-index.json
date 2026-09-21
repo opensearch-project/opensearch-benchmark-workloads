@@ -29,7 +29,7 @@
         {%- endif %}
         "{{ target_field_name }}": {
           "type": "knn_vector",
-          "dimension": {{ target_index_dimension }},
+          "dimension": {{ target_index_dimension | default(768) }},
           "mode": "on_disk",
           "compression_level": "32x",
           "method": {
@@ -37,8 +37,8 @@
             "space_type": "{{ target_index_space_type }}",
             "engine": "faiss",
             "parameters": {
-              "ef_search": {{ hnsw_ef_search }},
-              "ef_construction": {{ hnsw_ef_construction }},
+              "ef_search": {{ hnsw_ef_search | default(100) }},
+              "ef_construction": {{ hnsw_ef_construction | default(100) }},
               "encoder": {
                 "name": "sq",
                 "parameters": {
