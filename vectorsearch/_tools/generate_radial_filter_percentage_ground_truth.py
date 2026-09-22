@@ -46,6 +46,7 @@ import time
 import h5py
 import numpy as np
 
+from filter_percentage_utils import assign_attributes, pct_suffix
 from radial_threshold_utils import (
     SUPPORTED_SPACE_TYPES,
     calculate_distances_batch,
@@ -53,13 +54,6 @@ from radial_threshold_utils import (
 )
 
 ENGINES = ("faiss", "lucene")
-
-
-def pct_suffix(pct):
-    """0.1 -> '01pct', 1 -> '1pct', 25 -> '25pct'"""
-    if pct < 1:
-        return f"0{str(pct).replace('0.', '')}pct"
-    return f"{int(pct)}pct"
 
 
 def parse_args():
@@ -108,23 +102,6 @@ def validate_args(args, num_docs):
             raise ValueError(f"{pct}% passes only {n_pass} docs < take_n={args.take_n}. "
                              f"Reduce --take-n or raise the percentage.")
     return suffixes
-
-
-def assign_attributes(num_docs, percentages, suffixes, seed):
-    """For each percentage, mark exactly n_pass random docs 'true'.
-
-    Returns the (num_docs, P) attribute matrix and per-column sorted passing ids.
-    """
-    rng = np.random.default_rng(seed)
-    attributes = np.full((num_docs, len(percentages)), b"false", dtype="|S8")
-    passing_ids = {}
-    for col, pct in enumerate(percentages):
-        n_pass = int(round(pct / 100.0 * num_docs))
-        chosen = rng.permutation(num_docs)[:n_pass]
-        attributes[chosen, col] = b"true"
-        passing_ids[col] = np.sort(chosen)
-        print(f"  filter{suffixes[col]}: exactly {n_pass} docs marked true")
-    return attributes, passing_ids
 
 
 def compute_ground_truth(train, test, passing_ids, suffixes, args):
