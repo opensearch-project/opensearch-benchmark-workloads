@@ -30,6 +30,9 @@
         "body": {{ query_body | default ({}) | tojson }},
         "filter_body": {{ filter_body | default ({}) | tojson }},
         "filter_type": {{filter_type  | default ({}) | tojson }},
+        {% if filter_percentage is defined %}
+        "filter_percentage": "{{ filter_percentage }}",
+        {% endif %}
         "repetitions": {{ number_of_repetitions | default(1)}}
     },
     "clients": {{ search_clients | default(1)}}
