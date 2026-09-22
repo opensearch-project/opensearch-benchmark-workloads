@@ -26,13 +26,13 @@
         {%- endif %}
         "{{ target_field_name }}": {
           "type": "knn_vector",
-          "dimension": {{ target_index_dimension }},
+          "dimension": {{ target_index_dimension | default(768) }},
           {%- if train_model_id is defined %}
           "model_id": "{{ train_model_id }}"
           {%- else %}
           "method": {
             "name": "hnsw",
-            "space_type": "{{ target_index_space_type }}",
+            "space_type": {{ target_index_space_type | default('l2') | tojson }},
             "engine": "faiss",
             "parameters": {
               {%- if hnsw_ef_search is defined and hnsw_ef_search %}

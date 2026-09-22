@@ -53,26 +53,7 @@ import numpy as np
 import sys
 from tqdm import tqdm
 
-
-def calculate_distances_batch(queries, corpus, space_type):
-    """Compute raw distances from multiple queries to all corpus vectors.
-
-    Returns shape (num_queries, num_corpus).
-    """
-    if space_type == "l2":
-        q_norms = np.sum(queries ** 2, axis=1, keepdims=True)
-        c_norms = np.sum(corpus ** 2, axis=1, keepdims=True).T
-        dots = queries @ corpus.T
-        return q_norms + c_norms - 2 * dots
-    elif space_type == "innerproduct":
-        return -(queries @ corpus.T)
-    elif space_type == "cosine":
-        q_norms = np.linalg.norm(queries, axis=1, keepdims=True)
-        c_norms = np.linalg.norm(corpus, axis=1, keepdims=True).T
-        dots = queries @ corpus.T
-        return 1 - dots / (q_norms * c_norms)
-    else:
-        raise ValueError(f"Unsupported space type: {space_type}")
+from radial_threshold_utils import calculate_distances_batch, engine_threshold_values
 
 
 def calculate_distance_single(query, corpus_vecs, space_type):
@@ -85,24 +66,6 @@ def calculate_distance_single(query, corpus_vecs, space_type):
         norm_query = np.linalg.norm(query)
         norms_corpus = np.linalg.norm(corpus_vecs, axis=1)
         return 1 - (np.dot(corpus_vecs, query) / (norms_corpus * norm_query))
-    else:
-        raise ValueError(f"Unsupported space type: {space_type}")
-
-
-def raw_distance_to_opensearch_score(distances, space_type):
-    """Convert raw distances to OpenSearch scores (used as min_score for both engines).
-
-    SpaceType.scoreTranslation in the k-NN plugin:
-      l2:           1 / (1 + distance)
-      innerproduct: distance >= 0 ? 1/(1+distance) : -distance + 1
-      cosine:       (2 - distance) / 2
-    """
-    if space_type == "l2":
-        return 1.0 / (1.0 + distances)
-    elif space_type == "innerproduct":
-        return np.where(distances >= 0, 1.0 / (1.0 + distances), -distances + 1.0)
-    elif space_type == "cosine":
-        return (2.0 - distances) / 2.0
     else:
         raise ValueError(f"Unsupported space type: {space_type}")
 
@@ -240,15 +203,8 @@ def main():
     print()
     print("Computing engine-specific radial thresholds...")
 
-    # For max_distance: Faiss takes raw distance directly, but Lucene differs for IP
-    faiss_max_distance = new_distances.copy()
-    if args.space_type == "innerproduct":
-        lucene_max_distance = -new_distances
-    else:
-        lucene_max_distance = new_distances.copy()
-
-    # For min_score: both engines accept the same OpenSearch score value
-    min_score = raw_distance_to_opensearch_score(new_distances, args.space_type)
+    faiss_max_distance, min_score = engine_threshold_values("faiss", args.space_type, new_distances)
+    lucene_max_distance, _ = engine_threshold_values("lucene", args.space_type, new_distances)
 
     # Print stats at various k values
     k_values = [k for k in [100, 200, 500, 1000] if k <= new_distances.shape[1]]
