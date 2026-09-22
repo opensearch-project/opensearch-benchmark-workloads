@@ -75,6 +75,18 @@
       ]
     },
     {
+      "name": "cohere-nested-uniform",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "target-index": "{{ target_index_name }}",
+      "documents": [
+        {
+          "source-file": "cohere-10m-nested-uniform.hdf5.bz2",
+          "source-format": "hdf5",
+          "document-count": 1000000
+        }
+      ]
+    },
+    {
       "name": "cohere-relaxed",
       "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
       "target-index": "{{ target_index_name }}",
