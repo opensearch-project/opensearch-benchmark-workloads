@@ -2,8 +2,8 @@
     "name" : "warmup-indices",
     "operation" : "warmup-indices",
     "index": "{{ target_index_name | default('target_index') }}"
-},
-{%- for pct in filter_percentages %}
+}
+{%- for pct in filter_percentages | default([]) %},
 {
     "operation": {
         "name": "prod-queries-{{ pct }}",
@@ -35,5 +35,5 @@
         "repetitions": {{ number_of_repetitions | default(1)}}
     },
     "clients": {{ search_clients | default(1)}}
-}{{ "," if not loop.last }}
+}
 {%- endfor %}
