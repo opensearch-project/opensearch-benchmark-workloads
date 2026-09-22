@@ -18,7 +18,6 @@
     "target_index_num_vectors": 10000000,
 
     "radial_search_type": "max_distance",
-    "radial_engine": "lucene",
     "query_k": 100,
 
     "query_body": {

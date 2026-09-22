@@ -21,8 +21,8 @@
         {% if radial_search_type is defined %}
         "radial_search_type": "{{ radial_search_type }}",
         {% endif %}
-        {% if radial_engine is defined %}
-        "radial_engine": "{{ radial_engine }}",
+        {% if target_index_body is defined %}
+        "target_index_body": "{{ target_index_body }}",
         {% endif %}
         "field" : "{{ target_field_name | default('target_field') }}",
         "data_set_format" : "{{ query_data_set_format | default('hdf5') }}",
