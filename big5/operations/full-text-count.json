@@ -1,0 +1,104 @@
+    {
+      "name": "high-frequency-and-count",
+      "operation-type": "search",
+      "index": "{{ index_name | default('big5') }}",
+      "request-timeout": 7200,
+      "body": {
+        "size": 0,
+        "track_total_hits": true,
+        "query": {
+          "bool": {
+            "must": [
+              {
+                "term": {
+                  "message": "monkey"
+                }
+              },
+              {
+                "term": {
+                  "message": "jackal"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "high-frequency-or-count",
+      "operation-type": "search",
+      "index": "{{ index_name | default('big5') }}",
+      "request-timeout": 7200,
+      "body": {
+        "size": 0,
+        "track_total_hits": true,
+        "query": {
+          "bool": {
+            "should": [
+              {
+                "term": {
+                  "message": "monkey"
+                }
+              },
+              {
+                "term": {
+                  "message": "jackal"
+                }
+              }
+            ],
+            "minimum_should_match": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "prefix-count",
+      "operation-type": "search",
+      "index": "{{ index_name | default('big5') }}",
+      "request-timeout": 7200,
+      "body": {
+        "size": 0,
+        "track_total_hits": true,
+        "query": {
+          "prefix": {
+            "log.file.path": {
+              "value": "/var/log/messages/"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "wildcard-count",
+      "operation-type": "search",
+      "index": "{{ index_name | default('big5') }}",
+      "request-timeout": 7200,
+      "body": {
+        "size": 0,
+        "track_total_hits": true,
+        "query": {
+          "wildcard": {
+            "log.file.path": {
+              "value": "/var/log/messages/*"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "regexp-count",
+      "operation-type": "search",
+      "index": "{{ index_name | default('big5') }}",
+      "request-timeout": 7200,
+      "body": {
+        "size": 0,
+        "track_total_hits": true,
+        "query": {
+          "regexp": {
+            "log.file.path": {
+              "value": "/var/log/messages/.*"
+            }
+          }
+        }
+      }
+    }
