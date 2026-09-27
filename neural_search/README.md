@@ -16,12 +16,12 @@ Amazon Berkeley Objects (ABO) dataset, owned by Amazon, is an open-licensed data
 
 ### Additional Note for Multimodal search benchmark
 
-1. Currently, there's no [pretrained model](https://docs.opensearch.org/docs/latest/ml-commons-plugin/pretrained-models/) available for multimodal search, hence we will be using remote models
+1. Currently, there's no [pretrained model](https://docs.opensearch.org/latest/ml-commons-plugin/pretrained-models/) available for multimodal search, hence we will be using remote models
 2. This benchmark requires OpenSearch version 2.16 or higher, as the built-in function for creating connectors was only introduced in that version
 3. We pre-processed the ABO dataset by converting actual images (small ones) into base 64 encoding binaries, as the search method only accepts image binary as input
 4. By default, we utilize [Amazon Titan Multimodal Embeddings G1 model](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-multiemb-models.html) hosted on Bedrock to perform the benchmark, which requires create remote connector, register remote model and the following cluster setting:
    1. `"plugins.ml_commons.trusted_connector_endpoints_regex": ["^https://bedrock-runtime\\..*[a-z0-9-]\\.amazonaws\\.com/.*$"]`
-5. If you want to use other remote models that are hosted on other platforms such as cohere, you will need to update the cluster setting by adding trusted endpoints and adjust the logic to create connectors, check this [link](https://docs.opensearch.org/docs/latest/ml-commons-plugin/remote-models/index/) for more details
+5. If you want to use other remote models that are hosted on other platforms such as cohere, you will need to update the cluster setting by adding trusted endpoints and adjust the logic to create connectors, check this [link](https://docs.opensearch.org/latest/ml-commons-plugin/remote-models/index/) for more details
 6. This workload uses the Amazon Bedrock model by default. This model requires the following:
    1. Have a valid AWS account
    2. Have proper access permissions for the model (which can be obtained through this [link](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html))
@@ -154,7 +154,7 @@ This workload allows [specifying the following parameters](#specifying-workload-
 * `error_level` (default: "non-fatal"): Available for bulk operations only to specify ignore-response-error-level.
 * `flush_threshold_size` (default: "1g"): Size limit to flush the translog, when reached
 * `force_merge_max_num_segments` (default: unset): An integer specifying the max amount of segments the force-merge operation should use.
-* `query_size` (default: 10): Size of the query, see https://docs.opensearch.org/docs/latest/vector-search/vector-search-techniques/approximate-knn#the-number-of-returned-results
+* `query_size` (default: 10): Size of the query, see https://docs.opensearch.org/latest/vector-search/vector-search-techniques/approximate-knn#the-number-of-returned-results
 * `index_body`: Body of the index setting, must pass as workload parameter
 * `index_knn`: Whether to create a vector index, required as parameter for all search methods EXCEPT sparse search
 * `index_name`: Name of the index, must pass as workload parameter
@@ -836,7 +836,7 @@ Running multimodal-search                                                      [
 ```
 
 ### Gotchas
-1. The above benchmark is running against a cluster that has two data nodes (See Docker compose [detail](https://docs.opensearch.org/docs/latest/install-and-configure/install-opensearch/docker/#sample-docker-composeyml)). 
+1. The above benchmark is running against a cluster that has two data nodes (See Docker compose [detail](https://docs.opensearch.org/latest/install-and-configure/install-opensearch/docker/#sample-docker-composeyml)). 
 If your cluster only has a single data node, test procedures may get stuck in the `check-cluster-health` step. In that case, you should add a `number_of_replicas` parameter with value `0`
 2. For Multimodal test procedure, the performance also depend on the Bedrock model. Most common issue is requests are throttled by Bedrock, we can either request a service quota increase (check this [link](https://docs.aws.amazon.com/bedrock/latest/userguide/quotas.html) for details),
 or adjust the target-throughput (not ideal, as it makes the result look bad) 
