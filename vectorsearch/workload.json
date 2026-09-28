@@ -91,6 +91,30 @@
       ]
     },
     {
+      "name": "cohere-10m-radial",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "target-index": "{{ target_index_name }}",
+      "documents": [
+        {
+          "source-file": "cohere-10m-radial.hdf5.bz2",
+          "source-format": "hdf5",
+          "document-count": 10000000
+        }
+      ]
+    },
+    {
+      "name": "cohere-10m-radial-knn1000",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "target-index": "{{ target_index_name }}",
+      "documents": [
+        {
+          "source-file": "cohere-10m-radial-knn1000.hdf5.bz2",
+          "source-format": "hdf5",
+          "document-count": 10000000
+        }
+      ]
+    },
+    {
       "name": "cohere-nested",
       "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
       "target-index": "{{ target_index_name }}",
@@ -110,7 +134,7 @@
         {
           "source-file": "cohere-10m-nested-uniform.hdf5.bz2",
           "source-format": "hdf5",
-          "document-count": 1000000
+          "document-count": 10550170
         }
       ]
     },
@@ -135,6 +159,30 @@
           "source-file": "cohere-1m-restrictive-filters.hdf5.bz2",
           "source-format": "hdf5",
           "document-count": 1000000
+        }
+      ]
+    },
+    {
+      "name": "cohere-1m-radial-filter-percentage",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "target-index": "{{ target_index_name }}",
+      "documents": [
+        {
+          "source-file": "cohere-1m-radial-filter-percentage.hdf5.bz2",
+          "source-format": "hdf5",
+          "document-count": 1000000
+        }
+      ]
+    },
+    {
+      "name": "cohere-10m-nested-filter-percentage",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/vectorsearch/cohere-wikipedia-22-12-en-embeddings",
+      "target-index": "{{ target_index_name }}",
+      "documents": [
+        {
+          "source-file": "cohere-10m-nested-filter-percentage.hdf5.bz2",
+          "source-format": "hdf5",
+          "document-count": 10550170
         }
       ]
     }
