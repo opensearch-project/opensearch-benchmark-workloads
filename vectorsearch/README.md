@@ -135,7 +135,7 @@ This workload allows the following parameters to be specified using `--workload-
 | filter_type                             | Type of filter to apply to the query: `efficient` (inside the knn clause), `post_filter`, `boolean`, or `script` (exact script-score search over filtered docs) |
 | filter_body                             | Body of the filter query (e.g. a term query on a filter field)                                                                       |
 | filter_percentage                       | Filter selectivity suffix for per-percentage ground truth datasets (e.g. `10pct` reads `neighbors_10pct`); must match the field used in filter_body |
-| query_body                              | Json properties that will be merged with search body                                                                                 |
+| query_body                              | Json properties that will be merged with search body. If it contains `query`, it is sent as the full search body; see [Full search body](#full-search-body) |
 | search_clients                          | Number of clients to use for running queries                                                                                         |
 | repetitions                             | Number of repetitions until the data set is exhausted (default 1)                                                                    |
 | target_throughput                       | Target throughput for each query operation in requests per second (default 10)                                                       |
@@ -297,7 +297,7 @@ This workload allows the following parameters to be specified using `--workload-
 | query_data_set_format                   | Format of vector data set for queries                                                                                                                                                             |
 | query_data_set_path                     | Path to vector data set for queries                                                                                                                                                               |
 | query_count                             | Number of queries for search operation                                                                                                                                                            |
-| query_body                              | Json properties that will be merged with search body                                                                                                                                              |
+| query_body                              | Json properties that will be merged with search body. If it contains `query`, it is sent as the full search body; see [Full search body](#full-search-body) |
 | search_clients                          | Number of clients to use for running queries                                                                                                                                                      |
 | target_dataset_filter_attributes        | Used in filter benchmarks. List of names of attribute fields in a dataset.                                                                                                                        | 
 | derived_source_enabled                  | Whether or not derived source feature should be enabled on the index (default null, pass in either true or false)                                                                                 |
@@ -678,6 +678,46 @@ Below are sample outputs for the Faiss IVF benchmarking procedure. For the sake 
 [INFO] SUCCESS (took 413 seconds)
 ---------------------------------
 ```
+
+### Full search body
+
+By default the search operations build the knn clause themselves from params (`query_k`, `oversample_factor`,
+`filter_type`/`filter_body`, ...), and `query_body` only adds top-level keys such as `_source`. Query options without a
+param of their own, such as `rescore: false`, `expand_nested_docs` or `method_parameters`, cannot be expressed that way.
+
+When `query_body` contains a `query`, it is sent as the complete `_search` body, exactly as written. The only change per
+request is the query vector: `vector` is replaced with the next vector from the query data set in every `knn` clause on
+`target_field_name`. Recall is computed at the knn clause's `k`.
+
+```json
+"query_body": {
+  "size": 100,
+  "docvalue_fields": ["_id"],
+  "stored_fields": "_none_",
+  "_source": false,
+  "query": {
+    "knn": {
+      "target_field": {
+        "vector": [0],
+        "k": 100,
+        "rescore": false,
+        "method_parameters": { "ef_search": 256 }
+      }
+    }
+  }
+}
+```
+
+Rules:
+
+* At least one `knn` clause on `target_field_name`, each with a `vector` placeholder. All such clauses must use the same `k`.
+  If `query_k` is also set, it must equal that `k` (the AOSS procedure always sets it, default 100).
+* Put filters, rescoring and other options in the body. Setting `oversample_factor`, `filter_type`/`filter_body` or radial
+  params as well is an error.
+* Radial search (`max_distance` / `min_score` in the clause) is not supported yet; use the radial params instead.
+* Supported by the `search-only` and `search-only-premerge` schedules (all no-train-test and search procedures), the AOSS
+  search schedule and the `prod-queries-*` operations of the combined-engine test. The filter-percentage sweep and the gRPC
+  search build their own query, so they fail with an error when `query_body` contains `query`.
 
 ### Custom Runners
 

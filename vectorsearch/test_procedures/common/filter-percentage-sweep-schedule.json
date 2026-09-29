@@ -8,6 +8,9 @@
     "operation": {
         "name": "prod-queries-{{ pct }}",
         "operation-type": "vector-search",
+        {% if query_body is defined and query_body.query is defined %}
+        "param-source": "vector-search-full-body-unsupported",
+        {% endif %}
         "index": "{{ target_index_name | default('target_index') }}",
         "detailed-results": true,
         {% if query_k is defined %}

@@ -7,6 +7,9 @@
     "operation": {
         "name": "prod-queries",
         "operation-type": "vector-search",
+        {% if query_body is defined and query_body.query is defined %}
+        "param-source": "raw-body-vector-search-param-source",
+        {% endif %}
         "index": "{{ target_index_name | default('target_index') }}",
         "detailed-results": true,
         {% if query_k is defined %}
