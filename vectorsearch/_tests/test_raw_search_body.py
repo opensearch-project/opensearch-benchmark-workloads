@@ -6,7 +6,10 @@
 
 """Unit tests for vectorsearch/raw_search_body.py.
 
-Run from the repository root:  pip install opensearch-benchmark h5py pytest && pytest vectorsearch/tests
+Lives in _tests/ because OSB imports every module under the workload directory except
+directories starting with '_', and this file needs pytest.
+
+Run from the repository root:  pip install opensearch-benchmark h5py pytest && pytest vectorsearch/_tests
 """
 import importlib.util
 import json
