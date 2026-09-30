@@ -7,6 +7,9 @@
     "operation": {
         "name": "grpc-prod-queries",
         "operation-type": "proto-vector-search",
+        {% if query_body is defined and query_body.query is defined %}
+        "param-source": "vector-search-full-body-unsupported",
+        {% endif %}
         "index": "{{ target_index_name | default('target_index') }}",
         "detailed-results": false,
         "calculate-recall": false,

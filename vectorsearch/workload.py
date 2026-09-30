@@ -5,6 +5,7 @@
 # compatible open source license.
 
 from .runners import register as register_runners
+from .raw_search_body import FullBodyUnsupportedParamSource, RawBodyVectorSearchParamSource
 from osbenchmark.workload.params import ParamSource
 import random
 import numpy as np
@@ -16,6 +17,9 @@ def register(registry):
     # Register random-vector param-sources
     registry.register_param_source("random-vector-bulk-param-source", RandomBulkParamSource)
     registry.register_param_source("random-vector-search-param-source", RandomSearchParamSource)
+    # vector-search sending query_body verbatim when it contains a query
+    registry.register_param_source("raw-body-vector-search-param-source", RawBodyVectorSearchParamSource)
+    registry.register_param_source("vector-search-full-body-unsupported", FullBodyUnsupportedParamSource)
 
 
 # Shared cluster centers generated once and reused across all param source instances.
