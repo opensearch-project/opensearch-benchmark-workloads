@@ -67,6 +67,33 @@ This procedure is used to benchmark previously indexed vector search index. This
 to benchmark large vector search index without indexing everytime since load time is substantial for a large dataset.
 This also contains warmup operation to avoid cold start problem during vector search.
 
+### Index Settings, Cluster Settings and Snapshots
+These single-purpose procedures change cluster state between other procedures, so a sequence of runs can compare
+settings or start every variant from the same index. For example: index once, `snapshot-create`, then `snapshot-restore`
+before each `force-merge-index` / `search-only` variant.
+
+| Procedure | What it does | Params |
+|---|---|---|
+| `index-settings` | `PUT /<target_index_name>/_settings` with `index_settings` as the body. Only dynamic settings can be changed on an open index. | `index_settings` |
+| `cluster-settings` | Sets `cluster_settings` as persistent cluster settings. | `cluster_settings` |
+| `snapshot-create` | Registers the repository, snapshots the target index and waits for the snapshot to finish. | `snapshot_name`, `snapshot_repository`, `snapshot_repository_type`, `snapshot_repository_settings` |
+| `snapshot-restore` | Registers the repository, deletes the target index if it exists, restores it from the snapshot and waits for recovery. | same as `snapshot-create` |
+
+`snapshot_repository` defaults to `bench-snapshots` and `snapshot_repository_type` to `s3`; `snapshot_repository_settings`
+is passed through as the repository's `settings` (for `s3`, at least `bucket`; for `fs`, `location`, which must be under
+`path.repo`). The `s3` type needs the `repository-s3` plugin and write access to the bucket from the nodes. The snapshot
+and recovery waits are included in reporting, so their durations appear in the results.
+
+```json
+{
+  "target_index_name": "target_index",
+  "index_settings": { "index.refresh_interval": "30s" },
+  "cluster_settings": { "knn.memory.circuit_breaker.limit": "60%" },
+  "snapshot_name": "sift-128-hnsw",
+  "snapshot_repository_settings": { "bucket": "my-snapshots-bucket", "base_path": "vectorsearch" }
+}
+```
+
 ### Combined Engine Test
 
 This procedure (`combined-engine-test`) covers several engine/encoding configurations against the same
