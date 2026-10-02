@@ -1,0 +1,43 @@
+{
+  "settings": {
+    "index.number_of_shards": {{ customer_shards | default(8) }},
+    "index.number_of_replicas": {{ number_of_replicas | default(0) }},
+    "index.codec": "best_compression",
+    "index.translog.durability": {{ index_translog_durability | default("async") | tojson }}
+    {%- if parquet_enabled_index | default(true) %}
+    ,"index.pluggable.dataformat.enabled": true
+    ,"index.pluggable.dataformat": "composite"
+    ,"index.composite.primary_data_format": "parquet"
+    ,"index.composite.secondary_data_formats": ["lucene"]
+    {%- endif %}
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "c_custkey": {
+        "type": "long"
+      },
+      "c_name": {
+        "type": "keyword"
+      },
+      "c_address": {
+        "type": "text"
+      },
+      "c_nationkey": {
+        "type": "long"
+      },
+      "c_phone": {
+        "type": "keyword"
+      },
+      "c_acctbal": {
+        "type": "double"
+      },
+      "c_mktsegment": {
+        "type": "keyword"
+      },
+      "c_comment": {
+        "type": "text"
+      }
+    }
+  }
+}
