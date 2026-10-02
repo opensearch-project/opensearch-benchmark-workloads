@@ -255,3 +255,123 @@
         }
     ]
 }
+,
+{
+    "name": "index-settings",
+    "default": false,
+    "description": "PUT index_settings to the target index's _settings. Dynamic settings only; static settings need a closed index.",
+    "schedule": [
+        {
+            "operation": {
+                "name": "put-index-settings",
+                "operation-type": "raw-request",
+                "method": "PUT",
+                "path": "/{{ target_index_name | default('target_index') }}/_settings",
+                "body": {{ index_settings | default({}) | tojson }}
+            }
+        }
+    ]
+},
+{
+    "name": "cluster-settings",
+    "default": false,
+    "description": "PUT cluster_settings as persistent cluster settings.",
+    "schedule": [
+        {
+            "operation": {
+                "name": "put-cluster-settings",
+                "operation-type": "put-settings",
+                "body": {"persistent": {{ cluster_settings | default({}) | tojson }}}
+            }
+        }
+    ]
+},
+{
+    "name": "snapshot-create",
+    "default": false,
+    "description": "Register snapshot_repository and snapshot the target index into it as snapshot_name.",
+    "schedule": [
+        {
+            "operation": {
+                "name": "register-snapshot-repository",
+                "operation-type": "create-snapshot-repository",
+                "repository": "{{ snapshot_repository | default('bench-snapshots') }}",
+                "body": {
+                    "type": "{{ snapshot_repository_type | default('s3') }}",
+                    "settings": {{ snapshot_repository_settings | default({}) | tojson }}
+                }
+            }
+        },
+        {
+            "operation": {
+                "name": "create-snapshot",
+                "operation-type": "create-snapshot",
+                "repository": "{{ snapshot_repository | default('bench-snapshots') }}",
+                "snapshot": "{{ snapshot_name | default('target-index-snapshot') }}",
+                "wait-for-completion": false,
+                "body": {
+                    "indices": "{{ target_index_name | default('target_index') }}",
+                    "include_global_state": false
+                }
+            }
+        },
+        {
+            "operation": {
+                "name": "wait-for-snapshot",
+                "operation-type": "wait-for-snapshot-create",
+                "repository": "{{ snapshot_repository | default('bench-snapshots') }}",
+                "snapshot": "{{ snapshot_name | default('target-index-snapshot') }}",
+                "completion-recheck-wait-period": 5,
+                "include-in-reporting": true
+            }
+        }
+    ]
+},
+{
+    "name": "snapshot-restore",
+    "default": false,
+    "description": "Delete the target index, restore it from snapshot_name in snapshot_repository, and wait for recovery.",
+    "schedule": [
+        {
+            "operation": {
+                "name": "register-snapshot-repository",
+                "operation-type": "create-snapshot-repository",
+                "repository": "{{ snapshot_repository | default('bench-snapshots') }}",
+                "body": {
+                    "type": "{{ snapshot_repository_type | default('s3') }}",
+                    "settings": {{ snapshot_repository_settings | default({}) | tojson }}
+                }
+            }
+        },
+        {
+            "operation": {
+                "name": "delete-target-index-before-restore",
+                "operation-type": "delete-index",
+                "only-if-exists": true,
+                "index": "{{ target_index_name | default('target_index') }}"
+            }
+        },
+        {
+            "operation": {
+                "name": "restore-snapshot",
+                "operation-type": "restore-snapshot",
+                "repository": "{{ snapshot_repository | default('bench-snapshots') }}",
+                "snapshot": "{{ snapshot_name | default('target-index-snapshot') }}",
+                "wait-for-completion": false,
+                "body": {
+                    "indices": "{{ target_index_name | default('target_index') }}",
+                    "include_global_state": false
+                }
+            }
+        },
+        {
+            "operation": {
+                "name": "wait-for-restore-recovery",
+                "operation-type": "wait-for-recovery",
+                "index": "{{ target_index_name | default('target_index') }}",
+                "completion-recheck-wait-period": 5,
+                "include-in-reporting": true
+            }
+        }
+    ]
+}
