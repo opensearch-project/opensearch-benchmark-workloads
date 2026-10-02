@@ -3430,7 +3430,7 @@
                         {
                             "range": {
                                 "EventDate": {
-                                    "from": "2013-07-01T00:00:00.000Z",
+                                    "from": "2013-07-14T00:00:00.000Z",
                                     "to": "2013-07-15T00:00:00.000Z",
                                     "include_lower": true,
                                     "include_upper": true,

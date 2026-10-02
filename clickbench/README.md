@@ -66,7 +66,7 @@ The workload includes 43 PPL-based operations from the ClickBench benchmark suit
 40. **q40-traffic-source-analysis**: Traffic source analysis
 41. **q41-url-hash-date**: URL hash and date analysis
 42. **q42-window-client-dimensions**: Window client dimensions
-43. **q43-hourly-pageviews**: Hourly pageview analysis
+43. **q43-hourly-pageviews**: Per-minute pageview counts (ClickBench Q43, `DATE_TRUNC('minute', EventTime)`)
 
 ## Parameters
 
