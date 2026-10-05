@@ -1,0 +1,24 @@
+{
+  "name": "tpch_sf_100",
+  "description": "Indexes the TPC-H sf=100 dataset (8 tables, 866M rows) and runs the 22 TPC-H queries as PPL against the analytics engine",
+  "default": true,
+  "schedule": [
+    {{ benchmark.collect(parts="ppl/mustang-settings.json") }},
+    {% with default_index_settings={}, index_name="_all" %}
+    {{ benchmark.collect(parts="../../common_operations/workload_setup.json") }},
+    {% endwith %}
+    {
+      "operation": "flush-all"
+    },
+    {{ benchmark.collect(parts="ppl/tpch-schedule.json") }}
+  ]
+},
+{
+  "name": "tpch_sf_100-query-only",
+  "description": "Runs the 22 TPC-H queries against an ALREADY LOADED sf=100 cluster. No indexing, no index deletion. This is the procedure to use for iteration -- re-indexing 866M rows per run is impractical.",
+  "default": false,
+  "schedule": [
+    {{ benchmark.collect(parts="ppl/mustang-settings.json") }},
+    {{ benchmark.collect(parts="ppl/tpch-schedule.json") }}
+  ]
+}

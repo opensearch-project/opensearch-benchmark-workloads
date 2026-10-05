@@ -1,0 +1,40 @@
+{
+  "settings": {
+    "index.number_of_shards": {{ supplier_shards | default(8) }},
+    "index.number_of_replicas": {{ number_of_replicas | default(0) }},
+    "index.codec": "best_compression",
+    "index.translog.durability": {{ index_translog_durability | default("async") | tojson }}
+    {%- if parquet_enabled_index | default(true) %}
+    ,"index.pluggable.dataformat.enabled": true
+    ,"index.pluggable.dataformat": "composite"
+    ,"index.composite.primary_data_format": "parquet"
+    ,"index.composite.secondary_data_formats": ["lucene"]
+    {%- endif %}
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "s_suppkey": {
+        "type": "long"
+      },
+      "s_name": {
+        "type": "keyword"
+      },
+      "s_address": {
+        "type": "text"
+      },
+      "s_nationkey": {
+        "type": "long"
+      },
+      "s_phone": {
+        "type": "keyword"
+      },
+      "s_acctbal": {
+        "type": "double"
+      },
+      "s_comment": {
+        "type": "text"
+      }
+    }
+  }
+}

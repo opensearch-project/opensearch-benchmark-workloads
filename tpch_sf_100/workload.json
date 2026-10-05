@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "description": "TPC-H scale factor 100 (8 tables, 866,037,932 rows) run as PPL queries against the OpenSearch analytics engine",
+  "indices": [
+    { "name": "lineitem", "body": "index-lineitem.json" },
+    { "name": "orders",   "body": "index-orders.json" },
+    { "name": "partsupp", "body": "index-partsupp.json" },
+    { "name": "part",     "body": "index-part.json" },
+    { "name": "customer", "body": "index-customer.json" },
+    { "name": "supplier", "body": "index-supplier.json" },
+    { "name": "nation",   "body": "index-nation.json" },
+    { "name": "region",   "body": "index-region.json" }
+  ],
+  "corpora": [
+    {
+      "name": "tpch_sf_100",
+      "documents": [
+        { "source-file": "lineitem.json.gz", "target-index": "lineitem", "document-count": 600037902 },
+        { "source-file": "orders.json.gz",   "target-index": "orders",   "document-count": 150000000 },
+        { "source-file": "partsupp.json.gz", "target-index": "partsupp", "document-count": 80000000 },
+        { "source-file": "part.json.gz",     "target-index": "part",     "document-count": 20000000 },
+        { "source-file": "customer.json.gz", "target-index": "customer", "document-count": 15000000 },
+        { "source-file": "supplier.json.gz", "target-index": "supplier", "document-count": 1000000 },
+        { "source-file": "nation.json.gz",   "target-index": "nation",   "document-count": 25 },
+        { "source-file": "region.json.gz",   "target-index": "region",   "document-count": 5 }
+      ]
+    }
+  ],
+  "operations": [
+    {{ benchmark.collect(parts="operations/*.json") }}
+  ],
+  "test_procedures": [
+    {{ benchmark.collect(parts="test_procedures/*.json") }}
+  ]
+}
