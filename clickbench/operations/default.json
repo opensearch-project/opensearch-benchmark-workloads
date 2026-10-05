@@ -196,7 +196,7 @@
       "path": "/_plugins/_ppl",
       "method": "POST",
       "body": {
-        "query": "source = {{index_name | default('clickbench')}} | where like(URL, '%google%') | stats count()"
+        "query": "source = {{index_name | default('clickbench')}} | where like(URL, '%google%', true) | stats count()"
       }
     },
     {
