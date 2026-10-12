@@ -33,6 +33,9 @@
         "{{ target_field_name }}": {
           "type": "knn_vector",
           "dimension": {{ target_index_dimension | default(768) }},
+          {%- if target_index_data_type is defined %}
+          "data_type": "{{ target_index_data_type }}",
+          {%- endif %}
           "compression_level": "{{ faiss_sq_compression_level | default('32x') }}",
           {%- if faiss_sq_mode is defined %}
           "mode": "{{ faiss_sq_mode }}",
