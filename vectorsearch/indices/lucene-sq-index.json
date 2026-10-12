@@ -27,6 +27,9 @@
         "{{ target_field_name }}": {
           "type": "knn_vector",
           "dimension": {{ target_index_dimension | default(768) }},
+          {%- if target_index_data_type is defined %}
+          "data_type": "{{ target_index_data_type }}",
+          {%- endif %}
           "compression_level": "{{ lucene_sq_compression_level | default('32x') }}",
           "method": {
             "name": "hnsw",
