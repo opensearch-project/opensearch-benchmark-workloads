@@ -1,0 +1,46 @@
+{
+  "settings": {
+    "index.number_of_shards": {{ orders_shards | default(16) }},
+    "index.number_of_replicas": {{ number_of_replicas | default(0) }},
+    "index.codec": "best_compression",
+    "index.translog.durability": {{ index_translog_durability | default("async") | tojson }}
+    {%- if parquet_enabled_index | default(true) %}
+    ,"index.pluggable.dataformat.enabled": true
+    ,"index.pluggable.dataformat": "composite"
+    ,"index.composite.primary_data_format": "parquet"
+    ,"index.composite.secondary_data_formats": ["lucene"]
+    {%- endif %}
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "o_orderkey": {
+        "type": "long"
+      },
+      "o_custkey": {
+        "type": "long"
+      },
+      "o_orderstatus": {
+        "type": "keyword"
+      },
+      "o_totalprice": {
+        "type": "double"
+      },
+      "o_orderdate": {
+        "type": "date"
+      },
+      "o_orderpriority": {
+        "type": "keyword"
+      },
+      "o_clerk": {
+        "type": "keyword"
+      },
+      "o_shippriority": {
+        "type": "integer"
+      },
+      "o_comment": {
+        "type": "text"
+      }
+    }
+  }
+}
