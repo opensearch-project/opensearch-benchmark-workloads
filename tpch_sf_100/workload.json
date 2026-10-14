@@ -14,7 +14,7 @@
   "corpora": [
     {
       "name": "tpch_sf_100",
-      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/tpch"
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/tpch",
       "documents": [
         { "source-file": "lineitem.json.bz2", "target-index": "lineitem", "document-count": 600037902, "compressed-bytes": 16580889617, "uncompressed-bytes": 221450878888 },
         { "source-file": "orders.json.bz2",   "target-index": "orders",   "document-count": 150000000, "compressed-bytes": 3564779397, "uncompressed-bytes": 38478057782 },
