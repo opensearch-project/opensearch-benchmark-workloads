@@ -1,0 +1,34 @@
+{
+  "settings": {
+    "index.number_of_shards": {{ partsupp_shards | default(16) }},
+    "index.number_of_replicas": {{ number_of_replicas | default(0) }},
+    "index.codec": "best_compression",
+    "index.translog.durability": {{ index_translog_durability | default("async") | tojson }}
+    {%- if parquet_enabled_index | default(true) %}
+    ,"index.pluggable.dataformat.enabled": true
+    ,"index.pluggable.dataformat": "composite"
+    ,"index.composite.primary_data_format": "parquet"
+    ,"index.composite.secondary_data_formats": ["lucene"]
+    {%- endif %}
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "ps_partkey": {
+        "type": "long"
+      },
+      "ps_suppkey": {
+        "type": "long"
+      },
+      "ps_availqty": {
+        "type": "integer"
+      },
+      "ps_supplycost": {
+        "type": "double"
+      },
+      "ps_comment": {
+        "type": "text"
+      }
+    }
+  }
+}
