@@ -14,15 +14,16 @@
   "corpora": [
     {
       "name": "tpch_sf_100",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/tpch"
       "documents": [
-        { "source-file": "lineitem.json.gz", "target-index": "lineitem", "document-count": 600037902 },
-        { "source-file": "orders.json.gz",   "target-index": "orders",   "document-count": 150000000 },
-        { "source-file": "partsupp.json.gz", "target-index": "partsupp", "document-count": 80000000 },
-        { "source-file": "part.json.gz",     "target-index": "part",     "document-count": 20000000 },
-        { "source-file": "customer.json.gz", "target-index": "customer", "document-count": 15000000 },
-        { "source-file": "supplier.json.gz", "target-index": "supplier", "document-count": 1000000 },
-        { "source-file": "nation.json.gz",   "target-index": "nation",   "document-count": 25 },
-        { "source-file": "region.json.gz",   "target-index": "region",   "document-count": 5 }
+        { "source-file": "lineitem.json.bz2", "target-index": "lineitem", "document-count": 600037902, "compressed-bytes": 16580889617, "uncompressed-bytes": 221450878888 },
+        { "source-file": "orders.json.bz2",   "target-index": "orders",   "document-count": 150000000, "compressed-bytes": 3564779397, "uncompressed-bytes": 38478057782 },
+        { "source-file": "partsupp.json.bz2", "target-index": "partsupp", "document-count": 80000000, "compressed-bytes": 1850766877, "uncompressed-bytes": 17961210584 },
+        { "source-file": "part.json", "target-index": "part", "document-count": 20000000, "uncompressed-bytes": 4711233259 },
+        { "source-file": "customer.json", "target-index": "customer", "document-count": 15000000, "uncompressed-bytes": 4066991331 },
+        { "source-file": "supplier.json", "target-index": "supplier", "document-count": 1000000, "uncompressed-bytes": 232769935 },
+        { "source-file": "nation.json",   "target-index": "nation",   "document-count": 25, "uncompressed-bytes": 3574 },
+        { "source-file": "region.json",   "target-index": "region",   "document-count": 5, "uncompressed-bytes": 589 }
       ]
     }
   ],
