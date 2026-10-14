@@ -23,5 +23,16 @@ jobs:
       - name: Install opensearch-benchmark
         run: pip install opensearch-benchmark
 
+      # Load each workload from this checkout. `list workloads` would validate
+      # the default repository's remote branch instead of the pull request.
       - name: Validate all workloads
-        run: opensearch-benchmark list workloads
+        run: |
+          failed=0
+          for f in */workload.json; do
+            dir=$(dirname "$f")
+            if ! out=$(opensearch-benchmark info --workload-path="$dir" --offline 2>&1); then
+              echo "::error file=$f::$(echo "$out" | grep -m1 'ERROR')"
+              failed=1
+            fi
+          done
+          exit $failed
