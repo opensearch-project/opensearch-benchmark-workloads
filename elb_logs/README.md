@@ -4,10 +4,6 @@ This workload is based on [Application Load Balancer access logs](https://docs.a
 Each document is one access log entry, with the raw `request` field additionally broken out into
 `http_method`, `request_url`, `url_host`, `url_path`, `url_query` and `http_version`.
 
-**Note:** the corpus statistics (`document-count`, `compressed-bytes`, `uncompressed-bytes`) in
-`workload.json` are placeholders and must be replaced with the real values once the corpus is
-uploaded.
-
 ### Example document
 
 ```json
@@ -59,6 +55,17 @@ uploaded.
 * `elb_logs` (default): indexes the corpus, then runs the PPL query suite.
 * `elb_logs-test`: same, but one warmup iteration and one iteration per query, for validating the workload end to end.
 * `append-no-conflicts-index-only`: indexing only, no queries.
+
+### Index maintenance operations
+
+Besides `index-append`, the workload defines these operations for use in custom schedules.
+The bundled test procedures already refresh and force-merge after indexing (via
+`common_operations/workload_setup.json`), so they are not referenced there.
+
+* `refresh-index`: refreshes the index.
+* `force-merge-index`: force-merges down to `max_num_segments` (default: 1) with a `request_timeout` (default: 7200s).
+* `wait-until-merges-finish-index`: polls index stats until no merges are in flight.
+* `flush-index`: raw `POST /<index>/_flush`.
 
 ### Queries
 

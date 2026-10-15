@@ -11,6 +11,29 @@
       "method": "POST"
     },
     {
+      "name": "refresh-index",
+      "operation-type": "refresh",
+      "index": "{{ index_name | default('elb_logs') }}"
+    },
+    {
+      "name": "force-merge-index",
+      "operation-type": "force-merge",
+      "index": "{{ index_name | default('elb_logs') }}",
+      "request-timeout": {{ request_timeout | default(7200) | tojson }},
+      "max-num-segments": {{ max_num_segments | default(1) | tojson }}
+    },
+    {
+      "name": "wait-until-merges-finish-index",
+      "operation-type": "index-stats",
+      "index": "{{ index_name | default('elb_logs') }}",
+      "condition": {
+        "path": "_all.total.merges.current",
+        "expected-value": 0
+      },
+      "retry-until-success": true,
+      "include-in-reporting": false
+    },
+    {
       "name": "t1-01-status-504",
       "operation-type": "raw-request",
       "path": "/_plugins/_ppl",
