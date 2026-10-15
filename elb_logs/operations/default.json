@@ -1,0 +1,354 @@
+    {
+      "name": "index-append",
+      "operation-type": "bulk",
+      "bulk-size": {{bulk_size | default(5000)}},
+      "ingest-percentage": {{ingest_percentage | default(100)}}
+    },
+    {
+      "name": "flush-index",
+      "operation-type": "raw-request",
+      "path": "/{{ index_name | default('elb_logs') }}/_flush",
+      "method": "POST"
+    },
+    {
+      "name": "t1-01-status-504",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where elb_status_code = 504"
+      }
+    },
+    {
+      "name": "t1-03-5xx-count-5min-by-status",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where elb_status_code >= 500 | stats count() as error_count by elb_status_code, span(`@timestamp`, 5m)"
+      }
+    },
+    {
+      "name": "t1-04-status-mix-over-time",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | stats count() as requestCount by elb_status_code, span(@timestamp, 5m) as time_bin | sort - time_bin"
+      }
+    },
+    {
+      "name": "t1-05-hourly-requests-errors",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | eval is_err = if(elb_status_code >= 400, 1, 0) | stats count() as requests, sum(is_err) as errors by span(@timestamp, 1h) as hour | sort hour"
+      }
+    },
+    {
+      "name": "t1-06-5xx-rate",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | eval e = if(elb_status_code > 499, 1, 0) | stats count() as total_requests, sum(e) as errors | eval error_rate_pct = round(errors * 100.0 / total_requests, 4)"
+      }
+    },
+    {
+      "name": "t1-07-top-urls-5xx",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where elb_status_code >= 500 | stats count() as requestCount by url_path | sort - requestCount"
+      }
+    },
+    {
+      "name": "t1-08-5xx-newest-1000",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where elb_status_code >= 500 | sort - `@timestamp`, trace_id | head 1000"
+      }
+    },
+    {
+      "name": "t1-09-elb-vs-target-status",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | stats count() as c by elb_status_code, target_status_code | sort - c, elb_status_code, target_status_code"
+      }
+    },
+    {
+      "name": "t1-11-requests-per-client",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | stats count() as count by client_ip | sort - count"
+      }
+    },
+    {
+      "name": "t1-13-top-verb-client",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | stats count() as c by http_method, client_ip | sort - c, http_method, client_ip | head 100"
+      }
+    },
+    {
+      "name": "t1-14-client-elb-url-counts",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | stats count() as count by client_ip, elb, request_url | sort - count"
+      }
+    },
+    {
+      "name": "t1-15-safari-urls",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where like(user_agent, '%Safari%') | sort `@timestamp`, trace_id | head 10 | fields request_url"
+      }
+    },
+    {
+      "name": "t1-17-scanner-hunting",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where like(request, '%.env%') or like(request, '%admin%') or like(request, '%login%') or like(request, '%cgi-bin%') or like(request, '%remote/login%') or like(request, '%+CSCOE+%') | stats count() as scanAttempts, min(@timestamp) as first_seen, max(@timestamp) as last_seen by client_ip, user_agent | sort - scanAttempts | head 20"
+      }
+    },
+    {
+      "name": "t1-18-latency-errors-by-consumer",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where target_processing_time > 0 | eval err = if(elb_status_code >= 500, 1, 0) | stats count() as requests, percentile(target_processing_time, 99) as latency_p99, sum(err) as errors by user_agent, http_method, url_path | where requests >= 10 | sort - latency_p99 | head 25"
+      }
+    },
+    {
+      "name": "t1-19-latency-per-backend",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where target_processing_time > 0 | stats count() as requests, avg(target_processing_time) as avg_latency, percentile(target_processing_time, 99) as p99_latency by target_ip | sort - avg_latency"
+      }
+    },
+    {
+      "name": "t1-20-latency-percentiles-over-time",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where target_processing_time != -1 | stats avg(target_processing_time) as avg_latency, percentile(target_processing_time, 50) as p50, percentile(target_processing_time, 90) as p90, percentile(target_processing_time, 99) as p99 by span(@timestamp, 5m) as time_bin | sort - time_bin"
+      }
+    },
+    {
+      "name": "t1-21-p95-latency-per-status",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where target_processing_time >= 0 | stats percentile_approx(target_processing_time, 95) as p95, count() as c by elb_status_code | sort elb_status_code"
+      }
+    },
+    {
+      "name": "t1-23-avg-processing-times",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | stats avg(request_processing_time) as average_request_processing_time, avg(target_processing_time) as average_target_processing_time, avg(response_processing_time) as average_response_processing_time"
+      }
+    },
+    {
+      "name": "t1-24-slowest-requests",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where target_processing_time > 5 | sort - target_processing_time | head 1000 | fields `@timestamp`, request_url, target_processing_time, elb_status_code, target_status_code"
+      }
+    },
+    {
+      "name": "t1-27-timechart-by-status",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | timechart span=1h count() by elb_status_code"
+      }
+    },
+    {
+      "name": "t1-28-distinct-clients",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | stats distinct_count(client_ip) as unique_clients"
+      }
+    },
+    {
+      "name": "t1-29-bytes-per-client",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | eval mb = received_bytes / 1000000.0 | stats sum(mb) as client_datareceived_megabytes by client_ip | sort - client_datareceived_megabytes"
+      }
+    },
+    {
+      "name": "t1-32-traffic-per-lb",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | eval tb = received_bytes + sent_bytes | stats count() as requestCount, min(`@timestamp`) as firstLogTime, max(`@timestamp`) as lastLogTime, avg(tb) as avgTransactionSize, sum(received_bytes) as totalBytesReceived, sum(sent_bytes) as totalBytesSent, sum(tb) as totalBytes by elb | sort - requestCount | head 10"
+      }
+    },
+    {
+      "name": "t1-33-one-day-rows",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where `@timestamp` >= '2026-09-23 00:00:00' and `@timestamp` < '2026-09-24 00:00:00' | sort `@timestamp`, trace_id | head 5000"
+      }
+    },
+    {
+      "name": "t1-34-oldest-100",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | sort @timestamp | head 100"
+      }
+    },
+    {
+      "name": "t2-01-count-all",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | stats count() as c"
+      }
+    },
+    {
+      "name": "t2-04-two-key-topn",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where isnotnull(url_path) | stats count() as c by client_ip, url_path | sort - c, client_ip, url_path | head 10"
+      }
+    },
+    {
+      "name": "t2-05-near-unique-two-key",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | eval r = if(elb_status_code >= 400, 1, 0) | stats count() as c, sum(r) as sr, avg(received_bytes) as arb by trace_id, client_ip | sort - c | head 10"
+      }
+    },
+    {
+      "name": "t2-06-three-key-expression",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where isnotnull(url_path) | eval m = minute(`@timestamp`) | stats count() as c by conn_trace_id, m, url_path | sort - c | head 10"
+      }
+    },
+    {
+      "name": "t2-07-topn-no-order",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where isnotnull(url_path) | stats count() as c by conn_trace_id, url_path | head 10"
+      }
+    },
+    {
+      "name": "t2-08-ninety-aggregates",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | stats sum(received_bytes) as s0, sum(received_bytes + 1) as s1, sum(received_bytes + 2) as s2, sum(received_bytes + 3) as s3, sum(received_bytes + 4) as s4, sum(received_bytes + 5) as s5, sum(received_bytes + 6) as s6, sum(received_bytes + 7) as s7, sum(received_bytes + 8) as s8, sum(received_bytes + 9) as s9, sum(received_bytes + 10) as s10, sum(received_bytes + 11) as s11, sum(received_bytes + 12) as s12, sum(received_bytes + 13) as s13, sum(received_bytes + 14) as s14, sum(received_bytes + 15) as s15, sum(received_bytes + 16) as s16, sum(received_bytes + 17) as s17, sum(received_bytes + 18) as s18, sum(received_bytes + 19) as s19, sum(received_bytes + 20) as s20, sum(received_bytes + 21) as s21, sum(received_bytes + 22) as s22, sum(received_bytes + 23) as s23, sum(received_bytes + 24) as s24, sum(received_bytes + 25) as s25, sum(received_bytes + 26) as s26, sum(received_bytes + 27) as s27, sum(received_bytes + 28) as s28, sum(received_bytes + 29) as s29, sum(received_bytes + 30) as s30, sum(received_bytes + 31) as s31, sum(received_bytes + 32) as s32, sum(received_bytes + 33) as s33, sum(received_bytes + 34) as s34, sum(received_bytes + 35) as s35, sum(received_bytes + 36) as s36, sum(received_bytes + 37) as s37, sum(received_bytes + 38) as s38, sum(received_bytes + 39) as s39, sum(received_bytes + 40) as s40, sum(received_bytes + 41) as s41, sum(received_bytes + 42) as s42, sum(received_bytes + 43) as s43, sum(received_bytes + 44) as s44, sum(received_bytes + 45) as s45, sum(received_bytes + 46) as s46, sum(received_bytes + 47) as s47, sum(received_bytes + 48) as s48, sum(received_bytes + 49) as s49, sum(received_bytes + 50) as s50, sum(received_bytes + 51) as s51, sum(received_bytes + 52) as s52, sum(received_bytes + 53) as s53, sum(received_bytes + 54) as s54, sum(received_bytes + 55) as s55, sum(received_bytes + 56) as s56, sum(received_bytes + 57) as s57, sum(received_bytes + 58) as s58, sum(received_bytes + 59) as s59, sum(received_bytes + 60) as s60, sum(received_bytes + 61) as s61, sum(received_bytes + 62) as s62, sum(received_bytes + 63) as s63, sum(received_bytes + 64) as s64, sum(received_bytes + 65) as s65, sum(received_bytes + 66) as s66, sum(received_bytes + 67) as s67, sum(received_bytes + 68) as s68, sum(received_bytes + 69) as s69, sum(received_bytes + 70) as s70, sum(received_bytes + 71) as s71, sum(received_bytes + 72) as s72, sum(received_bytes + 73) as s73, sum(received_bytes + 74) as s74, sum(received_bytes + 75) as s75, sum(received_bytes + 76) as s76, sum(received_bytes + 77) as s77, sum(received_bytes + 78) as s78, sum(received_bytes + 79) as s79, sum(received_bytes + 80) as s80, sum(received_bytes + 81) as s81, sum(received_bytes + 82) as s82, sum(received_bytes + 83) as s83, sum(received_bytes + 84) as s84, sum(received_bytes + 85) as s85, sum(received_bytes + 86) as s86, sum(received_bytes + 87) as s87, sum(received_bytes + 88) as s88, sum(received_bytes + 89) as s89"
+      }
+    },
+    {
+      "name": "t2-09-ten-key-groupby",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | stats count() as n by type, elb, target_port, elb_status_code, target_status_code, http_method, http_version, ssl_cipher, ssl_protocol, target_group_arn | sort - n, type, elb, target_port, elb_status_code, target_status_code, http_method, http_version, ssl_cipher, ssl_protocol, target_group_arn | head 10"
+      }
+    },
+    {
+      "name": "t2-10-twenty-key-groupby",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | stats count() as n by type, elb, target_port, elb_status_code, target_status_code, http_method, http_version, ssl_cipher, ssl_protocol, target_group_arn, chosen_cert_arn, matched_rule_priority, actions_executed, target_status_code_list, classification, classification_reason, lb_node_ip, domain_name, url_host, target_ip | sort - n, type, elb, target_port, elb_status_code, target_status_code, http_method, http_version, ssl_cipher, ssl_protocol, target_group_arn, chosen_cert_arn, matched_rule_priority, actions_executed, target_status_code_list, classification, classification_reason, lb_node_ip, domain_name, url_host, target_ip | head 5"
+      }
+    },
+    {
+      "name": "t2-11-deep-pagination",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where http_method = 'POST' and `@timestamp` >= '2026-09-18 00:00:00' and `@timestamp` <= '2026-09-27 23:59:59' and elb_status_code = 200 and url_path = '/_bulk' | stats count() as pv by received_bytes, sent_bytes | sort - pv | head 10 from 10000"
+      }
+    },
+    {
+      "name": "t2-13-regex-alternation",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where regex_match(url_path, '[.](env|git|php)([.]|$)') | stats count() as c"
+      }
+    },
+    {
+      "name": "t2-14-rex-extraction-topn",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where isnotnull(url_path) | rex field=url_path \"[.](?<ext>[A-Za-z0-9]+)$\" | where isnotnull(ext) and ext != '' | stats count() as c by ext | sort - c, ext | head 10"
+      }
+    },
+    {
+      "name": "t2-15-dedup-latest-per-key",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where isnotnull(http_method) | sort - `@timestamp`, trace_id | dedup http_method, elb_status_code | fields http_method, elb_status_code, `@timestamp`, trace_id | sort http_method, elb_status_code"
+      }
+    },
+    {
+      "name": "t2-16-numeric-point-lookup",
+      "operation-type": "raw-request",
+      "path": "/_plugins/_ppl",
+      "method": "POST",
+      "body": {
+        "query": "source = {{index_name | default('elb_logs')}} | where client_port = 2829 | stats count() as c"
+      }
+    }
