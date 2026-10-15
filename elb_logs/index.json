@@ -1,0 +1,147 @@
+{
+  "settings": {
+    "index.number_of_shards": {{number_of_shards | default(1)}},
+    "index.number_of_replicas": {{number_of_replicas | default(0)}},
+    "index.queries.cache.enabled": {{query_cache_enabled | default(false) | tojson}},
+    "index.requests.cache.enable": {{requests_cache_enabled | default(false) | tojson}},
+    "index.codec": "best_compression",
+    "index.translog.sync_interval": "30s",
+    "index.translog.durability": {{index_translog_durability | default("async") | tojson}},
+    "index.sort.field": [ "@timestamp" ],
+    "index.sort.order": [ "asc" ]
+    {%- if parquet_enabled_index | default(true) %}
+    ,"index.pluggable.dataformat.enabled": true
+    ,"index.pluggable.dataformat": "composite"
+    ,"index.composite.primary_data_format": "parquet"
+    ,"index.composite.secondary_data_formats": ["lucene"]
+    {%- endif %}
+  },
+  "mappings": {
+    "dynamic": "strict",
+    "properties": {
+      "@timestamp": {
+        "type": "date"
+      },
+      "type": {
+        "type": "keyword"
+      },
+      "elb": {
+        "type": "keyword"
+      },
+      "client_ip": {
+        "type": "keyword"
+      },
+      "client_port": {
+        "type": "integer"
+      },
+      "target_ip": {
+        "type": "keyword"
+      },
+      "target_port": {
+        "type": "integer"
+      },
+      "request_processing_time": {
+        "type": "double"
+      },
+      "target_processing_time": {
+        "type": "double"
+      },
+      "response_processing_time": {
+        "type": "double"
+      },
+      "elb_status_code": {
+        "type": "integer"
+      },
+      "target_status_code": {
+        "type": "integer"
+      },
+      "received_bytes": {
+        "type": "long"
+      },
+      "sent_bytes": {
+        "type": "long"
+      },
+      "request": {
+        "type": "keyword",
+        "ignore_above": 2048
+      },
+      "http_method": {
+        "type": "keyword"
+      },
+      "request_url": {
+        "type": "keyword",
+        "ignore_above": 2048
+      },
+      "url_host": {
+        "type": "keyword"
+      },
+      "url_path": {
+        "type": "keyword",
+        "ignore_above": 2048
+      },
+      "url_query": {
+        "type": "keyword",
+        "ignore_above": 2048
+      },
+      "http_version": {
+        "type": "keyword"
+      },
+      "user_agent": {
+        "type": "keyword",
+        "ignore_above": 2048
+      },
+      "ssl_cipher": {
+        "type": "keyword"
+      },
+      "ssl_protocol": {
+        "type": "keyword"
+      },
+      "target_group_arn": {
+        "type": "keyword"
+      },
+      "trace_id": {
+        "type": "keyword"
+      },
+      "domain_name": {
+        "type": "keyword"
+      },
+      "chosen_cert_arn": {
+        "type": "keyword"
+      },
+      "matched_rule_priority": {
+        "type": "integer"
+      },
+      "request_creation_time": {
+        "type": "date"
+      },
+      "actions_executed": {
+        "type": "keyword"
+      },
+      "redirect_url": {
+        "type": "keyword",
+        "ignore_above": 2048
+      },
+      "error_reason": {
+        "type": "keyword"
+      },
+      "target_ip_port_list": {
+        "type": "keyword"
+      },
+      "target_status_code_list": {
+        "type": "keyword"
+      },
+      "classification": {
+        "type": "keyword"
+      },
+      "classification_reason": {
+        "type": "keyword"
+      },
+      "conn_trace_id": {
+        "type": "keyword"
+      },
+      "lb_node_ip": {
+        "type": "keyword"
+      }
+    }
+  }
+}
