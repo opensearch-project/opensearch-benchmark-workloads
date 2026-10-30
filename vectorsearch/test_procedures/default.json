@@ -79,6 +79,14 @@
     ]
 },
 {
+    "name": "timed-search-aoss",
+    "description": "AOSS: search a previously indexed collection for time_period seconds. Queries repeat until the time is up, so the time ends the task, not the query set.",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="aoss/timed-search-schedule.json") }}
+    ]
+},
+{
     "name": "train-test",
     "description": "Index vector search that requires training.",
     "default": false,

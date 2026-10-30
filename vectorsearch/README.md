@@ -270,6 +270,28 @@ either in-memory, or an external OpenSearch cluster.
 
 ```
 
+### Timed Search AOSS
+
+`timed-search-aoss` searches an Amazon OpenSearch Serverless collection that is already indexed, for `time_period` seconds.
+Use it when the test is about time rather than a fixed number of queries, for example holding a load level while the
+collection scales.
+
+The vector search param source gives each client its share of the query set (`query_count / search_clients`) and stops
+the client when that share has been replayed `repetitions` times, even when `time_period` has not elapsed. This procedure
+sets `repetitions` to 100000 by default, so the time period, not the query set, ends the task. Recall is computed per
+query against the same neighbors, so repeated queries don't change it.
+
+Like `no-train-test-aoss`, it has no index warm-up task. It takes the AOSS search parameters above, plus:
+
+| Parameter Name     | Description                                                                                          |
+|--------------------|------------------------------------------------------------------------------------------------------|
+| time_period        | Seconds to run the search (default 900)                                                              |
+| warmup_time_period | Seconds at the start whose samples are recorded as warm-up and left out of the results (default none) |
+| target_throughput  | Total requests per second across all clients (default none: each client sends as fast as it can)     |
+| repetitions        | Times each client replays its share of the query set before stopping (default 100000)                |
+
+Note that `target_throughput` has no default here, unlike `no-train-test-aoss` (10).
+
 ### Train Test
 
 This procedure benchmarks approximate k-NN search algorithms that require a training step. For example, the FAISS IVF requires a training step to cluster vectors. Then search can be performed against a smaller number of cluster centroids instead of the entire dataset.
@@ -743,7 +765,7 @@ Rules:
   params as well is an error.
 * Radial search (`max_distance` / `min_score` in the clause) is not supported yet; use the radial params instead.
 * Supported by the `search-only` and `search-only-premerge` schedules (all no-train-test and search procedures), the AOSS
-  search schedule and the `prod-queries-*` operations of the combined-engine test. The filter-percentage sweep and the gRPC
+  search and timed search schedules and the `prod-queries-*` operations of the combined-engine test. The filter-percentage sweep and the gRPC
   search build their own query, so they fail with an error when `query_body` contains `query`.
 
 ### Custom Runners
