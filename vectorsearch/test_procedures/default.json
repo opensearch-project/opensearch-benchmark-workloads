@@ -95,6 +95,14 @@
     ]
 },
 {
+    "name": "shaped-search",
+    "description": "Search a previously indexed index with a load that follows load_shape (steps, ramp, burst or sine, in qps or active clients) in one task, with no restart between levels. The shape's end ends the task.",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="common/shaped-search-schedule.json") }}
+    ]
+},
+{
     "name": "train-test",
     "description": "Index vector search that requires training.",
     "default": false,

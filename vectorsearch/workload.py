@@ -7,6 +7,7 @@
 from .runners import register as register_runners
 from .raw_search_body import FullBodyUnsupportedParamSource, RawBodyVectorSearchParamSource
 from .corpus_sample_search import CorpusSampleVectorSearchParamSource
+from .shape_scheduler import ShapeScheduler
 from osbenchmark.workload.params import ParamSource
 import random
 import numpy as np
@@ -23,6 +24,8 @@ def register(registry):
     registry.register_param_source("vector-search-full-body-unsupported", FullBodyUnsupportedParamSource)
     # vector-search with queries sampled from the indexed vectors, no ground truth (corpus-search)
     registry.register_param_source("corpus-sample-vector-search-param-source", CorpusSampleVectorSearchParamSource)
+    # "schedule": "shape": a task whose load follows a load shape (steps, ramp, burst, sine); see shape_scheduler.py
+    registry.register_scheduler("shape", ShapeScheduler)
 
 
 # Shared cluster centers generated once and reused across all param source instances.
