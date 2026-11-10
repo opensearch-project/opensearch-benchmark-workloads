@@ -312,11 +312,7 @@ every client and every run with the same `query_seed` uses the same pool.
 * Without it, the pool is shuffled and split across the clients, and each vector is sent once per repetition. The task
   sends exactly `query_count * repetitions` queries.
 
-`query_noise` adds Gaussian noise to each query, so that a query is near a document in the index rather than equal to
-one. Each component gets noise with standard deviation `query_noise * |v| / sqrt(d)`, so the noise vector's expected
-norm is `query_noise` times the query's norm (0.05 is about 5%). For `cosinesimil` and `innerproduct`, the noisy
-vector is scaled back to the original norm. Byte vectors are rounded and clipped to their range. Noise is not supported
-for binary (`hamming`) vectors.
+Each query is the sampled vector as is, so with the default source it is also a document in the index.
 
 A `query_body` that contains a `query` is sent as written, with the sampled vector placed into every `knn` clause on
 `target_field_name`, as in [Full search body](#full-search-body).
@@ -324,8 +320,7 @@ A `query_body` that contains a `query` is sent as written, with the sampled vect
 | Parameter Name     | Description                                                                                          |
 |--------------------|------------------------------------------------------------------------------------------------------|
 | query_count        | Number of vectors in the query pool (default 10000; -1 for the whole data set, which is held in memory by every worker process) |
-| query_seed         | Seed for the pool and for each client's order and noise (default 1)                                  |
-| query_noise        | Relative Gaussian noise added to each query (default 0: the sampled vector as is)                    |
+| query_seed         | Seed for the pool and for each client's order (default 1)                                            |
 | time_period        | Seconds to run the search (default none: the task ends after `query_count * repetitions` queries)     |
 | repetitions        | Times the pool is sent when there is no `time_period` (default 1)                                    |
 | warmup_time_period | Seconds at the start whose samples are recorded as warm-up and left out of the results (default none) |
@@ -348,7 +343,6 @@ Example params, sampling 10000 queries from cohere-1m's indexed vectors for 30 m
     "target_index_bulk_index_data_set_corpus": "cohere-1m",
     "query_k": 100,
     "query_count": 10000,
-    "query_noise": 0.05,
     "query_seed": 7,
     "search_clients": 8,
     "time_period": 1800

@@ -18,13 +18,9 @@ blank, the queries come from the vectors that were indexed (the ``train`` key of
 * With a ``time_period``, each client picks pool vectors at random, with
   replacement, until the time is up. Each client has its own seeded sequence.
 * Without one, the pool is shuffled and split across the clients (shares differ
-  by at most one vector), and each vector is sent once per repetition (``repetitions``, default 1), so the step
-  sends exactly ``query_count * repetitions`` queries.
-* ``query_noise`` (default 0) adds Gaussian noise to each query: per component
-  ``sigma = query_noise * |v| / sqrt(d)``, so the noise vector's expected norm is
-  ``query_noise`` times the query's norm. For ``cosinesimil`` and
-  ``innerproduct`` the noisy vector is scaled back to ``|v|``. Integer vectors are
-  rounded and clipped to their type's range. Noise is refused for ``hamming``.
+  by at most one vector), and each vector is sent once per repetition
+  (``repetitions``, default 1), so the step sends exactly
+  ``query_count * repetitions`` queries.
 
 A ``query_body`` that contains a ``query`` is sent as written, with the vector
 placed into every ``knn`` clause on the operation's field (as in
@@ -33,7 +29,6 @@ placed into every ``knn`` clause on the operation's field (as in
 
 import copy
 import logging
-import math
 
 import numpy as np
 
@@ -44,7 +39,6 @@ from osbenchmark.workload.params import SearchParamSource, VectorSearchPartition
 from .raw_search_body import _get, validate_search_body
 
 DEFAULT_POOL_SIZE = 10000
-NORM_PRESERVING_SPACES = ("cosinesimil", "innerproduct")
 
 # One pool per (file, key, size, seed) per worker process, shared by that process's clients.
 _POOLS = {}
@@ -96,26 +90,6 @@ def load_pool(data_set_format, path, context, pool_size, seed):
     return _POOLS[key]
 
 
-def add_noise(vector, noise, rng, keep_norm):
-    """vector plus N(0, sigma) per component, sigma = noise * |vector| / sqrt(d)."""
-    v = np.asarray(vector, dtype=np.float32)
-    if noise <= 0:
-        return vector
-    norm = float(np.linalg.norm(v))
-    if norm == 0:
-        return vector
-    out = v + rng.normal(0.0, noise * norm / math.sqrt(v.shape[0]), v.shape[0]).astype(np.float32)
-    if keep_norm:
-        out_norm = float(np.linalg.norm(out))
-        if out_norm > 0:
-            out *= norm / out_norm
-    dtype = np.asarray(vector).dtype
-    if np.issubdtype(dtype, np.integer):
-        info = np.iinfo(dtype)
-        out = np.clip(np.rint(out), info.min, info.max).astype(dtype)
-    return out
-
-
 class CorpusSampleVectorSearchParamSource(SearchParamSource):
     """``vector-search`` operation whose queries are sampled from a data set, without recall."""
 
@@ -157,16 +131,8 @@ class CorpusSamplePartitionParamSource(VectorSearchPartitionParamSource):
         self.context = context
         self.timed = bool(params.get("timed", False))
         self.seed = int(params.get("query_seed", 1))
-        try:
-            self.noise = float(params.get("query_noise", 0) or 0)
-        except (TypeError, ValueError):
-            raise exceptions.InvalidSyntax(f"query_noise must be a number >= 0, got {params.get('query_noise')!r}")
-        if self.noise < 0 or math.isnan(self.noise):
-            raise exceptions.InvalidSyntax(f"query_noise must be a number >= 0, got {params.get('query_noise')!r}")
-        space_type = str(params.get("space_type") or "").lower()
-        if self.noise > 0 and space_type == "hamming":
-            raise exceptions.InvalidSyntax("query_noise is not supported for binary (hamming) vectors; set it to 0.")
-        self.keep_norm = space_type in NORM_PRESERVING_SPACES
+        if self.seed < 0:
+            raise exceptions.InvalidSyntax(f"query_seed must be a whole number >= 0, got {self.seed}")
         self.query_params["calculate-recall"] = False
         self.query_params.pop("neighbors", None)
 
@@ -216,7 +182,7 @@ class CorpusSamplePartitionParamSource(VectorSearchPartitionParamSource):
         return i
 
     def params(self):
-        vector = add_noise(self._pool[self._next_index()], self.noise, self._rng, self.keep_norm)
+        vector = self._pool[self._next_index()]
         self._update_request_params()
         if self._raw_body is not None:
             body = copy.deepcopy(self._raw_body)
