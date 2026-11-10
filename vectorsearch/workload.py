@@ -6,6 +6,7 @@
 
 from .runners import register as register_runners
 from .raw_search_body import FullBodyUnsupportedParamSource, RawBodyVectorSearchParamSource
+from .corpus_sample_search import CorpusSampleVectorSearchParamSource
 from osbenchmark.workload.params import ParamSource
 import random
 import numpy as np
@@ -20,6 +21,8 @@ def register(registry):
     # vector-search sending query_body verbatim when it contains a query
     registry.register_param_source("raw-body-vector-search-param-source", RawBodyVectorSearchParamSource)
     registry.register_param_source("vector-search-full-body-unsupported", FullBodyUnsupportedParamSource)
+    # vector-search with queries sampled from the indexed vectors, no ground truth (corpus-search)
+    registry.register_param_source("corpus-sample-vector-search-param-source", CorpusSampleVectorSearchParamSource)
 
 
 # Shared cluster centers generated once and reused across all param source instances.

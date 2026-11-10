@@ -87,6 +87,14 @@
     ]
 },
 {
+    "name": "corpus-search",
+    "description": "Search an indexed index with query vectors sampled from the data set (the indexed train vectors when no query data set is set), in a seeded random order. No ground truth: recall is not calculated. Ends after query_count * repetitions queries, or after time_period seconds when set.",
+    "default": false,
+    "schedule": [
+       {{ benchmark.collect(parts="common/corpus-search-schedule.json") }}
+    ]
+},
+{
     "name": "train-test",
     "description": "Index vector search that requires training.",
     "default": false,

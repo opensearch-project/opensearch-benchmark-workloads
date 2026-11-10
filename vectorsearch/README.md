@@ -292,6 +292,63 @@ Like `no-train-test-aoss`, it has no index warm-up task. It takes the AOSS searc
 
 Note that `target_throughput` has no default here, unlike `no-train-test-aoss` (10).
 
+### Corpus Search
+
+`corpus-search` searches an index that is already indexed, with query vectors sampled from the data set instead of a
+query set with ground truth. Use it when the test is about load (throughput, latency, errors, scaling) and the data set
+has no query set or neighbors, or when computing them is not worth it. Recall is not calculated.
+
+The queries come from:
+
+* the indexed vectors (the `train` key of `target_index_bulk_index_data_set_path` or `_corpus`) when
+  `query_data_set_path` and `query_data_set_corpus` are both left out, or
+* the query data set (its `test` key) when one is given.
+
+`query_count` vectors are picked once, uniformly and without replacement, as the query pool. The pick is seeded, so
+every client and every run with the same `query_seed` uses the same pool.
+
+* With `time_period`, each client picks pool vectors at random, with replacement, until the time is up. Each client
+  has its own seeded sequence, so clients don't send the same queries in the same order.
+* Without it, the pool is shuffled and split across the clients, and each vector is sent once per repetition. The task
+  sends exactly `query_count * repetitions` queries.
+
+Each query is the sampled vector as is, so with the default source it is also a document in the index.
+
+A `query_body` that contains a `query` is sent as written, with the sampled vector placed into every `knn` clause on
+`target_field_name`, as in [Full search body](#full-search-body).
+
+| Parameter Name     | Description                                                                                          |
+|--------------------|------------------------------------------------------------------------------------------------------|
+| query_count        | Number of vectors in the query pool (default 10000; -1 for the whole data set, which is held in memory by every worker process) |
+| query_seed         | Seed for the pool and for each client's order (default 1)                                            |
+| time_period        | Seconds to run the search (default none: the task ends after `query_count * repetitions` queries)     |
+| repetitions        | Times the pool is sent when there is no `time_period` (default 1)                                    |
+| warmup_time_period | Seconds at the start whose samples are recorded as warm-up and left out of the results (default none) |
+| target_throughput  | Total requests per second across all clients (default none: each client sends as fast as it can)     |
+| search_clients     | Number of clients (default 1)                                                                        |
+
+It has no index warm-up task, so it also runs against Amazon OpenSearch Serverless. A small pool sent many times keeps
+hitting the same graph paths and pages, which can make disk-based or tiered results look better than a real query mix;
+size `query_count` to the test.
+
+Example params, sampling 10000 queries from cohere-1m's indexed vectors for 30 minutes with 8 clients:
+
+```json
+{
+    "target_index_name": "target_index",
+    "target_field_name": "target_field",
+    "target_index_dimension": 768,
+    "target_index_space_type": "innerproduct",
+    "target_index_bulk_index_data_set_format": "hdf5",
+    "target_index_bulk_index_data_set_corpus": "cohere-1m",
+    "query_k": 100,
+    "query_count": 10000,
+    "query_seed": 7,
+    "search_clients": 8,
+    "time_period": 1800
+}
+```
+
 ### Train Test
 
 This procedure benchmarks approximate k-NN search algorithms that require a training step. For example, the FAISS IVF requires a training step to cluster vectors. Then search can be performed against a smaller number of cluster centroids instead of the entire dataset.
