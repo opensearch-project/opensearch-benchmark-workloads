@@ -17,8 +17,8 @@ blank, the queries come from the vectors that were indexed (the ``train`` key of
   every client and every run with the same seed uses the same pool.
 * With a ``time_period``, each client picks pool vectors at random, with
   replacement, until the time is up. Each client has its own seeded sequence.
-* Without one, the pool is shuffled and split across the clients, and each
-  vector is sent once per repetition (``repetitions``, default 1), so the step
+* Without one, the pool is shuffled and split across the clients (shares differ
+  by at most one vector), and each vector is sent once per repetition (``repetitions``, default 1), so the step
   sends exactly ``query_count * repetitions`` queries.
 * ``query_noise`` (default 0) adds Gaussian noise to each query: per component
   ``sigma = query_noise * |v| / sqrt(d)``, so the noise vector's expected norm is
@@ -193,9 +193,10 @@ class CorpusSamplePartitionParamSource(VectorSearchPartitionParamSource):
         p.current_rep = 1
         if not self.timed:
             order = np.random.default_rng([self.seed, 0]).permutation(len(pool))
-            share = len(pool) // total_partitions
-            start = partition_index * share
-            end = len(pool) if self._is_last_partition(partition_index, total_partitions) else start + share
+            # near-equal shares: the first len(pool) % total_partitions clients get one vector more
+            base, extra = divmod(len(pool), total_partitions)
+            start = partition_index * base + min(partition_index, extra)
+            end = start + base + (1 if partition_index < extra else 0)
             p._order = order[start:end].copy()
             p._pos = 0
             p.total = len(p._order) * self.repetitions
