@@ -153,6 +153,7 @@ class CorpusSamplePartitionParamSource(VectorSearchPartitionParamSource):
         pool = load_pool(self.data_set_format, self.data_set_path, self.context, self.total_num_vectors, self.seed)
 
         p = copy.copy(self)
+        p.partition_index = partition_index           # the client's index in the task (read by shape_scheduler.py)
         p._pool = pool
         p._rng = np.random.default_rng([self.seed, partition_index + 1])
         p.current = 0

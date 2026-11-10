@@ -349,6 +349,72 @@ Example params, sampling 10000 queries from cohere-1m's indexed vectors for 30 m
 }
 ```
 
+### Shaped Search
+
+`shaped-search` searches an index that is already indexed, with a load that follows `load_shape` (steps, ramp, burst
+or sine) in one task. The load changes over time with no restart between levels, so the cluster sees one continuous
+run, for example to test how it scales up and down. The queries are picked as in [Corpus Search](#corpus-search):
+sampled from the indexed vectors (or the query data set's `test` key), with an optional `query_body`. Recall is not
+calculated.
+
+The procedure registers a `shape` scheduler (`"schedule": "shape"`). `load_shape` gives the shape's level over time as
+a fraction (0 to 1) of `max`. Its `unit` decides what the level controls:
+
+* `"qps"` (default): `max` is the peak request rate across all clients, and is required. Each client sends at
+  `level * max / search_clients`. If the clients can't keep up (a client misses more than `limitFraction` of its
+  request slots over `limitWindowS` seconds), the task ends early and logs `SHAPE_CLIENT_LIMITED` with the target
+  and achieved rates. The results up to that point are kept. The peak needs more clients or a larger client machine.
+* `"clients"`: `max` is the peak number of active clients (default and upper limit: `search_clients`).
+  `round(level * max)` clients send back to back at full speed, and the others wait until the shape needs them.
+  Leaving `max` out uses every client at the peak, so set `search_clients` to what the load generation host can run.
+
+Late request slots are skipped, not caught up, so a client that falls behind at a peak doesn't keep firing after it.
+The task ends when the shape does. Each client logs `SHAPE_PROGRESS` every 60 seconds and `SHAPE_END` when it stops.
+
+Shapes (durations in seconds, levels from 0 to 1):
+
+| Type    | Fields                                                                   | Behavior                                                         |
+|---------|--------------------------------------------------------------------------|------------------------------------------------------------------|
+| `steps` | `levels`: a list of `{"level", "s"}`                                     | Holds each level for `s` seconds, in order                       |
+| `ramp`  | `from`, `to`, `upS`, `holdS` (default 0), `downS` (default 0)            | Moves from `from` to `to` over `upS`, holds, then moves back     |
+| `burst` | `low`, `high`, `onS`, `offS`, `cycles` (default 1)                       | Alternates `offS` at `low` (first) and `onS` at `high`           |
+| `sine`  | `low`, `high`, `periodS`, `cycles` (default 1)                           | Starts at `low`, peaks half a period in                          |
+
+Optional fields for the `qps` unit: `limitFraction` (default 0.1), `limitWindowS` (default 60), and `stopWhenLimited`
+(default true; false keeps running when the clients can't keep up).
+
+| Parameter Name     | Description                                                                                          |
+|--------------------|------------------------------------------------------------------------------------------------------|
+| load_shape         | The shape, as above (required)                                                                       |
+| search_clients     | Number of clients (default 1). In `qps` mode, give enough clients for the peak                      |
+| query_count        | Number of vectors in the query pool (default 10000), as in Corpus Search                             |
+| query_seed         | Seed for the pool and for each client's order (default 1)                                            |
+| query_body         | Optional full search body, as in [Full search body](#full-search-body)                               |
+| warmup_time_period | Seconds before the shape starts, run at the shape's first level and left out of the results (default none) |
+| time_period        | Upper limit on the task in seconds (default 86400). The shape's end ends the task first             |
+
+Example params, stepping cohere-1m's index from 200 to 1000 to 500 queries per second, 10 minutes each, with 32 clients:
+
+```json
+{
+    "target_index_name": "target_index",
+    "target_field_name": "target_field",
+    "target_index_bulk_index_data_set_format": "hdf5",
+    "target_index_bulk_index_data_set_corpus": "cohere-1m",
+    "query_k": 100,
+    "search_clients": 32,
+    "load_shape": {
+        "type": "steps",
+        "unit": "qps",
+        "max": 1000,
+        "levels": [{"level": 0.2, "s": 600}, {"level": 1, "s": 600}, {"level": 0.5, "s": 600}]
+    }
+}
+```
+
+The same shape in active clients, with up to 16 clients: `{"type": "steps", "unit": "clients", "levels": [...]}` and
+`"search_clients": 16`.
+
 ### Train Test
 
 This procedure benchmarks approximate k-NN search algorithms that require a training step. For example, the FAISS IVF requires a training step to cluster vectors. Then search can be performed against a smaller number of cluster centroids instead of the entire dataset.
