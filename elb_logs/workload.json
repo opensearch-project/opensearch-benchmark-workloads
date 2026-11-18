@@ -12,13 +12,13 @@
   "corpora": [
     {
       "name": "elb_logs",
-      "base-url": "https://d270n0h488ttok.cloudfront.net/corpora/elb_logs",
+      "base-url": "https://dbyiw3u3rf9yr.cloudfront.net/corpora/elb_logs",
       "documents": [
         {
           "source-file": "documents.json.bz2",
           "document-count": 56048585,
-          "compressed-bytes": 2778328847,
-          "uncompressed-bytes": 88755418005
+          "compressed-bytes": 2764014132,
+          "uncompressed-bytes": 86066914760
         }
       ]
     }
