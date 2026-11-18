@@ -304,32 +304,61 @@ The queries come from:
   `query_data_set_path` and `query_data_set_corpus` are both left out, or
 * the query data set (its `test` key) when one is given.
 
-`query_count` vectors are picked once, uniformly and without replacement, as the query pool. The pick is seeded, so
-every client and every run with the same `query_seed` uses the same pool.
+`query_profile` decides how the queries are made:
 
-* With `time_period`, each client picks pool vectors at random, with replacement, until the time is up. Each client
-  has its own seeded sequence, so clients don't send the same queries in the same order.
-* Without it, the pool is shuffled and split across the clients, and each vector is sent once per repetition. The task
-  sends exactly `query_count * repetitions` queries.
+* `prod` (default): traffic shaped like real users, where a few topics get most of the searches. See
+  [Query profiles](#query-profiles).
+* `uniform`: every vector is equally likely, the worst case for memory. `query_count` vectors are picked once,
+  uniformly and without replacement, as the query pool. Each query is a pool vector as is, so with the default source
+  it is also a document in the index.
 
-Each query is the sampled vector as is, so with the default source it is also a document in the index.
+Either way the queries are seeded, so every client and every run with the same `query_seed` sends the same queries.
+
+* With `time_period`, each client makes or picks queries until the time is up. Each client has its own seeded
+  sequence, so clients don't send the same queries in the same order.
+* Without it, `query_count` queries are made once, shuffled and split across the clients, and each is sent once per
+  repetition. The task sends exactly `query_count * repetitions` queries.
 
 A `query_body` that contains a `query` is sent as written, with the sampled vector placed into every `knn` clause on
 `target_field_name`, as in [Full search body](#full-search-body).
 
 | Parameter Name     | Description                                                                                          |
 |--------------------|------------------------------------------------------------------------------------------------------|
-| query_count        | Number of vectors in the query pool (default 10000; -1 for the whole data set, which is held in memory by every worker process) |
-| query_seed         | Seed for the pool and for each client's order (default 1)                                            |
+| query_profile      | `prod` (default) or `uniform`, see [Query profiles](#query-profiles)                                  |
+| query_concentration | `prod` only: `low`, `medium` (default) or `high`, how strongly searches favour popular topics       |
+| query_count        | Queries sent per repetition when there is no `time_period` (default 10000). With `uniform` it is also the pool size, and -1 uses the whole data set, which is held in memory by every worker process |
+| query_seed         | Seed for the queries and for each client's order (default 1)                                          |
 | time_period        | Seconds to run the search (default none: the task ends after `query_count * repetitions` queries)     |
 | repetitions        | Times the pool is sent when there is no `time_period` (default 1)                                    |
 | warmup_time_period | Seconds at the start whose samples are recorded as warm-up and left out of the results (default none) |
 | target_throughput  | Total requests per second across all clients (default none: each client sends as fast as it can)     |
 | search_clients     | Number of clients (default 1)                                                                        |
 
-It has no index warm-up task, so it also runs against Amazon OpenSearch Serverless. A small pool sent many times keeps
-hitting the same graph paths and pages, which can make disk-based or tiered results look better than a real query mix;
-size `query_count` to the test.
+It has no index warm-up task, so it also runs against Amazon OpenSearch Serverless. With `uniform`, a small pool sent
+many times keeps hitting the same graph paths and pages, which can make disk-based or tiered results look better than a
+real query mix, and a large one touches almost the whole index; size `query_count` to the test.
+
+#### Query profiles
+
+With uniform picking, every vector is equally likely to be a query, so a large query set lands all over the index and
+the part of the index the searches need in memory grows toward the whole index. Real traffic isn't like that: most
+searches are about a few popular topics. `prod` makes queries that way:
+
+* **Topics.** Up to 1,000 query vectors from the test queries (the query data set's, else the `test` key of the bulk
+  data set file), filled from the indexed vectors when there are fewer. Each one stands for a topic.
+* **Popularity.** The topics are shuffled once with `query_seed`; the order after the shuffle is the popularity order.
+  The topic at position r is picked with probability proportional to 1 / r^s (a Zipf distribution, s = 1.0). With
+  1,000 topics the most popular one gets about 13% of the searches, the top 10 about 39% and the top 100 about 69%.
+  `query_concentration` `low` and `high` set s to 0.7 and 1.3, giving the top 100 about 44% and 88%.
+* **Variation.** Each query is its topic's vector plus Gaussian noise of about 0.3 x d10, where d10 is the median
+  distance from a test query to its 10th nearest neighbour (from the data set's `neighbors`, else estimated on 100,000
+  indexed vectors). The query finds the same area of the index, but no two queries are the same. With
+  `target_index_space_type` `cosinesimil` the queries are renormalised to unit length.
+* **Drift.** On a timed task whose `time_period` is over an hour, the popularity order moves by a tenth of the topics
+  every 30 minutes of the client's run, so long tests see popular topics change gradually.
+
+The resolved settings (topics and their source, s, d10 and its source, the noise, the drift and the seed) are written
+to the benchmark log as `corpus-search query profile: {...}`. Results from different profiles shouldn't be compared.
 
 Example params, sampling 10000 queries from cohere-1m's indexed vectors for 30 minutes with 8 clients:
 
@@ -387,8 +416,10 @@ Optional fields for the `qps` unit: `limitFraction` (default 0.1), `limitWindowS
 |--------------------|------------------------------------------------------------------------------------------------------|
 | load_shape         | The shape, as above (required)                                                                       |
 | search_clients     | Number of clients (default 1). In `qps` mode, give enough clients for the peak                      |
-| query_count        | Number of vectors in the query pool (default 10000), as in Corpus Search                             |
-| query_seed         | Seed for the pool and for each client's order (default 1)                                            |
+| query_profile      | `prod` (default) or `uniform`, as in [Query profiles](#query-profiles)                                |
+| query_concentration | `prod` only: `low`, `medium` (default) or `high`                                                    |
+| query_count        | `uniform` only: number of vectors in the query pool (default 10000), as in Corpus Search             |
+| query_seed         | Seed for the queries and for each client's order (default 1)                                         |
 | query_body         | Optional full search body, as in [Full search body](#full-search-body)                               |
 | warmup_time_period | Seconds before the shape starts, run at the shape's first level and left out of the results (default none) |
 | time_period        | Upper limit on the task in seconds (default 86400). The shape's end ends the task first             |
