@@ -19,6 +19,10 @@
         "corpus_data_set_corpus" : "{{ target_index_bulk_index_data_set_corpus | default('') }}",
         "num_vectors" : {{ query_count | default(10000) }},
         "query_seed": {{ query_seed | default(1) }},
+        "query_profile": "{{ query_profile | default('prod') }}",
+        "query_concentration": "{{ query_concentration | default('medium') }}",
+        "query_space_type": "{{ target_index_space_type | default('l2') }}",
+        "time_period": {{ time_period | default(86400) }},
         "timed": true,
         "body": {{ query_body | default ({}) | tojson }}
     },
