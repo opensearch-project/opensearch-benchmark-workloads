@@ -1,0 +1,68 @@
+{
+  "operation": {
+    "operation-type": "delete-data-stream",
+    "only-if-exists": false
+  }
+},
+{
+  "name": "delete-ism-policy",
+  "operation": {
+    "operation-type": "raw-request",
+    "method": "DELETE",
+    "path": "/_plugins/_ism/policies/{{ ism_policy_id | default((data_stream_name | default('logs-benchmark-dev')) ~ '-rollover-warm') }}",
+    "ignore": [404]
+  }
+},
+{
+  "operation": {
+    "operation-type": "delete-composable-template",
+    "only-if-exists": false
+  }
+},
+{
+  "name": "create-ism-policy",
+  "operation": {
+    "operation-type": "raw-request",
+    "method": "PUT",
+    "path": "/_plugins/_ism/policies/{{ ism_policy_id | default((data_stream_name | default('logs-benchmark-dev')) ~ '-rollover-warm') }}",
+    "body": {{ benchmark.collect(parts="../../ism-policy.json") }}
+  }
+},
+{
+  "operation": {
+    "operation-type": "create-composable-template"
+  }
+},
+{
+  "operation": {
+    "operation-type": "create-data-stream"
+  }
+},
+{
+  "name": "check-cluster-health",
+  "operation": {
+    "operation-type": "cluster-health",
+    "request-params": {
+      "wait_for_status": "{{cluster_health | default('green')}}",
+      "wait_for_no_relocating_shards": "true"
+    },
+    "retry-until-success": true
+  }
+},
+{{ benchmark.collect(parts="../../../common_operations/index_append.json") }},
+{
+  "name": "wait-for-ism-warm-migration",
+  "operation": {
+    "operation-type": "wait-for-ism-warm-migration",
+    "data-stream": "{{ data_stream_name | default('logs-benchmark-dev') }}",
+    {%- if ism_rollover_min_doc_count is defined %}
+    "rollover-min-doc-count": {{ ism_rollover_min_doc_count | int }},
+    {%- endif %}
+    {%- if ism_rollover_min_size is defined or ism_rollover_min_doc_count is not defined %}
+    "rollover-min-size": "{{ ism_rollover_min_size | default('2gb') }}",
+    {%- endif %}
+    "timeout": {{ ism_wait_timeout | default(14400) }},
+    "poll-interval": {{ ism_wait_poll_interval | default(30) }},
+    "include-in-reporting": false
+  }
+}
