@@ -1,0 +1,7 @@
+{
+  "query": {
+    "query_string": {
+      "query": "message: shield AND carp AND shark"
+    }
+  }
+}

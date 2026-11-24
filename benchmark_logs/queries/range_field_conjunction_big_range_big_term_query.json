@@ -1,0 +1,21 @@
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "process.name": "systemd"
+          }
+        },
+        {
+          "range": {
+            "metrics.size": {
+              "gte": 1,
+              "lte": 1000
+            }
+          }
+        }
+      ]
+    }
+  }
+}

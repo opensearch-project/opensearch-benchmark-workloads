@@ -1,0 +1,21 @@
+/*
+{
+  "name": "cardinality-agg-high-2",
+  "operation-type": "search",
+  "index": "{{data_stream_name | default('logs-benchmark-dev')}}",
+  "request-timeout": 1800,
+  "body": {
+    "size": 0,
+    "aggs": {
+      "agent": {
+        "cardinality": {
+         "field": "event.id",
+         "execution_hint":"ordinals"
+        }
+      }
+    }
+  }
+}
+*/
+source = logs-benchmark-dev
+| stats dc(`event.id`)

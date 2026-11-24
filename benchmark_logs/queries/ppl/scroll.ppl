@@ -1,0 +1,2 @@
+source = logs-benchmark-dev
+| head 10

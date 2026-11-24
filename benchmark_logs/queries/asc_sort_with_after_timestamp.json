@@ -1,0 +1,14 @@
+{
+  "track_total_hits": false,
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "@timestamp": "asc"
+    }
+  ],
+  "search_after": [
+    "2023-01-01T23:59:58.000Z"
+  ]
+}

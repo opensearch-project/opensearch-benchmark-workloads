@@ -1,0 +1,46 @@
+{
+  "policy": {
+    "description": "Roll the data stream over when the write index reaches the configured size and/or document count, then migrate the rolled-over backing index to UltraWarm.",
+    "default_state": "hot",
+    "states": [
+      {
+        "name": "hot",
+        "actions": [
+          {
+            "rollover": {
+              {%- if ism_rollover_min_doc_count is defined %}
+              "min_doc_count": {{ ism_rollover_min_doc_count | int }}
+              {%- if ism_rollover_min_size is defined %},{% endif %}
+              {%- endif %}
+              {%- if ism_rollover_min_size is defined or ism_rollover_min_doc_count is not defined %}
+              "min_size": "{{ ism_rollover_min_size | default('2gb') }}"
+              {%- endif %}
+            }
+          }
+        ],
+        "transitions": [
+          {
+            "state_name": "warm"
+          }
+        ]
+      },
+      {
+        "name": "warm",
+        "actions": [
+          {
+            "warm_migration": {},
+            "retry": {
+              "count": {{ ism_warm_migration_retry_count | default(5) }},
+              "delay": "{{ ism_warm_migration_retry_delay | default('1m') }}"
+            }
+          }
+        ],
+        "transitions": []
+      }
+    ],
+    "ism_template": {
+      "index_patterns": ["{{ data_stream_name | default('logs-benchmark-dev') }}*"],
+      "priority": {{ ism_template_priority | default(100) }}
+    }
+  }
+}

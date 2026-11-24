@@ -1,0 +1,2 @@
+source = logs-benchmark-dev query_string(['message'], 'shield AND carp AND shark')
+| head 10
