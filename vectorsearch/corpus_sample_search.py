@@ -25,10 +25,21 @@ blank, the queries come from the vectors that were indexed (the ``train`` key of
 A ``query_body`` that contains a ``query`` is sent as written, with the vector
 placed into every ``knn`` clause on the operation's field (as in
 ``raw_search_body.py``). Otherwise the stock k-NN query is built.
+
+``query_profile`` picks how the queries are made (``query_profile.py``):
+
+* ``prod`` (default): traffic shaped like real users. Up to 1,000 topics from the
+  test queries (the query data set's, else the bulk data set's ``test`` key, filled
+  from the indexed vectors), popular topics picked far more often, each query
+  nudged slightly. Without a ``time_period`` the step sends ``query_count`` such
+  queries, split across the clients as above; with one, each client makes its own.
+* ``uniform``: the pool described above, every vector equally likely: the worst
+  case for memory.
 """
 
 import copy
 import logging
+import time
 
 import numpy as np
 
@@ -36,12 +47,16 @@ from osbenchmark import exceptions
 from osbenchmark.utils.dataset import Context, get_data_set
 from osbenchmark.workload.params import SearchParamSource, VectorSearchPartitionParamSource
 
+from . import query_profile as qp
 from .raw_search_body import _get, validate_search_body
 
 DEFAULT_POOL_SIZE = 10000
 
 # One pool per (file, key, size, seed) per worker process, shared by that process's clients.
 _POOLS = {}
+# One prod profile per (files, seed, exponent, space) per worker process, and its fixed-count query sets.
+_PROFILES = {}
+_PROD_POOLS = {}
 
 
 def resolve_query_source(params):
@@ -69,20 +84,92 @@ def pick_pool_indices(size, pool_size, seed):
     return np.sort(np.random.default_rng(seed).choice(size, size=pool_size, replace=False))
 
 
+def read_rows(data_set, indices):
+    """The rows at ``indices`` (sorted, distinct) of a data set."""
+    data = getattr(data_set, "data", None)
+    if data is not None and hasattr(data, "id"):       # h5py: one read of the sorted rows
+        return np.asarray(data[:] if len(indices) == data_set.size() else data[indices])
+    rows = []
+    for i in indices:
+        data_set.seek(int(i))
+        rows.append(data_set.read(1)[0])
+    return np.asarray(rows)
+
+
+def open_data_set(data_set_format, path, context):
+    """The data set, or None when the file has no such key (a data set without test queries or neighbors)."""
+    try:
+        data_set = get_data_set(data_set_format, path, context)
+        return data_set if data_set.size() > 0 else None
+    except Exception:                                  # noqa: BLE001 - a missing key surfaces as different errors
+        return None
+
+
+def load_prod(query_file, train_file, seed, exponent, space_type):
+    """The prod profile for these files: topics from ``query_file``'s test key (filled from ``train_file``'s
+    train key), d10 from its neighbors, else estimated on a sample of the indexed vectors. Each is
+    (format, path)."""
+    key = (query_file, train_file, seed, exponent, space_type)
+    if key in _PROFILES:
+        return _PROFILES[key]
+    log = logging.getLogger(__name__)
+    rng = np.random.default_rng([seed, 5])
+    test = open_data_set(*query_file, Context.QUERY)
+    train = open_data_set(*train_file, Context.INDEX)
+    topics, rows, source = [], np.array([], dtype=np.int64), []
+    if test is not None:
+        rows = np.sort(rng.choice(test.size(), size=min(qp.TOPICS, test.size()), replace=False))
+        topics.append(read_rows(test, rows))
+        source.append("test")
+    if len(rows) < qp.TOPICS and train is not None:
+        fill = np.sort(rng.choice(train.size(), size=min(qp.TOPICS - len(rows), train.size()), replace=False))
+        topics.append(read_rows(train, fill))
+        source.append("train")
+    if not topics:
+        raise exceptions.ConfigurationError(
+            f"query_profile prod: no test queries in [{query_file[1]}] and no indexed vectors in [{train_file[1]}]")
+    topics = np.concatenate(topics).astype(np.float32)
+
+    d10, d10_source = None, None
+    neighbors = open_data_set(*query_file, Context.NEIGHBORS) if test is not None else None
+    if neighbors is not None and train is not None and neighbors.size() == test.size():
+        sel = rows[:qp.D10_QUERIES]
+        tenth_ids = read_rows(neighbors, sel)[:, 9].astype(np.int64)
+        ok = (tenth_ids >= 0) & (tenth_ids < train.size())
+        if ok.any():
+            order = np.argsort(tenth_ids[ok])
+            uniq, inv = np.unique(tenth_ids[ok][order], return_inverse=True)
+            vec = read_rows(train, uniq)[inv]
+            tenth = np.empty_like(vec)
+            tenth[order] = vec
+            d10, d10_source = qp.d10_from_neighbors(topics[:len(sel)][ok], tenth), "neighbors"
+    if d10 is None:
+        if train is None:
+            raise exceptions.ConfigurationError(
+                f"query_profile prod: no neighbors in [{query_file[1]}] and no indexed vectors to estimate d10")
+        sample = np.sort(rng.choice(train.size(), size=min(qp.D10_SAMPLE, train.size()), replace=False))
+        d10, d10_source = qp.d10_estimate(topics[:qp.D10_QUERIES], read_rows(train, sample)), "sample"
+    prof = qp.Prod(topics, d10, seed, exponent, space_type)
+    settings = dict(prof.settings(), topic_source="+".join(source), d10_source=d10_source, space_type=space_type)
+    log.info("corpus-search query profile: %s", settings)
+    _PROFILES[key] = prof
+    return prof
+
+
+def load_prod_pool(prof, count):
+    """``count`` prod queries for a step without a time_period: the same for every client and run."""
+    key = (id(prof), count)
+    if key not in _PROD_POOLS:
+        _PROD_POOLS[key] = prof.queries(np.random.default_rng([prof.seed, 0]), count)
+    return _PROD_POOLS[key]
+
+
 def load_pool(data_set_format, path, context, pool_size, seed):
     key = (data_set_format, path, context, pool_size, seed)
     if key not in _POOLS:
         data_set = get_data_set(data_set_format, path, context)
         indices = pick_pool_indices(data_set.size(), pool_size, seed)
-        data = getattr(data_set, "data", None)
-        if data is not None and hasattr(data, "id"):   # h5py: one read of the sorted rows
-            pool = np.asarray(data[:] if len(indices) == data_set.size() else data[indices])
-        else:
-            rows = []
-            for i in indices:
-                data_set.seek(int(i))
-                rows.append(data_set.read(1)[0])
-            pool = np.asarray(rows)
+        pool = read_rows(data_set, indices)
         logging.getLogger(__name__).info(
             "corpus-search pool: %d of %d vectors from [%s] (%s), seed %d, first rows %s",
             len(pool), data_set.size(), path, context.name, seed, indices[:5].tolist())
@@ -107,6 +194,9 @@ class CorpusSampleVectorSearchParamSource(SearchParamSource):
 
 class CorpusSamplePartitionParamSource(VectorSearchPartitionParamSource):
     def __init__(self, workload, params, query_params, **kwargs):
+        self.has_query_set = bool(params.get("data_set_path") or params.get("data_set_corpus"))
+        corpus = (params.get("corpus_data_set_format") or "hdf5", params.get("corpus_data_set_path") or "",
+                  params.get("corpus_data_set_corpus") or "")
         params, context = resolve_query_source(params)
         for key in ("neighbors_data_set_path", "neighbors_data_set_corpus"):
             params.pop(key, None)                      # no ground truth: recall is off
@@ -136,7 +226,29 @@ class CorpusSamplePartitionParamSource(VectorSearchPartitionParamSource):
         self.query_params["calculate-recall"] = False
         self.query_params.pop("neighbors", None)
 
+        self.profile = str(params.get("query_profile") or qp.DEFAULT_PROFILE).lower()
+        if self.profile not in qp.PROFILES:
+            raise exceptions.InvalidSyntax(
+                f"query_profile must be one of {', '.join(qp.PROFILES)}, got {params.get('query_profile')!r}")
+        try:
+            self.exponent = qp.exponent(params.get("query_concentration"))
+        except ValueError as e:
+            raise exceptions.InvalidSyntax(str(e))
+        self.space_type = str(params.get("query_space_type") or "l2")
+        self.time_period = float(params.get("time_period") or 0)
+        if self.profile == "prod" and self.total_num_vectors < 0:
+            raise exceptions.InvalidSyntax("query_count -1 (the whole data set) is for query_profile uniform; "
+                                           "set a number of queries for prod")
+        self.corpus = corpus
+        if self.profile == "prod" and self.has_query_set and corpus[2] and not corpus[1]:
+            # the indexed vectors fill topics and estimate d10: make the named corpus available too
+            extra = self.extract_corpora(corpus[2], corpus[0])
+            self.corpora.extend(c for c in extra if c not in self.corpora)
+
         self._pool = None
+        self._prod = None
+        self._buf = None
+        self._t0 = None
         self._rng = None
         self._order = None
         self._pos = 0
@@ -150,16 +262,31 @@ class CorpusSamplePartitionParamSource(VectorSearchPartitionParamSource):
             paths = self._get_corpora_file_paths(self.data_set_corpus, self.data_set_format)
             self._validate_data_set_corpus(paths)
             self.data_set_path = paths[0]
-        pool = load_pool(self.data_set_format, self.data_set_path, self.context, self.total_num_vectors, self.seed)
+        prof = None
+        if self.profile == "prod":
+            train = (self.corpus[0], self.corpus[1])
+            if not self.has_query_set:
+                train = (self.data_set_format, self.data_set_path)    # the bulk data set: test and train keys
+            elif not train[1] and self.corpus[2]:
+                paths = self._get_corpora_file_paths(self.corpus[2], self.corpus[0])
+                train = (self.corpus[0], paths[0] if paths else "")
+            prof = load_prod((self.data_set_format, self.data_set_path), train, self.seed, self.exponent,
+                             self.space_type)
+            pool = None if self.timed else load_prod_pool(prof, self.total_num_vectors)
+        else:
+            pool = load_pool(self.data_set_format, self.data_set_path, self.context, self.total_num_vectors, self.seed)
 
         p = copy.copy(self)
+        p._prod = prof
+        p._buf = None
+        p._t0 = None
         p.partition_index = partition_index           # the client's index in the task (read by shape_scheduler.py)
         p._pool = pool
         p._rng = np.random.default_rng([self.seed, partition_index + 1])
         p.current = 0
         p.current_rep = 1
         if not self.timed:
-            order = np.random.default_rng([self.seed, 0]).permutation(len(pool))
+            order = np.random.default_rng([self.seed, 0]).permutation(len(pool))   # prod: already random
             # near-equal shares: the first len(pool) % total_partitions clients get one vector more
             base, extra = divmod(len(pool), total_partitions)
             start = partition_index * base + min(partition_index, extra)
@@ -168,6 +295,16 @@ class CorpusSamplePartitionParamSource(VectorSearchPartitionParamSource):
             p._pos = 0
             p.total = len(p._order) * self.repetitions
         return p
+
+    def _next_prod(self):
+        """A timed step's next prod query: made in batches by this client, the batch's drift period from the
+        time since the client's first query."""
+        if not self._buf:
+            now = time.monotonic()
+            self._t0 = self._t0 or now
+            epoch = qp.drift_epoch(now - self._t0, self.time_period)
+            self._buf = list(self._prod.queries(self._rng, 64, epoch))
+        return self._buf.pop(0)
 
     def _next_index(self):
         if self.timed:
@@ -183,7 +320,7 @@ class CorpusSamplePartitionParamSource(VectorSearchPartitionParamSource):
         return i
 
     def params(self):
-        vector = self._pool[self._next_index()]
+        vector = self._next_prod() if (self.timed and self._prod is not None) else self._pool[self._next_index()]
         self._update_request_params()
         if self._raw_body is not None:
             body = copy.deepcopy(self._raw_body)
