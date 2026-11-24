@@ -1,0 +1,2 @@
+source = logs-benchmark-dev
+| stats count() by span(`@timestamp`, 1h)

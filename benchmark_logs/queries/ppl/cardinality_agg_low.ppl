@@ -1,0 +1,19 @@
+/*
+{
+  "name": "cardinality-agg-low",
+  "operation-type": "search",
+  "index": "{{data_stream_name | default('logs-benchmark-dev')}}",
+  "body": {
+    "size": 0,
+    "aggs": {
+      "region": {
+        "cardinality": {
+          "field": "cloud.region"
+        }
+      }
+    }
+  }
+}
+*/
+source = logs-benchmark-dev
+| stats dc(`cloud.region`)
