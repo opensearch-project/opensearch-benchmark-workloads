@@ -157,7 +157,6 @@ This workload allows the following parameters to be specified using `--workload-
 * `ism_warm_migration_retry_delay` (default: "1m"): Delay between `warm_migration` retries.
 * `index_merge_policy` (default: "log_byte_size"): The merge policy for the underlying Lucene segments, either "log_byte_size" or "tiered".
 * `index_sort` (default: false): If true, enables index-time ascending sort on the `@timestamp` field.
-* `index_translog_durability` (default: "async"): Controls the transaction log flush behavior. "request" flushes after every operation to avoid data loss, while "async" batches changes for efficiency.
 * `ingest_percentage` (default: 100): A number between 0 and 100 that defines how much of the document corpus should be ingested.
 * `number_of_replicas` (default: 1): The number of replicas for each backing index.
 * `number_of_shards` (default: 1): The number of shards for each backing index.

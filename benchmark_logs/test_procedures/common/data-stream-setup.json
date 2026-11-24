@@ -16,6 +16,7 @@
 {
   "operation": {
     "operation-type": "delete-composable-template",
+    "template": "{{ data_stream_name | default('logs-benchmark-dev') }}-template",
     "only-if-exists": false
   }
 },
