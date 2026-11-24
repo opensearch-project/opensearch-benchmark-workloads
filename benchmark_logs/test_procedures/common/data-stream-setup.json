@@ -14,10 +14,12 @@
   }
 },
 {
+  "name": "delete-index-template",
   "operation": {
-    "operation-type": "delete-composable-template",
-    "template": "{{ data_stream_name | default('logs-benchmark-dev') }}-template",
-    "only-if-exists": false
+    "operation-type": "raw-request",
+    "method": "DELETE",
+    "path": "/_index_template/{{ data_stream_name | default('logs-benchmark-dev') }}-template",
+    "ignore": [404]
   }
 },
 {
@@ -30,8 +32,12 @@
   }
 },
 {
+  "name": "create-index-template",
   "operation": {
-    "operation-type": "create-composable-template"
+    "operation-type": "raw-request",
+    "method": "PUT",
+    "path": "/_index_template/{{ data_stream_name | default('logs-benchmark-dev') }}-template",
+    "body": {{ benchmark.collect(parts="../../index-template.json") }}
   }
 },
 {

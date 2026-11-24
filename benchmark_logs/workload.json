@@ -11,14 +11,6 @@
       "name": "{{ data_stream_name | default('logs-benchmark-dev') }}"
     }
   ],
-  "composable-templates": [
-    {
-      "name": "{{ data_stream_name | default('logs-benchmark-dev') }}-template",
-      "index-pattern": "{{ data_stream_name | default('logs-benchmark-dev') }}*",
-      "delete-matching-indices": false,
-      "template": "index-template.json"
-    }
-  ],
   "corpora": [
     {
       "name": "big5",

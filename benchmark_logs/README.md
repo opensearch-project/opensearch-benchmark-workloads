@@ -4,8 +4,8 @@ This workload runs the **_Big5_** queries and corpus against a **data stream** i
 
 ### Differences from big5
 
-* The workload defines `data-streams` and `composable-templates` instead of `indices`. The data stream is named `logs-benchmark-dev` by default; change it with the `data_stream_name` parameter.
-* `index-template.json` is a composable index template. It matches `<data_stream_name>*`, uses `@timestamp` as the data stream timestamp field, and carries the big5 settings and mappings under `template`.
+* The workload defines `data-streams` instead of `indices`. As in Rally's big5 track, the index template and ISM policy are created with `raw-request` operations (`PUT /_index_template/...` and `PUT /_plugins/_ism/policies/...`) rather than OSB's template operations. The data stream is named `logs-benchmark-dev` by default; change it with the `data_stream_name` parameter.
+* `index-template.json` is the body of the index template, `<data_stream_name>-template`. It matches `<data_stream_name>*`, uses `@timestamp` as the data stream timestamp field, and carries the big5 settings and mappings under `template`.
 * Setup (`test_procedures/common/data-stream-setup.json`) deletes the data stream, its ISM policy and its template if they exist, recreates the policy, template and data stream, waits for cluster health, bulk-loads the corpus, and then waits for ISM to finish rolling over and migrating backing indices to UltraWarm (see below). There is no force-merge step: UltraWarm indices are read-only, and the migration handles segment merging itself. OpenSearch Benchmark sends `create` bulk actions automatically when the target is a data stream.
 * An Index State Management (ISM) policy (`ism-policy.json`) is attached to the data stream's backing indices through an `ism_template`. When the write index reaches `ism_rollover_min_size` (default 2gb) and/or `ism_rollover_min_doc_count` documents, ISM rolls the data stream over, and the rolled-over backing index is migrated to UltraWarm with the `warm_migration` action. `warm_migration` is only available on Amazon OpenSearch Service domains with UltraWarm enabled; on other clusters, creating the policy fails.
 * After ingestion, the `wait-for-ism-warm-migration` step (a custom runner in `workload.py`) polls the data stream until every rolled-over backing index has completed its ISM policy and the write index is below the rollover thresholds, so no further rollovers or migrations happen while queries run. It fails the step if ISM reports a failed action or if `ism_wait_timeout` expires.
@@ -164,7 +164,7 @@ This workload allows the following parameters to be specified using `--workload-
 * `requests_cache_enabled` (default: false): Whether the requests cache should be enabled.
 * `search_clients`: (default: 1): Number of clients that issue search requests.
 * `target_throughput` (default: 2): Target throughput for each query operation in requests per second, use 0 or "" for no throughput throttling.
-* `template_priority` (default: 500): Priority of the composable index template. Raise it if another template on the cluster also matches the data stream name.
+* `template_priority` (default: 500): Priority of the index template. Raise it if another template on the cluster also matches the data stream name.
 * `test_iterations` (default: 200): Number of test iterations per query that will have their latency and throughput measured.
 * `use_zstd` (default: false): If true, downloads the zstd-compressed corpus instead of bz2.
 * `warmup_iterations` (default: 100): Number of warmup query iterations prior to actual measurements commencing.
@@ -227,9 +227,9 @@ Every test procedure starts with the following setup steps before running its qu
 ```
 delete-data-stream
 delete-ism-policy
-delete-composable-template
+delete-index-template
 create-ism-policy
-create-composable-template
+create-index-template
 create-data-stream
 check-cluster-health
 index-append
