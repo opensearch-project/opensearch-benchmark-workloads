@@ -1,0 +1,4 @@
+source = logs-benchmark-dev
+| stats count() as station by `aws.cloudwatch.log_stream`
+| sort - station
+| head 500

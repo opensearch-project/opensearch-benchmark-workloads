@@ -1,0 +1,3 @@
+source = logs-benchmark-dev
+| sort - `@timestamp`
+| head 10

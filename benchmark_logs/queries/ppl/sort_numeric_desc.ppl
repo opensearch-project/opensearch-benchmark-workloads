@@ -1,0 +1,3 @@
+source = logs-benchmark-dev
+| sort - `metrics.size`
+| head 10

@@ -1,0 +1,19 @@
+{
+  "size": 0,
+  "query": {
+    "range": {
+      "@timestamp": {
+        "gte": "2023-01-01T00:00:00",
+        "lt": "2023-01-03T00:00:00"
+      }
+    }
+  },
+  "aggs": {
+    "by_hour": {
+      "date_histogram": {
+        "field": "@timestamp",
+        "calendar_interval": "minute"
+      }
+    }
+  }
+}
